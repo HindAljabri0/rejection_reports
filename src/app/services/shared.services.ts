@@ -161,6 +161,9 @@ export class SharedServices {
     this.unReadProcessedCountChange.subscribe(value => {
       this.unReadProcessedCount = value;
     });
+    this.unReadProcessedApaCountChange.subscribe(value => {
+      this.unReadProcessedApaCount = value;
+    });
     this.unReadComunicationRequestCountChange.subscribe(value => {
       this.unReadComunicationRequestCount = value;
     });

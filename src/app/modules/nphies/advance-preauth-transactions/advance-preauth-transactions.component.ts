@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatPaginator, MatDialogConfig } from '@angular/material';
 import { ViewPreauthorizationDetailsComponent } from '../view-preauthorization-details/view-preauthorization-details.component';
-import { ProcessedTransactionsComponent } from '../preauthorization-transactions/processed-transactions/processed-transactions.component';
+import { ApaProcessedTransactionsComponent } from './apa-processed-transactions/apa-processed-transactions.component';
 import { ReuseApprovalModalComponent } from '../preauthorization-transactions/reuse-approval-modal/reuse-approval-modal.component';
 import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
@@ -31,7 +31,7 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
   pageSize: number;
 
   @ViewChild('paginator', { static: false }) paginator: MatPaginator;
-  @ViewChild('processedTransactions', { static: false }) processedTransactions: ProcessedTransactionsComponent;
+  @ViewChild('apaProcessedTransactions', { static: false }) apaProcessedTransactions: ApaProcessedTransactionsComponent;
   @ViewChild('communicationRequests', { static: false }) communicationRequests: ApaCommunicationRequestsComponent;
   paginatorPagesNumbers: number[];
   paginatorPageSizeOptions = [10, 20, 50, 100];
@@ -363,6 +363,13 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
       documentId: beneficiary.documentId +""
     });
   }
+  tabChange($event) {
+    if ($event && $event.index === 1) {
+      this.apaProcessedTransactions.getApaProcessedTransactions();
+    } else if ($event && $event.index === 2) {
+      this.communicationRequests.getCommunicationRequests();
+    }
+  }
   openDetailsDialog(requestId, responseId) {
     this.getTransactionDetails(requestId, responseId, null, null, null);
   }
@@ -407,7 +414,7 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
                 this.OpenReuseApprovalModal(requestId, responseId);
               } else {
                 if (!communicationId && notificationId) {
-                  this.processedTransactions.getProcessedTransactions();
+                  this.apaProcessedTransactions.getApaProcessedTransactions();
                 } else if (communicationId && notificationId) {
                   this.communicationRequests.getCommunicationRequests();
                 }
@@ -444,7 +451,7 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
       if (this.data.communicationId) {
         this.sharedServices.unReadApaComunicationRequestCount = this.sharedServices.unReadApaComunicationRequestCount - 1;
       } else {
-        this.sharedServices.unReadProcessedCount = this.sharedServices.unReadProcessedCount - 1;
+        this.sharedServices.unReadProcessedApaCount = this.sharedServices.unReadProcessedApaCount - 1;
       }
       if (notificationId) {
         this.sharedServices.markAsRead(notificationId, this.sharedServices.providerId);
@@ -531,13 +538,11 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
       }
     });
   }
+  openDetailsDialoEv(event) {
+    this.getTransactionDetails(event.requestId, event.responseId, null, event.notificationId, event.notificationStatus);
+  }
   openDetailsDialogCR(event) {  
     this.getTransactionDetails(event.requestId, null, event.communicationId, event.notificationId, event.notificationStatus);
-  }
-  tabChange($event) {   
-   if ($event && $event.index === 1) {
-      this.communicationRequests.getCommunicationRequests();
-    }
   }
 
   updateManualPage(index) {
@@ -566,6 +571,9 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
   get NewAPAComunicationRequests() {
      return this.sharedServices.unReadApaComunicationRequestCount;
   }
+  get NewAPAProcessed() {
+    return this.sharedServices.unReadProcessedApaCount;
+ }
   get paginatorLength() {
     if (this.transactionModel != null) {
       return this.transactionModel.totalElements;
