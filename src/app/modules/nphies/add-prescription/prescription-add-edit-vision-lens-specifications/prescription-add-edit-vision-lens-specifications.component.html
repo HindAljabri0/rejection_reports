@@ -1,0 +1,376 @@
+<div class="primary-dialog-header has-border">
+  <h5 *ngIf="!data.item" class="primary-dialog-title">Add Vision Lens Specification</h5>
+  <h5 *ngIf="data.item" class="primary-dialog-title">Edit Vision Lens Specification</h5>
+  <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+<form [formGroup]="FormVisionSpecification" (ngSubmit)="onSubmit()">
+  <div class="primary-dialog-body pb-0">
+    <div class="row small-gutter flex-grow-1">
+      <div class="col-4 col-lg-4">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (isSubmitted || FormVisionSpecification.get('product').touched) && FormVisionSpecification.get('product').hasError('required')}">
+          <label class="control-label">Product<span class="asterisk">*</span></label>
+          <mat-form-field class="form-control custom-select-control">
+            <mat-select formControlName="product" (selectionChange)="changeProduct()">
+              <mat-option value="">Select Product</mat-option>
+              <mat-option *ngFor="let product of productList" [value]="product">{{product.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div
+            *ngIf="(isSubmitted || FormVisionSpecification.get('product').touched) && FormVisionSpecification.get('product').hasError('required')">
+            <span class="error-text">Please select Product</span>
+          </div>
+        </div>
+      </div>
+      <!--div class="col-4 col-lg-3">
+        <div class="form-group">
+          <label class="control-label">Eye</label>
+          <mat-radio-group class="radio-group inline" formControlName="eye">
+            <mat-radio-button value="right" color="primary">Right</mat-radio-button>
+            <mat-radio-button value="left" color="primary">Left</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div-->
+      <div class="col-4 col-lg-4">
+        <div class="form-group">
+          <label class="control-label">Color</label>
+          <input class="form-control" placeholder="Enter color" formControlName="lensColor">
+        </div>
+      </div>
+      <div class="col-4 col-lg-4">
+        <div class="form-group">
+          <label class="control-label">Brand</label>
+          <input class="form-control" placeholder="Enter brand" formControlName="lensBrand">
+        </div>
+      </div>
+    </div>
+    <div class="row small-gutter justify-content-center">
+      <div *ngIf="IsSphereRequired()" class="col-xl-2">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (IsSphereRequired() && ((isSubmitted || FormVisionSpecification.get('sphere').touched) && FormVisionSpecification.get('sphere').hasError('required'))) || sphereError}">
+
+          <input type="number" class="form-control" placeholder="Right" formControlName="sphere"
+            (keyup)="checkSphere()">
+          <div *ngIf="sphereError">
+            <span class="error-text">{{sphereError}}</span>
+          </div>
+          <div
+            *ngIf="IsSphereRequired() && ((isSubmitted || FormVisionSpecification.get('sphere').touched) && FormVisionSpecification.get('sphere').hasError('required'))">
+            <span class="error-text">Please enter sphere</span>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="IsSphereRequired()" class="col-xl-2  text-center"><label class="control-label">Sphere<span
+            class="asterisk">*</span></label></div>
+      <div *ngIf="IsSphereRequired()" class="col-xl-2">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (IsSphereRequired() && ((isSubmitted || FormVisionSpecification.get('left_sphere').touched) && FormVisionSpecification.get('left_sphere').hasError('required'))) || left_sphereError}">
+
+          <input type="number" class="form-control" placeholder="Left" formControlName="left_sphere" (keyup)="checkSphere('Left')">
+          <div *ngIf="left_sphereError">
+            <span class="error-text">{{left_sphereError}}</span>
+          </div>
+          <div
+            *ngIf="IsSphereRequired() && ((isSubmitted || FormVisionSpecification.get('left_sphere').touched) && FormVisionSpecification.get('left_sphere').hasError('required'))">
+            <span class="error-text">Please enter sphere</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row small-gutter justify-content-center">
+      <div *ngIf="IsPowerRequired()" class="col-xl-2">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (IsPowerRequired() && ((isSubmitted || FormVisionSpecification.get('lensPower').touched) && FormVisionSpecification.get('lensPower').hasError('required'))) || powerError}">
+
+          <input type="number" class="form-control" placeholder="Right" formControlName="lensPower"
+            (keyup)="checkPower()">
+          <div *ngIf="powerError">
+            <span class="error-text">{{powerError}}</span>
+          </div>
+          <div
+            *ngIf="IsPowerRequired() && ((isSubmitted || FormVisionSpecification.get('lensPower').touched) && FormVisionSpecification.get('lensPower').hasError('required'))">
+            <span class="error-text">Please enter power</span>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="IsPowerRequired()" class="col-xl-2 text-center"><label class="control-label">Power<span
+            class="asterisk">*</span></label></div>
+      <div *ngIf="IsPowerRequired()" class="col-xl-2">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (IsPowerRequired() && ((isSubmitted || FormVisionSpecification.get('left_lensPower').touched) && FormVisionSpecification.get('left_lensPower').hasError('required'))) || left_powerError}">
+
+          <input type="number" class="form-control" placeholder="Left" formControlName="left_lensPower"
+            (keyup)="checkPower('Left')">
+          <div *ngIf="left_powerError">
+            <span class="error-text">{{left_powerError}}</span>
+          </div>
+          <div
+            *ngIf="IsPowerRequired() && ((isSubmitted || FormVisionSpecification.get('left_lensPower').touched) && FormVisionSpecification.get('left_lensPower').hasError('required'))">
+            <span class="error-text">Please enter power</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row small-gutter justify-content-center">
+      <div class="col-xl-2"
+        *ngIf="FormVisionSpecification.controls.product.value && FormVisionSpecification.controls.product.value.value !== 'lens'">
+        <div class="form-group">
+
+          <input type="number" class="form-control" placeholder="Right" formControlName="lensBackCurve">
+        </div>
+      </div>
+      <div
+        *ngIf="FormVisionSpecification.controls.product.value && FormVisionSpecification.controls.product.value.value !== 'lens'"
+        class="col-xl-2 text-center">
+        <label class="control-label">Back Curve</label>
+      </div>
+      <div class="col-xl-2"
+        *ngIf="FormVisionSpecification.controls.product.value && FormVisionSpecification.controls.product.value.value !== 'lens'">
+        <div class="form-group">
+
+          <input type="number" class="form-control" placeholder="Left" formControlName="left_lensBackCurve">
+        </div>
+      </div>
+    </div>
+    <div class="row small-gutter justify-content-center">
+      <div class="col-xl-2"
+        *ngIf="FormVisionSpecification.controls.product.value && FormVisionSpecification.controls.product.value.value !== 'lens'">
+        <div class="form-group">
+          <input type="number" class="form-control" placeholder="Right" formControlName="lensDiameter">
+        </div>
+      </div>
+      <div class="col-xl-2  text-center"
+        *ngIf="FormVisionSpecification.controls.product.value && FormVisionSpecification.controls.product.value.value !== 'lens'">
+        <label class="control-label">Diameter</label>
+      </div>
+      <div class="col-xl-2"
+        *ngIf="FormVisionSpecification.controls.product.value && FormVisionSpecification.controls.product.value.value !== 'lens'">
+        <div class="form-group">
+
+          <input type="number" class="form-control" placeholder="Left" formControlName="left_lensDiameter">
+        </div>
+      </div>
+    </div>
+    <!--/div-->
+    <div class="row small-gutter justify-content-center">
+      <div class="col-xl-2">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (IsCylinderRequired && ((isSubmitted || FormVisionSpecification.get('cylinder').touched) && FormVisionSpecification.get('cylinder').hasError('required'))) || cylinderError}">
+
+          <input type="number" class="form-control" placeholder="Right" formControlName="cylinder"
+            (keyup)="checkCylinder()">
+          <div *ngIf="cylinderError">
+            <span class="error-text">{{cylinderError}}</span>
+          </div>
+          <div
+            *ngIf="IsCylinderRequired && ((isSubmitted || FormVisionSpecification.get('cylinder').touched) && FormVisionSpecification.get('cylinder').hasError('required'))">
+            <span class="error-text">Please enter cylinder</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-2 text-center"><label class="control-label">Cylinder<span *ngIf="IsCylinderRequired"
+            class="asterisk">*</span></label></div>
+      <div class="col-xl-2">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (IsCylinderRequired && ((isSubmitted || FormVisionSpecification.get('left_cylinder').touched) && FormVisionSpecification.get('left_cylinder').hasError('required'))) || left_cylinderError}">
+
+          <input type="number" class="form-control" placeholder="Left" formControlName="left_cylinder"
+            (keyup)="checkCylinder('Left')">
+          <div *ngIf="left_cylinderError">
+            <span class="error-text">{{left_cylinderError}}</span>
+          </div>
+          <div
+            *ngIf="IsCylinderRequired && ((isSubmitted || FormVisionSpecification.get('left_cylinder').touched) && FormVisionSpecification.get('left_cylinder').hasError('required'))">
+            <span class="error-text">Please enter cylinder</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row small-gutter justify-content-center">
+      <div class="col-xl-2">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (IsAxisRequired && ((isSubmitted || FormVisionSpecification.get('axis').touched) && FormVisionSpecification.get('axis').hasError('required'))) || axisError}">
+
+          <input type="number" class="form-control" placeholder="Right" formControlName="axis" (keyup)="checkAxis()">
+          <div *ngIf="axisError">
+            <span class="error-text">{{axisError}}</span>
+          </div>
+          <div
+            *ngIf="IsAxisRequired && ((isSubmitted || FormVisionSpecification.get('axis').touched) && FormVisionSpecification.get('axis').hasError('required'))">
+            <span class="error-text">Please enter axis</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-2 text-center"><label class="control-label">Axis<span *ngIf="IsAxisRequired"
+            class="asterisk">*</span></label></div>
+      <div class="col-xl-2">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (IsAxisRequired && ((isSubmitted || FormVisionSpecification.get('left_axis').touched) && FormVisionSpecification.get('left_axis').hasError('required'))) || left_axisError}">
+
+          <input type="number" class="form-control" placeholder="Left" formControlName="left_axis" (keyup)="checkAxis('Left')">
+          <div *ngIf="left_axisError">
+            <span class="error-text">{{left_axisError}}</span>
+          </div>
+          <div
+            *ngIf="IsAxisRequired && ((isSubmitted || FormVisionSpecification.get('left_axis').touched) && FormVisionSpecification.get('left_axis').hasError('required'))">
+            <span class="error-text">Please enter axis</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row small-gutter justify-content-center">
+      <div class="col-xl-2">
+        <div class="form-group" [ngClass]="{'has-error' : addError}">
+
+          <input type="number" class="form-control" placeholder="Right" formControlName="multifocalPower"
+            (keyup)="checkAdd()">
+          <div *ngIf="addError">
+            <span class="error-text">{{addError}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-2 text-center"><label class="control-label">Add</label></div>
+      <div class="col-xl-2">
+        <div class="form-group" [ngClass]="{'has-error' : left_addError}">
+
+          <input type="number" class="form-control" placeholder="Left" formControlName="left_multifocalPower"
+            (keyup)="checkAdd('Left')">
+          <div *ngIf="left_addError">
+            <span class="error-text">{{left_addError}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row small-gutter justify-content-center">
+      <div class="col-xl-2"
+        *ngIf="FormVisionSpecification.controls.product.value && FormVisionSpecification.controls.product.value.value !== 'lens'">
+        <div class="form-group">
+          <div class="row extra-small-gutter">
+            <div class="col-xl-6"
+              [ngClass]="{'form-group has-error' : (isSubmitted || FormVisionSpecification.get('lensDurationUnit').touched) && FormVisionSpecification.get('lensDurationUnit').hasError('required')}">
+              <mat-form-field class="form-control custom-select-control">
+                <mat-select formControlName="lensDurationUnit">
+                  <mat-option value="">Unit</mat-option>
+                  <mat-option *ngFor="let unit of durationUnitList" [value]="unit">{{unit.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div
+                *ngIf="(isSubmitted || FormVisionSpecification.get('lensDurationUnit').touched) && FormVisionSpecification.get('lensDurationUnit').hasError('required')">
+                <span class="error-text">Please select Duration Unit</span>
+              </div>
+            </div>
+            <div class="col-xl-6">
+              <input type="number" class="form-control" placeholder="Right" formControlName="lensDuration">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-2 text-center"
+        *ngIf="FormVisionSpecification.controls.product.value && FormVisionSpecification.controls.product.value.value !== 'lens'">
+        <label class="control-label">Duration</label>
+      </div>
+      <div class="col-xl-2"
+        *ngIf="FormVisionSpecification.controls.product.value && FormVisionSpecification.controls.product.value.value !== 'lens'">
+        <div class="form-group">
+          <div class="row extra-small-gutter">
+            <div class="col-xl-6">
+              <input type="number" class="form-control" placeholder="Left" formControlName="left_lensDuration">
+            </div>
+            <div class="col-xl-6"
+              [ngClass]="{'form-group has-error' : (isSubmitted || FormVisionSpecification.get('left_lensDurationUnit').touched) && FormVisionSpecification.get('left_lensDurationUnit').hasError('required')}">
+              <mat-form-field class="form-control custom-select-control">
+                <mat-select formControlName="left_lensDurationUnit">
+                  <mat-option value="">Unit</mat-option>
+                  <mat-option *ngFor="let unit of durationUnitList" [value]="unit">{{unit.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div
+                *ngIf="(isSubmitted || FormVisionSpecification.get('left_lensDurationUnit').touched) && FormVisionSpecification.get('left_lensDurationUnit').hasError('required')">
+                <span class="error-text">Please select Duration Unit</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row small-gutter justify-content-center">
+      <div class="col-xl-2"
+        *ngIf="FormVisionSpecification.controls.product.value && FormVisionSpecification.controls.product.value.value !== 'contact'">
+        <div class="form-group" [ngClass]="{'has-error' : prismAmountError}">
+
+          <div class="row extra-small-gutter">
+            <div class="col-xl-6"
+              [ngClass]="{'form-group has-error' : (isSubmitted || FormVisionSpecification.get('prismBase').touched) && FormVisionSpecification.get('prismBase').hasError('required')}">
+              <mat-form-field class="form-control custom-select-control">
+                <mat-select formControlName="prismBase">
+                  <mat-option value="">Base</mat-option>
+                  <mat-option *ngFor="let base of baseList" [value]="base">{{base.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div
+                *ngIf="(isSubmitted || FormVisionSpecification.get('prismBase').touched) && FormVisionSpecification.get('prismBase').hasError('required')">
+                <span class="error-text">Please select Base</span>
+              </div>
+            </div>
+            <div class="col-xl-6">
+              <input type="number" class="form-control" placeholder="Right" formControlName="prismAmount"
+                (keyup)="checkPrismAmount()">
+              <div *ngIf="prismAmountError">
+                <span class="error-text">{{prismAmountError}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-2 text-center"
+        *ngIf="FormVisionSpecification.controls.product.value && FormVisionSpecification.controls.product.value.value !== 'contact'">
+        <label class="control-label">Prism</label>
+      </div>
+      <div class="col-xl-2"
+        *ngIf="FormVisionSpecification.controls.product.value && FormVisionSpecification.controls.product.value.value !=='contact'">
+        <div class="form-group" [ngClass]="{'has-error' : left_prismAmountError}">
+
+          <div class="row extra-small-gutter">
+            <div class="col-xl-6">
+              <input type="number" class="form-control" placeholder="Left" formControlName="left_prismAmount"
+                (keyup)="checkPrismAmount('Left')">
+              <div *ngIf="left_prismAmountError">
+                <span class="error-text">{{left_prismAmountError}}</span>
+              </div>
+            </div>
+            <div class="col-xl-6"
+              [ngClass]="{'form-group has-error' : (isSubmitted || FormVisionSpecification.get('left_prismBase').touched) && FormVisionSpecification.get('left_prismBase').hasError('required')}">
+              <mat-form-field class="form-control custom-select-control">
+                <mat-select formControlName="left_prismBase">
+                  <mat-option value="">Base</mat-option>
+                  <mat-option *ngFor="let base of baseList" [value]="base">{{base.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div
+                *ngIf="(isSubmitted || FormVisionSpecification.get('left_prismBase').touched) && FormVisionSpecification.get('left_prismBase').hasError('required')">
+                <span class="error-text">Please select Base</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row small-gutter justify-content-center">
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label class="control-label">Notes</label>
+          <textarea placeholder="Enter notes" class="form-control" formControlName="lensNote"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="primary-dialog-footer has-border">
+    <div class="btn-list text-right">
+      <button type="button" mat-button (click)="closeDialog()">Close</button>
+      <button mat-flat-button color="primary" type="submit">
+        <span *ngIf="!data.item">Add</span>
+        <span *ngIf="data.item">Save</span>
+      </button>
+    </div>
+  </div>
+</form>
