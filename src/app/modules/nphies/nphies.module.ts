@@ -91,6 +91,18 @@ import { PrescriptionTransactionsComponent } from './prescription-transactions/p
 import { AddEditPrescriptionItemComponent } from './add-edit-prescription-item/add-edit-prescription-item.component';
 import { ViewPrescriptionDetailsDialogComponent } from './view-prescription-details-dialog/view-prescription-details-dialog.component';
 import { ApaCommunicationRequestsComponent } from './advance-preauth-transactions/apa-communication-requests/apa-communication-requests.component';
+import { PrescriptionCancelReasonModalComponent } from './prescription-transactions/prescription-cancel-reason-modal/prescription-cancel-reason-modal.component';
+import { PrescriptionCommunicationRequestsComponent } from './prescription-transactions/prescription-communication-requests/prescription-communication-requests.component';
+import { PrescriptionProcessedTransactionsComponent } from './prescription-transactions/prescription-processed-transactions/prescription-processed-transactions.component';
+import { PrescriptionReuseApprovalModalComponent } from './prescription-transactions/prescription-reuse-approval-modal/prescription-reuse-approval-modal.component';
+import { ViewPrescriptionDetailsComponent } from './view-prescription-detail/view-prescription-details.component';
+import { PrescriptionAddEditCareTeamModalComponent } from './add-prescription/prescription-add-edit-care-team-modal/prescription-add-edit-care-team-modal.component';
+import { PrescriptionAddEditDiagnosisModalComponent } from './add-prescription/prescription-add-edit-diagnosis-modal/prescription-add-edit-diagnosis-modal.component';
+import { PrescriptionAddEditSupportingInfoModalComponent } from './add-prescription/prescription-add-edit-supporting-info-modal/prescription-add-edit-supporting-info-modal.component';
+import { PrescriptionAddEditVisionLensSpecificationsComponent } from './add-prescription/prescription-add-edit-vision-lens-specifications/prescription-add-edit-vision-lens-specifications.component';
+import { PrescriptionManageSupportingInfoComponent } from './add-prescription/prescription-manage-supporting-info/prescription-manage-supporting-info.component';
+import { PrescriptionDetailsComponent } from './prescription-details/prescription-details.component';
+
 import { ApaProcessedTransactionsComponent } from './advance-preauth-transactions/apa-processed-transactions/apa-processed-transactions.component';
 
 @NgModule({
@@ -159,6 +171,17 @@ import { ApaProcessedTransactionsComponent } from './advance-preauth-transaction
     AddEditPrescriptionItemComponent,
     ViewPrescriptionDetailsDialogComponent,
     ApaCommunicationRequestsComponent,
+    PrescriptionCancelReasonModalComponent,
+    PrescriptionCommunicationRequestsComponent,
+    PrescriptionProcessedTransactionsComponent,
+    PrescriptionReuseApprovalModalComponent,
+    ViewPrescriptionDetailsComponent,
+    PrescriptionAddEditCareTeamModalComponent,
+    PrescriptionAddEditDiagnosisModalComponent,
+    PrescriptionAddEditSupportingInfoModalComponent,
+    PrescriptionAddEditVisionLensSpecificationsComponent,
+    PrescriptionManageSupportingInfoComponent,
+    PrescriptionDetailsComponent,
     ApaProcessedTransactionsComponent
   ],
   imports: [
@@ -204,7 +227,9 @@ import { ApaProcessedTransactionsComponent } from './advance-preauth-transaction
     ViewPrintPreviewDialogComponent,
     PbmValidationResponseSummaryDialogComponent,
     AddEditPrescriptionItemComponent,
-    ViewPrescriptionDetailsDialogComponent
+    ViewPrescriptionDetailsDialogComponent,
+    PrescriptionCancelReasonModalComponent,
+    PrescriptionReuseApprovalModalComponent
   ],
   exports: [
     ApiErrorsDialogComponent
