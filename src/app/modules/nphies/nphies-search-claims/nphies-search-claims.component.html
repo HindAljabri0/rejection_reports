@@ -331,8 +331,8 @@
                     </div>
                   </th>
 
-                  <th 
-                  *ngIf="showIsReisssued === true" class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
+                  <th *ngIf="showIsReisssued === true"
+                    class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                     <div class="column-header-action">
                       <span>Reissued?</span>
                       <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="reissuedFilter" (click)="checkReloadedFilter()">
@@ -345,7 +345,7 @@
                             <div class="form-group">
                               <label class="control-label">Reissued?</label>
                               <mat-form-field class="form-control custom-select-control">
-                                <mat-select  [(ngModel)]="claimList.reissueReason" >
+                                <mat-select [(ngModel)]="claimList.reissueReason">
                                   <mat-option value=''>All</mat-option>
                                   <mat-option value='true'>Yes</mat-option>
                                   <mat-option value='false'>No</mat-option>
@@ -490,9 +490,11 @@
                     </td>
                     <td class="text-center">
                       <button mat-icon-button *ngIf="claim.communicationCount || claim.communicationsRequestCount">
-                        <span matTooltip="Number of Communications">{{claim.communicationCount}}</span>
-                        <mat-icon class="size-21" style="margin-left: 2px;margin-right: 2px;">question_answer</mat-icon>
-                        <span matTooltip="Communications Request"> {{claim.communicationsRequestCount}}</span>
+                        <span class="d-flex align-items-center">
+                          <span matTooltip="Number of Communications">{{claim.communicationCount}}</span>
+                          <mat-icon class="size-21" style="margin-left: 2px;margin-right: 2px;">question_answer</mat-icon>
+                          <span matTooltip="Communications Request"> {{claim.communicationsRequestCount}}</span>
+                        </span>
                       </button>
 
                     </td>

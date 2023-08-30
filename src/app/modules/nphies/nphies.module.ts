@@ -103,6 +103,7 @@ import { PrescriptionAddEditVisionLensSpecificationsComponent } from './add-pres
 import { PrescriptionManageSupportingInfoComponent } from './add-prescription/prescription-manage-supporting-info/prescription-manage-supporting-info.component';
 import { PrescriptionDetailsComponent } from './prescription-details/prescription-details.component';
 
+import { ApaProcessedTransactionsComponent } from './advance-preauth-transactions/apa-processed-transactions/apa-processed-transactions.component';
 
 @NgModule({
   declarations: [
@@ -180,7 +181,8 @@ import { PrescriptionDetailsComponent } from './prescription-details/prescriptio
     PrescriptionAddEditSupportingInfoModalComponent,
     PrescriptionAddEditVisionLensSpecificationsComponent,
     PrescriptionManageSupportingInfoComponent,
-    PrescriptionDetailsComponent
+    PrescriptionDetailsComponent,
+    ApaProcessedTransactionsComponent
   ],
   imports: [
     CommonModule,

@@ -182,9 +182,11 @@
                 </td>
                 <td class="text-center">
                   <button mat-icon-button *ngIf="transaction.communicationCount || transaction.communicationsRequestCount">
-                    <span matTooltip="Number of Communications">{{transaction.communicationCount}}</span>
-                    <mat-icon class="size-21" style="margin-left: 2px;margin-right: 2px;">question_answer</mat-icon>
-                    <span matTooltip="Communications Request"> {{transaction.communicationsRequestCount}}</span>
+                    <span class="d-flex align-items-center">
+                      <span matTooltip="Number of Communications">{{transaction.communicationCount}}</span>
+                      <mat-icon class="size-21" style="margin-left: 2px;margin-right: 2px;">question_answer</mat-icon>
+                      <span matTooltip="Communications Request"> {{transaction.communicationsRequestCount}}</span>
+                    </span>
                   </button>
                 </td>
                 <td class="actions">

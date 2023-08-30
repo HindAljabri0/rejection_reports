@@ -71,7 +71,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       }, errorEvent => {
         if (errorEvent instanceof HttpErrorResponse) {
-          if (this.authService.loggedIn && errorEvent.status == 400)
+          if (this.authService.loggedIn && errorEvent.status == 500)
             this.authService.logout();
           this.sharedServices.loadingChanged.next(false);
         }

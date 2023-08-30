@@ -34,13 +34,13 @@
       <div class="col-4 col-lg-4">
         <div class="form-group">
           <label class="control-label">Color</label>
-          <input class="form-control" placeholder="Enter color" formControlName="lensColor">
+          <input class="form-control" placeholder="Enter color" formControlName="lensColor" id="color">
         </div>
       </div>
       <div class="col-4 col-lg-4">
         <div class="form-group">
           <label class="control-label">Brand</label>
-          <input class="form-control" placeholder="Enter brand" formControlName="lensBrand">
+          <input class="form-control" placeholder="Enter brand" formControlName="lensBrand" id="brand">
         </div>
       </div>
     </div>
@@ -358,7 +358,7 @@
     <div class="row small-gutter justify-content-center">
       <div class="col-lg-6">
         <div class="form-group">
-          <label class="control-label">Notes</label>
+          <label class="control-label" id="notes">Notes</label>
           <textarea placeholder="Enter notes" class="form-control" formControlName="lensNote"></textarea>
         </div>
       </div>
@@ -366,10 +366,10 @@
   </div>
   <div class="primary-dialog-footer has-border">
     <div class="btn-list text-right">
-      <button type="button" mat-button (click)="closeDialog()">Close</button>
+      <button type="button" mat-button (click)="closeDialog()" id="closeVisionButton">Close</button>
       <button mat-flat-button color="primary" type="submit">
-        <span *ngIf="!data.item">Add</span>
-        <span *ngIf="data.item">Save</span>
+        <span *ngIf="!data.item" id="addVisionButton">Add</span>
+        <span *ngIf="data.item" id="saveVisionBtton">Save</span>
       </button>
     </div>
   </div>
