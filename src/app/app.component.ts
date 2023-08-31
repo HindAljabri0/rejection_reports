@@ -53,7 +53,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.versionCheckService.initVersionCheck(environment.versionCheckURL + (location.pathname.includes('/en') ? '/en' : '/ar'));
     setInterval(() => this.authService.loggedIn, 1000 * 60);
 
-    if(environment.name != 'dev'){
+    if(environment.name != 'dev' && environment.name != 'oci_prod' && environment.name != 'prod' && environment.name != 'oci_staging' && environment.name != 'staging'){
       this.authService.refreshTokenForSSO().subscribe(event => {
         if (event instanceof HttpResponse) {
           this.authService.isUserNameUpdated.subscribe(updated => {
