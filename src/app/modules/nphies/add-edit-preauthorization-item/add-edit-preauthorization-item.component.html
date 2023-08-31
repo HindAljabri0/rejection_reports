@@ -429,7 +429,7 @@
               <div class="input-group">
                 <input type="text" class="form-control" placeholder="Enter tax" formControlName="tax" (blur)="Calculate('Tax')" appTwoDigitDecimaNumber>
                 <span class="input-group-append">
-                  <span class="input-group-text">SR</span>
+                  <span class="input-group-text" id="taxAmountCurrency">SR</span>
                 </span>
               </div>
             </div>
@@ -501,10 +501,10 @@
   </div>
   <div class="primary-dialog-footer has-border">
     <div class="btn-list text-right">
-      <button type="button" mat-button (click)="closeDialog()">Close</button>
+      <button type="button" mat-button (click)="closeDialog()" id="closeItemButton">Close</button>
       <button type="submit" mat-flat-button color="primary">
-        <span *ngIf="!data.item">Add</span>
-        <span *ngIf="data.item">Save</span>
+        <span *ngIf="!data.item" id="addItemButton">Add</span>
+        <span *ngIf="data.item" id="saveItemButton">Save</span>
       </button>
     </div>
   </div>

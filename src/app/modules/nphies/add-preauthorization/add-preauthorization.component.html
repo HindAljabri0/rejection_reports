@@ -4,7 +4,7 @@
     <form [formGroup]="FormPreAuthorization" (ngSubmit)="onSubmit()">
       <div class="block-header">
         <p>Request Pre Authorization</p>
-        <mat-slide-toggle  formControlName="transfer" color="primary" [disabled]="detailsModel && detailsModel.approvalRequestId" class="ml-auto">Referral
+        <mat-slide-toggle  formControlName="transfer" color="primary" id="referral" [disabled]="detailsModel && detailsModel.approvalRequestId" class="ml-auto">Referral
         </mat-slide-toggle>
 
       </div>
@@ -14,14 +14,14 @@
         </div>
         <div class="form-group">
           <div class="checkbox-group inline">
-            <mat-checkbox color="primary" formControlName="isNewBorn" (change)="onNewBornChangeState($event)">New
+            <mat-checkbox color="primary" id="newbornChkBox" formControlName="isNewBorn" (change)="onNewBornChangeState($event)">New
               born?</mat-checkbox>
           </div>
         </div>
         <div class="d-flex">
           <div class="form-group flex-grow-1"
             [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')}">
-            <label class="control-label" matTooltip="Minimum 3 Character(s)/Number(s)">Select a Beneficiary<span class="asterisk">*</span></label>
+            <label class="control-label" matTooltip="Minimum 3 Character(s)/Number(s)" id="selectBeneficiary">Select a Beneficiary<span class="asterisk">*</span></label>
             <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName"
               [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
             <mat-autocomplete #auto="matAutocomplete">
@@ -39,7 +39,7 @@
           </div>
           <div class="form-group">
             <label class="control-label">&nbsp;</label>
-            <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" [disabled]="claimReuseId" color="primary">Create New
+            <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" [disabled]="claimReuseId" color="primary" id="createNewBeneficiary">Create New
               Beneficiary</button>
           </div>
         </div>
@@ -47,7 +47,7 @@
         <div *ngIf="FormPreAuthorization.controls.isNewBorn.value" class="d-flex">
           <div class="form-group flex-grow-1"
             [ngClass]="{'has-error' : IsSubscriberRequired && ((isSubmitted || FormPreAuthorization.get('subscriberName').touched) && FormPreAuthorization.get('subscriberName').hasError('required'))}">
-            <label class="control-label">Select a Subscriber<span class="asterisk">*</span></label>
+            <label class="control-label" id="selectSubscriber">Select a Subscriber<span class="asterisk">*</span></label>
             <input type="text" class="form-control search-box" placeholder="Search for subscriber by name or document ID..." formControlName="subscriberName"
               [matAutocomplete]="auto" (keyup)="searchBeneficiaries(true)">
             <mat-autocomplete #auto="matAutocomplete">
@@ -66,7 +66,7 @@
           </div>
           <div class="form-group">
             <label class="control-label">&nbsp;</label>
-            <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" [disabled]="claimReuseId" color="primary">Create New
+            <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" [disabled]="claimReuseId" color="primary" id="createNewSubscriber">Create New
               Subscriber</button>
           </div>
         </div>
@@ -226,7 +226,7 @@
           <div class="col-4 col-xxl-3">
             <div class="form-group">
               <label class="control-label">Referring Provider</label>
-              <mat-form-field class="form-control custom-select-control">
+              <mat-form-field class="form-control custom-select-control" id="referringProvider">
                 <mat-select formControlName="referral" [disabled]="IsRefferalProviderLoading" #itemSelect (selectionChange)="referralChange($event)">
                   <mat-option>
                     <ngx-mat-select-search placeholderLabel="Search Item" formControlName="referralFilter" noEntriesFoundLabel="No Referring Provider found" name='searchedItem'>
@@ -266,14 +266,14 @@
         </app-manage-diagnosis>
 
         <ng-container *ngIf="FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value === 'vision'">
-          <h5 class="form-title">
+          <h5 class="form-title" id="visionPrescriptionTitle">
             Vision Prescription
           </h5>
           <div class="row small-gutter">
             <div class="col-4 col-xxl-3">
               <div class="form-group"
                 [ngClass]="{'has-error' : IsDateWrittenRequired && ((isSubmitted || FormPreAuthorization.get('dateWritten').touched) && FormPreAuthorization.get('dateWritten').hasError('required'))}">
-                <label class="control-label">Date Written <span *ngIf="IsDateWrittenRequired" class="asterisk">*</span></label>
+                <label class="control-label"  id="dateWritten">Date Written <span *ngIf="IsDateWrittenRequired" class="asterisk">*</span></label>
                 <div class="date-picker">
                   <input [owlDateTime]="visionWrittenDate" class="form-control" placeholder="Select date written" (ngModelChange)="SetToMax($event)" formControlName="dateWritten"
                     [max]="FormPreAuthorization.controls.dateOrdered.value">
@@ -290,7 +290,7 @@
               <div class="form-group"
                 [ngClass]="{'has-error' : IsPrescriberRequired && ((isSubmitted || FormPreAuthorization.get('prescriber').touched) && FormPreAuthorization.get('prescriber').hasError('required'))}">
                 <label class="control-label">Prescriber<span *ngIf="IsPrescriberRequired" class="asterisk">*</span></label>
-                <mat-form-field class="form-control custom-select-control">
+                <mat-form-field class="form-control custom-select-control" id="prescriber">
                   <mat-select formControlName="prescriber" [(ngModel)]="PrescriberDefault">
                     <mat-option [value]='0'>Select Prescriber</mat-option>
                     <mat-option *ngFor="let pre of CareTeams" [value]="pre.sequence">{{pre.physicianCode}} -
@@ -309,7 +309,7 @@
             <h5 class="d-flex align-items-center mb-3">
               <strong class="medium">Lens Specifications</strong>
               <button *ngIf="!claimReuseId" type="button" (click)="openAddEditVisionLensDialog()" class="btn-icon btn-primary ml-auto">
-                <mat-icon>add</mat-icon>
+                <mat-icon id="addIcon">add</mat-icon>
               </button>
             </h5>
             <div *ngIf="VisionSpecifications" class="table-responsive">
@@ -380,16 +380,16 @@
                       <mat-menu #lensSpecificationActionsMenu xPosition="before">
                         <ng-template matMenuContent>
                           <button mat-menu-item type="button" (click)="openAddEditVisionLensDialog(visionSpecification)">
-                            <mat-icon class="material-icons-outlined">edit</mat-icon>
+                            <mat-icon class="material-icons-outlined" id="editIcon">edit</mat-icon>
                             <span>Edit</span>
                           </button>
                           <button mat-menu-item type="button" (click)="deleteVisionLens(i)">
-                            <mat-icon class="material-icons-outlined">delete</mat-icon>
+                            <mat-icon class="material-icons-outlined" id="deleteIcon">delete</mat-icon>
                             <span>Delete</span>
                           </button>
                         </ng-template>
                       </mat-menu>
-                      <button type="button" mat-icon-button [matMenuTriggerFor]="lensSpecificationActionsMenu">
+                      <button type="button" mat-icon-button [matMenuTriggerFor]="lensSpecificationActionsMenu" id="lenSpecMenuButton">
                         <mat-icon>more_vert</mat-icon>
                       </button>
                     </td>
@@ -478,7 +478,7 @@
 
         <h5 class="form-title">
           Accident
-          <mat-slide-toggle class="ml-2" [(ngModel)]="IsAccident" [ngModelOptions]="{standalone: true}" color="primary">
+          <mat-slide-toggle class="ml-2" [(ngModel)]="IsAccident" [ngModelOptions]="{standalone: true}" color="primary" id="accident">
           </mat-slide-toggle>
         </h5>
         <div *ngIf="IsAccident" class="row small-gutter">
@@ -828,13 +828,13 @@
         <hr class="hr spaced" />
 
         <div class="form-group text-right btn-list">
-          <button type="button" mat-button color="primary" *ngIf="isPBMValidationVisible" [disabled]="!Pbm_result" (click)="openPbmValidationResponseSummaryDialog(Pbm_result)">
+          <button type="button" mat-button color="primary" *ngIf="isPBMValidationVisible" [disabled]="!Pbm_result" (click)="openPbmValidationResponseSummaryDialog(Pbm_result)" id="PbmResponse">
             <span>PBM Response</span>
           </button>
-          <button type="button" mat-flat-button color="primary" *ngIf="isPBMValidationVisible" (click)="onSubmit(true)">
+          <button type="button" mat-flat-button color="primary" *ngIf="isPBMValidationVisible" (click)="onSubmit(true)" id="pbmRequestButton">
             <span>Request PBM</span>
           </button>
-          <button type="submit" mat-flat-button color="primary" >
+          <button type="submit" mat-flat-button color="primary"  id="requestAuthorizationButton">
             <span>Request Authorization</span>
           </button>
         </div>

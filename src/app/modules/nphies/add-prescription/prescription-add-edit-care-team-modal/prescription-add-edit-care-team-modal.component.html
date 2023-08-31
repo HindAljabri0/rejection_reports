@@ -1,0 +1,137 @@
+<div class="primary-dialog-header has-border">
+  <h5 *ngIf="!data.item" class="primary-dialog-title">Add Care Team</h5>
+  <h5 *ngIf="data.item" class="primary-dialog-title">Edit Care Team</h5>
+  <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+<form [formGroup]="FormCareTeam" (ngSubmit)="onSubmit()">
+  <div class="primary-dialog-body pb-0">
+    <div class="row small-gutter">
+      <div class="col-md-4">
+        <div class="form-group"
+          [ngClass]="{'has-error' : IsPractitionerNameRequired && (isSubmitted || FormCareTeam.get('practitionerName').touched) && FormCareTeam.get('practitionerName').hasError('required')}">
+          <label class="control-label">Practitioner Name<span *ngIf="IsPractitionerNameRequired" class="asterisk">*</span></label>
+          <input class="form-control" placeholder="Enter practitioner name" formControlName="practitionerName" required (keyup)="PractitionerNameChange()">
+          <div *ngIf="IsPractitionerNameRequired && (isSubmitted || FormCareTeam.get('practitionerName').touched) && FormCareTeam.get('practitionerName').hasError('required')">
+            <span class="error-text">Please select a Practitioner Name</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="row small-gutter">
+          <div class="col">
+            <div class="form-group"
+              [ngClass]="{'has-error' : IsPractitionerNameRequired && (isSubmitted || FormCareTeam.get('practitionerId').touched) && FormCareTeam.get('practitionerId').hasError('required')}">
+              <label class="control-label">Practitioner ID<span *ngIf="IsPractitionerNameRequired" class="asterisk">*</span></label>
+              <input class="form-control" placeholder="Enter practitioner Id" formControlName="practitionerId" required (keyup)="PractitionerNameChange()">
+              <div *ngIf="IsPractitionerNameRequired && (isSubmitted || FormCareTeam.get('practitionerId').touched) && FormCareTeam.get('practitionerId').hasError('required')">
+                <span class="error-text">Please select a Practitioner Id</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-auto">
+            <div class="form-group"><label class="control-label">&nbsp;</label><span class="pt-2 d-block semibold">OR</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group"
+          [ngClass]="{'has-error' : IsPractitionerRequired && (isSubmitted || FormCareTeam.get('practitioner').touched) && FormCareTeam.get('practitioner').hasError('required')}">
+          <label class="control-label">Practitioner<span *ngIf="IsPractitionerRequired" class="asterisk">*</span></label>
+          <mat-form-field class="form-control custom-select-control">
+            <mat-select formControlName="practitioner" [disabled]="IsPractitionerLading" (selectionChange)="PractitionerChange()" required #practitionerSelect>
+              <mat-option>
+                <ngx-mat-select-search placeholderLabel="Search Practitioner" formControlName="practitionerFilter" noEntriesFoundLabel="No practitioners found"
+                  name='searchedPractitioner'>
+                </ngx-mat-select-search>
+              </mat-option>
+
+              <ng-container *ngIf="IsPractitionerLading">
+                <mat-option value="">Loading Practitioners ...</mat-option>
+              </ng-container>
+              <ng-container *ngIf="!IsPractitionerLading">
+                <mat-option value="">Select Practitioner</mat-option>
+                <mat-option *ngFor="let practitioner of filteredPractitioner  | async" [value]="practitioner">
+                  {{practitioner.physician_name}}
+                </mat-option>
+              </ng-container>
+
+            </mat-select>
+          </mat-form-field>
+          <div *ngIf="IsPractitionerRequired && (isSubmitted || FormCareTeam.get('practitioner').touched) && FormCareTeam.get('practitioner').hasError('required')">
+            <span class="error-text">Please select a Practitioner</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormCareTeam.get('speciality').touched) && FormCareTeam.get('speciality').hasError('required')}">
+          <label class="control-label">Qualification<span class="asterisk">*</span></label>
+          <mat-form-field class="form-control custom-select-control">
+            <mat-select formControlName="speciality" [disabled]="IsSpecialityLading" required #specialitySelect>
+              <mat-option>
+                <ngx-mat-select-search placeholderLabel="Search Speciality" noEntriesFoundLabel="No specialities found" formControlName="specialityFilter"
+                  name='searchedSpeciality'>
+                </ngx-mat-select-search>
+              </mat-option>
+              <ng-container *ngIf="IsSpecialityLading">
+                <mat-option value="">Loading Qualifications ...</mat-option>
+              </ng-container>
+              <ng-container *ngIf="!IsSpecialityLading">
+                <mat-option value="">Select Qualification</mat-option>
+                <mat-option *ngFor="let speciality of filteredSpeciality  | async" [value]="speciality">
+                  {{speciality.speciallityName}}
+                </mat-option>
+              </ng-container>
+            </mat-select>
+          </mat-form-field>
+          <div *ngIf="(isSubmitted || FormCareTeam.get('speciality').touched) && FormCareTeam.get('speciality').hasError('required')">
+            <span class="error-text">Please select a Qualification </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormCareTeam.get('careTeamRole').touched) && FormCareTeam.get('careTeamRole').hasError('required')}">
+          <label class="control-label">Care Team Role<span class="asterisk">*</span></label>
+          <mat-form-field class="form-control custom-select-control">
+            <mat-select formControlName="careTeamRole">
+              <mat-option value="">Select Type</mat-option>
+              <mat-option *ngFor="let ctr of careTeamRoleList" [value]="ctr">{{ctr.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div *ngIf="(isSubmitted || FormCareTeam.get('careTeamRole').touched) && FormCareTeam.get('careTeamRole').hasError('required')">
+            <span class="error-text">Please select a Care Team Role </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group"
+          [ngClass]="{'has-error' : (isSubmitted || FormCareTeam.get('practitionerRole').touched) && FormCareTeam.get('practitionerRole').hasError('required')}">
+          <label class="control-label">Practitioner Role<span class="asterisk">*</span></label>
+          <mat-form-field class="form-control custom-select-control">
+            <mat-select formControlName="practitionerRole">
+              <mat-option value="">Select Type</mat-option>
+              <mat-option *ngFor="let prt of practitionerRoleList" [value]="prt">{{prt.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div *ngIf="(isSubmitted || FormCareTeam.get('practitionerRole').touched) && FormCareTeam.get('practitionerRole').hasError('required')">
+            <span class="error-text">Please select a practitioner Role</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+  <div class="primary-dialog-footer has-border">
+    <div class="btn-list text-right">
+      <button type="button" mat-button (click)="closeDialog()">Close</button>
+      <button mat-flat-button color="primary" type="submit" [disabled]="IsSpecialityLading || IsPractitionerLading">
+        <span *ngIf="!data.item">Add</span>
+        <span *ngIf="data.item">Save</span></button>
+    </div>
+  </div>
+</form>

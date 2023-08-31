@@ -69,8 +69,59 @@ export class LoginComponent implements OnInit {
     }
 
     this.document.documentElement.lang = this.locale;
+    if (this.routeActive.snapshot.queryParams.access_token) {
+      this.loginWithToken(this.routeActive.snapshot.queryParams.access_token, this.routeActive.snapshot.queryParams.feature);
+    }
   }
+  loginWithToken(access_token, feature) {
+    if (this.isLoading) {
+      return;
+    }
 
+    this.isLoading = true;
+    /*if (access_token == undefined || access_token == '') {
+      this.errors = 'Please provide a valid Token!';
+      this.isLoading = false;
+      return;
+    }*/
+
+    this.authService.loginWithToken(access_token).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        this.authService.setTokens(event.body);
+        this.authService.isUserNameUpdated.subscribe(updated => {
+          var providerId = localStorage.getItem('provider_id');
+          console.log("PP :: " + providerId);
+          if (updated && location.href.includes('login') || location.href.endsWith('/en/') || location.href.endsWith('/ar/')) {
+            const lastVisitedPath = localStorage.getItem('lastVisitedPath');
+            if (lastVisitedPath != null && lastVisitedPath.trim().length > 0 && !lastVisitedPath.includes('login')) {
+              this.router.navigate(lastVisitedPath.split('/'));
+            } else if (feature == 'credit') {
+              this.router.navigate(['/reports/creditReports']);
+            } else if (feature == 'gss' && providerId != undefined) {
+              this.router.navigate(['/' + providerId + '/reports/general-summary-statement-report']);
+            } else {
+              this.router.navigate(['/']);
+            }
+            this.isLoading = false;
+          }
+        });
+
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+
+        if (errorEvent.status == 403) {
+          this.errors = 'Your account has been blocked, kindly contact Waseel Customer Care!';
+        }
+        else if (errorEvent.status < 500 && errorEvent.status >= 400) {
+          this.errors = 'Token is invalid!';
+        } else {
+          this.errors = 'Could not reach server at the moment. Please try again later.';
+        }
+        this.isLoading = false;
+      }
+    });
+  }
   login() {
     if (this.isLoading) {
       return;
