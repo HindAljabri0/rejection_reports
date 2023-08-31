@@ -210,11 +210,28 @@ export class AddFeedbackDateDialogComponent implements OnInit {
   }
   saveAnnouncement() {
     this.submit = true;
-    if(this.announcementForm.hasError('dateRange')){
-      this.dialogService.openMessageDialog({
-        title: '',
-        message: 'Save Failed',
-        isError: true
+    if (this.announcementForm) {
+      this.sharedServices.loadingChanged.next(true);
+      this.setData();
+      this._feedbackservice.updateSurvey(this.announcement).subscribe(event => {
+        if (event instanceof HttpResponse) {       
+          this.sharedServices.loadingChanged.next(false);
+          this.dialogService.openFeedbackDialog({
+            title: '',
+            message: `Provider and date has been selected`,
+            isError: false
+          }); 
+        }
+
+      }, error => {
+        if (error instanceof HttpErrorResponse) {
+          this.dialogService.openMessageDialog({
+            title: '',
+            message: 'Save Failed',
+            isError: true
+          });
+          this.sharedServices.loadingChanged.next(false);
+        }
       });
     }
     else{
