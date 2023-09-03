@@ -22,6 +22,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <ng-container *ngIf="content">
                     <tr *ngFor="let survey of content.content">
                         <td (click)="openPreviewDialog(survey)" class="editSurveyClass">{{survey.surveyId}}</td>
                         <td (click)="openPreviewDialog(survey)" class="editSurveyClass">{{survey.name}}</td>
@@ -42,6 +43,7 @@
                             </button>
                         </td>
                     </tr>
+                </ng-container>
 
                 </tbody>
             </table>

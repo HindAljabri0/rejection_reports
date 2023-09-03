@@ -44,7 +44,7 @@ export class AuthService {
   }
 
   loginWithToken(iamToken: string) {
-    const requestURL = '/authenticateIdentityToken';
+    const requestURL = '/sso/authenticate';
     // this.amp.setUserContext({
     //   'username': username,
     //   'id': username
@@ -55,8 +55,18 @@ export class AuthService {
     const request = new HttpRequest('POST', environment.authenticationHost + requestURL, body);
     return this.httpClient.request(request);
   }
+  refreshTokenForSSO() {
+    const requestURL = '/sso/refresh?oldUserName=' + this.getAuthUsername();
+    const body: {} = {
+      'access_token': this.getAccessToken(),
+      'refresh_token': this.getRefreshToken()
+    };
+    const request = new HttpRequest('POST', environment.authenticationHost + requestURL, body);
+    return this.httpClient.request(request);
+  }
 
-  logout(expired?: boolean, hasClaimPrivileges?: boolean) {
+
+  async logout(expired?: boolean, hasClaimPrivileges?: boolean) {
     this.onCancelPendingHttpRequests$.next();
     let demoDoneValue;
     if (window.localStorage.getItem('onboarding-demo-done')) {
@@ -83,7 +93,12 @@ export class AuthService {
     } else if (hasClaimPrivileges != null && hasClaimPrivileges) {
       promise = this.router.navigate(['login'], { queryParams: { hasClaimPrivileges } });
     } else {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      localStorage.removeItem('expires_in');
+      localStorage.removeItem('organizationId');
       promise = this.router.navigate(['login']);
+
     }
 
     if (demoDoneValue) {
@@ -93,48 +108,19 @@ export class AuthService {
     if (upcomingFeatureDoneValue) {
       window.localStorage.setItem('upcoming-feature-done', upcomingFeatureDoneValue);
     }
-    promise.then(() => location.reload());
-}
-
-  logoutWithToken(expired?: boolean, hasClaimPrivileges?: boolean) {
-    this.onCancelPendingHttpRequests$.next();
-    let demoDoneValue;
-    if (window.localStorage.getItem('onboarding-demo-done')) {
-      demoDoneValue = window.localStorage.getItem('onboarding-demo-done');
+  
+    try {
+      const result = await promise;  
+     // promise.then(() => location.reload());
+      
+    } catch (error) {
+      console.error('Navigation error:', error);
     }
-    let upcomingFeatureDoneValue;
-    if (window.localStorage.getItem('upcoming-feature-done')) {
-      upcomingFeatureDoneValue = window.localStorage.getItem('upcoming-feature-done');
-    }
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('expires_in');
-    localStorage.removeItem('organizationId');
-    const providerId = localStorage.getItem('provider_id');
-    localStorage.removeItem('provider_id');
-    this.toKeepStorageValues.forEach((storageValue, i) => this.toKeepStorageValues[i].value = localStorage.getItem(storageValue.key.replace('{}', providerId)));
-    localStorage.clear();
-    this.toKeepStorageValues.filter(storageValue =>
-      storageValue.value != null).forEach((storageValue) =>
-        localStorage.setItem(storageValue.key.replace('{}', providerId), storageValue.value));
-    /*let promise: Promise<boolean>;
-    if (expired != null && expired) {
-      promise = this.router.navigate(['loginWithToken'], { queryParams: { expired } });
-    } else if (hasClaimPrivileges != null && hasClaimPrivileges) {
-      promise = this.router.navigate(['loginWithToken'], { queryParams: { hasClaimPrivileges } });
-    } else {
-      promise = this.router.navigate(['loginWithToken']);
-    }*/
-
-    if (demoDoneValue) {
-      window.localStorage.setItem('onboarding-demo-done', demoDoneValue);
-    }
-
-    if (upcomingFeatureDoneValue) {
-      window.localStorage.setItem('upcoming-feature-done', upcomingFeatureDoneValue);
-    }
-    //promise.then(() => location.reload());
   }
+
+
+ 
+
 
   public get loggedIn(): boolean {
     const expiresIn = new Date(this.getExpiresIn());

@@ -1,0 +1,68 @@
+<ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="processedTransactionModel && processedTransactions.length > 0">
+  <div class="fixed-height fixed-height-sm">
+    <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+      <thead>
+        <tr>
+          <th>Beneficiary Name</th>
+          <th>Pre Auth Ref No</th>
+          <th>Pre Authorization ID</th>
+          <th>Transaction Date</th>
+          <th>Payer</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let transaction of processedTransactions" [ngClass]="{'text-warning light-bg-warning': transaction.notificationStatus !== 'read'}">
+
+          <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId, transaction.notificationId, transaction.notificationStatus)">
+            {{transaction.beneficiaryName}} ({{transaction.documentId}})</td>
+          <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId, transaction.notificationId, transaction.notificationStatus)">
+            {{transaction.preAuthRefNo ? transaction.preAuthRefNo : '-'}}</td>
+          <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId, transaction.notificationId, transaction.notificationStatus)">
+            {{transaction.requestId}}</td>
+          <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId, transaction.notificationId, transaction.notificationStatus)">
+            {{transaction.transactionDate | date: 'dd-MM-yyyy'}}</td>
+          <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId, transaction.notificationId, transaction.notificationStatus)">
+            {{transaction.payerName}}</td>
+          <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId, transaction.notificationId, transaction.notificationStatus)">
+            <span [ngClass]="transaction.status === 'Queued' ? 'text-orange' : (transaction.status === 'Error' ? 'text-danger' : (transaction.status === 'approved' ? 'text-success' : (transaction.status === 'rejected' ? 'text-danger' : (transaction.status === 'partial' ? 'text-light-blue' : (transaction.status === 'not-required' ? 'text-purple' : (transaction.status === 'pended' ? 'text-deep-red' : ''))))))">{{transaction.status | titlecase}}</span>
+          </td>
+          <td class="actions">
+            <mat-menu #moreMenu="matMenu" xPosition="before">
+              <button mat-menu-item *ngIf="transaction.status === 'approved' || transaction.status === 'rejected' || transaction.status === 'partial' || transaction.status === 'pended'">
+                <mat-icon class="material-icons-outlined">replay</mat-icon>
+                <span>Follow Up/Add Related</span>
+              </button>
+              <!-- <button mat-menu-item><span>Add New Related Claim</span></button> -->
+            </mat-menu>
+            <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-scrollbar>
+<app-empty-state *ngIf="processedTransactionModel && processedTransactions.length === 0" message='No Processed transaction found!'>
+</app-empty-state>
+<div class="pagination-header" *ngIf="!(processedTransactionModel && processedTransactions.length === 0)">
+  <div class="form-group page-select">
+    <label class="control-label">Go to page: </label>
+    <mat-form-field class="form-control custom-select-control">
+      <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
+        <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="material-paginator">
+    <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
+    </mat-paginator>
+  </div>
+  <div class="right-block" *ngIf="processedTransactions.length != 0">
+    <div class="actions">
+      <button mat-flat-button color="primary" (click)="readAllNotification();">Mark all as read </button>
+    </div>
+  </div>
+</div>

@@ -67,7 +67,7 @@
       <div class="col-md-4">
         <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormCareTeam.get('speciality').touched) && FormCareTeam.get('speciality').hasError('required')}">
           <label class="control-label">Qualification<span class="asterisk">*</span></label>
-          <mat-form-field class="form-control custom-select-control">
+          <mat-form-field class="form-control custom-select-control" id="qualification">
             <mat-select formControlName="speciality" [disabled]="IsSpecialityLading" required #specialitySelect>
               <mat-option>
                 <ngx-mat-select-search placeholderLabel="Search Speciality" noEntriesFoundLabel="No specialities found" formControlName="specialityFilter"
@@ -128,10 +128,10 @@
   </div>
   <div class="primary-dialog-footer has-border">
     <div class="btn-list text-right">
-      <button type="button" mat-button (click)="closeDialog()">Close</button>
+      <button type="button" mat-button (click)="closeDialog()" id="closeCareTeamsButton">Close</button>
       <button mat-flat-button color="primary" type="submit" [disabled]="IsSpecialityLading || IsPractitionerLading">
-        <span *ngIf="!data.item">Add</span>
-        <span *ngIf="data.item">Save</span></button>
+        <span *ngIf="!data.item" id="addCareTeamsButton">Add</span>
+        <span *ngIf="data.item" id="saveCareTeamsButton">Save</span></button>
     </div>
   </div>
 </form>

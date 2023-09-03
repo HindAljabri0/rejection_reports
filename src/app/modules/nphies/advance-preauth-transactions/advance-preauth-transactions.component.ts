@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatPaginator, MatDialogConfig } from '@angular/material';
 import { ViewPreauthorizationDetailsComponent } from '../view-preauthorization-details/view-preauthorization-details.component';
-import { ProcessedTransactionsComponent } from '../preauthorization-transactions/processed-transactions/processed-transactions.component';
-import { CommunicationRequestsComponent } from '../preauthorization-transactions/communication-requests/communication-requests.component';
+import { ApaProcessedTransactionsComponent } from './apa-processed-transactions/apa-processed-transactions.component';
 import { ReuseApprovalModalComponent } from '../preauthorization-transactions/reuse-approval-modal/reuse-approval-modal.component';
 import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
@@ -20,7 +19,7 @@ import { HttpErrorResponse, HttpResponse, HttpEvent } from '@angular/common/http
 import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFullTextSearchResult';
 import { CancelReasonModalComponent } from '../preauthorization-transactions/cancel-reason-modal/cancel-reason-modal.component';
-
+import { ApaCommunicationRequestsComponent } from './apa-communication-requests/apa-communication-requests.component';
 @Component({
   selector: 'app-advance-preauth-transactions',
   templateUrl: './advance-preauth-transactions.component.html',
@@ -32,23 +31,21 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
   pageSize: number;
 
   @ViewChild('paginator', { static: false }) paginator: MatPaginator;
-  @ViewChild('processedTransactions', { static: false }) processedTransactions: ProcessedTransactionsComponent;
-  @ViewChild('communicationRequests', { static: false }) communicationRequests: CommunicationRequestsComponent;
+  @ViewChild('apaProcessedTransactions', { static: false }) apaProcessedTransactions: ApaProcessedTransactionsComponent;
+  @ViewChild('communicationRequests', { static: false }) communicationRequests: ApaCommunicationRequestsComponent;
   paginatorPagesNumbers: number[];
   paginatorPageSizeOptions = [10, 20, 50, 100];
   manualPage = null;
-
+  communicationCount:number;
+  communicationsRequestCount:number;
   payersList = [];
   isSubmitted = false;
   detailTopActionIcon = 'ic-download.svg';
   transactionModel: PaginatedResult<PreAuthorizationTransaction>;
-
   typeList = this.sharedDataService.claimTypeList;
   beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
   selectedBeneficiary: BeneficiariesSearchResult;
-
   transactions = [];
-
   FormAdvancePreAuthTransaction: FormGroup = this.formBuilder.group({
     fromDate: [''],
     toDate: [''],
@@ -77,6 +74,7 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
     { value: 'pended', name: 'Pended' },
     { value: 'cancelled', name: 'Cancelled' }
   ];
+  data: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -158,7 +156,7 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
         this.FormAdvancePreAuthTransaction.controls.provClaimNo.patchValue(params.provClaimNo);
       }
 
-      if (params.page != null) {
+           if (params.page != null) {
         this.page = Number.parseInt(params.page, 10);
       } else {
         this.page = 0;
@@ -365,6 +363,13 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
       documentId: beneficiary.documentId +""
     });
   }
+  tabChange($event) {
+    if ($event && $event.index === 1) {
+      this.apaProcessedTransactions.getApaProcessedTransactions();
+    } else if ($event && $event.index === 2) {
+      this.communicationRequests.getCommunicationRequests();
+    }
+  }
   openDetailsDialog(requestId, responseId) {
     this.getTransactionDetails(requestId, responseId, null, null, null);
   }
@@ -409,7 +414,7 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
                 this.OpenReuseApprovalModal(requestId, responseId);
               } else {
                 if (!communicationId && notificationId) {
-                  this.processedTransactions.getProcessedTransactions();
+                  this.apaProcessedTransactions.getApaProcessedTransactions();
                 } else if (communicationId && notificationId) {
                   this.communicationRequests.getCommunicationRequests();
                 }
@@ -440,6 +445,19 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
     });
   }
 
+  readNotification() {
+    if (this.data.notificationStatus === 'unread') {
+      const notificationId: string = this.data.notificationId;
+      if (this.data.communicationId) {
+        this.sharedServices.unReadApaComunicationRequestCount = this.sharedServices.unReadApaComunicationRequestCount - 1;
+      } else {
+        this.sharedServices.unReadProcessedApaCount = this.sharedServices.unReadProcessedApaCount - 1;
+      }
+      if (notificationId) {
+        this.sharedServices.markAsRead(notificationId, this.sharedServices.providerId);
+      }
+    }
+  }
   showMessage(_mainMessage, _subMessage, _mode, _hideNoButton, _yesButtonText, _errors = null) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog'];
@@ -520,6 +538,12 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
       }
     });
   }
+  openDetailsDialoEv(event) {
+    this.getTransactionDetails(event.requestId, event.responseId, null, event.notificationId, event.notificationStatus);
+  }
+  openDetailsDialogCR(event) {  
+    this.getTransactionDetails(event.requestId, null, event.communicationId, event.notificationId, event.notificationStatus);
+  }
 
   updateManualPage(index) {
     this.manualPage = index;
@@ -544,6 +568,12 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
     this.page = event.pageIndex;
     this.pageSize = event.pageSize;
   }
+  get NewAPAComunicationRequests() {
+     return this.sharedServices.unReadApaComunicationRequestCount;
+  }
+  get NewAPAProcessed() {
+    return this.sharedServices.unReadProcessedApaCount;
+ }
   get paginatorLength() {
     if (this.transactionModel != null) {
       return this.transactionModel.totalElements;

@@ -1,214 +1,260 @@
 <div class="animate__animated animate__faster animate__fadeIn block-card">
-    <div class="block-header">
-        <p>Prescription Transactions</p>
-    </div>
-    <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding">
-        <mat-tab>
-            <ng-template mat-tab-label>
-                <span>Requests</span>
-            </ng-template>
-            <div class="block-filter-panel">
-                <div class="row small-gutter">
-                    <div class="col-4 col-xxl-3">
-                        <div class="form-group">
-                            <label class="control-label">From Date</label>
-                            <div class="date-picker">
-                                <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date">
-                                <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
-                                <mat-datepicker #filterFromDate></mat-datepicker>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-4 col-xxl-3">
-                        <div class="form-group">
-                            <label class="control-label">To Date</label>
-                            <div class="date-picker">
-                                <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date">
-                                <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>
-                                <mat-datepicker #filterToDate></mat-datepicker>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-4 col-xxl-3">
-                        <div class="form-group">
-                            <label class="control-label">Payer</label>
-                            <app-nphies-payers-selector></app-nphies-payers-selector>
-                        </div>
-                    </div>
-                    <div class="col-4 col-xxl-3">
-                        <div class="form-group">
-                            <label class="control-label">Type</label>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select>
-                                    <mat-option value="">Select Type</mat-option>
-                                    <mat-option value="Option 1">Option 1</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="col-4 col-xxl-3">
-                        <div class="form-group">
-                            <label class="control-label" matTooltip="Minimum 3 Character(s)/Number(s)">Select a Beneficiary</label>
-                            <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID..." [matAutocomplete]="auto">
-                            <mat-autocomplete #auto="matAutocomplete">
-                                <mat-option>Option 1</mat-option>
-                            </mat-autocomplete>
-                        </div>
-                    </div>
-                    <div class="col-4 col-xxl-3">
-                        <div class="form-group">
-                            <label class="control-label">Prescription ID</label>
-                            <input placeholder="Enter prescription ID" class="form-control">
-                        </div>
-                    </div>
-                    <div class="col-4 col-xxl-3">
-                        <div class="form-group">
-                            <label class="control-label">Status</label>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select>
-                                    <mat-option value="">Select Status</mat-option>
-                                    <mat-option>Option 1</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="col-4 col-xxl-3">
-                        <div class="form-group">
-                            <label class="control-label">Prescription Ref. No.,</label>
-                            <input placeholder="Enter prescription ref. no." class="form-control">
-                        </div>
-                    </div>
-                    <div class="col-4 col-xxl-3">
-                        <div class="form-group">
-                            <label class="control-label">Request Bundle ID</label>
-                            <input placeholder="Enter Request Bundle ID" class="form-control">
-                        </div>
-                    </div>
-                    <div class="col-4 col-xxl-3">
-                        <div class="form-group">
-                            <label class="control-label">&nbsp;</label>
-                            <button type="submit" mat-flat-button color="primary">Search</button>
-                        </div>
-                    </div>
+  <div class="block-header">
+    <p>Prescription Transactions</p>
+  </div>
+  <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding" (selectedTabChange)="tabChange($event)">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span>Requests</span>
+      </ng-template>
+      <div class="block-filter-panel">
+        <form [formGroup]="FormPrescriptionTransaction" (ngSubmit)="onSubmit()">
+          <div class="row small-gutter">
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">From Date</label>
+                <div class="date-picker">
+                  <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date" formControlName="fromDate">
+                  <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
+                  <mat-datepicker #filterFromDate></mat-datepicker>
                 </div>
+              </div>
             </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">To Date</label>
+                <div class="date-picker">
+                  <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date" [min]="FormPrescriptionTransaction.controls.fromDate.value"
+                    formControlName="toDate">
+                  <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>
+                  <mat-datepicker #filterToDate></mat-datepicker>
+                </div>
+              </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">Payer</label>
+                <app-nphies-payers-selector (selectionChange)="selectPayer($event)"></app-nphies-payers-selector>
+              </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">Type</label>
+                <mat-form-field class="form-control custom-select-control">
+                  <mat-select formControlName="type">
+                    <mat-option value="">Select Type</mat-option>
+                    <mat-option *ngFor="let type of typeList" [value]="type.value">{{type.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label" matTooltip="Minimum 3 Character(s)/Number(s)">Select a Beneficiary</label>
+                <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName"
+                  [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
+                    {{beneficiary.name}} ({{beneficiary.documentId}})
+                  </mat-option>
+                </mat-autocomplete>
+              </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">Prescription ID</label>
+                <input placeholder="Enter prescription ID" class="form-control" formControlName="nphiesRequestId">
+              </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">Status</label>
+                <mat-form-field class="form-control custom-select-control">
+                  <mat-select formControlName="status">
+                    <mat-option value="">Select Status</mat-option>
+                    <mat-option *ngFor="let status of statusList" [value]="status.value">{{status.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">Prescription Reference No</label>
+                <input placeholder="Enter Prescription Ref No" class="form-control" formControlName="prescriptionRefNo">
+              </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">Request Bundle ID</label>
+                <input placeholder="Enter Request Bundle ID" class="form-control" formControlName="RequestBundleId">
+
+              </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">&nbsp;</label>
+                <button type="submit" mat-flat-button color="primary">Search</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
 
 
-            <div class="pagination-header">
-                <button matRipple type="button" class="ml-auto btn action-btn my-n2 mr-n2" matTooltip="Download">
-                    <img src="./assets/ic-download.svg" />
-                </button>
-            </div>
+      <div *ngIf="transactions.length>0" class="pagination-header">
 
-            <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
-                <div class="fixed-height fixed-height-sm">
-                    <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
-                        <thead>
-                            <tr>
-                                <th>Beneficiary Name</th>
-                                <th>Payer</th>
-                                <th>Type</th>
-                                <th>Date Ordered</th>
-                                <th>Response Date</th>
-                                <th>Prescription ID</th>
-                                <th>Pre Auth Ref No</th>
-                                <th>Provider Claim No</th>
-                                <th>Status</th>
-                                <th class="text-nowrap"><span class="inline-text pr-1">Processing Status</span>
-                                    <mat-icon matTooltip="This will request for the current processing status of the preauth"
-                                        class="material-icons-outlined size-20 inline-text">info</mat-icon>
-                                </th>
-                                <th class="text-center text-nowrap"><span class="inline-text pr-1">Inquiry</span>
-                                    <mat-icon matTooltip="This will send the same preauth request again to NPHIES to fetch latest response from NPHIES queue"
-                                        class="material-icons-outlined size-20 inline-text">info</mat-icon>
-                                </th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="row-click" (click)="openDetailsDialog()">beneficiaryName (documentId)</td>
-                                <td class="row-click" (click)="openDetailsDialog()">payerName</td>
-                                <td class="row-click" (click)="openDetailsDialog()">claimType</td>
-                                <td class="row-click" (click)="openDetailsDialog()">transactionDate</td>
-                                <td class="row-click" (click)="openDetailsDialog()">responseTimeStamp</td>
-                                <td class="row-click" (click)="openDetailsDialog()">nphiesRequestId</td>
-                                <td class="row-click" (click)="openDetailsDialog()">preAuthRefNo</td>
-                                <td class="row-click" (click)="openDetailsDialog()">provClaimNo</td>
-                                <td class="row-click" (click)="openDetailsDialog()">
-                                    <!-- <span
-                                        [ngClass]="transaction.status === 'Queued' ? 'text-orange' : (transaction.status === 'Error' ? 'text-danger' : (transaction.status === 'approved' ? 'text-success' : (transaction.status === 'rejected' ? 'text-danger' : (transaction.status === 'partial' ? 'text-light-blue' : (transaction.status === 'not-required' ? 'text-purple' : (transaction.status === 'pended' ? 'text-deep-red' : ''))))))">{{transaction.status
-                                        | titlecase}}</span> -->
-                                </td>
-                                <td class="actions text-left text-wrap">
-                                    <!-- <div class="d-flex align-items-center">
-                                        <button mat-icon-button matTooltip="Get current status of preauth" class="text-primary ml-n2" (click)="checkStatus(transaction.responseId)"
-                                            *ngIf="transaction.status !== 'Error'">
-                                            <mat-icon>refresh</mat-icon>
-                                        </button>
-                                        <span *ngIf="!transaction.processingStatus && transaction.status !== 'Error'" class="pl-1">Check Status</span>
-                                        <span *ngIf="transaction.processingStatus" class="pl-1">{{transaction.processingStatus}}</span>
-                                    </div> -->
-                                </td>
-                                <td class="actions text-center">
-                                    <!-- <button
-                                        *ngIf="transaction.status === 'not-required' || transaction.status === 'Queued' || transaction.status === 'pended' || transaction.status === 'approved' || transaction.status === 'partial' || transaction.status === 'rejected'"
-                                        (click)="inquireApprovalRequest(transaction.requestId)" class="action-letter-btn"
-                                        [ngClass]="transaction.inquiryStatus === 'failed' ? 'theme-danger': (transaction.inquiryStatus === 'passed' ? 'theme-success' : '')"
-                                        [matTooltip]="transaction.inquiryStatus === 'failed' ? 'Failed': (transaction.inquiryStatus === 'passed' ? 'Passed' : 'Get latest preauth response from NPHIES queue')">I</button> -->
-                                </td>
-                                <td class="actions">
-                                    <ng-container>
-                                        <mat-menu #moreMenu="matMenu" xPosition="before">
-                                            <button mat-menu-item>
-                                                <mat-icon class="material-icons-outlined">replay</mat-icon>
-                                                <span>Follow Up/Add Related</span>
-                                            </button>
-                                            <button mat-menu-item>
-                                                <mat-icon class="material-icons-outlined">close</mat-icon>
-                                                <span>Cancel</span>
-                                            </button>
-                                        </mat-menu>
-                                        <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu">
-                                            <mat-icon>more_vert</mat-icon>
-                                        </button>
-                                    </ng-container>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </ng-scrollbar>
-            <app-empty-state message='No Pre Authorization transactions found!'>
-            </app-empty-state>
-            <div class="pagination-header">
-                <div class="form-group page-select">
-                    <label class="control-label">Go to page: </label>
-                    <mat-form-field class="form-control custom-select-control">
-                        <mat-select>
-                            <mat-option>10</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <div class="material-paginator">
-                    <mat-paginator #paginator [pageSizeOptions]="paginatorPageSizeOptions">
-                    </mat-paginator>
-                </div>
-            </div>
-        </mat-tab>
-        <mat-tab>
-            <ng-template mat-tab-label>
-                <div class="d-flex align-items-center">
-                    <span>Processed</span>
-                </div>
-            </ng-template>
-        </mat-tab>
-        <mat-tab>
-            <ng-template mat-tab-label>
-                <div class="d-flex align-items-center">
-                    <span>Communication Request</span>
-                </div>
-            </ng-template>
-        </mat-tab>
-    </mat-tab-group>
+
+        <button matRipple type="button" class="ml-auto btn action-btn my-n2 mr-n2" (click)="downloadSheetFormat()" matTooltip="Download">
+          <img src="./assets/{{detailTopActionIcon}}" />
+        </button>
+      </div>
+
+      <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="transactionModel && transactions.length > 0">
+        <div class="fixed-height fixed-height-sm">
+          <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+            <thead>
+              <tr>
+                <th>Beneficiary Name</th>
+                <th>Payer</th>
+                <th>Type</th>
+                <th>Date Ordered</th>
+                <th>Response Date</th>
+                <th>Prescription ID</th>
+                <th>Prescription Ref No</th>
+                <th>Provider Claim No</th>
+                <th>Status</th>
+                <th class="text-nowrap"><span class="inline-text pr-1">Processing Status</span>
+                  <mat-icon matTooltip="This will request for the current processing status of the prescription" class="material-icons-outlined size-20 inline-text">info</mat-icon>
+                </th>
+                <th class="text-center text-nowrap"><span class="inline-text pr-1">Inquiry</span>
+                  <mat-icon matTooltip="This will send the same prescription request again to NPHIES to fetch latest response from NPHIES queue"
+                    class="material-icons-outlined size-20 inline-text">info</mat-icon>
+                </th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let transaction of transactions">
+                <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                  {{transaction.beneficiaryName}} ({{transaction.documentId}})</td>
+                <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                  {{transaction.payerName}}</td>
+                <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                  {{transaction.claimType}}</td>
+                <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                  {{transaction.transactionDate | date:
+                  'dd-MM-yyyy hh:mm aa'}}</td>
+                <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                  {{transaction.responseTimeStamp | date:
+                  'dd-MM-yyyy hh:mm aa'}}</td>
+                <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                  {{transaction.nphiesRequestId}}</td>
+                <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                  {{transaction.prescriptionRefNo ? transaction.prescriptionRefNo : '-'}}</td>
+                <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                  {{transaction.provClaimNo ? transaction.provClaimNo : '-'}}</td>
+                <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
+                  <span
+                    [ngClass]="transaction.status === 'Queued' ? 'text-orange' : (transaction.status === 'Error' ? 'text-danger' : (transaction.status === 'approved' ? 'text-success' : (transaction.status === 'rejected' ? 'text-danger' : (transaction.status === 'partial' ? 'text-light-blue' : (transaction.status === 'not-required' ? 'text-purple' : (transaction.status === 'pended' ? 'text-deep-red' : ''))))))">{{transaction.status
+                    | titlecase}}</span>
+                </td>
+                <td class="actions text-left text-wrap">
+                  <div class="d-flex align-items-center">
+                    <button mat-icon-button matTooltip="Get current status of prescription" class="text-primary ml-n2" (click)="checkStatus(transaction.responseId)"
+                      *ngIf="transaction.status !== 'Error'">
+                      <mat-icon>refresh</mat-icon>
+                    </button>
+                    <span *ngIf="!transaction.processingStatus && transaction.status !== 'Error'" class="pl-1">Check Status</span>
+                    <span *ngIf="transaction.processingStatus" class="pl-1">{{transaction.processingStatus}}</span>
+
+                  </div>
+                </td>
+                <td class="actions text-center">
+                  <button
+                    *ngIf="transaction.status === 'not-required' || transaction.status === 'Queued' || transaction.status === 'pended' || transaction.status === 'approved' || transaction.status === 'partial' || transaction.status === 'rejected'"
+                    (click)="inquireApprovalRequest(transaction.requestId)" class="action-letter-btn"
+                    [ngClass]="transaction.inquiryStatus === 'failed' ? 'theme-danger': (transaction.inquiryStatus === 'passed' ? 'theme-success' : '')"
+                    [matTooltip]="transaction.inquiryStatus === 'failed' ? 'Failed': (transaction.inquiryStatus === 'passed' ? 'Passed' : 'Get latest prescription response from NPHIES queue')">I</button>
+                  <!-- <span class="action-letter-btn theme-success" matTooltip="Passed">I</span>
+                  <span class="action-letter-btn theme-danger" matTooltip="Failed">I</span>
+                  <mat-spinner diameter="20"></mat-spinner> -->
+                </td>
+                <td class="text-center">
+                  <button mat-icon-button *ngIf="transaction.communicationCount || transaction.communicationsRequestCount">
+                    <span matTooltip="Number of Communications">{{transaction.communicationCount}}</span>
+                    <mat-icon class="size-21" style="margin-left: 2px;margin-right: 2px;">question_answer</mat-icon>
+                    <span matTooltip="Communications Request"> {{transaction.communicationsRequestCount}}</span>
+                  </button>
+                </td>
+                <td class="actions">
+                  <ng-container *ngIf="transaction.status != 'cancelled'">
+                    <mat-menu #moreMenu="matMenu" xPosition="before">
+                      <button mat-menu-item
+                        *ngIf="transaction.status === 'approved' || transaction.status === 'rejected' || transaction.status === 'partial'  || transaction.status === 'not-required'"
+                        (click)="OpenReuseApprovalModal(transaction.requestId, transaction.responseId)">
+                        <mat-icon class="material-icons-outlined">replay</mat-icon>
+                        <span>Follow Up/Add Related</span>
+                      </button>
+                      <button mat-menu-item (click)="openReasonModal(transaction.requestId, transaction.responseId, 'cancel')">
+                        <mat-icon class="material-icons-outlined">close</mat-icon>
+                        <span>Cancel</span>
+                      </button>
+                      <!-- <button mat-menu-item
+                        (click)="openReasonModal(transaction.requestId, transaction.responseId, 'nullify')">
+                        <mat-icon class="material-icons-outlined">delete</mat-icon>
+                        <span>Nullify/Soft Delete</span>
+                      </button> -->
+                      <!-- <button mat-menu-item><span>Add New Related Claim</span></button> -->
+                    </mat-menu>
+                    <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" *ngIf="transaction.status !== 'Error'">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                  </ng-container>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-scrollbar>
+      <app-empty-state *ngIf="transactionModel && transactions.length === 0" message='No Prescription transactions found!'>
+      </app-empty-state>
+      <div class="pagination-header" *ngIf="!(transactionModel && transactions.length === 0)">
+        <div class="form-group page-select">
+          <label class="control-label">Go to page: </label>
+          <mat-form-field class="form-control custom-select-control">
+            <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
+              <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="material-paginator">
+          <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
+          </mat-paginator>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <div class="d-flex align-items-center">
+          <span>Processed</span>
+          <span *ngIf="NewTransactionProcessed > 0" class="alert-marker ml-2 alert-count">{{NewTransactionProcessed}}</span>
+        </div>
+      </ng-template>
+
+      <app-processed-transactions #processedTransactions *ngIf="payersList" [payersList]="payersList" (openDetailsDialogEvent)="openDetailsDialoEv($event)">
+      </app-processed-transactions>
+
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <div class="d-flex align-items-center">
+          <span>Communication Request</span>
+          <span *ngIf="NewComunicationRequests > 0" class="alert-marker ml-2 alert-count">{{NewComunicationRequests}}</span>
+        </div>
+      </ng-template>
+      <app-communication-requests #communicationRequests *ngIf="payersList" [payersList]="payersList" (openDetailsDialogEvent)="openDetailsDialogCR($event)">
+      </app-communication-requests>
+    </mat-tab>
+  </mat-tab-group>
 </div>
