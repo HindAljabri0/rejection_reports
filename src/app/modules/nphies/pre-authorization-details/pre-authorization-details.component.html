@@ -35,13 +35,13 @@
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Type</div>
-      <p class="form-control-static text-primary">{{data.preAuthorizationInfo.typeName}}</p>
+      <p class="form-control-static text-primary" id="type">{{data.preAuthorizationInfo.typeName}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Sub Type</div>
-      <p class="form-control-static text-primary">
+      <p class="form-control-static text-primary" id="subType">
         <span
           *ngIf="data.preAuthorizationInfo && data.preAuthorizationInfo.subType">{{data.preAuthorizationInfo.subTypeName}}</span>
         <span *ngIf="data.preAuthorizationInfo && !data.preAuthorizationInfo.subType">-</span>
@@ -94,14 +94,14 @@
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Offline Eligibility ID</div>
-      <p class="form-control-static text-primary">
+      <p class="form-control-static text-primary" id="offlineEligibilityId">
         {{data.preAuthorizationInfo.eligibilityOfflineId?data.preAuthorizationInfo.eligibilityOfflineId:'-'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Offline Eligibility Date</div>
-      <p class="form-control-static text-primary">
+      <p class="form-control-static text-primary" id="offlineEligibilityDate">
         {{data.preAuthorizationInfo.eligibilityOfflineDate?(data.preAuthorizationInfo.eligibilityOfflineDate | date:
         'dd-MM-yyyy'):'-'}}
       </p>
@@ -110,14 +110,14 @@
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Eligibility Response Identifier (Value)</div>
-      <p class="form-control-static text-primary">
+      <p class="form-control-static text-primary" id="eligibilityResponseValue">
         {{data.preAuthorizationInfo.eligibilityResponseId?data.preAuthorizationInfo.eligibilityResponseId:'-'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Eligibility Response Identifier (URL)</div>
-      <p class="form-control-static text-primary">
+      <p class="form-control-static text-primary" id="eligibiltyResponseUrl">
         {{data.preAuthorizationInfo.eligibilityResponseUrl?data.preAuthorizationInfo.eligibilityResponseUrl:'-'}}</p>
     </div>
   </div>
@@ -130,13 +130,13 @@
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Is Referral ?</div>
-      <p class="form-control-static text-primary">{{data.transfer ? 'Yes' : 'No'}}</p>
+      <p class="form-control-static text-primary" id="isReferral">{{data.transfer ? 'Yes' : 'No'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Is New Born ?</div>
-      <p class="form-control-static text-primary">{{data.isNewBorn ? 'Yes' : 'No'}}</p>
+      <p class="form-control-static text-primary" id="isNewBorn">{{data.isNewBorn ? 'Yes' : 'No'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
@@ -147,7 +147,7 @@
           info</mat-icon>
       </div>
 
-      <p class="form-control-static text-primary">{{data.preAuthDetails ? data.preAuthDetails : '-'}}</p>
+      <p class="form-control-static text-primary" id="relatedPreauthRef">{{data.preAuthDetails ? data.preAuthDetails : '-'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
@@ -166,7 +166,7 @@
   <div *ngIf="data.transferAuthProvider" class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Referral PreAuth Provider</div>
-      <p class="form-control-static text-primary">{{data.transferAuthProvider}}</p>
+      <p class="form-control-static text-primary" id="reffPreauthProvider">{{data.transferAuthProvider}}</p>
     </div>
   </div>
   <div *ngIf="data.transferAuthNumber" class="col-4 col-xxl-3">
@@ -241,83 +241,83 @@
 <!-- error section end -->
 
 <!-- beneficiary section start -->
-<h5 class="form-title" *ngIf="data.beneficiary">
+<h5 class="form-title" *ngIf="data.beneficiary" id="BeneficiaryDetailsTitle">
   Beneficiary Details
 </h5>
 <div class="row small-gutter" *ngIf="data.beneficiary">
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Name</div>
-      <p class="form-control-static">{{data.beneficiary.beneficiaryName}}</p>
+      <p class="form-control-static" id="name">{{data.beneficiary.beneficiaryName}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Document</div>
-      <p class="form-control-static">{{data.beneficiary.documentTypeName}} ({{data.beneficiary.documentId}})</p>
+      <p class="form-control-static" id="documentId">{{data.beneficiary.documentTypeName}} ({{data.beneficiary.documentId}})</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Gender</div>
-      <p class="form-control-static">{{data.beneficiary.gender}}</p>
+      <p class="form-control-static" id="gender">{{data.beneficiary.gender}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Date of Birth</div>
-      <p class="form-control-static">{{data.beneficiary.dob | date: 'dd-MM-yyyy'}}</p>
+      <p class="form-control-static" id="dateOfBirth">{{data.beneficiary.dob | date: 'dd-MM-yyyy'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Contact No.</div>
-      <p class="form-control-static">{{data.beneficiary.contactNumber?data.beneficiary.contactNumber:'-'}}</p>
+      <p class="form-control-static" id="contactNum">{{data.beneficiary.contactNumber?data.beneficiary.contactNumber:'-'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Email</div>
-      <p class="form-control-static">{{data.beneficiary.email?data.beneficiary.email:'-'}}</p>
+      <p class="form-control-static" id="Email">{{data.beneficiary.email?data.beneficiary.email:'-'}}</p>
     </div>
   </div>
 </div>
 <!-- beneficiary details end -->
 
-<h5 class="form-title" *ngIf="data.beneficiary">
+<h5 class="form-title" *ngIf="data.beneficiary" id="insurancePlanTitle">
   Insurance Plan
 </h5>
 <div class="row small-gutter" *ngIf="data.beneficiary && data.beneficiary.insurancePlan">
   <div class="table-responsive">
-    <table class="primary-grid claim-view-table">
+    <table class="primary-grid claim-view-table" id="insurancePlanTable">
       <thead>
         <tr>
-          <th>Payer</th>
-          <th>Expiry Date</th>
-          <th>Member Card ID</th>
-          <th>Policy Number</th>
-          <th>Relation with Subscriber</th>
-          <th>Coverage Type</th>
+          <th id="payerHeader">Payer</th>
+          <th id="expiryDateHeader">Expiry Date</th>
+          <th id="memberCardIdHeader">Member Card ID</th>
+          <th id="policyNumberHeader">Policy Number</th>
+          <th id="relationWithSubscriberHeader">Relation with Subscriber</th>
+          <th id="coverageTypeHeader">Coverage Type</th>
         </tr>
       </thead>
       <tbody>
         <tr class="align-middle">
-          <td>
+          <td id="payerCell">
             {{data.beneficiary.insurancePlan.payerName}}
           </td>
-          <td>
+          <td id="expiryDateCell">
             {{data.beneficiary.insurancePlan.expiryDate}}
           </td>
-          <td>
+          <td id="memberCardIdCell">
             {{data.beneficiary.insurancePlan.memberCardId}}
           </td>
-          <td>
+          <td id="policyNumberCell">
             {{data.beneficiary.insurancePlan.policyNumber}}
           </td>
-          <td>
+          <td id="relationWithSubscriberCell">
             {{data.beneficiary.insurancePlan.relationWithSubscriberName}}
           </td>
-          <td>
+          <td id="coverageTypeCell">
             {{data.beneficiary.insurancePlan.coverageTypeName}}
           </td>
         </tr>
@@ -327,44 +327,44 @@
 </div>
 
 <!-- subscriber section start -->
-<h5 class="form-title" *ngIf="data.subscriber">
+<h5 class="form-title" *ngIf="data.subscriber" id="subscriberDetailsTitle">
   Subscriber Details
 </h5>
 <div class="row small-gutter" *ngIf="data.subscriber">
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Name</div>
-      <p class="form-control-static">{{data.subscriber.beneficiaryName}}</p>
+      <p class="form-control-static" id="subName">{{data.subscriber.beneficiaryName}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Document</div>
-      <p class="form-control-static">{{data.subscriber.documentTypeName}} ({{data.subscriber.documentId}})</p>
+      <p class="form-control-static" id="documentSub">{{data.subscriber.documentTypeName}} ({{data.subscriber.documentId}})</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Gender</div>
-      <p class="form-control-static">{{data.subscriber.gender}}</p>
+      <p class="form-control-static" id="subGender">{{data.subscriber.gender}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Date of Birth</div>
-      <p class="form-control-static">{{data.subscriber.dob | date: 'dd-MM-yyyy'}}</p>
+      <p class="form-control-static" id="subDateOfBirth">{{data.subscriber.dob | date: 'dd-MM-yyyy'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Contact No.</div>
-      <p class="form-control-static">{{data.subscriber.contactNumber}}</p>
+      <p class="form-control-static" id="subContactNum">{{data.subscriber.contactNumber}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Email</div>
-      <p class="form-control-static">{{data.subscriber.email}}</p>
+      <p class="form-control-static" id="subEmail">{{data.subscriber.email}}</p>
     </div>
   </div>
 </div>
@@ -439,10 +439,10 @@
 <!-- process notes end -->
 
 <!-- Items start -->
-<h5 class="form-title">
+<h5 class="form-title" id="itemsTitle">
   Items
 </h5>
-<div class="table-responsive">
+<div class="table-responsive" id="itemsTable">
   <table class="primary-grid">
     <thead>
       <tr>
@@ -453,10 +453,10 @@
         <th>
           <div class="d-flex align-items-center">
             <span class="pr-1">Net</span>
-            <mat-icon class="material-icons-outlined size-20" matTooltip="Unit Price * Quantity * Factor + TAX">
+            <mat-icon class="material-icons-outlined size-20" matTooltip="Unit Price * Quantity * Factor + TAX" id="netPriceInfo">
               info</mat-icon>
             <span class="pr-1">/Tax</span>
-            <mat-icon class="material-icons-outlined size-20" matTooltip="Payer share Tax only">
+            <mat-icon class="material-icons-outlined size-20" matTooltip="Payer share Tax only" id="taxInfo">
               info</mat-icon>
           </div>
         </th>
@@ -480,18 +480,18 @@
           <td class="text-nowrap row-click" (click)="toggleItem(i)"> {{item.net}} <span class="currency">SR</span> /
             {{item.tax}} <span class="currency">SR</span></td>
 
-          <td class="text-nowrap row-click" (click)="toggleItem(i)">
+          <td class="text-nowrap row-click" (click)="toggleItem(i)" id="clickableRow">
             <ng-container *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
               <ng-container *ngFor="let x of item.itemDecision.claimItemDecisionCategories">
                 <span *ngIf="x.category === 'benefit'">{{x.categoryValue}} <span class="currency">SR</span></span>
-                <span *ngIf="x.category === 'tax'"> / {{x.categoryValue}} <span class="currency">SR</span></span>
+                <span *ngIf="x.category === 'tax'" id="taxCategory"> / {{x.categoryValue}} <span class="currency">SR</span></span>
               </ng-container>
             </ng-container>
           </td>
           <td
             class="row-click text-capitalize text-{{sharedServices.getItemRowAccentColor(!item.itemDecision ? 'all' :item.itemDecision.status)}}"
             (click)="toggleItem(i)">
-            <span *ngIf="item.itemDecision">{{item.itemDecision.status}}</span>
+            <span *ngIf="item.itemDecision" id="statusValue">{{item.itemDecision.status}}</span>
             <span *ngIf="!item.itemDecision">-</span>
           </td>
           <td class="row-click" (click)="toggleItem(i)">
@@ -540,31 +540,31 @@
 
                       <tr>
                         <td class="label">Non Standard Code</td>
-                        <td>{{item.nonStandardCode}}</td>
+                        <td id="nonStandardCode">{{item.nonStandardCode}}</td>
                       </tr>
                       <tr>
                         <td class="label">Non Standard Desc.</td>
-                        <td>{{item.nonStandardDesc}}</td>
+                        <td id="nonStandardDesc">{{item.nonStandardDesc}}</td>
                       </tr>
                       <tr>
-                        <td class="label">Serviced Date/Period</td>
-                        <td><span *ngIf="item.startDate">{{item.startDate | date : 'dd/MM/yyyy hh:mm aa'}} -
+                        <td class="label" id="servicedDateRow">Serviced Date/Period</td>
+                        <td id="endDate"><span *ngIf="item.startDate" id="startDate">{{item.startDate | date : 'dd/MM/yyyy hh:mm aa'}} -
                           </span>{{item.endDate | date : 'dd/MM/yyyy hh:mm aa'}}</td>
                       </tr>
                       <tr>
-                        <td class="label">Is Package?</td>
+                        <td class="label" id="isPackageRow">Is Package?</td>
                         <td>
-                          <span *ngIf="item.isPackage === 1">Yes</span>
-                          <span *ngIf="item.isPackage === 2">No</span>
+                          <span *ngIf="item.isPackage === 1"  id="isPackageYes">Yes</span>
+                          <span *ngIf="item.isPackage === 2"  id="isPackageNo">No</span>
                         </td>
                       </tr>
                       <tr>
                         <td class="label">Body Site</td>
-                        <td>{{item.bodySiteName}}</td>
+                        <td id="bodySite">{{item.bodySiteName}}</td>
                       </tr>
                       <tr>
                         <td class="label">Sub Site</td>
-                        <td>{{item.subSiteName}}</td>
+                        <td id="subSite">{{item.subSiteName}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -574,15 +574,15 @@
                     <tbody>
                       <tr>
                         <td class="label">Quantity</td>
-                        <td>{{item.quantity}} {{item.quantityCode}}</td>
+                        <td id="quantity">{{item.quantity}} {{item.quantityCode}}</td>
                       </tr>
                       <tr>
                         <td class="label">Unit Price</td>
-                        <td>{{item.unitPrice}} <span class="currency">SR</span></td>
+                        <td id="unitPrice">{{item.unitPrice}} <span class="currency">SR</span></td>
                       </tr>
                       <tr>
                         <td class="label">Discount Amount</td>
-                        <td>{{item.discount}} <span class="currency">SR</span></td>
+                        <td id="discountAmount">{{item.discount}} <span class="currency">SR</span></td>
                       </tr>
 
                       <tr>
@@ -593,22 +593,22 @@
                               info</mat-icon>
                           </div>
                         </td>
-                        <td>{{item.tax}} <span class="currency">SR</span></td>
+                        <td id="taxSr">{{item.tax}} <span class="currency">SR</span></td>
                       </tr>
                       <tr>
                         <td class="label">
                           <div class="d-flex align-items-center">
                             <span class="pr-1">Patient Share</span>
-                            <mat-icon class="material-icons-outlined size-20" matTooltip="Patient share without TAX">
+                            <mat-icon class="material-icons-outlined size-20" matTooltip="Patient share without TAX" id="patientShare">
                               info</mat-icon>
                           </div>
                         </td>
-                        <td>{{item.patientShare}} <span class="currency">SR</span> ({{item.patientSharePercent}}<span
+                        <td id="patientShare">{{item.patientShare}} <span class="currency">SR</span> ({{item.patientSharePercent}}<span
                             class="currency">%</span>)</td>
                       </tr>
                       <tr>
                         <td class="label">Payer Share</td>
-                        <td>{{item.payerShare}} <span class="currency">SR</span></td>
+                        <td id="payerShareAmount">{{item.payerShare}} <span class="currency">SR</span></td>
                       </tr>
 
 
@@ -626,7 +626,7 @@
                             </mat-icon>
                           </div>
                         </td>
-                        <td>{{item.factor}}</td>
+                        <td id="factorValue">{{item.factor}}</td>
                       </tr>
                       <tr>
                         <td class="label">Medication Selection Reason </td>
@@ -640,24 +640,24 @@
                       </tr>
                       <tr>
                         <td class="label">Supporting Info</td>
-                        <td>{{item.supportingInfoNames}}</td>
+                        <td id="supportingInfo">{{item.supportingInfoNames}}</td>
                       </tr>
                       <tr>
                         <td class="label">Diagnosis</td>
-                        <td>{{item.diagnosisNames}}</td>
+                        <td id="diagnosis">{{item.diagnosisNames}}</td>
                       </tr>
                       <tr>
                         <td class="label">Care Teams</td>
-                        <td>{{item.careTeamNames}}</td>
+                        <td id="careTeams">{{item.careTeamNames}}</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
             </div>
-            <div class="box" *ngIf="item.itemDetails && item.itemDetails.length > 0">
-              <h5 class="align-self-center medium pb-2">Item Detail</h5>
-              <table class="primary-grid claim-view-table">
+            <div class="box" *ngIf="item.itemDetails && item.itemDetails.length > 0" id="itemDetailsBox">
+              <h5 class="align-self-center medium pb-2" id="itemDetailsHeading">Item Detail</h5>
+              <table class="primary-grid claim-view-table" id="itemDetailsTable">
                 <thead>
                   <tr>
                     <th>Seq.</th>
@@ -669,13 +669,13 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let d of item.itemDetails; let di = index">
-                    <td class="row-click">{{d.sequence}}</td>
-                    <td class="row-click">{{d.typeName}}</td>
-                    <td class="row-click">{{d.code}} - {{d.description}}</td>
-                    <td class="row-click">{{d.nonStandardCode ? d.nonStandardCode : '-'}}</td>
-                    <td class="row-click">{{d.nonStandardDesc ? d.nonStandardDesc : '-'}}</td>
-                    <td class="row-click">{{d.quantity ? d.quantity +" "+ (d.quantityCode ? d.quantityCode : '') : '-'}}
+                  <tr *ngFor="let d of item.itemDetails; let di = index" id="itemDetailRow">
+                    <td class="row-click" id="itemSequence">{{d.sequence}}</td>
+                    <td class="row-click" id="itemType">{{d.typeName}}</td>
+                    <td class="row-click" id="itemCodeDesc">{{d.code}} - {{d.description}}</td>
+                    <td class="row-click" id="itemNonStandardCode">{{d.nonStandardCode ? d.nonStandardCode : '-'}}</td>
+                    <td class="row-click" id="itemNonStandardDesc">{{d.nonStandardDesc ? d.nonStandardDesc : '-'}}</td>
+                    <td class="row-click" id="itemQuantity">{{d.quantity ? d.quantity +" "+ (d.quantityCode ? d.quantityCode : '') : '-'}}
                     </td>
                   </tr>
                 </tbody>
@@ -691,7 +691,7 @@
 <!-- Items end -->
 
 <!-- Care Teams start -->
-<h5 class="form-title" *ngIf="data.careTeam.length!=0">
+<h5 class="form-title" *ngIf="data.careTeam.length!=0" id="careTeamsTitle">
   Care Teams
 </h5>
 <div class="table-responsive" *ngIf="data.careTeam.length!=0">
@@ -706,12 +706,12 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let careTeam of data.careTeam">
-        <td>{{careTeam.sequence}}</td>
-        <td>{{careTeam.practitionerName}}</td>
-        <td>{{careTeam.practitionerRoleName}}</td>
-        <td>{{careTeam.careTeamRoleName}}</td>
-        <td>{{careTeam.speciality}}</td>
+      <tr *ngFor="let careTeam of data.careTeam" id="careTeamRow">
+        <td id="sequence">{{careTeam.sequence}}</td>
+        <td id="practitionerName">{{careTeam.practitionerName}}</td>
+        <td id="practitionerRoleName">{{careTeam.practitionerRoleName}}</td>
+        <td id="careTeamRoleName">{{careTeam.careTeamRoleName}}</td>
+        <td id="speciality">{{careTeam.speciality}}</td>
       </tr>
     </tbody>
   </table>
@@ -719,7 +719,7 @@
 <!-- Care Teams end -->
 
 <!-- Diagnosis start -->
-<h5 class="form-title">
+<h5 class="form-title" id="diagnosisTitle">
   Diagnosis
 </h5>
 <div class="table-responsive">
@@ -739,11 +739,11 @@
         </td>
       </tr>
       <ng-container *ngIf="data.diagnosis.length > 0">
-        <tr *ngFor="let diagnosis of data.diagnosis">
-          <td>{{diagnosis.sequence}}</td>
-          <td>{{diagnosis.typeName}}</td>
-          <td>{{diagnosis.diagnosisCode}} - {{diagnosis.diagnosisDescription}}</td>
-          <td>{{diagnosis.onAdmissionName}}</td>
+        <tr *ngFor="let diagnosis of data.diagnosis" id="diagnosisRow">
+          <td id="sequence">{{diagnosis.sequence}}</td>
+          <td id="typeName">{{diagnosis.typeName}}</td>
+          <td id="diagnosisCode">{{diagnosis.diagnosisCode}} - {{diagnosis.diagnosisDescription}}</td>
+          <td id="onAdmissionName">{{diagnosis.onAdmissionName}}</td>
         </tr>
       </ng-container>
     </tbody>
@@ -759,21 +759,21 @@
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Date Written</div>
-      <p class="form-control-static">{{data.visionPrescription.dateWritten | date : 'dd-MM-yyyy hh:mm aa'}}</p>
+      <p class="form-control-static" id="dateWritten">{{data.visionPrescription.dateWritten | date : 'dd-MM-yyyy hh:mm aa'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Prescriber</div>
-      <p class="form-control-static">{{data.visionPrescription.prescriberName}}</p>
+      <p class="form-control-static" id="prescriberName">{{data.visionPrescription.prescriberName}}</p>
     </div>
   </div>
 </div>
-<div class="box" *ngIf="data.visionPrescription">
-  <h5 class="d-flex align-items-center mb-3">
+<div class="box" *ngIf="data.visionPrescription" id="visionPrescriptionBox">
+  <h5 class="d-flex align-items-center mb-3" id="lensSpecificationsTitle">
     <strong class="medium">Lens Specifications</strong>
   </h5>
-  <div class="table-responsive">
+  <div class="table-responsive" id="lensSpecificationsTable">
     <table class="primary-grid">
       <thead>
         <tr>
@@ -808,51 +808,51 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngIf="data.visionPrescription.lensSpecifications.length === 0">
+        <tr *ngIf="data.visionPrescription.lensSpecifications.length === 0" id="noLensSpecificationsRow">
           <td colspan="5">
             <app-empty-state message='No Lens Specifications found!'></app-empty-state>
           </td>
         </tr>
         <ng-container *ngIf="data.visionPrescription.lensSpecifications.length > 0">
-          <tr *ngFor="let visionSpecification of data.visionPrescription.lensSpecifications;let i=index;">
-            <td width="5%">{{i+1}}</td>
-            <td width="5%">{{visionSpecification.productName}}</td>
-            <td>{{visionSpecification.sphere}}</td>
-            <td>{{visionSpecification.lensPower}}</td>
-            <td>{{visionSpecification.cylinder}}</td>
-            <td>{{visionSpecification.axis}}</td>
-            <td>{{visionSpecification.multifocalPower}}</td>
-            <td>{{visionSpecification.prismAmount}}<span
+          <tr *ngFor="let visionSpecification of data.visionPrescription.lensSpecifications;let i=index;" id="visionSpecRow">
+            <td width="5%" id="visionSpecIndex">{{i+1}}</td>
+            <td width="5%" id="visionSpecProductName">{{visionSpecification.productName}}</td>
+            <td id="visionSpecSphere">{{visionSpecification.sphere}}</td>
+            <td id="visionSpeclensPower">{{visionSpecification.lensPower}}</td>
+            <td id="visionSpecCylinder">{{visionSpecification.cylinder}}</td>
+            <td id="visionSpecAxis">{{visionSpecification.axis}}</td>
+            <td id="visionSpecMultifocalPower">{{visionSpecification.multifocalPower}}</td>
+            <td id="visionSpecPrismAmount">{{visionSpecification.prismAmount}}<span
                 *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
-            <td>{{visionSpecification.lensBackCurve}}</td>
-            <td>{{visionSpecification.lensDiameter}}</td>
-            <td>{{visionSpecification.lensDuration}}
+            <td id="visionSpecLensBackCurve">{{visionSpecification.lensBackCurve}}</td>
+            <td id="visionSpecLensDiameter">{{visionSpecification.lensDiameter}}</td>
+            <td id="visionSpecLensDuration">{{visionSpecification.lensDuration}}
               <span *ngIf="visionSpecification.lensDuration">
                 {{visionSpecification.lensDurationUnitName}}(s)</span>
             </td>
 
-            <td class="border-left">{{visionSpecification.left_sphere}}</td>
-            <td>{{visionSpecification.left_lensPower}}</td>
-            <td>{{visionSpecification.left_cylinder}}</td>
-            <td>{{visionSpecification.left_axis}}</td>
-            <td>{{visionSpecification.left_multifocalPower}}</td>
-            <td>{{visionSpecification.left_prismAmount}}<span
+            <td class="border-left" id="visionSpecLeftSphere">{{visionSpecification.left_sphere}}</td>
+            <td id="visionSpecLeftLensPower">{{visionSpecification.left_lensPower}}</td>
+            <td id="visionSpecLeftCylinder">{{visionSpecification.left_cylinder}}</td>
+            <td id="visionSpecLeftAxis">{{visionSpecification.left_axis}}</td>
+            <td id="visionSpecLeftMultifocalPower">{{visionSpecification.left_multifocalPower}}</td>
+            <td id="visionSpecLeftPrismAmount">{{visionSpecification.left_prismAmount}}<span
                 *ngIf="visionSpecification.left_prismAmount">/</span>{{visionSpecification.left_prismBaseName}}
             </td>
-            <td>{{visionSpecification.left_lensBackCurve}}</td>
-            <td>{{visionSpecification.left_lensDiameter}}</td>
-            <td>{{visionSpecification.left_lensDuration}}
+            <td id="visionSpecLeftLensBackCurve">{{visionSpecification.left_lensBackCurve}}</td>
+            <td id="visionSpecLeftLensDiameter">{{visionSpecification.left_lensDiameter}}</td>
+            <td id="visionSpecLeftLensDuration">{{visionSpecification.left_lensDuration}}
               <span *ngIf="visionSpecification.left_lensDuration">
                 {{visionSpecification.left_lensDurationUnitName}}(s)</span>
             </td>
-            <td class="actions text-center">
+            <td class="actions text-center" id="notesColumn">
               <mat-menu #notesMenu="matMenu" class="primary-menu">
                 <span *ngIf="visionSpecification.lensNote">{{visionSpecification.lensNote}}</span>
                 <span *ngIf="!visionSpecification.lensNote">-</span>
               </mat-menu>
-              <button mat-icon-button type="button" matTooltip="View Notes" class="text-primary"
+              <button mat-icon-button type="button" matTooltip="View Notes" class="text-primary" id="viewNotesButton"
                 [matMenuTriggerFor]="notesMenu">
-                <mat-icon class="material-icons-outlined">description</mat-icon>
+                <mat-icon class="material-icons-outlined" id="viewNotesIcon">description</mat-icon>
               </button>
             </td>
           </tr>
@@ -919,44 +919,44 @@
 <!-- Supporting Info end -->
 
 <!-- accident start -->
-<h5 class="form-title" *ngIf="data.accident && data.accident.accidentTypeName && data.accident.date">
+<h5 class="form-title" *ngIf="data.accident && data.accident.accidentTypeName && data.accident.date" id="accidentTitle">
   Accident
 </h5>
-<div class="row small-gutter" *ngIf="data.accident && data.accident.accidentTypeName && data.accident.date">
+<div class="row small-gutter" *ngIf="data.accident && data.accident.accidentTypeName && data.accident.date" id="accidentRow">
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Accident Type</div>
-      <p class="form-control-static">{{data.accident.accidentTypeName}}</p>
+      <p class="form-control-static" id="accidentType">{{data.accident.accidentTypeName}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Street Name</div>
-      <p class="form-control-static">{{data.accident.streetName}}</p>
+      <p class="form-control-static" id="streetName">{{data.accident.streetName}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">City</div>
-      <p class="form-control-static">{{data.accident.city}}</p>
+      <p class="form-control-static" id="city">{{data.accident.city}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">State/Province</div>
-      <p class="form-control-static">{{data.accident.state}}</p>
+      <p class="form-control-static" id="state">{{data.accident.state}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Country</div>
-      <p class="form-control-static">{{data.accident.country}}</p>
+      <p class="form-control-static" id="country">{{data.accident.country}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Date</div>
-      <p class="form-control-static">{{data.accident.date}}</p>
+      <p class="form-control-static" id="accidentDate">{{data.accident.date}}</p>
     </div>
   </div>
 </div>

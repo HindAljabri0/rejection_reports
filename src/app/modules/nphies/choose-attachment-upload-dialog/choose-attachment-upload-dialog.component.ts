@@ -18,6 +18,7 @@ export class ChooseAttachmentUploadDialogComponent implements OnInit {
   folderNameControl: FormControl = new FormControl();
   folderNamerror = '';
   folderName: string;
+  filteredFolder: any[] = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data,
@@ -30,13 +31,14 @@ export class ChooseAttachmentUploadDialogComponent implements OnInit {
 
   ngOnInit() {
     this.loadFolders();
-    console.log("payer = "+JSON.stringify(this.data.uploadData.payer));
+    console.log("payer = " + JSON.stringify(this.data.uploadData.payer));
   }
-  
+
   loadFolders() {
     this.attachmentLinkService.getFoldersName(this.sharedService.providerId).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         this.folders = event.body;
+        this.filteredFolder = this.folders;
         this.sharedService.loadingChanged.next(false);
       }
     }, err => {
@@ -61,7 +63,7 @@ export class ChooseAttachmentUploadDialogComponent implements OnInit {
       this.data.uploadData.selectedClaims, this.data.uploadData.uploadId, this.data.uploadData.claimRefNo, this.data.uploadData.to,
       this.data.uploadData.payerIds, this.data.uploadData.batchId, this.data.uploadData.memberId, this.data.uploadData.invoiceNo,
       this.data.uploadData.patientFileNo, this.data.uploadData.from, this.data.uploadData.claimTypes, this.data.uploadData.netAmount,
-      this.data.uploadData.nationalId, this.data.uploadData.statuses, this.data.uploadData.organizationId, this.data.uploadData.requestBundleId,this.data.uploadData.isRelatedClaim
+      this.data.uploadData.nationalId, this.data.uploadData.statuses, this.data.uploadData.organizationId, this.data.uploadData.requestBundleId, this.data.uploadData.isRelatedClaim
     ).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
@@ -85,5 +87,25 @@ export class ChooseAttachmentUploadDialogComponent implements OnInit {
   }
   closeDialog() {
     this.dialogRef.close();
+  }
+
+  updateFilter() {
+    this.filteredFolder = this.filteredFolder.filter(folder =>
+      `${folder != null ? folder.toLowerCase() : folder}`
+        .includes(this.folderNameControl.value.toLowerCase()))
+    if (this.folderNameControl.value == null || this.folderNameControl.value == "") {
+
+      this.filteredFolder = this.folders;
+    }
+
+  }
+
+  selectFolder(folder: string = null) {
+    if (folder !== null)
+      this.folderName = folder;
+    else {
+      //const folderName = this.providerController.value.split('|')[0].trim();
+      this.filteredFolder = this.folders;
+    }
   }
 }
