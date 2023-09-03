@@ -1315,7 +1315,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     if (this.Items.length > 0 && this.Items.filter(x => x.type === 'medication-codes').length > 0 && (this.SupportingInfo.filter(x => x.category === 'days-supply').length === 0)) {
       // tslint:disable-next-line:max-line-length
-      this.dialogService.showMessage('Error', 'Days-Supply is required in Supporting Info if any medication-code is used', 'alert', true, 'OK');
+      this.dialogService.showMessage('Error', this.getAllOfMedicationitemsHaveValidationLinkeDayOfsupply().replace("/n", "<br>").split("/n"), 'alert', true , 'OK',null,true);
       return false;
       // tslint:disable-next-line:max-line-length
     } else if (this.Items.length > 0 && this.Items.filter(x => x.type === 'medication-codes').length > 0 && (this.SupportingInfo.filter(x => x.category === 'days-supply').length > 0)) {
@@ -1326,7 +1326,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       if (this.Items.filter(x => x.type === 'medication-codes' && (x.supportingInfoSequence.length === 0)).length > 0 || !SeqIsThere) {
         // tslint:disable-next-line:max-line-length
-        this.dialogService.showMessage('Error', 'Supporting Info with Days-Supply must be linked with Item of type medication-code', 'alert', true, 'OK');
+        this.dialogService.showMessage('Error', this.getAllOfMedicationitemsHaveValidationLinkeDayOfsupply().replace("/n", "<br>").split("/n"), 'alert', true , 'OK',null,true);
+      //  this.dialogService.showMessage('Error', 'Supporting Info with Days-Supply must be linked with Item of type medication-code', 'alert', true, 'OK');
         return false;
       } else {
         return true;
@@ -3558,4 +3559,24 @@ export class CreateClaimNphiesComponent implements OnInit {
     }
   }
 
+  getAllOfMedicationitemsHaveValidationLinkeDayOfsupply(){
+    let  hasDaysSupply;
+      let allOfItemsSeq ="";
+      this.Items.filter(it => it.type === 'medication-codes').forEach(item=>{
+        hasDaysSupply=false;
+        item.supportingInfoSequence.forEach(Sequence=>{
+          this.SupportingInfo.forEach(SupportingInfo=>{
+            if(Sequence==SupportingInfo.sequence && SupportingInfo.category === 'days-supply'){
+             hasDaysSupply=true;
+            }
+          })
+
+        })
+        if(!hasDaysSupply){
+          allOfItemsSeq+="[Item Seq. No. "+ item.sequence +"] -Days-Supply is required in Supporting Info if any medication-code is used/n";
+        }
+      })
+
+      return allOfItemsSeq;
+  }
 }
