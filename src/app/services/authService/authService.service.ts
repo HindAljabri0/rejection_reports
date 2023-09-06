@@ -56,6 +56,7 @@ export class AuthService {
     return this.httpClient.request(request);
   }
   loginOut() {
+    //console.log("inside singout");
     const requestURL = '/signout';
     const request = new HttpRequest('GET', environment.authenticationHost + requestURL);
     return this.httpClient.request(request);
@@ -87,9 +88,9 @@ export class AuthService {
     localStorage.removeItem('organizationId');
     const providerId = localStorage.getItem('provider_id');
     localStorage.removeItem('provider_id');
+    this.loginOut();
     this.toKeepStorageValues.forEach((storageValue, i) => this.toKeepStorageValues[i].value = localStorage.getItem(storageValue.key.replace('{}', providerId)));
     localStorage.clear();
-    this.loginOut();
     this.toKeepStorageValues.filter(storageValue =>
       storageValue.value != null).forEach((storageValue) =>
         localStorage.setItem(storageValue.key.replace('{}', providerId), storageValue.value));
