@@ -48,7 +48,7 @@ export class CreateTicketComponent implements OnInit {
       ]
     ]
   };
-
+  lovs = [];
   // type = 'Payer Down', 'Question', 'Problem', 'Enhancement', 'Request', 'Payers Request', 'integration', 'Waseel Down', 
   //   'Reports', 'Service Task', 'New Provider Request', 'Error', 'F-Other', 'Netsuite Issue', 'Sadad Payment';
   types = [];
@@ -60,6 +60,10 @@ export class CreateTicketComponent implements OnInit {
   // products = 'Portal Switch', 'Waseel Connect', 'PBM', 'Waseele Claim', 'RCM', 'Netsuite', 'Communication portal', 'BI', 'LMS';
   products = [];
 
+  related_system = [];
+
+  category = [];
+
   formTicket: FormGroup = this.formBuilder.group({
     subject: ['', Validators.required],
     email: ['', Validators.email],
@@ -67,7 +71,9 @@ export class CreateTicketComponent implements OnInit {
     type: [''],
     payer: [''],
     product: [''],
-    description: ['']
+    description: [''],
+    category : [''],
+    related:['']
   });
 
   errors: string[];
@@ -86,38 +92,38 @@ export class CreateTicketComponent implements OnInit {
     private dialog: MatDialog) { }
 
   ngOnInit() {
-    this.fetchPayers();
+    /*this.fetchPayers();
     this.fetchProducts();
-    this.fetchTypes();
+    this.fetchTypes();*/
+    this.fetchAll();
   }
 
-  fetchPayers() {
-    this.eclaimsTicketManagementService.fetchPayerList().subscribe(event => {
+  
+  fetchAll() {
+    this.eclaimsTicketManagementService.fetchLovsList().subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.body != null && event.body instanceof Array) {
-          this.payers = event.body;
+          this.lovs = event.body;
+          let productObj = this.lovs.filter(f => f.name === 'cf_products')[0];
+          let payerObj = this.lovs.filter(f => f.name === 'cf_payer')[0];
+          let typeObj = this.lovs.filter(f => f.name === 'ticket_type')[0];
+          let relatedObj = this.lovs.filter(f => f.name === 'cf_related_system')[0];
+          let categoryObj = this.lovs.filter(f => f.name === 'cf_ticket_category')[0];
+
+          this.payers = Array.from(payerObj.choices);
+          this.products = Array.from(productObj.choices);
+          this.types = Array.from(typeObj.choices);
+          this.related_system = Array.from(relatedObj.choices);
+          this.category = Array.from(categoryObj.choices);
+          //this.payers.forEach(e=>{ console.log("choices"+e) });
+          //console.log("lovs1="+this.payers);
+
         }
       }
     });
+    //console.log("lovs2="+JSON.stringify(this.lovs));
   }
-  fetchProducts() {
-    this.eclaimsTicketManagementService.fetchProductList().subscribe(event => {
-      if (event instanceof HttpResponse) {
-        if (event.body != null && event.body instanceof Array) {
-          this.products = event.body;
-        }
-      }
-    });
-  }
-  fetchTypes() {
-    this.eclaimsTicketManagementService.fetchTypeList().subscribe(event => {
-      if (event instanceof HttpResponse) {
-        if (event.body != null && event.body instanceof Array) {
-          this.types = event.body;
-        }
-      }
-    });
-  }
+ 
 
   onSubmit() {
     this.sharedServices.loadingChanged.next(true);
@@ -185,7 +191,7 @@ export class CreateTicketComponent implements OnInit {
           } else {
             this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true)).subscribe(result => {
               if (error.error['ticketId'] != null) {
-              //this.loadTicket(error.error['ticketId']);
+                //this.loadTicket(error.error['ticketId']);
               }
             });
           }

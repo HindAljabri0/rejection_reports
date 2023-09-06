@@ -40,7 +40,7 @@
                         <mat-form-field class="form-control custom-select-control">
                             <mat-select value="" formControlName="type">
                                 <mat-option value="">Select type</mat-option>
-                                <mat-option *ngFor="let type of types" value="{{type.typeName}}">{{type.typeName}}</mat-option>
+                                <mat-option *ngFor="let type of types" value="{{type}}">{{type}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
@@ -51,7 +51,7 @@
                         <mat-form-field class="form-control custom-select-control">
                             <mat-select value="" formControlName="payer">
                                 <mat-option value="">Select Payer</mat-option>
-                                <mat-option *ngFor="let payer of payers" value="{{payer.payerName}}">{{payer.payerName}}</mat-option>
+                                <mat-option *ngFor="let payer of payers" value="{{payer}}">{{payer}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
@@ -63,7 +63,29 @@
                             <mat-select value="" formControlName="product">
                                 <mat-option value="">Select Product</mat-option>
                                 <mat-option *ngFor="let product of products"
-                                    value="{{product.productName}}">{{product.productName}}</mat-option>
+                                    value="{{product}}">{{product}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Related System</label>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select value="" formControlName="related">
+                                <mat-option value="">Select System</mat-option>
+                                <mat-option *ngFor="let row of related_system" value="{{row}}">{{row}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Category</label>
+                        <mat-form-field class="form-control custom-select-control">
+                            <mat-select value="" formControlName="category">
+                                <mat-option value="">Select Category</mat-option>
+                                <mat-option *ngFor="let row of category" value="{{row}}">{{row}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
