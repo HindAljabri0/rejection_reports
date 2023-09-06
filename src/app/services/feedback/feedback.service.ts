@@ -30,6 +30,12 @@ export class FeedbackService {
         const httpRequest = new HttpRequest('GET', requestUrl);
         return this.http.request(httpRequest);
     }
+    downloadExcel(surveyId) {
+        const requestUrl = `${environment.NotificationServiceHost}/survey-response/${surveyId}/all`;
+        const httpRequest = new HttpRequest('GET', requestUrl);
+        return this.http.request(httpRequest);
+    }
+
 
     getSurvey(page, pageSize) {
         const Url = `${environment.NotificationServiceHost}/survey/all?page=${page}&pageSize=${pageSize}`;

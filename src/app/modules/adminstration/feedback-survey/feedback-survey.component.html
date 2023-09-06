@@ -36,6 +36,10 @@
                                 (click)="getChecked(survey)">
                                 <mat-icon>content_copy</mat-icon>
                             </button>
+                            <button mat-icon-button matTooltip="Download" class="text-primary"
+                            (click)="downloadSheetFormat(survey)">
+                            <mat-icon aria-hidden="false">download</mat-icon>
+                        </button>
                             <button (click)="preview(survey)" mat-icon-button matTooltip="Preview Survey"
                                 class="text-primary">
                                 <mat-icon class="material-icons-outlined">visibility</mat-icon>
