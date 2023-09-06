@@ -1,4 +1,5 @@
-const host = 'https://api.stg-eclaims.waseel.com';
+const host = 'https://stg-eclaims.waseel.com/api';
+const apiDotHost = 'https://api.stg-eclaims.waseel.com';
 const hostFeedback = 'https://feedback.stg-eclaims.waseel.com/en/';
 
 export const environment = {
@@ -10,10 +11,10 @@ export const environment = {
     uploaderHost: `${host}/upload`,
     claimSearchHost: `${host}/search`,
     claimServiceHost: `${host}/claims`,
-    NotificationServiceHost: `${host}/notifications`,
+    NotificationServiceHost: `${apiDotHost}/notifications`,
     authenticationHost: `${host}/oauth`,
     adminServiceHost: `${host}/admin`,
-    auditTrailServiceHost: `${host}/audit`,
+    auditTrailServiceHost: `${apiDotHost}/audit`,
     settingsServiceHost: `${host}/settings`,
     claimInquireServiceHost: `${host}/claim-inquiry`,
     validationServiceHost: `${host}/validate`,
@@ -27,15 +28,15 @@ export const environment = {
     providerNphiesSearch: `${host}/provider-nphies-search`,
     providerNphiesApproval: `${host}/approvals`,
     nphiesClaimUploader: `${host}/upload-v2`,
-    claimsDownloadsService: `${host}/downloads`,
+    claimsDownloadsService: `${apiDotHost}/downloads`,
     nphiesPollManagement: `${host}/poll-management`,
     contractManagementService: `${host}/contract-billing`,
     claimReviewService: `${host}/review`,
     nphiesConfigurationService: `${host}/nphies-configurations`,
     tawuniyaGssReport: `${host}/gss-report`,
-    nphiesClaimDownload: `${host}/nphiesDownloads`,
+    nphiesClaimDownload: `${apiDotHost}/nphiesDownloads`,
     nphiesApprovalInquiry: `${host}/nphies-approval-inquiry`,
-    nphiesDownloadApprovleEligibility: `${host}/nphiesApprovalEligibilityDownloads`,
+    nphiesDownloadApprovleEligibility: `${apiDotHost}/nphiesApprovalEligibilityDownloads`,
     providerNphiesClaim:`${host}/nphies-claim`,
     nphiesClaimLinkAttachment: `${host}/nphies-claim-attachment-link`,
     eclaimsTicketManagement: `${host}/eclaims-ticket-management`,
@@ -43,6 +44,6 @@ export const environment = {
     nphiesApprovalPBM:`${host}/nphies-approval-pbm-validation`,
     nphiesPollApprovalManagement: `${host}/nphies-poll-approval-management`,
     nphiesPollClaimManagement: `${host}/nphies-poll-claim-management`,
-    chronicDiseaseManagement: `${host}/chronic-disease-management`,
+    chronicDiseaseManagement: `${apiDotHost}/chronic-disease-management`,
     feedbacksurveyUrl: `${hostFeedback}`,
 };
