@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddPrescriptionComponent } from './add-prescription.component';
+import { AddPreauthorizationComponent } from './add-preauthorization.component';
 
-describe('AddPrescriptionComponent', () => {
-  let component: AddPrescriptionComponent;
-  let fixture: ComponentFixture<AddPrescriptionComponent>;
+describe('AddPreauthorizationComponent', () => {
+  let component: AddPreauthorizationComponent;
+  let fixture: ComponentFixture<AddPreauthorizationComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddPrescriptionComponent ]
+      declarations: [ AddPreauthorizationComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddPrescriptionComponent);
+    fixture = TestBed.createComponent(AddPreauthorizationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

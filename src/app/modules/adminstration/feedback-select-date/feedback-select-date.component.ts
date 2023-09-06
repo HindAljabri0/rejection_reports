@@ -2,7 +2,7 @@ import { F } from '@angular/cdk/keycodes';
 import { DatePipe } from '@angular/common';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { error } from 'console';
 import { AnnouncementNotification } from 'src/app/models/announcementNotification';
@@ -31,6 +31,7 @@ export class AddFeedbackDateDialogComponent implements OnInit {
   public showSpinners = true;
   public showSeconds = false;
   public touchUi = false;
+  announcementForm: FormGroup;
   announcement: FeedbackDate = {
     providerIds: [],
 
@@ -68,19 +69,25 @@ export class AddFeedbackDateDialogComponent implements OnInit {
     public sharedServices: SharedServices,
     public authService: AuthService,
     private dialogService: DialogService,
-    private _feedbackservice: FeedbackService) { }
+    private _feedbackservice: FeedbackService,
+    private formBuilder: FormBuilder) { 
+      this.announcementForm = this.formBuilder.group(
+        {
+          startDateControl: ['', Validators.required],
+          closeDateControl: ['', Validators.required],
+          providersControl: [''],
+          status: ['']
+  
+        },
+        {
+          validator: this.dateRangeValidator, // Attach the custom validator
+        }
+      );
+    }
 
-  announcementForm = new FormGroup({
+   
 
-    startDateControl: new FormControl('', [
-      Validators.required
-    ]),
-    closeDateControl: new FormControl('', [
-      Validators.required
-    ]),
-    providersControl: new FormControl(''),
-    status: new FormControl(''),
-  });
+ 
 
   ngOnInit() {
     this.providers = this.data.providersInfo;
@@ -93,12 +100,25 @@ export class AddFeedbackDateDialogComponent implements OnInit {
     }
     if (this.data.details.closeDate === null) {
       this.announcementForm.controls.closeDateControl.setValue(new Date());
-    }
-    else {
+    }  
+    else {     
+      const providerString = this.data.details.providerId;
+      const providerWithoutBrackets = providerString.slice(1, -1);
+      const providerLists = providerWithoutBrackets.split(',').map(item => item.trim());
+
+      providerLists.forEach(provide => {
+      this.providerIds.push(provide);
+      });   
       this.announcementForm.controls.startDateControl.setValue(new Date(this.data.details.startDate));
       this.announcementForm.controls.closeDateControl.setValue(new Date(this.data.details.closeDate));
-    } 
-    this.announcementForm.controls.providersControl.setValue(this.data.details.providerId);
+      this.announcementForm.controls.providersControl.setValue( this.providerIds);
+      if(this.data.details.providerId){
+        this.announcementForm.get('closeDateControl').disable();
+        this.announcementForm.get('startDateControl').disable();
+        this.announcementForm.get('providersControl').disable();
+  
+      }
+    }    
   }
 
   closeDialog() {
@@ -158,7 +178,7 @@ export class AddFeedbackDateDialogComponent implements OnInit {
       if (provider.switchAccountId === providerId) { this.selectedProviders.splice(index, 1); }
     });
   }
-  setData() {
+  setData() {   
     this.selectedProviders.forEach(provide => {
       this.providerIds.push(provide.switchAccountId);
     });   
@@ -167,6 +187,15 @@ export class AddFeedbackDateDialogComponent implements OnInit {
     this.announcement.closeDate = this.pipe.transform(new Date(this.announcementForm.controls.closeDateControl.value), 'yyyy-MM-dd HH:mm:ss');
     this.announcement.surveyId = this.surveyId;
     this.announcement.isActive = this.announcementForm.controls.status.value;
+  }
+   dateRangeValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    const startDate = control.get('startDateControl').value;
+    const endDate =  control.get('closeDateControl').value;
+  
+    if (startDate && endDate && startDate > endDate) {
+      return { 'dateRange': true };
+    }
+    return null;
   }
   hasError(controlsName: string) {
     switch (controlsName) {
@@ -198,15 +227,42 @@ export class AddFeedbackDateDialogComponent implements OnInit {
         if (error instanceof HttpErrorResponse) {
           this.dialogService.openMessageDialog({
             title: '',
-            message: error.message,
+            message: 'Save Failed',
             isError: true
           });
           this.sharedServices.loadingChanged.next(false);
         }
-
       });
     }
-
+    else{
+      if (this.announcementForm) {
+        this.sharedServices.loadingChanged.next(true);
+        this.setData();
+        this._feedbackservice.updateSurvey(this.announcement).subscribe(event => {
+          if (event instanceof HttpResponse) {       
+            this.sharedServices.loadingChanged.next(false);
+            this.dialogService.openFeedbackDialog({
+              title: '',
+              message: `Provider and date has been selected`,
+              isError: false
+            }); 
+          }
+  
+        }, error => {
+          if (error instanceof HttpErrorResponse) {
+            this.dialogService.openMessageDialog({
+              title: '',
+              message: 'Save Failed',
+              isError: true
+            });
+            this.sharedServices.loadingChanged.next(false);
+          }
+  
+        });
+      }
+  
+    }
+  
   }
 
 

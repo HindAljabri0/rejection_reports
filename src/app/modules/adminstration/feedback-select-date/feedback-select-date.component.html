@@ -46,6 +46,9 @@
                     </ngx-mat-datetime-picker>
                   </mat-form-field>
                   </div>
+                  <div *ngIf="announcementForm.hasError('dateRange')">
+                    <p class="error-text">Start date must be before or equal to Close date.</p>
+                  </div>
              
 <!--                 
                 <div class="form-group" [class.has-error]="hasError('closeDateControl')!=null"

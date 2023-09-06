@@ -98,7 +98,6 @@ export class FeedbackDialogComponent implements OnInit {
   // }
 
   onIframeLoad(event: Event) {
-    console.log(event, 'ksksksk');
     const iframe: HTMLIFrameElement = event.target as HTMLIFrameElement;
     const token = this.authService.getAccessToken();
     const providerId = this.authService.getProviderId();

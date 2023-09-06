@@ -1,0 +1,73 @@
+<div class="primary-dialog-header has-border">
+  <h5 *ngIf="!data.item" class="primary-dialog-title">Add Diagnosis</h5>
+  <h5 *ngIf="data.item" class="primary-dialog-title">Edit Diagnosis</h5>
+  <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+<form [formGroup]="FormDiagnosis" (ngSubmit)="onSubmit()">
+  <div class="primary-dialog-body pb-0">
+    <div class="row small-gutter">
+      <div class="col-4 col-lg-3">
+
+        <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormDiagnosis.get('description').touched) && FormDiagnosis.get('description').hasError('required')}">
+          <label class="control-label">Code-Description<span class="asterisk">*</span></label>
+          <input type="text" class="form-control search-box" placeholder="Search diagnosis code here..." formControlName="description" [matAutocomplete]="auto"
+            (keyup)="searchICDCodes()">
+          <p class="control-hint" *ngIf="diagnosisHasErrorForAllList()">{{getDiagnosisErrorForAllList()}}</p>
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of icedOptions" (click)="addICDDiagnosis(option)">
+              {{option.diagnosisCode}} | {{option.diagnosisDescription}}
+            </mat-option>
+          </mat-autocomplete>
+          <div *ngIf="(isSubmitted || FormDiagnosis.get('description').touched) && FormDiagnosis.get('description').hasError('required')">
+            <span class="error-text">Please select a Code-Description</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-4 col-lg-3">
+        <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormDiagnosis.get('type').touched) && FormDiagnosis.get('type').hasError('required')}">
+          <label class="control-label">Type<span class="asterisk">*</span></label>
+          <mat-form-field class="form-control custom-select-control">
+            <mat-select formControlName="type">
+              <mat-option value="">Select Type</mat-option>
+              <mat-option *ngFor="let type of typeList" [value]="type">{{type.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div *ngIf="(isSubmitted || FormDiagnosis.get('type').touched) && FormDiagnosis.get('type').hasError('required')">
+            <span class="error-text">Please select a Type</span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="IsOnAdmissionRequired" class="col-4 col-lg-3">
+        <div class="form-group"
+          [ngClass]="{'has-error' : IsOnAdmissionRequired && ((isSubmitted || FormDiagnosis.get('onAdmission').touched) && FormDiagnosis.get('onAdmission').hasError('required'))}">
+          <label class="control-label">On Admission<span *ngIf="IsOnAdmissionRequired" class="asterisk">*</span></label>
+          <mat-form-field class="form-control custom-select-control">
+            <mat-select formControlName="onAdmission">
+              <mat-option value="">Select On Admission</mat-option>
+              <mat-option *ngFor="let a of onAdmissionList" [value]="a">{{a.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div *ngIf="IsOnAdmissionRequired && ((isSubmitted || FormDiagnosis.get('onAdmission').touched) && FormDiagnosis.get('onAdmission').hasError('required'))">
+            <span class="error-text">Please select a On Admission </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="primaryValidationMsg">
+      <div class="col-12 text-danger">
+        <b>Note: {{primaryValidationMsg}}</b>
+      </div>
+    </div>
+  </div>
+  <div class="primary-dialog-footer has-border">
+    <div class="btn-list text-right">
+      <button type="button" mat-button (click)="closeDialog()">Close</button>
+      <button mat-flat-button color="primary" type="submit">
+        <span *ngIf="!data.item">Add</span>
+        <span *ngIf="data.item">Save</span></button>
+    </div>
+  </div>
+</form>
