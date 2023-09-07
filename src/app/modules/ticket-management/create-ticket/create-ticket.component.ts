@@ -72,7 +72,6 @@ export class CreateTicketComponent implements OnInit {
     payer: [''],
     product: [''],
     description: [''],
-    category : [''],
     related:['']
   });
 
@@ -106,17 +105,17 @@ export class CreateTicketComponent implements OnInit {
           this.lovs = event.body;
           let productObj = this.lovs.filter(f => f.name === 'cf_products')[0];
           let payerObj = this.lovs.filter(f => f.name === 'cf_payer')[0];
-          let typeObj = this.lovs.filter(f => f.name === 'ticket_type')[0];
+          let typeObj = this.lovs.filter(f => f.name === 'cf_ticket_type')[0];
           let relatedObj = this.lovs.filter(f => f.name === 'cf_related_system')[0];
-          let categoryObj = this.lovs.filter(f => f.name === 'cf_ticket_category')[0];
+          //let categoryObj = this.lovs.filter(f => f.name === 'cf_ticket_category')[0];
 
           this.payers = Array.from(payerObj.choices);
           this.products = Array.from(productObj.choices);
-          this.types = Array.from(typeObj.choices);
+          this.types = Object.keys(typeObj.choices.Request);
           this.related_system = Array.from(relatedObj.choices);
-          this.category = Array.from(categoryObj.choices);
+          //this.category = Array.from(categoryObj.choices);
           //this.payers.forEach(e=>{ console.log("choices"+e) });
-          //console.log("lovs1="+this.payers);
+          console.log("lovs1="+this.types);
 
         }
       }
@@ -149,6 +148,10 @@ export class CreateTicketComponent implements OnInit {
     if (this.formTicket.controls.description.value == null || this.formTicket.controls.description.value.trim() == '') {
       this.errors.push('Please Insert Description.');
     }
+    if (this.formTicket.controls.related.value == null || this.formTicket.controls.related.value.trim() == '') {
+      this.errors.push('Please Select Related System');
+    }
+    
     if (this.errors.join('') != '') {
       this.sharedServices.loadingChanged.next(false);
       this.dialogService.openMessageDialog(new MessageDialogData('Validation', this.errors.join('\n'), true));
@@ -162,6 +165,7 @@ export class CreateTicketComponent implements OnInit {
       'cfPayer': this.formTicket.controls.payer.value,
       'cfProduct': this.formTicket.controls.product.value,
       'type': this.formTicket.controls.type.value,
+      'related' : this.formTicket.controls.related.value,
       'attachmentModels': this.attachments
     };
     this.eclaimsTicketManagementService.sendEclaimsTicket(this.sharedServices.providerId, ticket).subscribe(event => {
