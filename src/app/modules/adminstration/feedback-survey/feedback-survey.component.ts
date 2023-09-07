@@ -129,10 +129,31 @@ export class FeedbackSurveyComponent implements OnInit {
       
       if (event instanceof HttpResponse) {
         this.downloadData = event.body; 
+        if (this.downloadData.length > 0){
         const formattedData =  this.downloadData.map(item => {
           const result = JSON.parse(item.result);
-          return { FEEDBACKID: item.surveyResponseId, PROVIDERID: item.providerId,USERNAME:item.userName, QUESTION_1: result.question1, QUESTION_2: result.question2, CREATED_DATE: item.dateCreated };
-        });
+          const rowData: any = {
+            FEEDBACKID: item.surveyResponseId,
+            PROVIDERID: item.providerId,
+            USERNAME: item.userName,
+            CREATED_DATE: item.dateCreated,
+            QUESTION_1: result.question1,
+          };
+          if (result.question2) {
+            rowData.QUESTION_2 = result.question2;
+          }
+          if (result.question3) {
+            rowData.QUESTION_3 = result.question3;
+          }
+          if (result.question4) {
+            rowData.QUESTION_4 = result.question4;
+          }
+          if (result.question5) {
+            rowData.QUESTION_5 = result.question5;
+          }
+
+          return rowData;
+          });
     
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(formattedData);
 
@@ -140,6 +161,25 @@ export class FeedbackSurveyComponent implements OnInit {
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
     XLSX.writeFile(wb, survey.name +'.xlsx');
+      }else
+      {
+        const headers = [
+          'FEEDBACKID',
+          'PROVIDERID',
+          'USERNAME',
+          'CREATED_DATE',
+          'QUESTION_1',
+          'QUESTION_2',
+        ];
+        const nullData = [headers]; 
+
+        const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(nullData);
+
+        const wb: XLSX.WorkBook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+        XLSX.writeFile(wb, survey.name + '.xlsx');
+      }
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
