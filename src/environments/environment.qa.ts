@@ -1,5 +1,6 @@
 const host = 'http://gateway.okd.waseel.com';
 const hostFeedback = 'https://feedback.qa-eclaims.waseel.com/en/';
+const hostjisr = 'https://qa-jisr.waseel.com/signIn';
 export const environment = {
     name: 'qa',
     production: true,
@@ -46,4 +47,5 @@ export const environment = {
     nphiesPollClaimManagement: `${host}/nphies-poll-claim-management`,
     chronicDiseaseManagement: `${host}/chronic-disease-management`,   
     feedbacksurveyUrl: `${hostFeedback}`,
+    communicationportalUrl: `${hostjisr}`,
 };
