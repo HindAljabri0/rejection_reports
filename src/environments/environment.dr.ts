@@ -1,6 +1,7 @@
 const host = window.location.protocol + '//api.' + window.location.hostname;
 const url = window.location.protocol + '//' + window.location.hostname;
-const hostFeedback = 'https://feedback.dr-eclaims.waseel.com/en/'
+const hostFeedback = 'https://feedback.dr-eclaims.waseel.com/en/';
+const hostjisr = 'https://qa-jisr.waseel.com/signIn'
 export const environment = {
     name: 'dr',
     production: true,
@@ -43,4 +44,5 @@ export const environment = {
     nphiesPollClaimManagement: `${host}/nphies-poll-claim-management`,
     chronicDiseaseManagement: `${host}/chronic-disease-management`,   
     feedbacksurveyUrl: `${hostFeedback}`,
+    communicationportalUrl: `${hostjisr}`,
 };
