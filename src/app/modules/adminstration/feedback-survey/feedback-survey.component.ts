@@ -137,19 +137,19 @@ export class FeedbackSurveyComponent implements OnInit {
             PROVIDERID: item.providerId,
             USERNAME: item.userName,
             CREATED_DATE: item.dateCreated,
-            QUESTION_1: result.question1,
+            QUESTION_1: Array.isArray(result.question1) ? result.question1.join(', ') : result.question1,
           };
           if (result.question2) {
-            rowData.QUESTION_2 = result.question2;
+            rowData.QUESTION_2 = Array.isArray(result.question2) ? result.question2.join(', ') : result.question2;
           }
           if (result.question3) {
-            rowData.QUESTION_3 = result.question3;
+            rowData.QUESTION_3 = Array.isArray(result.question3) ? result.question3.join(', ') : result.question3;
           }
           if (result.question4) {
-            rowData.QUESTION_4 = result.question4;
+            rowData.QUESTION_4 = Array.isArray(result.question4) ? result.question4.join(', ') : result.question4;
           }
           if (result.question5) {
-            rowData.QUESTION_5 = result.question5;
+            rowData.QUESTION_5 = Array.isArray(result.question5) ? result.question5.join(', ') : result.question5;
           }
 
           return rowData;
