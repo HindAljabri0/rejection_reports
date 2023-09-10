@@ -55,6 +55,12 @@ export class AuthService {
     const request = new HttpRequest('POST', environment.authenticationHost + requestURL, body);
     return this.httpClient.request(request);
   }
+  loginOut() {
+    //console.log("inside singout");
+    const requestURL = '/signout';
+    const request = new HttpRequest('GET', environment.authenticationHost + requestURL);
+    return this.httpClient.request(request);
+  }
   refreshTokenForSSO() {
     const requestURL = '/sso/refresh?oldUserName=' + this.getAuthUsername();
     const body: {} = {
@@ -82,6 +88,7 @@ export class AuthService {
     localStorage.removeItem('organizationId');
     const providerId = localStorage.getItem('provider_id');
     localStorage.removeItem('provider_id');
+    this.loginOut();
     this.toKeepStorageValues.forEach((storageValue, i) => this.toKeepStorageValues[i].value = localStorage.getItem(storageValue.key.replace('{}', providerId)));
     localStorage.clear();
     this.toKeepStorageValues.filter(storageValue =>

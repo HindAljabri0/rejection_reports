@@ -36,7 +36,11 @@ export class EclaimsTicketManagementService {
     const request = new HttpRequest('GET', environment.eclaimsTicketManagement + requestUrl);
     return this.http.request(request);
   }
-
+  fetchLovsList() {
+    const requestUrl = `/providers/lov/fetchall`;
+    const request = new HttpRequest('GET', environment.eclaimsTicketManagement + requestUrl);
+    return this.http.request(request);
+  }
   fetchProductList() {
     const requestUrl = `/providers/lov/products`;
     const request = new HttpRequest('GET', environment.eclaimsTicketManagement + requestUrl);
