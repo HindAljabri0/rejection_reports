@@ -1,12 +1,14 @@
 import { Component, LOCALE_ID, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { AuthService } from 'src/app/services/authService/authService.service';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse, HttpErrorResponse, HttpHeaderResponse } from '@angular/common/http';
 import { Router, RouterEvent, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { SharedServices } from 'src/app/services/shared.services';
 import { filter } from 'rxjs/operators';
 import { Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { MatDialog, MatDialogConfig } from '@angular/material';
+import { SsoComponent } from 'src/app/sso/sso.component';
 
 @Component({
   selector: 'app-login',
@@ -34,7 +36,7 @@ export class LoginComponent implements OnInit {
 
   isRamadan = false;
 
-
+  url = "";
   isEidFitr = false;
   isEidAdha = false;
 
@@ -43,6 +45,7 @@ export class LoginComponent implements OnInit {
     public router: Router,
     public routeActive: ActivatedRoute,
     public commen: SharedServices,
+    private dialog: MatDialog,
     @Inject(DOCUMENT) private document: Document,
     @Inject(LOCALE_ID) protected locale: string
   ) {
@@ -113,8 +116,8 @@ export class LoginComponent implements OnInit {
         if (errorEvent.status == 403) {
           this.errors = 'Your account has been blocked, kindly contact Waseel Customer Care!';
         }
-        else if  (errorEvent.status == 401 || errorEvent.status == 406) {
-          this.errors = 'Please use  http://sso.waseel.com/ to resolve your issue!';
+        else if (errorEvent.status == 401 || errorEvent.status == 406) {
+          this.errors = 'Please reset your password using https://sso.waseel.com/';
         }
         else if (errorEvent.status < 500 && errorEvent.status >= 406) {
           this.errors = 'Token is invalid!';
@@ -157,12 +160,19 @@ export class LoginComponent implements OnInit {
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
-
+       
         if (errorEvent.status == 403) {
           this.errors = 'Your account has been blocked, kindly contact Waseel Customer Care!';
         }
-        else if  (errorEvent.status == 401 || errorEvent.status == 406) {
-          this.errors = 'Please use http://sso.waseel.com/ to resolve your issue!';
+        else if (errorEvent.status == 401 || errorEvent.status == 406) {
+          this.errors = 'Please reset your password using https://sso.waseel.com/';
+          this.isLoading = false;
+
+          this.url = errorEvent.error.location;
+          if (this.url != null) {
+            this.openDailog();
+          }
+
         }
         else if (errorEvent.status < 500 && errorEvent.status >= 406) {
           this.errors = 'Username or Password is invalid!';
@@ -176,6 +186,15 @@ export class LoginComponent implements OnInit {
 
   getYear() {
     return new Date().getFullYear();
+  }
+  openDailog() {
+    this.dialog.closeAll();
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog', 'dialog-lg'];
+    dialogConfig.autoFocus = false;
+    dialogConfig.disableClose = false;
+    dialogConfig.data = this.url
+    const dialogRef = this.dialog.open(SsoComponent, dialogConfig);
   }
 
   isCloseToNationalDay() {
