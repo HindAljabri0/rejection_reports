@@ -114,7 +114,8 @@ export class LoginComponent implements OnInit {
           this.errors = 'Your account has been blocked, kindly contact Waseel Customer Care!';
         }
         else if  (errorEvent.status == 401 || errorEvent.status == 406) {
-          this.errors = 'Please use  http://sso.waseel.com/ to resolve your issue!';
+          let ssoUrl='<div style="color: blue" ><u><a href="http://sso.waseel.com/">http://sso.waseel.com/</a></u></div>';
+          this.errors = `Please use ${ssoUrl} to resolve your issue!`;
         }
         else if (errorEvent.status < 500 && errorEvent.status >= 406) {
           this.errors = 'Token is invalid!';
@@ -162,7 +163,8 @@ export class LoginComponent implements OnInit {
           this.errors = 'Your account has been blocked, kindly contact Waseel Customer Care!';
         }
         else if  (errorEvent.status == 401 || errorEvent.status == 406) {
-          this.errors = 'Please use http://sso.waseel.com/ to resolve your issue!';
+          let ssoUrl='<div style="color: blue" ><u><a href="http://sso.waseel.com/">http://sso.waseel.com/</a></u></div>';
+          this.errors = `Please use ${ssoUrl} to resolve your issue!`;
         }
         else if (errorEvent.status < 500 && errorEvent.status >= 406) {
           this.errors = 'Username or Password is invalid!';
