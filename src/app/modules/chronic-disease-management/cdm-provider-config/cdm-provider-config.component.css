@@ -1,0 +1,119 @@
+.bodyOfCodeValueManagement {
+    height: auto;
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.cardInCodeValueManagement {
+    height: 50vh;
+    background-color: #f9f9f9;
+}
+
+.cardInCodeValueManagement header {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background-color: #B9D3FC;
+    color: #3F6DB3;
+    display: grid;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 15px;
+}
+
+.cardInCodeValueManagement .item {
+    color: #3F6DB3;
+    font-size: large;
+    padding: 15px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 500ms ease, color 500ms ease;
+}
+
+.cardInCodeValueManagement .item:nth-child(even) {
+    background-color: white;
+}
+
+.cardInCodeValueManagement .item:nth-child(odd) {
+    background-color: #E6EEFC;
+}
+
+.cardInCodeValueManagement .item.selected {
+    background-color: #3F6DB3;
+    color: white;
+}
+
+.cardInCodeValueManagement.purple {
+    background-color: #E7E6FC;
+}
+
+.cardInCodeValueManagement.purple>header {
+    background-color: #979EF8;
+    color: white;
+}
+
+.cardInCodeValueManagement .mappedValueInput{
+    background-color: #E6EEFC;
+}
+
+.mappedValueInput {
+    display: flex;
+    padding: 20px;
+}
+
+.mappedValueInput input {
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    width: 100%;
+    background-color: white;
+    border: unset;
+    padding: 10px;
+    color: #3060AA;
+    border-radius: 3px;
+}
+
+.item input {
+    width: 100%;
+    background-color: white;
+    border: unset;
+    padding: 10px;
+    color: #3060AA;
+    border-radius: 5px;
+}
+
+.inputIcon {
+    position: relative;
+    bottom: 31px;
+    right: 5px;
+    float: right;
+    color: #d4cfcf;
+}
+
+.mappedValueInput input:focus, .item input:focus {
+    outline: 1px solid #3060aa4a;
+}
+
+.mappedValueInput button {
+    color: white;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #3060aa;
+    border-width: 0px;
+}
+
+.editableItem {
+    margin: 5px 20px;
+    background-color: white;
+    color: #3F6DB3;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    place-items: center;
+}
