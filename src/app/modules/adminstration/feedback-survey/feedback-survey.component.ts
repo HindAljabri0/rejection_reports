@@ -9,6 +9,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { environment } from 'src/environments/environment';
+import * as XLSX from 'xlsx';
 
 
 @Component({
@@ -19,6 +20,7 @@ import { environment } from 'src/environments/environment';
 export class FeedbackSurveyComponent implements OnInit {
   totalPages: any;
   Surveypage: any[];
+  downloadData: any;
   constructor(
     // tslint:disable-next-line:variable-name
     private dialog: MatDialog,
@@ -122,6 +124,69 @@ export class FeedbackSurveyComponent implements OnInit {
     );
   }
 
+  downloadSheetFormat(survey: any){   
+    this.feedbackservice.downloadExcel(survey.surveyId).subscribe((event) => {
+      
+      if (event instanceof HttpResponse) {
+        this.downloadData = event.body; 
+        if (this.downloadData.length > 0){
+        const formattedData =  this.downloadData.map(item => {
+          const result = JSON.parse(item.result);
+          const rowData: any = {
+            FEEDBACKID: item.surveyResponseId,
+            PROVIDERID: item.providerId,
+            USERNAME: item.userName,
+            CREATED_DATE: item.dateCreated,
+            QUESTION_1: Array.isArray(result.question1) ? result.question1.join(', ') : result.question1,
+          };
+          if (result.question2) {
+            rowData.QUESTION_2 = Array.isArray(result.question2) ? result.question2.join(', ') : result.question2;
+          }
+          if (result.question3) {
+            rowData.QUESTION_3 = Array.isArray(result.question3) ? result.question3.join(', ') : result.question3;
+          }
+          if (result.question4) {
+            rowData.QUESTION_4 = Array.isArray(result.question4) ? result.question4.join(', ') : result.question4;
+          }
+          if (result.question5) {
+            rowData.QUESTION_5 = Array.isArray(result.question5) ? result.question5.join(', ') : result.question5;
+          }
+
+          return rowData;
+          });
+    
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(formattedData);
+
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    XLSX.writeFile(wb, survey.name +'.xlsx');
+      }else
+      {
+        const headers = [
+          'FEEDBACKID',
+          'PROVIDERID',
+          'USERNAME',
+          'CREATED_DATE',
+          'QUESTION_1',
+          'QUESTION_2',
+        ];
+        const nullData = [headers]; 
+
+        const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(nullData);
+
+        const wb: XLSX.WorkBook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+        XLSX.writeFile(wb, survey.name + '.xlsx');
+      }
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+      }
+    });
+
+  }
   getChecked(survey: any) {
     this.surveyFlag = false;
 
