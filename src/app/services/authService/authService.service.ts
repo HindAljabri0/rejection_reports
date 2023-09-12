@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { HttpClient, HttpRequest, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpResponse, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable, Subject } from 'rxjs';
 import { Router } from '@angular/router';
@@ -35,11 +35,15 @@ export class AuthService {
     //   'username': username,
     //   'id': username
     // });
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      observe: 'response'
+    }
     const body: {} = {
       'username': username,
       'password': password
     };
-    const request = new HttpRequest('POST', environment.authenticationHost + requestURL, body);
+    const request = new HttpRequest('POST', environment.authenticationHost + requestURL, body, httpOptions);
     return this.httpClient.request(request);
   }
 
@@ -53,6 +57,12 @@ export class AuthService {
       'identityToken': iamToken
     };
     const request = new HttpRequest('POST', environment.authenticationHost + requestURL, body);
+    return this.httpClient.request(request);
+  }
+  loginOut() {
+    //console.log("inside singout");
+    const requestURL = '/signout';
+    const request = new HttpRequest('GET', environment.authenticationHost + requestURL);
     return this.httpClient.request(request);
   }
   refreshTokenForSSO() {
@@ -82,6 +92,7 @@ export class AuthService {
     localStorage.removeItem('organizationId');
     const providerId = localStorage.getItem('provider_id');
     localStorage.removeItem('provider_id');
+    this.loginOut();
     this.toKeepStorageValues.forEach((storageValue, i) => this.toKeepStorageValues[i].value = localStorage.getItem(storageValue.key.replace('{}', providerId)));
     localStorage.clear();
     this.toKeepStorageValues.filter(storageValue =>

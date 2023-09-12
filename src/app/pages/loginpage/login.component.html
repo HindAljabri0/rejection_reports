@@ -21,7 +21,7 @@
                         <input type="password" matInput i18n-placeholder="@@password" placeholder="Enter password here..." [formControl]="password" (keyup.enter)="login()">
                     </mat-form-field>
                 </div>
-                <p *ngIf="errors != null" class="error-card">{{errors}}</p>
+                <div *ngIf="errors != null" class="error-card"><div [innerHTML]='errors'></div></div>
                 <button class="submit-btn btn-block" mat-flat-button color="primary" (click)="login()" i18n="@@signin" [disabled]="isLoading">Sign In</button>
             </div>
             <div class="text-center">

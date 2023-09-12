@@ -191,6 +191,14 @@ export class HeaderComponent implements OnInit {
     }
 
     logout() {
+        
+        this.authService.loginOut().subscribe(response => {
+
+            if (response instanceof HttpResponse) {
+                //console.log(JSON.stringify(response));
+            }
+        });
+
         this.authService.logout();
     }
 
