@@ -167,7 +167,7 @@
                                 <p>Policy Holder:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder">{{UCAFData.policyHolder}}</p>
                             </td>
                             <td width="10">
                                 <p>Policy No.:&nbsp;</p>
@@ -189,11 +189,11 @@
                                 <p>Class:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">-</p>
+                                <p class="value-holder">{{UCAFData.classValue}}</p>
                             </td>
                         </tr>
                     </table>
-                    <table class="internal-table">
+                    <table class="internal-table" *ngIf="UCAFData.elgibilityReferenceNumber ==null">
                         <tr>
                             <td width="10">
                                 <p>Approval:&nbsp;</p>
@@ -203,7 +203,7 @@
                             </td>
                         </tr>
                     </table>
-                    <table class="internal-table">
+                    <table class="internal-table" *ngIf="UCAFData.elgibilityReferenceNumber ==null">
                         <tr>
                             <td width="10">
                                 <p>Approval Status:</p>
@@ -213,6 +213,43 @@
                             </td>
                         </tr>
                     </table>
+                    <div *ngIf="UCAFData.approvalReferenceNumber ==null">
+                        <table class="internal-table">
+                            <tr>
+                                <td width="10">
+                                    <p>Eligible Status:&nbsp;</p>
+                                </td>
+                                <td>
+                                    <p class="value-holder">{{UCAFData.sietElgibility}}&nbsp;</p>
+                                </td>
+                                <td width="10">
+                                    <p>Elgibility Reference Number:&nbsp;</p>
+                                </td>
+                                <td>
+                                    <p class="value-holder">{{UCAFData.elgibilityReferenceNumber}}&nbsp;</p>
+                                </td>
+                        </table>
+                        <table class="internal-table">
+                            <tr>
+                                <td width="10">
+                                    <p>Patient Share Percentage:&nbsp;</p>
+                                </td>
+                                <td>
+                                    <p class="value-holder">{{UCAFData.patientSharePercentage}}%&nbsp;</p>
+                                </td>
+                            </tr>
+                        </table>
+                        <table class="internal-table">
+                            <tr>
+                                <td width="10">
+                                    <p>Max Patient Share:&nbsp;</p>
+                                </td>
+                                <td>
+                                    <p class="value-holder">{{UCAFData.maxPatientShare}}&nbsp;</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </td>
         </tr>
@@ -466,7 +503,8 @@
                                 <th>Cost</th>
                                 <th>approved Quantity</th>
                                 <th>approved Cost</th>
-                                <th>Status<th>
+                                <th>Status
+                                <th>
                             </tr>
                         </thead>
                         <tbody>
@@ -691,13 +729,16 @@
                                 <p><strong>Approval validity:&nbsp;</strong></p>
                             </td>
                             <td>
-                                <span *ngIf="printFor !=='eligibility'"><p class="value-holder"> {{UCAFData.preAuthStartDate | date:'dd/MM/yyyy'}}
-                                    {{UCAFData.preAuthStartDate
-                                    &&
-                                    UCAFData.preAuthEndDate ? "-":""}} {{UCAFData.preAuthEndDate |
-                                    date:'dd/MM/yyyy'}} </p>
-                                    </span>
-                                    <span *ngIf="printFor ==='eligibility'"><p class="value-holder"></p></span>
+                                <span *ngIf="printFor !=='eligibility'">
+                                    <p class="value-holder"> {{UCAFData.preAuthStartDate | date:'dd/MM/yyyy'}}
+                                        {{UCAFData.preAuthStartDate
+                                        &&
+                                        UCAFData.preAuthEndDate ? "-":""}} {{UCAFData.preAuthEndDate |
+                                        date:'dd/MM/yyyy'}} </p>
+                                </span>
+                                <span *ngIf="printFor ==='eligibility'">
+                                    <p class="value-holder"></p>
+                                </span>
                             </td>
                             <td width="10">
                                 <p> {{getPeriodDays()}} <strong>Days</strong></p>
