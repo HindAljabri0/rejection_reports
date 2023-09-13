@@ -1,0 +1,174 @@
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
+        <p>Extract Claims</p>
+    </div>
+    <div class="block-body pb-0">
+        <div class="row small-gutter">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Extract by</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select [(ngModel)]="extractBy">
+                            <mat-option value="by-payer">Extract by payer</mat-option>
+                            <mat-option value="by-claim-no">Extract by provider claim no. or patient file no.</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group" *ngIf="extractBy == 'by-payer'">
+                    <label class="control-label">Payer</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="-1">
+                            <mat-option value="-1">Select Payer</mat-option>
+                            <mat-option value="Option 1">Option 1</mat-option>
+                            <mat-option value="Option 2">Option 2</mat-option>
+                            <mat-option value="Option 3">Option 3</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-md-3" *ngIf="extractBy == 'by-payer'">
+                <div class="form-group">
+                    <label class="control-label">Claim Type</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="-1">
+                            <mat-option value="-1">Select claim type</mat-option>
+                            <mat-option value="Option 1">Option 1</mat-option>
+                            <mat-option value="Option 2">Option 2</mat-option>
+                            <mat-option value="Option 3">Option 3</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-md-3" *ngIf="extractBy == 'by-payer'">
+                <div class="form-group">
+                    <label class="control-label">Claim Sub Type</label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select value="-1">
+                            <mat-option value="-1">Select claim sub type</mat-option>
+                            <mat-option value="Option 1">Option 1</mat-option>
+                            <mat-option value="Option 2">Option 2</mat-option>
+                            <mat-option value="Option 3">Option 3</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-md-3" *ngIf="extractBy == 'by-claim-no'">
+                <div class="form-group">
+                    <label class="control-label">Provider Claim No.</label>
+                    <div class="date-picker">
+                        <input class="form-control" placeholder="Enter provider claim no.">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3" *ngIf="extractBy == 'by-claim-no'">
+                <div class="form-group">
+                    <label class="control-label">Patient File No.</label>
+                    <div class="date-picker">
+                        <input class="form-control" placeholder="Enter patient file no.">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group" *ngIf="extractBy == 'by-payer'">
+                    <label class="control-label">Start Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="startDatePicker" class="form-control" placeholder="Select start date">
+                        <mat-datepicker-toggle [for]="startDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #startDatePicker></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group" *ngIf="extractBy == 'by-payer'">
+                    <label class="control-label">End Date</label>
+                    <div class="date-picker">
+                        <input [matDatepicker]="endDatePicker" class="form-control" placeholder="Select end date">
+                        <mat-datepicker-toggle [for]="endDatePicker"></mat-datepicker-toggle>
+                        <mat-datepicker #endDatePicker></mat-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Extraction Name</label>
+                    <div class="date-picker">
+                        <input class="form-control" placeholder="Enter extraction name here...">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="block-footer">
+        <div class="right-block">
+            <div class="btn-list">
+                <button mat-flat-button color="primary">Verify</button>
+                <button mat-flat-button color="primary">Start Extraction</button>
+            </div>
+        </div>
+    </div>
+    <div class="block-body border-top pb-0">
+        <div class="d-flex">
+            <div>
+                <span class="text-dark-grey">Upload Name:</span>&nbsp;<strong class="semibold">Extract_test_test</strong>
+            </div>
+            <div class="ml-auto">
+                <span class="text-dark-grey">Upload Summary ID:</span>&nbsp;<strong class="semibold">7286</strong>
+            </div>
+        </div>
+        <hr class="spaced" />
+        <div class="row small-gutter">
+            <div class="col-md-3">
+                <div class="statistic-box large">
+                    <label>Number of Claims</label>
+                    <h3>1</h3>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="statistic-box large">
+                    <label>Amount</label>
+                    <h3>88.06 SR</h3>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="statistic-box large">
+                    <label>VAT</label>
+                    <h3>0.00 SR</h3>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="statistic-box large text-danger light-bg-danger">
+                    <label>Number of Not Upload Claims</label>
+                    <h3>0</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
+        <p>Extraction Under Process</p>
+    </div>
+    <div class="block-body">
+        <div class="d-flex">
+            <div>
+                <span class="text-dark-grey">Upload Name:</span>&nbsp;<strong class="semibold">Extract_test_test</strong>
+            </div>
+            <div class="ml-auto">
+                <span class="text-dark-grey">Upload Summary ID:</span>&nbsp;<strong class="semibold">7286</strong>
+            </div>
+        </div>
+        <hr class="spaced" />
+        <div class="extract-claim">
+            <div class="progress-wrapper">
+                <label>Current Progress</label>
+                <div class="progress">
+                    <div class="progress-bar" style="width:43%;"></div>
+                </div>
+                <span class="progress-text">43% Completed</span>
+            </div>
+        </div>
+    </div>
+</div>
