@@ -240,11 +240,12 @@ export class SharedServices {
   }
 
   getUploads() {
-    if (!this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser && !this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin ) { return; }
+    if ((!this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser && !this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin ) || this.userPrivileges.ProviderPrivileges.NPHIES.canSwitchGroupProvider) { return; }
     this.uploadsListLoadingChange.next(true);
     this.searchService.getUploadSummaries(this.providerId, 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
-        if (event.body['content'] != null) {
+        console.log(event.body)
+        if (event.body != null) {
           this.uploadsListChange.next(event.body['content']);
           this.uploadsListLoadingChange.next(false);
         }
