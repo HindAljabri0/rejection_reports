@@ -180,6 +180,7 @@ export class AuthService {
   }
 
   setTokens(body: {}) {
+    let parentProviderId =localStorage.getItem("parentProviderId")!='101'?localStorage.getItem("parentProviderId"):'';
     localStorage.setItem('access_token', body['access_token']);
     localStorage.setItem('refresh_token', body['refresh_token']);
     if (Date.now() < new Date(body['expires_in']).getTime()) {
@@ -223,8 +224,11 @@ export class AuthService {
             }
           });
           
-          localStorage.setItem('cchi_id', event.body['cchiId']);          
-          localStorage.setItem('parentProviderId', event.body['parentProviderId']);
+          localStorage.setItem('cchi_id', event.body['cchiId']);      
+          
+    
+
+          localStorage.setItem('parentProviderId', parentProviderId!=null?parentProviderId:event.body['parentProviderId']);
           localStorage.setItem('provider_id', event.body['providerId']);
           localStorage.setItem('user_name', event.body['fullName']);
           localStorage.setItem('auth_username', event.body['username']);
