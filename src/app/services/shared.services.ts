@@ -48,7 +48,7 @@ export class SharedServices {
 
   unReadProcessedCount = 0;
   unReadProcessedCountChange: Subject<number> = new Subject();
-  
+
   unReadProcessedApaCount = 0;
   unReadProcessedApaCountChange: Subject<number> = new Subject();
 
@@ -183,7 +183,7 @@ export class SharedServices {
 
   }
 
-  getNotifications() {    
+  getNotifications() {
 
     if (!this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser) { return; }
     this.notifications.getNotificationsCount(this.providerId, 'batch-summary-inquiry', 'unread').subscribe(event => {
@@ -208,7 +208,7 @@ export class SharedServices {
       if (errorEvent instanceof HttpErrorResponse) {
         this.unReadNotificationsCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
       }
-    });    
+    });
   }
 
   getAnnouncements() {
@@ -240,12 +240,14 @@ export class SharedServices {
   }
 
   getUploads() {
-    if (!this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser && !this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin) { return; }
+    if (!this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser && !this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin ) { return; }
     this.uploadsListLoadingChange.next(true);
     this.searchService.getUploadSummaries(this.providerId, 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
-        this.uploadsListChange.next(event.body['content']);
-        this.uploadsListLoadingChange.next(false);
+        if (event.body['content'] != null) {
+          this.uploadsListChange.next(event.body['content']);
+          this.uploadsListLoadingChange.next(false);
+        }
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
@@ -522,7 +524,7 @@ export class SharedServices {
       case ClaimStatus.UNDER_PBM_VALIDATION.toLowerCase():
         return 'Under PBM Validation';
       case ClaimStatus.Under_Attachment_Linking.toLowerCase():
-          return 'Linking Attachments';
+        return 'Linking Attachments';
       default:
         return status.substr(0, 1).toLocaleUpperCase() + status.substr(1).toLocaleLowerCase().replace('_', ' ');
     }
