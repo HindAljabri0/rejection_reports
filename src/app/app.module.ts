@@ -100,6 +100,7 @@ import { UpcomingFeatureDialogComponent } from './components/dialogs/upcoming-fe
 import { ChooseAttachmentUploadDialogComponent } from './modules/nphies/choose-attachment-upload-dialog/choose-attachment-upload-dialog.component';
 import { HttpRequestExceptionHandler } from './components/reusables/feedbackExceptionHandling/HttpRequestExceptionHandler';
 import { AnnountmentDialogComponent } from './components/annountment-dialog/annountment-dialog.component';
+import { SsoComponent } from './sso/sso.component';
 
 
 
@@ -170,7 +171,8 @@ import { AnnountmentDialogComponent } from './components/annountment-dialog/anno
         AlertDialogComponent,
         UpcomingFeatureDialogComponent,
         ChooseAttachmentUploadDialogComponent,
-        AnnountmentDialogComponent
+        AnnountmentDialogComponent,
+        SsoComponent
     ],
     imports: [
         AppRoutingModule,
@@ -251,7 +253,8 @@ import { AnnountmentDialogComponent } from './components/annountment-dialog/anno
         CertificateConfigurationModelComponent,
         UpcomingFeatureDialogComponent,
         ChooseAttachmentUploadDialogComponent,
-        AnnountmentDialogComponent
+        AnnountmentDialogComponent,
+        SsoComponent
     ],
 })
 export class AppModule { }
