@@ -200,7 +200,6 @@ export class DashboardComponent implements OnInit {
         let userName = this.commen.authService.getAuthUsername();
 
         let feedbackable = await this.userCanSubmitFeedback(ProviderId, userName);
-
         if (feedbackable) {
 
             const dialogConfig = new MatDialogConfig();
@@ -229,45 +228,51 @@ export class DashboardComponent implements OnInit {
     async userCanSubmitFeedback(privderId: string, userName: string) {
         let feedbackable: any;
 
-        let survey:any;
-        const surveyObj = await this._feedbackservice.getSurveyId(this.authService.getProviderId(), 0, 1).pipe(
-            filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse)).toPromise();
-        if (surveyObj instanceof HttpResponse) {
-            const body = surveyObj.body;
-            survey = body;
-            console.log("Survey Body = "+JSON.stringify(survey.content[0]));
-        }
-        const event = await this._feedbackservice.UserFeedbackable(survey.content[0].surveyId, userName).pipe(
-
-            filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
-            catchError(error => {
-                let errorMsg: string;
-
-                if (error.error instanceof ErrorEvent) {
-                    try {
+        let survey:any;      
+        if(this.authService.getProviderId()){
+            const surveyObj = await this._feedbackservice.getSurveyId(this.authService.getProviderId(), 0, 1).pipe(
+                filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse)).toPromise();
+            if (surveyObj instanceof HttpResponse) {
+                const body = surveyObj.body;
+                survey = body;
+                //console.log("Survey Body = "+JSON.stringify(survey.content[0]));
+            }
+           
+            if (survey.content && survey.content.length > 0 && survey.content[0].surveyId) {
+                const event = await this._feedbackservice.UserFeedbackable(survey.content[0].surveyId, userName).pipe(
+                    filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse),
+                  catchError(error => {
+                    let errorMsg: string;
+              
+                    if (error.error instanceof ErrorEvent) {
+                      try {
                         errorMsg = `\nError: ${this.requestExceptionHandler.getErrorMessage(error)}`;
                         console.error('Add feedback service error message:\n' + errorMsg);
-                    } catch (error) { }
-
-                } else {
-                    try {
-                        errorMsg = this.requestExceptionHandler.getErrorMessage(error);
-                        console.error('Add feedback service error message:\n' + errorMsg);
-                    } catch (error) { }
-                }
-
-                return errorMsg;
-            })
-        ).toPromise();
-        if (event instanceof HttpResponse) {          
-            const body = event.body;
-            feedbackable = body;
-            if (body instanceof Boolean) {
+                      } catch (error) { }
+              
+                    } else {
+                        try {
+                            errorMsg = this.requestExceptionHandler.getErrorMessage(error);
+                            console.error('Add feedback service error message:\n' + errorMsg);
+                          } catch (error) { }
+                        }
+                  
+                        return errorMsg;
+                      })
+                    ).toPromise();
+                  }
+        
+            if (event instanceof HttpResponse) {          
+                const body = event.body;
                 feedbackable = body;
+                if (body instanceof Boolean) {
+                    feedbackable = body;
+                }
             }
+    
+            return feedbackable;
         }
-
-        return feedbackable;
+       
     }
 
 }
