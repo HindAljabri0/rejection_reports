@@ -37,7 +37,13 @@ export class UploadBeneficiaryComponent implements OnInit {
   ngOnInit() {
 
   }
+  clear(){
 
+    this.currentFileUpload=null;
+    this.uploadContainerClass = '';
+    this.error = '';
+
+  }
   upload(typeUpload:string) {
     if (this.common.loading || this.uploading) {
       return;
