@@ -69,22 +69,28 @@ export class ProvidersBeneficiariesService {
     return this.httpClient.request(httpRequest);
   }
 
-  getBeneficiaryFromCCHI(providerId: string, patientKey: string,systemType:string) {
+  getBeneficiaryFromCCHI(providerId: string, patientKey: string, systemType: string) {
     const requestUrl = `/providers/${providerId}/patientKey/${patientKey}/systemType/${systemType}`;
     const request = new HttpRequest('GET', environment.providersBeneficiariesService + requestUrl);
     return this.httpClient.request(request);
   }
 
-  pushBeneFileToStorage(providerID: string, file: File) {
+  pushBeneFileToStorage(providerID: string, file: File, typeUpload: string) {
     if (this.uploading) { return; }
     this.uploading = true;
     this.uploadingObs.next(true);
     const formdata: FormData = new FormData();
-
+    let req;
     formdata.append('file', file, file.name);
-    const req = new HttpRequest('POST', environment.providersBeneficiariesService + `/providers/${providerID}/beneficiaryFile/upload`, formdata, {
-      reportProgress: true,
-    });
+    if (typeUpload == '1') {
+      req = new HttpRequest('POST', environment.providersBeneficiariesService + `/providers/${providerID}/beneficiaryFile/upload`, formdata, {
+        reportProgress: true,
+      });
+    } else {
+      req = new HttpRequest('POST', environment.providersBeneficiariesService + `/providers/${providerID}/beneficiaryFile/upload/inquiry`, formdata, {
+        reportProgress: true,
+      });
+    }
 
     this.httpClient.request(req).subscribe(event => {
       if (event.type === HttpEventType.UploadProgress) {
@@ -109,13 +115,16 @@ export class ProvidersBeneficiariesService {
     });
   }
 
-  download(providerId: string){
-    const requestUrl = `/providers/${providerId}/beneficiaryFile/download`;
+  download(providerId: string, fileNo?: string) {
+    let requestUrl = `/providers/${providerId}/beneficiaryFile/download`;
+    if (fileNo != null) {
+      requestUrl += `?fileNo=${fileNo}`;
+    }
     const request = new HttpRequest('GET', environment.providersBeneficiariesService + requestUrl, '', { responseType: 'blob', reportProgress: true });
     return this.httpClient.request(request);
   }
 
-  downloadCSV(providerId: string){
+  downloadCSV(providerId: string) {
     const requestUrl = `/providers/${providerId}/beneficiaryFile/downloadCSV`;
     const request = new HttpRequest('GET', environment.providersBeneficiariesService + requestUrl, '', { responseType: 'text', reportProgress: true });
     return this.httpClient.request(request);
