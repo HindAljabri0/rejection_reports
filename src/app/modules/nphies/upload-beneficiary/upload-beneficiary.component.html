@@ -1,13 +1,28 @@
 <div class="animate__animated animate__faster animate__fadeIn block-card">
   <div class="block-header">
     <p class="align-self-center">Upload Beneficiary</p>
-    <button type="button" mat-flat-button class="ml-auto btn btn-light-primary my-n2 mr-n2" (click)="downloadBeneSample()">
-      <img src="./assets/ic-download.svg" alt="Download" />
-      <span>Download Sample</span>
-    </button>
+    <!-- <button type="button" mat-flat-button class="ml-auto btn btn-light-primary my-n2 mr-n2" (click)="downloadBeneSample()"> -->
+      <!-- <img src="./assets/ic-download.svg" alt="Download" /> -->
+      <!-- <span>Download Sample</span> -->
+    <!-- </button> -->
   </div>
-  <div class="block-body">
-    <div class="semibold pb-3">File Uploading</div>
+ 
+ 
+    <mat-tab-group class="primary-tab no-body-padding">
+      <mat-tab  > 
+        
+        <ng-template mat-tab-label>
+          <span>Upload Beneficiary</span>
+        </ng-template>
+        <div class="animate__animated animate__faster animate__fadeIn block-card">
+          <div class="block-header">
+            <!-- <p class="align-self-center">Upload Beneficiary</p> -->
+            <button type="button" mat-flat-button class="ml-auto btn btn-light-primary my-n2 mr-n2" (click)="downloadBeneSample('1')">
+              <img src="./assets/ic-download.svg" alt="Download" />
+              <span>Download Sample</span>
+            </button>
+          </div>
+    
     <div class="info-block mb-3">Please upload file containing maximum 5000 records only </div>
 
     <div class="file-upload-drag-drop">
@@ -20,7 +35,7 @@
         </div>
         <div *ngIf="!uploading && !loading" class="btn-list pt-5">
           <button mat-button (click)="cancel()">Cancel</button>
-          <button mat-flat-button color="primary" (click)="upload()">Upload</button>
+          <button mat-flat-button color="primary" (click)="upload('1')">Upload</button>
         </div>
       </div>
       <div class="inner-block {{uploadContainerClass}}" *ngIf="currentFileUpload == undefined" appDragdrop (onFileDropped)="selectFile($event)">
@@ -77,4 +92,94 @@
       </div>
     </ng-container>
   </div>
+
+</mat-tab>
+
+
+ 
+<mat-tab   *ngIf="common.providerId=='601'"  label="Upload Beneficiary by use Inquiry CCHI"> 
+  <div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
+      <!-- <p class="align-self-center">Upload Beneficiary</p> -->
+      <button type="button" mat-flat-button class="ml-auto btn btn-light-primary my-n2 mr-n2" (click)="downloadBeneSample('2')">
+        <img src="./assets/ic-download.svg" alt="Download" />
+        <span>Download Sample</span>
+      </button>
+    </div>
+
+<div class="info-block mb-3">Please upload file containing maximum 5000 records only </div>
+
+<div class="file-upload-drag-drop">
+<div class="inner-block" *ngIf="currentFileUpload != undefined">
+  <div class="icon-wrapper">
+    <!-- <img [src]="currentFileUpload.name.endsWith('.csv')? './assets/csv.svg':'./assets/xls.svg'"
+      alt="{{currentFileUpload.name}}"> -->
+    <img src='./assets/xlsx.svg' alt="{{currentFileUpload.name}}">
+    <p class="file-name">{{currentFileUpload.name}}</p>
+  </div>
+  <div *ngIf="!uploading && !loading" class="btn-list pt-5">
+    <button mat-button (click)="cancel()">Cancel</button>
+    <button mat-flat-button color="primary" (click)="upload('2')">Upload</button>
+  </div>
 </div>
+<div class="inner-block {{uploadContainerClass}}" *ngIf="currentFileUpload == undefined" appDragdrop (onFileDropped)="selectFile($event)">
+  <div class="icon-wrapper">
+    <img src="./assets/xlsx.svg" alt="XLSX File" />
+  </div>
+  <p class="text-block" *ngIf="currentFileUpload == undefined"><span>Drag an Excel file here, or
+      use</span> <button mat-flat-button color="primary" (click)="fileInput.click()">Upload</button>
+  </p>
+  <p class="error-text" *ngIf="error">{{error}}</p>
+  <input hidden type="file" #fileInput id="file" onclick="this.value = null" (change)="selectFile($event.target.files)"
+    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+</div>
+</div>
+<div class="file-upload-progress-wrapper" *ngIf="uploading">
+<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+</div>
+<div class="block-body" *ngIf="data && data != null">
+
+<h5 class="form-title">Upload Summary</h5>
+
+<div class="row small-gutter pt-3">
+<div class="col-6 col-lg-4 col-xl-3 pb-2">
+  <p class="small-label short-text-height">No. of Beneficiaries Saved</p>
+  <p class="dashboard-numbers text-success">{{data.savedBeneficiaryCount}}</p>
+</div>
+<div class="col-6 col-lg-4 col-xl-3 pb-2">
+  <p class="small-label short-text-height">No. of Beneficiaries Not Saved</p>
+  <p class="dashboard-numbers text-danger">{{data.failToSaveBeneficiaryCount}}</p>
+</div>
+<div class="col-6 col-lg-4 col-xl-3 pb-2">
+  <p class="small-label short-text-height">No. of Beneficiaries </p>
+  <p class="dashboard-numbers text-success">{{data.totalBeneficiaryCount}}</p>
+</div>
+
+</div>
+<hr class="hr separator">
+
+<ng-container *ngIf="data.errors != null && data.errors.length > 0">      
+<div class="table-responsive">
+  <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+    <thead>
+      <tr>
+        <th class="light-bg-danger text-danger">Errors</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let error of data.errors ">
+        <td>{{error}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</ng-container>
+</div>
+
+</mat-tab>
+
+
+
+
+</mat-tab-group>

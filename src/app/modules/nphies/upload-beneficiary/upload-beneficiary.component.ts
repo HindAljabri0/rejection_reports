@@ -30,19 +30,19 @@ export class UploadBeneficiaryComponent implements OnInit {
   error = '';
   data: any;
   isVertical = true;
-
   detailTopActionIcon = 'ic-download.svg';
   constructor(public beneficiaryService: ProvidersBeneficiariesService, public common: SharedServices,
     private dialogService: DialogService, private adminService: AdminService, private sharedServices: SharedServices) { }
 
   ngOnInit() {
+
   }
 
-  upload() {
+  upload(typeUpload:string) {
     if (this.common.loading || this.uploading) {
       return;
     }
-    this.startUpload();
+    this.startUpload(typeUpload);
   }
   get loading() {
     return this.common.loading;
@@ -74,10 +74,10 @@ export class UploadBeneficiaryComponent implements OnInit {
     this.error = error;
     this.common.loadingChanged.next(false);
   }
-  startUpload() {
+  startUpload(typeUpload:string) {
     const providerId = this.common.providerId;
     this.uploading = true;
-    this.beneficiaryService.pushBeneFileToStorage(providerId, this.currentFileUpload);
+    this.beneficiaryService.pushBeneFileToStorage(providerId, this.currentFileUpload,typeUpload);
     const progressObservable = this.beneficiaryService.progressChange.subscribe(progress => {
       if (progress.percentage == 100) {
         progressObservable.unsubscribe();
@@ -115,14 +115,23 @@ export class UploadBeneficiaryComponent implements OnInit {
     this.priceListDoesNotExistMessages = [];
   }
 
-  downloadBeneSample() {
+  downloadBeneSample(fileNo:string) {
 
-    this.beneficiaryService.download(this.sharedServices.providerId).subscribe(event => {
+    this.beneficiaryService.download(this.sharedServices.providerId,fileNo).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.body != null) {
           var data = new Blob([event.body as BlobPart], { type: 'application/octet-stream' });
           const FileSaver = require('file-saver');
-          FileSaver.saveAs(data, "SampleBeneficiaryDownload.xlsx");
+               if(fileNo=='1'){
+        FileSaver.saveAs(data, "SampleBeneficiaryDownload.xlsx");
+      }else{
+        FileSaver.saveAs(data, "SampleBeneficiaryByUseCCHIDownload.xlsx");
+      }
+               if(fileNo=='1'){
+        FileSaver.saveAs(data, "SampleBeneficiaryDownload.xlsx");
+      }else{
+        FileSaver.saveAs(data, "SampleBeneficiaryByUseCCHIDownload.xlsx");
+      }
         }
       }
     }
