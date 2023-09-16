@@ -1,5 +1,8 @@
 {
     "cSpell.words": [
         "Singelphsicin"
-    ]
+    ],
+    "scm.alwaysShowActions": true,
+    "scm.alwaysShowRepositories": true,
+    "diffEditor.codeLens": true
 }
