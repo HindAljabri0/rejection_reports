@@ -12,7 +12,7 @@
       <mat-tab  > 
         
         <ng-template mat-tab-label>
-          <span>Upload Beneficiary</span>
+          <span (click)="clear()">Upload Beneficiary</span>
         </ng-template>
         <div class="animate__animated animate__faster animate__fadeIn block-card">
           <div class="block-header">
@@ -97,17 +97,19 @@
 
 
  
-<mat-tab   *ngIf="common.providerId=='601'"  label="Upload Beneficiary by use Inquiry CCHI"> 
+<mat-tab > 
+  <ng-template mat-tab-label>
+    <span (click)="clear()">Upload Beneficiary using Inquire CCHI</span>
+  </ng-template>
   <div class="animate__animated animate__faster animate__fadeIn block-card">
     <div class="block-header">
-      <!-- <p class="align-self-center">Upload Beneficiary</p> -->
       <button type="button" mat-flat-button class="ml-auto btn btn-light-primary my-n2 mr-n2" (click)="downloadBeneSample('2')">
         <img src="./assets/ic-download.svg" alt="Download" />
         <span>Download Sample</span>
       </button>
     </div>
 
-<div class="info-block mb-3">Please upload file containing maximum 5000 records only </div>
+<div class="info-block mb-3">Please upload file containing maximum 1000 records only </div>
 
 <div class="file-upload-drag-drop">
 <div class="inner-block" *ngIf="currentFileUpload != undefined">
