@@ -42,6 +42,7 @@ export class UploadBeneficiaryComponent implements OnInit {
     this.currentFileUpload=null;
     this.uploadContainerClass = '';
     this.error = '';
+    this.data=null;
 
   }
   upload(typeUpload:string) {
