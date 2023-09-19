@@ -397,6 +397,13 @@
                             </a>
                         </li>
                         <li>
+                            <a routerLink="/nphies/extract-claim" routerLinkActive="is-active">
+                                <img src="assets/ic-extract-claims.svg" alt="Extract Claims" class="default-icon" />
+                                <img src="assets/ic-extract-claims.svg" alt="Extract Claims" class="active-icon" />
+                                <span class="text">Extract Claims</span>
+                            </a>
+                        </li>
+                        <li>
                             <a routerLink="/{{providerId}}/claims/create-nphies" routerLinkActive="is-active">
                                 <img src="assets/ic-create-claim.svg" alt="Uploads" class="default-icon" />
                                 <img src="assets/ic-create-claim-active.svg" alt="Uploads" class="active-icon" />
@@ -755,12 +762,14 @@
                         <span class="text">Ticket Management</span>
                     </a>
                 </li>
-                <li>
-                    <a routerLink="/cdm/provider-config" routerLinkActive="is-active">
-                        <span class="text">CDM Provider Configuration</span>
-                    </a>
-                </li>
-            </ul>
+                <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.chronicDisease.isCDMAdmin">
+                    <li>
+                        <a routerLink="/cdm/provider-config" routerLinkActive="is-active">
+                            <span class="text">CDM Provider Configuration</span>
+                        </a>
+                    </li>
+                </ul>
+              </ul>
 
             <ng-container *ngIf="userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.isPAM ||
                                 userPrivileges.ProviderPrivileges.NPHIES.canSwitchGroupProvider ||
