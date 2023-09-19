@@ -199,6 +199,6 @@ export class LoginComponent implements OnInit {
   isCloseToNationalDay() {
     const day = new Date().getDate();
     const month = new Date().getMonth() + 1;
-    return (month == 9 && day >= 19 && day <= 25);
+    return (month == 9 && day >= 21 && day <= 25);
   }
 }
