@@ -762,12 +762,14 @@
                         <span class="text">Ticket Management</span>
                     </a>
                 </li>
-                <li>
-                    <a routerLink="/cdm/provider-config" routerLinkActive="is-active">
-                        <span class="text">CDM Provider Configuration</span>
-                    </a>
-                </li>
-            </ul>
+                <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.chronicDisease.isCDMAdmin">
+                    <li>
+                        <a routerLink="/cdm/provider-config" routerLinkActive="is-active">
+                            <span class="text">CDM Provider Configuration</span>
+                        </a>
+                    </li>
+                </ul>
+              </ul>
 
             <ng-container *ngIf="userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.isPAM ||
                                 userPrivileges.ProviderPrivileges.NPHIES.canSwitchGroupProvider ||

@@ -16,7 +16,8 @@ export interface UserPrivileges {
   };
   ProviderPrivileges: {
     chronicDisease: {
-      isCDM: false
+      isCDM: false,
+      isCDMAdmin: false
     },
     Contract_Bill: {
       isAdmin: false,
@@ -82,6 +83,7 @@ export const initState: MainState = {
     ProviderPrivileges: {
       chronicDisease: {
         isCDM: false,
+        isCDMAdmin: false
       },
       Contract_Bill: {
         isAdmin: false,
@@ -148,7 +150,8 @@ const _mainReducer = createReducer(
       },
       ProviderPrivileges: {
         chronicDisease: {
-          isCDM: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '90')
+          isCDM: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '90.1'),
+          isCDMAdmin : providerId != '101' && AuthService.hasPrivilege(providerId, '101', '90.2')
         },
         Contract_Bill: {
           isAdmin: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '27'),
