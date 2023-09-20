@@ -318,9 +318,6 @@ export class CdmProviderConfigComponent implements OnInit {
       const removedItem = this.regSelectedItems.splice(index, 1)[0];
       this.regions.push(removedItem);
       this.regions.sort((a, b) => a.regionDescription.localeCompare(b.regionDescription));
-
-
-
     }
 
   }
@@ -402,10 +399,6 @@ export class CdmProviderConfigComponent implements OnInit {
           });
         }
         this.sharedServices.loadingChanged.next(false);
-        setTimeout(() => {
-          location.reload();
-        }, 1000);
-
       }
     },
       (error) => {
