@@ -20,8 +20,7 @@
       </mat-autocomplete>
     </div>
   </div>
-
-  <mat-accordion hideToggle="true" displayMode="flat" multi="true" class="config-accordion">
+  <mat-accordion *ngIf="selectedProvider" hideToggle="true" displayMode="flat" multi="true" class="config-accordion">
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
@@ -108,7 +107,7 @@
       </div>
     </mat-expansion-panel>
   </mat-accordion>
-  <div class="block-footer sticky">
+  <div class="block-footer sticky" *ngIf="selectedProvider">
     <div class="right-block">
       <div class="btn-list">
         <button mat-button (click)="reset()">Reset</button>
