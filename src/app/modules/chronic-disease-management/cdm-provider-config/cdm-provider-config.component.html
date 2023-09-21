@@ -21,7 +21,7 @@
     </div>
   </div>
   <mat-accordion *ngIf="selectedProvider" hideToggle="true" displayMode="flat" multi="true" class="config-accordion">
-    <mat-expansion-panel>
+    <mat-expansion-panel expanded="true"> <!-- Set expanded="true" -->
       <mat-expansion-panel-header>
         <mat-panel-title>
           Configuration
@@ -53,7 +53,7 @@
             List of values
           </header>
           <div class="mappedValueInput" *ngIf="fetchFlag">
-            <input [(ngModel)]="newItem" (keydown.enter)="addItem(newItem)" placeholder="Add item">
+            <input [(ngModel)]="newItem" (keydown.enter)="addItem(newItem)" placeholder="Add Policy No.">
             <button mat-flat-button (click)="addItem(newItem)">Add</button>
           </div>
 

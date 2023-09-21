@@ -38,6 +38,9 @@ export class CdmProviderConfigComponent implements OnInit {
   error: string;
   policyResult: any;
   savePopupOpen: any;
+  initialDiagSelectedItems: any[] = [];
+initialRegSelectedItems: any[] = [];
+initialPolicySelectedItems: any[] = [];
 
 
   constructor(private sharedServices: SharedServices, private superAdmin: SuperAdminService, private cdmService: CdmService, private dialogService: DialogService, private elementRef: ElementRef) { }
@@ -145,6 +148,9 @@ export class CdmProviderConfigComponent implements OnInit {
           const regionsFilter = this.regions.filter(item1 => !regResult.some(item2 => item1.regionDescription === item2.name));
           this.diagnosisList = diagnosisListFilter;
           this.regions = regionsFilter;
+          this.initialDiagSelectedItems = [...this.diagSelectedItems];
+          this.initialRegSelectedItems = [...this.regSelectedItems];
+          this.initialPolicySelectedItems = [...this.policySelectedItems];
           this.sharedServices.loadingChanged.next(false);
         }
       }
@@ -357,7 +363,9 @@ export class CdmProviderConfigComponent implements OnInit {
   }
 
   reset() {
-    location.reload();
+    this.diagSelectedItems = [...this.initialDiagSelectedItems];
+    this.regSelectedItems = [...this.initialRegSelectedItems];
+    this.policySelectedItems = [...this.initialPolicySelectedItems];
   }
 
   save() {

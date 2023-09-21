@@ -16,6 +16,11 @@ export class SuperAdminService {
     const request = new HttpRequest('GET', environment.adminServiceHost + requestURL);
     return this.http.request(request);
   }
+  getList(providerId: string) {
+    const requestURL = `/providers/${providerId}/cdm/retrieve-data`;
+    const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
+    return this.http.request(request);
+  }
   saveCdmCategories(providerId: string, value: any) {
     const requestURL = `/providers/${providerId}/cdm/add`;
     const request = new HttpRequest('POST', environment.settingsServiceHost + requestURL, value);
