@@ -1090,6 +1090,7 @@ export class AddPreauthorizationComponent implements OnInit {
       beneficiaryDob: this.selectedBeneficiary.dob,
       tpaNphiesId: this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value,
       providerType: this.providerType,
+      isAdanceAuth : this.data.isAdvanceAuth
     };
 
     const dialogRef = this.dialog.open(AddEditPreauthorizationItemComponent, dialogConfig);
