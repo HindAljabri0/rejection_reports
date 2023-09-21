@@ -988,12 +988,12 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .login-wrapper .login-contact li{display: flex;flex-direction: column;align-items: center;text-align: center;font-weight: 500;font-size: 16px;line-height: 24px;color: #3060aa;}
 .login-wrapper .login-contact .icon{border: 2px solid rgba(48, 96, 170, 0.48);border-radius: 8px;padding: 10px;margin-bottom: 12px;}
 .login-wrapper .login-contact .icon>img{display: block;height: 32px;width: 32px;}
-.login-wrapper.national-day{border-top-color:#006C32;border-bottom-color:#006C32;}
-.login-wrapper.national-day .right-block{background: url('./assets/national-day-illustration.svg') center no-repeat;background-size: cover;position: relative;}
-.login-wrapper.national-day .right-block .logos{display: block;position: absolute;right: 0;bottom: -4px;}
-.login-wrapper.national-day .mat-flat-button.mat-primary, .login-wrapper.national-day .mat-raised-button.mat-primary, .login-wrapper.national-day .mat-fab.mat-primary, .login-wrapper.national-day .mat-mini-fab.mat-primary{background: #006C32;}
-.login-wrapper.national-day .mat-form-field.mat-form-field-appearance-fill .mat-form-field-flex:before{border-color: #006C32;}
-.login-wrapper.national-day .mat-form-field.mat-form-field-appearance-fill.mat-focused .mat-form-field-label{color: #006C32;}
+.login-wrapper.national-day{border-top-color:#097776;border-bottom-color:#02B2B1;}
+.login-wrapper.national-day .right-block{background: url('./assets/national-day-cover.svg') bottom no-repeat;background-size: cover;}
+.login-wrapper.national-day .right-block .logo{position: absolute;right: 24px;top: 24px;height: 44px;width: auto;}
+.login-wrapper.national-day .mat-flat-button.mat-primary, .login-wrapper.national-day .mat-raised-button.mat-primary, .login-wrapper.national-day .mat-fab.mat-primary, .login-wrapper.national-day .mat-mini-fab.mat-primary{background: #2B6E4D;}
+.login-wrapper.national-day .mat-form-field.mat-form-field-appearance-fill .mat-form-field-flex:before{border-color: #2B6E4D;}
+.login-wrapper.national-day .mat-form-field.mat-form-field-appearance-fill.mat-focused .mat-form-field-label{color: #2B6E4D;}
 .login-card{width: 330px;margin: auto;max-width: 100%;}
 .login-card input:-webkit-autofill, .login-card input:-webkit-autofill:hover, .login-card input:-webkit-autofill:focus, .login-card input:-webkit-autofill:active { -moz-box-shadow: 0 0 0 30px #fff inset !important; -webkit-box-shadow: 0 0 0 30px #fff inset !important; box-shadow: 0 0 0 30px #fff inset !important; }
 .login-card .mat-form-field{display:block;}
