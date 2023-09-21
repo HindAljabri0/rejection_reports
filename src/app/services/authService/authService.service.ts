@@ -208,6 +208,7 @@ export class AuthService {
           || element['authority'].split('|')[1] == '25.72'
           || element['authority'].split('|')[1] == '31.0'
           || element['authority'].split('|')[1] == '32.0'
+          || element['authority'].split('|')[1] == '90.0'
           || element['authority'].split('|')[1] == '90.1'
           || element['authority'].split('|')[1] == '90.2'
         );

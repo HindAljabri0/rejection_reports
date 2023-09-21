@@ -444,13 +444,13 @@
             </mat-accordion>
 
 
-            <div class="list-title" *ngIf="userPrivileges.ProviderPrivileges.chronicDisease.isCDM">
+            <div class="list-title" *ngIf="userPrivileges.ProviderPrivileges.chronicDisease.isCDM || userPrivileges.ProviderPrivileges.chronicDisease.isCDMAdmin || userPrivileges.ProviderPrivileges.chronicDisease.isCDMConfig">
                 <hr>
             </div>
-            <div class="list-title primary" *ngIf="userPrivileges.ProviderPrivileges.chronicDisease.isCDM">
+            <div class="list-title primary" *ngIf="userPrivileges.ProviderPrivileges.chronicDisease.isCDM || userPrivileges.ProviderPrivileges.chronicDisease.isCDMAdmin || userPrivileges.ProviderPrivileges.chronicDisease.isCDMConfig">
                 CDM
             </div>
-            <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.chronicDisease.isCDM">
+            <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.chronicDisease.isCDM || userPrivileges.ProviderPrivileges.chronicDisease.isCDMAdmin || userPrivileges.ProviderPrivileges.chronicDisease.isCDMConfig">
                 <li>
                     <a routerLink="/cdm/chronic-patients" routerLinkActive="is-active">
                         <span class="text">Chronic Patients</span>
@@ -762,7 +762,7 @@
                         <span class="text">Ticket Management</span>
                     </a>
                 </li>
-                <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.chronicDisease.isCDMAdmin">
+                <ul class="nav-list" *ngIf= "userPrivileges.ProviderPrivileges.chronicDisease.isCDM || userPrivileges.ProviderPrivileges.chronicDisease.isCDMAdmin || userPrivileges.ProviderPrivileges.chronicDisease.isCDMConfig">
                     <li>
                         <a routerLink="/cdm/provider-config" routerLinkActive="is-active">
                             <span class="text">CDM Provider Configuration</span>
