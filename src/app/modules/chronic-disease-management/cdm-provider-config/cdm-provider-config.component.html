@@ -1,0 +1,136 @@
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-header">
+        <p>CDM Provider Configuration</p>
+    </div>
+    <div class="block-body">
+        <div class="form-group mb-0">
+            <mat-form-field appearance="fill">
+                <mat-label>Select provider</mat-label>
+                <input matInput type="text" [matAutocomplete]="auto" />
+                <mat-icon matSuffix>search</mat-icon>
+                <mat-autocomplete autoActiveFirstOption #auto>
+                    <mat-option>provider goes here</mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+
+        <mat-accordion hideToggle="true" displayMode="flat" multi="true" class="config-accordion">
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Configuration
+                        <mat-menu #cdmProviderConfiguration xPosition="before">
+                            <ng-template matMenuContent>
+                                <div class="pt-7 pb-7 pr-14 pl-14">
+                                    <ng-container>Error Message</ng-container>
+                                    <ng-container>Success Message</ng-container>
+                                </div>
+                            </ng-template>
+                        </mat-menu>
+                        <button type="button" class="text-danger" (click)="$event.stopPropagation()" mat-icon-button [matMenuTriggerFor]="cdmProviderConfiguration">
+                            <mat-icon>error</mat-icon>
+                        </button>
+                        <button type="button" class="text-success" (click)="$event.stopPropagation()" mat-icon-button [matMenuTriggerFor]="cdmProviderConfiguration">
+                            <mat-icon>check_circle</mat-icon>
+                        </button>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="bodyOfCodeValueManagement">
+
+                    <div class="cardInCodeValueManagement">
+                        <header>
+                            Categories
+                        </header>
+                        <div style="height: 85%; overflow-y: auto;">
+                            <div class="item selected">Diagnosis Code</div>
+                            <div class="item">Policy No.</div>
+                            <div class="item">Region</div>
+                        </div>
+                    </div>
+                    <div class="cardInCodeValueManagement">
+                        <header>
+                            WLE Codes
+                        </header>
+                        <div class="mappedValueInput">
+                            <input>
+                            <button mat-flat-button>Add</button>
+                        </div>
+                        <div style="height: 85%; overflow-y: auto;">
+                            <div class="item">Hypertension</div>
+                            <div class="item">Type L&Ll Diabetes Mellitus</div>
+                            <div class="item">Mixed Hyperlipidaemia</div>
+                            <div class="item">Osteoporosis</div>
+                            <div class="item">Glaucoma</div>
+                            <div class="item">Gout</div>
+                            <div class="item">Epilepsy</div>
+                            <div class="item">Bph</div>
+                            <div class="item">Gerd</div>
+                            <div class="item">Anaemias</div>
+                            <div class="item">Asthma</div>
+                            <div class="item">Chronic Kidney Failure</div>
+                            <div class="item">Chronic Ischaemic Heart Disease</div>
+                            <div class="item">Alzheimer & Other Dementia</div>
+                            <div class="item">Cancer</div>
+                            <div class="item">Arthritis</div>
+                            <div class="item">Depression</div>
+                        </div>
+                    </div>
+                    <div class="cardInCodeValueManagement purple">
+                        <header>
+                            Selected Values
+                        </header>
+                        <ng-container>
+                            <div style="height: 85%; overflow-y: auto;">
+                                <div class="editableItem">
+                                    Thyroiditis
+                                    <button mat-flat-button style="color: #EC6B6B;">Remove</button>
+                                </div>
+                                <div class="editableItem">
+                                    Parkinson'S Disease
+                                    <button mat-flat-button style="color: #EC6B6B;">Remove</button>
+                                </div>
+                                <div class="editableItem">
+                                    Inflammatory Bowel Disease
+                                    <button mat-flat-button style="color: #EC6B6B;">Remove</button>
+                                </div>
+                                <div class="editableItem">
+                                    1234564
+                                    <button mat-flat-button style="color: #EC6B6B;">Remove</button>
+                                </div>
+                                <div class="editableItem">
+                                    78415
+                                    <button mat-flat-button style="color: #EC6B6B;">Remove</button>
+                                </div>
+                                <div class="editableItem">
+                                    98646541
+                                    <button mat-flat-button style="color: #EC6B6B;">Remove</button>
+                                </div>
+                                <div class="editableItem">
+                                    East
+                                    <button mat-flat-button style="color: #EC6B6B;">Remove</button>
+                                </div>
+                                <div class="editableItem">
+                                    South
+                                    <button mat-flat-button style="color: #EC6B6B;">Remove</button>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <div class="inline-loader">
+                    <mat-spinner diameter="48"></mat-spinner>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+    <div class="block-footer sticky">
+        <div class="right-block">
+            <div class="btn-list">
+                <button mat-button>Reset</button>
+                <button mat-flat-button color="primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
