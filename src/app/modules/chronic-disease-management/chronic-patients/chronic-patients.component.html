@@ -6,11 +6,15 @@
         <form [formGroup]="cdmForm" (ngSubmit)="searchByCriteria()">
           <div class="row small-gutter">
             <div class="col-4 col-xxl-3">
-                <div class="form-group" [class.has-error]="policyError?.trim().length > 0"
+                <div class="form-group" [class.has-error]="validationFlag"
                     [matTooltip]="policyError">
                     <label class="control-label">Policy Number <span class="asterisk">*</span></label>
-                    <input placeholder="Enter policy number" class="form-control" formControlName="policyNumber" />
+                    <input placeholder="Enter policy number" (blur)="validatePolicyNumber()" class="form-control" formControlName="policyNumber" />
+                   
                 </div>
+                <div *ngIf="validationFlag">
+                    <span class="error-text">Policy Number does not exist</span>
+                  </div>
             </div>
             <div class="col-4 col-xxl-3">
                 <div class="form-group" [class.has-error]="diagnosisError?.trim().length > 0"

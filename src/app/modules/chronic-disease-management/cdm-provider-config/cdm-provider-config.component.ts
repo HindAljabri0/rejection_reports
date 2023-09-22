@@ -70,7 +70,10 @@ export class CdmProviderConfigComponent implements OnInit {
     }
     this.fetchDiagnosis();
     this.fetchRegions();
-    setTimeout(() => {
+    this.diagSelectedItems = [];
+      this.regSelectedItems  = [];
+      this.policySelectedItems = [];
+     setTimeout(() => {
       this.getAllList();
     }, 500);
 
@@ -98,9 +101,7 @@ export class CdmProviderConfigComponent implements OnInit {
   }
 
   getAllList() {
-
-    this.sharedServices.loadingChanged.next(true);
-
+       this.sharedServices.loadingChanged.next(true);
     this.superAdmin.getAllList(this.selectedProvider).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.body instanceof Array) {
@@ -280,7 +281,7 @@ export class CdmProviderConfigComponent implements OnInit {
     this.diagSelectedItems = [...this.initialDiagSelectedItems];
     this.regSelectedItems = [...this.initialRegSelectedItems];
     this.policySelectedItems = [...this.initialPolicySelectedItems];
-  }
+   }
 
   save() {
     const diagArray = this.diagSelectedItems.map(item => ({
