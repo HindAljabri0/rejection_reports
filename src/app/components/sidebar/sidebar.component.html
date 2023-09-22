@@ -755,7 +755,7 @@
                         <span class="text">Ticket Management</span>
                     </a>
                 </li>
-                <li>
+                <li *ngIf="!envStaging && !envProd">
                     <a routerLink="/cdm/provider-config" routerLinkActive="is-active">
                         <span class="text">CDM Provider Configuration</span>
                     </a>
