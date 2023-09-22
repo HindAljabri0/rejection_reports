@@ -39,8 +39,8 @@ export class CdmProviderConfigComponent implements OnInit {
   policyResult: any;
   savePopupOpen: any;
   initialDiagSelectedItems: any[] = [];
-initialRegSelectedItems: any[] = [];
-initialPolicySelectedItems: any[] = [];
+  initialRegSelectedItems: any[] = [];
+  initialPolicySelectedItems: any[] = [];
 
 
   constructor(private sharedServices: SharedServices, private superAdmin: SuperAdminService, private cdmService: CdmService, private dialogService: DialogService, private elementRef: ElementRef) { }
@@ -188,11 +188,9 @@ initialPolicySelectedItems: any[] = [];
   onRegionChange(item: any) {
     item.regSelected = !item.regSelected;
     if (item.regSelected) {
-      this.regSelectedItems.push(item);
+      this.regSelectedItems.unshift(item);
       this.regions = this.regions.filter(region => region !== item);
-
-    }
-    else {
+    } else {
       const index = this.regSelectedItems.indexOf(item);
       if (index !== -1) {
         this.regSelectedItems.splice(index, 1);
@@ -203,9 +201,8 @@ initialPolicySelectedItems: any[] = [];
   onDiagChange(item: any) {
     item.diagSelected = !item.diagSelected;
     if (item.diagSelected) {
-      this.diagSelectedItems.push(item);
+      this.diagSelectedItems.unshift(item);
       this.diagnosisList = this.diagnosisList.filter(diagnosis => diagnosis !== item);
-
     } else {
       const index = this.diagSelectedItems.indexOf(item);
       if (index !== -1) {
@@ -247,119 +244,36 @@ initialPolicySelectedItems: any[] = [];
   }
   addItem(newItem) {
     if (newItem && newItem.trim() !== '') {
-      // Always add policy items to policySelectedItems
-      this.policySelectedItems.push({ 'policyCode': newItem });
-      this.newItem = '';
+      const isDuplicate = this.policySelectedItems.some(item => item.policyCode === newItem);
+
+      if (!isDuplicate) {
+        this.policySelectedItems.push({ 'policyCode': newItem });
+        this.newItem = '';
+      } else {
+        this.dialogService.openMessageDialog({
+          title: '',
+          message: 'The policy number you entered is already exist.',
+          isError: true,
+        });
+      }
     }
   }
 
-  removeDiagItem(cdm, index: number) {
-    if (cdm) {
-      // If the item has a cdmSequence, it was fetched from the API, so call the delete API
-      this.sharedServices.loadingChanged.next(true);
-      this.superAdmin.deleteCdmSequence(this.selectedProvider, cdm).subscribe(event => {
-        if (event instanceof HttpResponse) {
-          if (event.status == 201 || event.status) {
-            this.dialogService.openMessageDialog({
-              title: '',
-              message: `Diagnosis has been deleted`,
-              isError: false
-            });
-            let response = event;
-            const removedItem = this.diagSelectedItems.splice(index, 1)[0];
-            // Add the removed item back to the original list
-            this.diagnosisList.push(removedItem);
-            this.diagnosisList.sort((a, b) => a.diagnosisDescription.localeCompare(b.diagnosisDescription));
-            this.sharedServices.loadingChanged.next(false);
 
-
-
-          }
-        }
-      },
-        (err) => {
-          if (err instanceof HttpErrorResponse) {
-            console.error('Error deleting data:', err);
-          }
-        });
-    } else {
-      // If the item doesn't have a cdmSequence, it was added manually, so remove it from selected items
-      const removedItem = this.diagSelectedItems.splice(index, 1)[0];
-      // Add the removed item back to the original list
-      this.diagnosisList.push(removedItem);
-      this.diagnosisList.sort((a, b) => a.diagnosisDescription.localeCompare(b.diagnosisDescription));
-
-
-
-    }
+  removeDiagItem(index: number) {
+    const removedItem = this.diagSelectedItems.splice(index, 1)[0];
+    this.diagnosisList.unshift(removedItem);
+    this.diagnosisList.sort((a, b) => a.diagnosisDescription.localeCompare(b.diagnosisDescription));
   }
 
-  removeRegItem(cdm, index: number) {
-    if (cdm) {
-      // If the item has a cdmSequence, it was fetched from the API, so call the delete API
-      this.sharedServices.loadingChanged.next(true);
-      this.superAdmin.deleteCdmSequence(this.selectedProvider, cdm).subscribe(event => {
-        if (event instanceof HttpResponse) {
-          if (event.status == 201 || event.status) {
-            this.dialogService.openMessageDialog({
-              title: '',
-              message: `Region has been deleted`,
-              isError: false
-            });
-            let response = event;
-            const removedItem = this.regSelectedItems.splice(index, 1)[0];
-            this.regions.push(removedItem);
-            this.regions.sort((a, b) => a.regionDescription.localeCompare(b.regionDescription));
-            this.sharedServices.loadingChanged.next(false);
-
-          }
-        }
-      },
-        (err) => {
-          if (err instanceof HttpErrorResponse) {
-            console.error('Error deleting data:', err);
-          }
-        });
-    } else {
-      const removedItem = this.regSelectedItems.splice(index, 1)[0];
-      this.regions.push(removedItem);
-      this.regions.sort((a, b) => a.regionDescription.localeCompare(b.regionDescription));
-    }
-
+  removeRegItem(index: number) {
+    const removedItem = this.regSelectedItems.splice(index, 1)[0];
+    this.regions.unshift(removedItem);
+    this.regions.sort((a, b) => a.regionDescription.localeCompare(b.regionDescription));
   }
 
-  removePolicyItem(cdm, index: number) {
-    if (cdm) {
-      // If the item has a cdmSequence, it was fetched from the API, so call the delete API
-      this.sharedServices.loadingChanged.next(true);
-      this.superAdmin.deleteCdmSequence(this.selectedProvider, cdm).subscribe(event => {
-        if (event instanceof HttpResponse) {
-          if (event.status == 201 || event.status) {
-            this.dialogService.openMessageDialog({
-              title: '',
-              message: `Policy has been deleted`,
-              isError: false
-            });
-            let response = event;
-
-
-            this.policySelectedItems.splice(index, 1);
-            this.sharedServices.loadingChanged.next(false);
-
-          }
-        }
-      },
-        (err) => {
-          if (err instanceof HttpErrorResponse) {
-            console.error('Error deleting data:', err);
-          }
-        });
-    } else {
-      this.policySelectedItems.splice(index, 1);
-
-
-    }
-
+  removePolicyItem(index: number) {
+    this.policySelectedItems.splice(index, 1);
   }
 
   reset() {
@@ -369,26 +283,22 @@ initialPolicySelectedItems: any[] = [];
   }
 
   save() {
-    const diagArray = this.diagSelectedItems
-      .filter(item => !item.cdmSequence) // Filter out items with cdmSequence
-      .map(item => ({
-        'diagnosisDescription': item.diagnosisDescription,
-        'diagnosisCode': item.diagnosisCode,
-        'cdmSequence': item.cdmSequence
-      }));
-    const regArray = this.regSelectedItems
-      .filter(item => !item.cdmSequence) // Filter out items with cdmSequence
-      .map(item => ({
-        'regionDescription': item.regionDescription,
-        'regionCode': item.regionCode
-      }));
+    const diagArray = this.diagSelectedItems.map(item => ({
+      'diagnosisDescription': item.diagnosisDescription,
+      'diagnosisCode': item.diagnosisCode,
+      'cdmSequence': item.cdmSequence
+    }));
 
-    const policyArray = this.policySelectedItems
-      .filter(item => !item.cdmSequence)
-      .map(item => ({
-        'policyCode': item.policyCode,
-        'cdmSequence': item.cdmSequence
-      }));
+    const regArray = this.regSelectedItems.map(item => ({
+      'regionDescription': item.regionDescription,
+      'regionCode': item.regionCode,
+      'cdmSequence': item.cdmSequence
+    }));
+
+    const policyArray = this.policySelectedItems.map(item => ({
+      'policyCode': item.policyCode,
+      'cdmSequence': item.cdmSequence
+    }));
     const dataToSave = {
       "diagnosis": diagArray,
       "region": regArray,
@@ -399,7 +309,6 @@ initialPolicySelectedItems: any[] = [];
     this.superAdmin.saveCdmCategories(this.selectedProvider, dataToSave).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.status == 201 || event.status) {
-
           this.dialogService.openMessageDialog({
             title: '',
             message: `Data saved successfully`,
@@ -411,10 +320,8 @@ initialPolicySelectedItems: any[] = [];
     },
       (error) => {
         console.error('Error saving data:', error);
-      }
-    );
+      });
   }
-
 
 
   filterCodes() {

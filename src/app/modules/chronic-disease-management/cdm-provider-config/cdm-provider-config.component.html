@@ -21,7 +21,7 @@
     </div>
   </div>
   <mat-accordion *ngIf="selectedProvider" hideToggle="true" displayMode="flat" multi="true" class="config-accordion">
-    <mat-expansion-panel expanded="true"> <!-- Set expanded="true" -->
+    <mat-expansion-panel expanded="true">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Configuration
@@ -83,21 +83,21 @@
             <div class="editableItem" *ngFor="let item of diagSelectedItems; let i = index">
               <div>{{ item.diagnosisDescription }}</div>
               <button mat-flat-button style="color: #EC6B6B;"
-                (click)="removeDiagItem(item.cdmSequence, i)">Remove</button>
+                (click)="removeDiagItem(i)">Remove</button>
             </div>
           </div>
           <div style="height: 85%; overflow-y: auto;" *ngIf="fetchFlag">
             <div class="editableItem" *ngFor="let item of policySelectedItems; let i = index">
               <span>{{ item.policyCode }}</span>
               <button mat-flat-button style="color: #EC6B6B;"
-                (click)="removePolicyItem(item.cdmSequence, i)">Remove</button>
+                (click)="removePolicyItem(i)">Remove</button>
             </div>
           </div>
           <div style="height: 85%; overflow-y: auto;" *ngIf="regionFlag">
             <div class="editableItem" *ngFor="let item of regSelectedItems; let i = index">
               <div>{{ item.regionDescription }}</div>
               <button mat-flat-button style="color: #EC6B6B;"
-                (click)="removeRegItem(item.cdmSequence, i)">Remove</button>
+                (click)="removeRegItem(i)">Remove</button>
             </div>
           </div>
         </div>
