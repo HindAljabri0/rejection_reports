@@ -26,12 +26,7 @@ export class SuperAdminService {
     const request = new HttpRequest('POST', environment.settingsServiceHost + requestURL, value);
     return this.http.request(request);
   }
-  deleteCdmSequence(providerId: string, cdmSequence: string) {
-    const requestURL = `/providers/${providerId}/cdm/${cdmSequence}/delete`;
-    const request = new HttpRequest('DELETE', environment.settingsServiceHost + requestURL);
-    return this.http.request(request);
-  }
-  getAllList(providerId: string) {
+    getAllList(providerId: string) {
     const requestURL = `/providers/${providerId}/cdm/get-all-list`;
     const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
     return this.http.request(request);

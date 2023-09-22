@@ -65,16 +65,16 @@ export class ChronicPatientsComponent implements OnInit {
     ngOnInit() {
       this.superAdmin.getList(this.sharedServices.providerId).subscribe((data: any) => {
         if (data && data.body) { 
-         if (data.body.diagnosis && Array.isArray(data.body.diagnosis)) {
-            this.diagnosisNames = data.body.diagnosis.map(diagnosis => diagnosis.diagnosisDescription);
-            this.diagnosisCodes = data.body.diagnosis.map(diagnosis => diagnosis.diagnosisCode);
+         if (data.body.diagnosisData && Array.isArray(data.body.diagnosisData)) {
+            this.diagnosisNames = data.body.diagnosisData.map(diagnosisData => diagnosisData.diagnosisDescription);
+            this.diagnosisCodes = data.body.diagnosisData.map(diagnosisData => diagnosisData.diagnosis);
           } else {
             this.diagnosisNames = [];
           }
       
-          if (data.body.region && Array.isArray(data.body.region)) {
-            this.regionNames = data.body.region.map(region => region.regionDescription);
-            this.regionCodes = data.body.region.map(region => region.regionCode);
+          if (data.body.regionData && Array.isArray(data.body.regionData)) {
+            this.regionNames = data.body.regionData.map(regionData => regionData.regionDescription);
+            this.regionCodes = data.body.regionData.map(regionData => regionData.region);
           } else {
             this.regionNames = [];
         }
