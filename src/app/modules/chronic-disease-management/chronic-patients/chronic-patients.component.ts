@@ -50,6 +50,8 @@ export class ChronicPatientsComponent implements OnInit {
   regionNames: string[] = [];
   regionCodes: string[] = [];
  diagnosisCodes: string[] = [];
+  policyNumber: any; 
+  validationFlag: boolean;
   
 
   constructor(
@@ -78,10 +80,29 @@ export class ChronicPatientsComponent implements OnInit {
           } else {
             this.regionNames = [];
         }
+        if (data.body.policyData && Array.isArray(data.body.policyData)) {
+          this.policyNames = data.body.policyData.map(policyData => policyData.policyNumber);
+         
+        } else {
+          this.policyNames = [];
+      }
       }
     });
     
  }
+ validatePolicyNumber() {
+  if (this.cdmForm.controls.policyNumber.value) {
+    const exists = this.policyNames.includes(this.cdmForm.controls.policyNumber.value);
+
+    if (exists) {
+      this.validationFlag = false;
+    } else {
+      this.validationFlag = true;
+
+    }
+  }
+}
+
   
   searchByCriteria() {
     this.pageIndex = 0;
