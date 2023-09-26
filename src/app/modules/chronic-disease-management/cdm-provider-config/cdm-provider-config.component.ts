@@ -352,7 +352,7 @@ export class CdmProviderConfigComponent implements OnInit {
     this.policySelectedItems = [...this.initialPolicySelectedItems];
     }
   
-    save() {
+    save(diag: boolean, policy: boolean, region: boolean) {
       const diagArray = this.diagSelectedItems.map(item => ({
         'diagnosisDescription': item.diagnosisDescription,
         'diagnosisCode': item.diagnosisCode,
@@ -400,6 +400,25 @@ export class CdmProviderConfigComponent implements OnInit {
                 isError: false,
               });
             }
+            setTimeout(() => {
+              if(diag){
+                this.regionFlag = false;
+                this.diagnosisFlag = true;
+                this.fetchFlag = false;
+              }
+              if(policy){
+                this.regionFlag = false;
+                this.diagnosisFlag = false;
+                this.fetchFlag = true;
+              }
+              if(region){
+                this.regionFlag = true;
+                this.diagnosisFlag = false;
+                this.fetchFlag = false;
+                
+              }
+            }, 1000);
+          
             this.sharedServices.loadingChanged.next(false);
           }
         },
