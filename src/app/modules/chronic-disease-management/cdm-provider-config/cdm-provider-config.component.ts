@@ -352,60 +352,62 @@ export class CdmProviderConfigComponent implements OnInit {
     this.policySelectedItems = [...this.initialPolicySelectedItems];
     }
   
-  save() {
-    const diagArray = this.diagSelectedItems.map(item => ({
-      'diagnosisDescription': item.diagnosisDescription,
-      'diagnosisCode': item.diagnosisCode,
-      'cdmSequence': item.cdmSequence
-    }));
-
-    const regArray = this.regSelectedItems.map(item => ({
-      'regionDescription': item.regionDescription,
-      'regionCode': item.regionCode,
-      'cdmSequence': item.cdmSequence
-    }));
-
-    const policyArray = this.policySelectedItems.map(item => ({
-      'policyCode': item.policyCode,
-      'cdmSequence': item.cdmSequence
-    }));
-    const dataToSave = {
-      "diagnosis": diagArray,
-      "region": regArray,
-      "policy": policyArray,
-    };
-    this.savePopupOpen = true;
-    this.sharedServices.loadingChanged.next(true);
-    this.superAdmin.saveCdmCategories(this.selectedProvider, dataToSave)
-      .pipe(
-        finalize(() => {
-          this.sharedServices.loadingChanged.next(false);
-          this.getAllList(); 
-        })
-      )
-      .subscribe(event => {
-        if (event instanceof HttpResponse) {
-          if (event.status == 201 || event.status) {
-            this.dialogService.openMessageDialog({
-              title: '',
-              message: `Data saved successfully`,
-              isError: false,
-          });
-        }
-        this.sharedServices.loadingChanged.next(false);
-      }
-    },
-      (error) => {
-        console.error('Error saving data:', error);
-      });
-    this.selectedValues = this.selectedValues.filter(value => {
-      const existsInDiag = diagArray.some(item => item.diagnosisCode === value);
-      const existsInReg = regArray.some(item => item.regionCode === value);
-      const existsInPolicy = policyArray.some(item => item.policyCode === value);
-      return !(existsInDiag || existsInReg || existsInPolicy);
-    });
-  }
-
+    save() {
+      const diagArray = this.diagSelectedItems.map(item => ({
+        'diagnosisDescription': item.diagnosisDescription,
+        'diagnosisCode': item.diagnosisCode,
+        'cdmSequence': item.cdmSequence
+      }));
+    
+      const regArray = this.regSelectedItems.map(item => ({
+        'regionDescription': item.regionDescription,
+        'regionCode': item.regionCode,
+        'cdmSequence': item.cdmSequence
+      }));
+    
+      const policyArray = this.policySelectedItems.map(item => ({
+        'policyCode': item.policyCode,
+        'cdmSequence': item.cdmSequence
+      }));
+        const dataToSave = {
+        "diagnosis": diagArray,
+        "region": regArray,
+        "policy": policyArray,
+      };
+       this.savePopupOpen = true;
+      this.sharedServices.loadingChanged.next(true);
+      this.superAdmin.saveCdmCategories(this.selectedProvider, dataToSave)
+        .pipe(
+          finalize(() => {
+             this.selectedValues = this.selectedValues.filter(value => {
+              const existsInDiag = diagArray.some(item => item.diagnosisCode === value);
+              const existsInReg = regArray.some(item => item.regionCode === value);
+              const existsInPolicy = policyArray.some(item => item.policyCode === value);
+              return !(existsInDiag || existsInReg || existsInPolicy);
+            });
+            
+            this.sharedServices.loadingChanged.next(false);
+            this.getAllList(); 
+            this.policySelectedItems = []; 
+          })
+        )
+        .subscribe(event => {
+          if (event instanceof HttpResponse) {
+            if (event.status == 201 || event.status) {
+              this.dialogService.openMessageDialog({
+                title: '',
+                message: `Data saved successfully`,
+                isError: false,
+              });
+            }
+            this.sharedServices.loadingChanged.next(false);
+          }
+        },
+        (error) => {
+          console.error('Error saving data:', error);
+        });
+    }
+    
   filterCodes() {
     if (this.filterWLECodesControl.value != null) {
       this.filteredCodes = this.codes.filter(
