@@ -279,7 +279,7 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .hr{box-sizing: content-box;height: 0;overflow: visible;border: 0;border-top: 1px solid #e1e1e1;margin:0;}
 .hr.dark{border-top-color: #bebebe;}
 .hr.separator{margin: 8px 0;}
-.hr.spaced{margin:16px 0;}
+.hr.spaced{margin:14px 0;}
 .dashboard-numbers {font-weight: 500;font-size: 16px;line-height: 20px;}
 .currency {font-size: 12px;font-weight: 700;opacity: 0.4;}
 .abstract-card-list{display: flex;margin-left: -7px;margin-right: -7px;flex-wrap: wrap;}
@@ -369,6 +369,7 @@ textarea.doctor-review.form-control{height: 80px;resize: none;}
 .text-submitted-outside-waseel,.text-submitted,.text-under-processing,.text-deep-red{color: #8F3030!important;}
 .text-light-grey{color: #adadad!important;}
 .text-medium-grey{color: #909090!important;}
+.text-dark-grey{color: #505050!important;}
 .text-grey,.text-duplicate{color: #707070!important;}
 .text-success{color: #29bf24!important;}
 .text-cancelled,.text-danger{color: #D03131!important;}
@@ -953,6 +954,9 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .statistic-box{padding: 8px 12px;color: #3060AA;background-color: rgba(48, 96, 170,0.1);margin-bottom: 14px;border-radius: 8px;}
 .statistic-box label{display: block;}
 .statistic-box h3{font-size: 18px;line-height: 24px;font-weight: 500;}
+.statistic-box.large{padding: 14px;}
+.statistic-box.large label{font-weight: 500;font-size: 14px;padding-bottom: 2px;line-height: 20px;}
+.statistic-box.large h3{font-weight: 600;font-size: 20px;line-height: 30px;}
 
 /* attachment
 --------------------------------------------------------------------------------------------------------*/
@@ -1987,6 +1991,13 @@ angular-editor .angular-editor .angular-editor-toolbar .angular-editor-toolbar-s
 .announcement-list .head-block{padding-bottom: 14px;}
 .announcement-list .head-block h3{padding-bottom: 4px;}
 .announcement-list .content:not(:last-child){padding-bottom: 14px;}
+
+/* extract claim
+--------------------------------------------------------------------------------------------------------*/
+.extract-claim .progress{height: 8px;background-color: rgba(48, 96, 170, 0.12);border-radius: 50px;margin-bottom: 8px;}
+.extract-claim .progress .progress-bar{background-color: #3060aa;border-radius: 50px;}
+.extract-claim .progress-wrapper .progress-text,.extract-claim .progress-wrapper label{display: block;font-size: 14px;line-height: 22px;color: #505050;padding-bottom: 8px;}
+.extract-claim .progress-wrapper .progress-text{font-weight: 700;padding-bottom: 0;}
 
 /* custom grid
 --------------------------------------------------------------------------------------------------------*/

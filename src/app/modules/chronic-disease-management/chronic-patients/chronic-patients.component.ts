@@ -10,6 +10,8 @@ import { SettingsService } from 'src/app/services/settingsService/settings.servi
 import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { DownloadStatus } from 'src/app/models/downloadRequest';
 import { F } from '@angular/cdk/keycodes';
+import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
+import { getProviderId } from '../../claim-review/store/claimReview.reducer';
 
 @Component({
   selector: 'app-chronic-patients',
@@ -19,11 +21,11 @@ import { F } from '@angular/cdk/keycodes';
 export class ChronicPatientsComponent implements OnInit {
   cdmForm: FormGroup = this.formBuilder.group({
     policyNumber: [''],
-    //city: [''],
     region: [''],
     diagnosis: [''],
     memberId: ['']
   });
+  
   policyError: string;
   cityError: string;
   regionError: string;
@@ -43,56 +45,65 @@ export class ChronicPatientsComponent implements OnInit {
   pageIndex = 0;
   pageSizeOptions = [10, 50, 100];
   diagnosis: any;
+  policyNames: string[] = [];
+  diagnosisNames: string[] = [];
+  regionNames: string[] = [];
+  regionCodes: string[] = [];
+ diagnosisCodes: string[] = [];
+  policyNumber: any; 
+  validationFlag: boolean;
+  
 
   constructor(
     private dialog: MatDialog,
     private sharedServices: SharedServices,
     private sharedData: SharedDataService,
     private cdmService: CdmService,
+    private superAdmin: SuperAdminService,
     private downloadService: DownloadService,
     private settingService: SettingsService,
     private formBuilder: FormBuilder
   ) { }
-
-  ngOnInit() {
-    this.fetchDiagnosis();
-    this.fetchRegions();
-  }
-
-  fetchDiagnosis() {
-    this.cdmService.getDiagnosisList().subscribe(event => {
-      if (event instanceof HttpResponse) {
-        console.log(event.body);
-        if (event.body != null)
-          this.diagnosisList = event.body["diagnosis"] as { diagnosisCode: string, diagnosisDescription: string }[];
-        //this.length = event.body["totalElements"]
-      }
-    }
-      , err => {
-
-        if (err instanceof HttpErrorResponse) {
-          console.log(err.message)
-          this.diagnosisList = null;
+    ngOnInit() {
+      this.superAdmin.getList(this.sharedServices.providerId).subscribe((data: any) => {
+        if (data && data.body) { 
+         if (data.body.diagnosisData && Array.isArray(data.body.diagnosisData)) {
+            this.diagnosisNames = data.body.diagnosisData.map(diagnosisData => diagnosisData.diagnosisDescription);
+            this.diagnosisCodes = data.body.diagnosisData.map(diagnosisData => diagnosisData.diagnosis);
+          } else {
+            this.diagnosisNames = [];
+          }
+      
+          if (data.body.regionData && Array.isArray(data.body.regionData)) {
+            this.regionNames = data.body.regionData.map(regionData => regionData.regionDescription);
+            this.regionCodes = data.body.regionData.map(regionData => regionData.region);
+          } else {
+            this.regionNames = [];
         }
-      });
-  }
-  fetchRegions() {
-    this.cdmService.getRegionsList().subscribe(event => {
-      if (event instanceof HttpResponse) {
-        console.log(event.body);
-        if (event.body != null)
-          this.regions = event.body["regions"] as { regionCode: string, regionDescription: string }[];
-        //this.length = event.body["totalElements"]
+        if (data.body.policyData && Array.isArray(data.body.policyData)) {
+          this.policyNames = data.body.policyData.map(policyData => policyData.policyNumber);
+         
+        } else {
+          this.policyNames = [];
       }
-    }
-      , err => {
+      }
+    });
+    
+ }
+ validatePolicyNumber() {
+  if (this.cdmForm.controls.policyNumber.value) {
+    const exists = this.policyNames.includes(this.cdmForm.controls.policyNumber.value);
 
-        if (err instanceof HttpErrorResponse) {
-          console.log(err.message)
-          this.regions = null;
-        }
-      });
+    if (exists) {
+      this.validationFlag = false;
+    } else {
+      this.validationFlag = true;
+
+    }
   }
+}
+
+  
   searchByCriteria() {
     this.pageIndex = 0;
     this.pageSize = 10;
@@ -108,7 +119,7 @@ export class ChronicPatientsComponent implements OnInit {
   showDiagnosisList(patientId) {
     let currentRow = this.patientList.filter(f => f.patientId === patientId)[0];
     this.diagnosis = currentRow.diagnosis;
-    console.log(JSON.stringify(this.diagnosis));
+    //console.log(JSON.stringify(this.diagnosis));
   }
   /*
   (selectionChange)="selectedRegion = $event.value;filterCities()"
@@ -123,28 +134,22 @@ export class ChronicPatientsComponent implements OnInit {
     this.cityError = null;
     this.regionError = null;
     this.diagnosisError = null;
-
     if (this.cdmForm.controls.policyNumber.value) {
       model.policyNumber = this.cdmForm.controls.policyNumber.value;
     } else {
       this.policyError = 'Please fill policy number';
       this.thereIsError = true;
     }
-    /*if (this.cdmForm.controls.city.value) {
-      model.city = this.cdmForm.controls.city.value;
-    } else {
-      model.city = null;
-    }*/
     if (this.cdmForm.controls.region.value) {
-      model.region = this.cdmForm.controls.region.value;
+      // Use the stored region code value
+      model.region = this.regionCodes[this.regionNames.indexOf(this.cdmForm.controls.region.value)];
     } else {
       this.regionError = 'Please select region';
       this.thereIsError = true;
     }
     if (this.cdmForm.controls.diagnosis.value) {
-      //model.diagnosis = this.cdmForm.controls.diagnosis.value;
-      //model.diagnosis = JSON.parse(model.diagnosis);
-      model.diagnosis = Array.from(this.cdmForm.controls.diagnosis.value);
+      // Use the stored diagnosis code value
+      model.diagnosis = [this.diagnosisCodes[this.diagnosisNames.indexOf(this.cdmForm.controls.diagnosis.value)]];
     } else {
       this.diagnosisError = 'Please select diagnosis';
       this.thereIsError = true;
@@ -156,24 +161,22 @@ export class ChronicPatientsComponent implements OnInit {
       this.sharedServices.loadingChanged.next(true);
       this.cdmService.getPatientList(this.sharedServices.providerId, model, this.pageIndex, this.pageSize).subscribe(event => {
         if (event instanceof HttpResponse) {
-          //console.log(event.body);
           if (event.body != null)
             this.patientList = event.body["patients"];
           this.length = event.body["totalElements"];
           this.sharedServices.loadingChanged.next(false);
-          //this.length = event.body["totalElements"]
         }
-      }
-        , err => {
-
-          if (err instanceof HttpErrorResponse) {
-            console.log(err.message)
-            this.patientList = null;
-            this.sharedServices.loadingChanged.next(false);
-          }
-        });
+      }, err => {
+        if (err instanceof HttpErrorResponse) {
+          console.log(err.message)
+          this.patientList = null;
+          this.sharedServices.loadingChanged.next(false);
+        }
+      });
     }
   }
+  
+  
   openChronicPatientDetails(_patientId) {
     let row={};
     if(this.patientList !=null){

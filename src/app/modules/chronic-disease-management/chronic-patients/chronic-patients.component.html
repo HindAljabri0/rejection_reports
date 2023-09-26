@@ -4,72 +4,60 @@
     </div>
     <div class="block-filter-panel">
         <form [formGroup]="cdmForm" (ngSubmit)="searchByCriteria()">
-            <div class="row small-gutter">
-                <div class="col-4 col-xxl-3">
-                    <div class="form-group" [class.has-error]="policyError?.trim().length > 0"
-                        [matTooltip]="policyError">
-                        <label class="control-label">Policy Number <span class="asterisk">*</span></label>
-                        <input placeholder="Enter policy number" class="form-control" formControlName="policyNumber" />
-                    </div>
+          <div class="row small-gutter">
+            <div class="col-4 col-xxl-3">
+                <div class="form-group" [class.has-error]="validationFlag"
+                    [matTooltip]="policyError">
+                    <label class="control-label">Policy Number <span class="asterisk">*</span></label>
+                    <input placeholder="Enter policy number" (blur)="validatePolicyNumber()" class="form-control" formControlName="policyNumber" />
+                   
                 </div>
-                <div class="col-4 col-xxl-3">
-                    <div class="form-group" [class.has-error]="diagnosisError?.trim().length > 0"
-                        [matTooltip]="diagnosisError">
-                        <label class="control-label">Diagnosis Name <span class="asterisk">*</span></label>
-                        <mat-form-field class="form-control custom-select-control">
-                            <mat-select value="" formControlName="diagnosis">
-                                <mat-option value="">Select diagnosis</mat-option>
-                                <mat-option *ngFor="let din of diagnosisList"
-                                [value]="din.diagnosisCode">
-                                {{din.diagnosisDescription}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="col-4 col-xxl-3">
-                    <div class="form-group" [class.has-error]="regionError?.trim().length > 0"
-                        [matTooltip]="regionError">
-                        <label class="control-label">Region <span class="asterisk">*</span></label>
-                        <mat-form-field class="form-control custom-select-control">
-                            <mat-select value="" formControlName="region" >
-                                <mat-option value="">Select Region</mat-option>
-                                <mat-option *ngFor="let region of regions"
-                                [value]="region.regionCode">
-                                {{region.regionDescription}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <!--div class="col-4 col-xxl-3">
-                    <div class="form-group" [class.has-error]="cityError?.trim().length > 0"
-                        [matTooltip]="cityError">
-                        <label class="control-label">City</label>
-                        <mat-form-field class="form-control custom-select-control">
-                            <mat-select value="" formControlName="city">
-                                <mat-option value="">Select City</mat-option>
-                                <mat-option *ngFor="let city of filterdCities"
-                                [value]="city.Code">
-                                {{city.Name}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                </div-->
-                
-                <div class="col-4 col-xxl-3">
-                    <div class="form-group">
-                        <label class="control-label">Member ID</label>
-                        <input placeholder="Enter member ID" class="form-control" formControlName="memberId" />
-                    </div>
-                </div>
-                <div class="col-4 col-xxl-3">
-                    <div class="form-group">
-                        <label class="control-label">&nbsp;</label>
-                        <button type="submit" mat-flat-button color="primary">Inquiry</button>
-                    </div>
-                </div>
+                <div *ngIf="validationFlag">
+                    <span class="error-text">This policy number is not configured. Please contact Tawuniya</span>
+                  </div>
             </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group" [class.has-error]="diagnosisError?.trim().length > 0"
+                    [matTooltip]="diagnosisError"><label class="control-label">Diagnosis Name <span class="asterisk">*</span></label>
+                <mat-form-field class="form-control custom-select-control">
+                  <mat-select placeholder="Select Diagnosis" formControlName="diagnosis">
+                    <mat-option value="">Select Diagnosis</mat-option>
+                    <mat-option *ngFor="let diagnosis of diagnosisNames" [value]="diagnosis">
+                      {{ diagnosis }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group" [class.has-error]="regionError?.trim().length > 0" [matTooltip]="regionError">
+                <label class="control-label">Region <span class="asterisk">*</span></label>
+                <mat-form-field class="form-control custom-select-control">
+                  <mat-select placeholder="Select Region" formControlName="region">
+                    <mat-option value="">Select Region</mat-option>
+                    <mat-option *ngFor="let region of regionNames" [value]="region">
+                      {{ region }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">Member ID</label>
+                <input placeholder="Enter member ID" class="form-control" formControlName="memberId" />
+              </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">&nbsp;</label>
+                <button type="submit" mat-flat-button color="primary">Inquiry</button>
+              </div>
+            </div>
+          </div>
         </form>
-    </div>
+      </div>
+      
 
     <div class="pagination-header">
         <button matRipple type="button" class="ml-auto btn action-btn my-n2 mr-n2" (click)="downloadSheetFormat()" matTooltip="Download">
