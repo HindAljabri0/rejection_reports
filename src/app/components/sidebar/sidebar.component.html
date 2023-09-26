@@ -396,7 +396,7 @@
                                 <span class="text">Upload Claims</span>
                             </a>
                         </li>
-                        <li>
+                        <li *ngIf="!envProd && !envStaging">
                             <a routerLink="/nphies/extract-claim" routerLinkActive="is-active">
                                 <img src="assets/ic-extract-claims.svg" alt="Extract Claims" class="default-icon" />
                                 <img src="assets/ic-extract-claims.svg" alt="Extract Claims" class="active-icon" />
