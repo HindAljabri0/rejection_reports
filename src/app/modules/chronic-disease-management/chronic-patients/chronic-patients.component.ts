@@ -149,7 +149,7 @@ export class ChronicPatientsComponent implements OnInit {
     }
     if (this.cdmForm.controls.diagnosis.value) {
       // Use the stored diagnosis code value
-      model.diagnosis = this.diagnosisCodes[this.diagnosisNames.indexOf(this.cdmForm.controls.diagnosis.value)];
+      model.diagnosis = [this.diagnosisCodes[this.diagnosisNames.indexOf(this.cdmForm.controls.diagnosis.value)]];
     } else {
       this.diagnosisError = 'Please select diagnosis';
       this.thereIsError = true;
