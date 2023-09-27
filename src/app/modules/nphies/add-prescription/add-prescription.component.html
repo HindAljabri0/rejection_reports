@@ -627,9 +627,13 @@
                   <td class="actions">
                     <mat-menu #itemsActionsMenu xPosition="before">
                       <ng-template matMenuContent>
-                        <button mat-menu-item type="button" *ngIf="item.isPackage === true" (click)="openAddEditItemDetailsDialog(item.sequence)">
-                          <mat-icon class="material-icons-outlined">add</mat-icon>
+                        <button mat-menu-item type="button" (click)="openAddEditItemDialog()">
+                          <mat-icon class="material-icons-outlined">Add Details</mat-icon>
                           <span>Add Details</span>
+                        </button>
+                        <button mat-menu-item type="button" (click)="openAddEditItemDialog()">
+                          <mat-icon class="material-icons-outlined">Add Dosage Details</mat-icon>
+                          <span>Add Dosage Details</span>
                         </button>
                         <button mat-menu-item type="button" (click)="openAddEditItemDialog(item)">
                           <mat-icon class="material-icons-outlined">edit</mat-icon>
@@ -998,7 +1002,7 @@
             <span>Request PBM</span>
           </button>
           <button type="submit" mat-flat-button color="primary" >
-            <span>Request scription</span>
+            <span>Request Prescription</span>
           </button>
         </div>
 

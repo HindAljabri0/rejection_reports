@@ -60,7 +60,6 @@ export class AuthService {
     return this.httpClient.request(request);
   }
   loginOut() {
-    //console.log("inside singout");
     const requestURL = '/signout';
     const request = new HttpRequest('GET', environment.authenticationHost + requestURL);
     return this.httpClient.request(request);
@@ -211,6 +210,8 @@ export class AuthService {
           || element['authority'].split('|')[1] == '31.0'
           || element['authority'].split('|')[1] == '32.0'
           || element['authority'].split('|')[1] == '90.0'
+          || element['authority'].split('|')[1] == '90.1'
+          || element['authority'].split('|')[1] == '90.2'
         );
         if (hasClaimPrivileges) {
           authorities.forEach(element => {

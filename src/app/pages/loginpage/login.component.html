@@ -21,9 +21,7 @@
                         <input type="password" matInput i18n-placeholder="@@password" placeholder="Enter password here..." [formControl]="password" (keyup.enter)="login()">
                     </mat-form-field>
                 </div>
-                <div *ngIf="errors != null" class="error-card">
-                    <div [innerHTML]='errors'></div>
-                </div>
+                <div *ngIf="errors != null" class="error-card"><div [innerHTML]='errors'></div></div>
                 <button class="submit-btn btn-block" mat-flat-button color="primary" (click)="login()" i18n="@@signin" [disabled]="isLoading">Sign In</button>
             </div>
             <div class="text-center">
@@ -66,7 +64,7 @@
                 <img src="./assets/login-lower-art.svg" class="lower-art" alt="Abstract art" />
             </ng-container>
             <ng-container *ngIf="isCloseToNationalDay()">
-                <img src="./assets/national-day-logo.svg" alt="Waseel" class="logo" />
+                <img src="./assets/national-day-logos.svg" alt="Waseel Celebrating National Day" class="logos" />
             </ng-container>
             <ng-container *ngIf="isRamadan">
                 <img src="./assets/ramadan-artwork.svg" alt="Ramadan" class="artwork" />

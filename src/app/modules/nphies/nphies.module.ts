@@ -104,6 +104,7 @@ import { PrescriptionManageSupportingInfoComponent } from './add-prescription/pr
 import { PrescriptionDetailsComponent } from './prescription-details/prescription-details.component';
 
 import { ApaProcessedTransactionsComponent } from './advance-preauth-transactions/apa-processed-transactions/apa-processed-transactions.component';
+import { ExtractClaimsComponent } from './extract-claims/extract-claims.component';
 
 @NgModule({
   declarations: [
@@ -182,7 +183,8 @@ import { ApaProcessedTransactionsComponent } from './advance-preauth-transaction
     PrescriptionAddEditVisionLensSpecificationsComponent,
     PrescriptionManageSupportingInfoComponent,
     PrescriptionDetailsComponent,
-    ApaProcessedTransactionsComponent
+    ApaProcessedTransactionsComponent,
+    ExtractClaimsComponent
   ],
   imports: [
     CommonModule,

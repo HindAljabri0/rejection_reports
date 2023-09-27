@@ -26,6 +26,7 @@ import { AdvancePreauthTransactionsComponent } from './advance-preauth-transacti
 import { AttachmentsReportComponent } from './attachments-report/attachments-report.component';
 import { AddPrescriptionComponent } from './add-prescription/add-prescription.component';
 import { PrescriptionTransactionsComponent } from './prescription-transactions/prescription-transactions.component';
+import { ExtractClaimsComponent } from './extract-claims/extract-claims.component';
 
 const routes: Routes = [
   { path: 'eligibility', component: EligibilityComponent },
@@ -56,7 +57,8 @@ const routes: Routes = [
   { path: 'days-of-supply-upload', component: DaysOfSupplyUploadComponent },
   { path: 'medication-days-upload', component: MedicationDaysUploadComponent },
   { path: 'switch-group-provider', component: SwitchGroupProviderComponent },
-  { path: 'attachments-report', component: AttachmentsReportComponent }
+  { path: 'attachments-report', component: AttachmentsReportComponent },
+  { path: 'extract-claims', component: ExtractClaimsComponent }
 ];
 
 @NgModule({
