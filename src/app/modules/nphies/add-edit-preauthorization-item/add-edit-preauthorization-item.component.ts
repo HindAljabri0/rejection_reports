@@ -157,7 +157,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         });
     }
     if (this.data.item) {
-      if (this.data.source === 'APPROVAL' && !this.data.isAdanceAuth) {
+      if (this.data.source === 'APPROVAL') {
         if (this.data.item.itemDecision && this.data.item.itemDecision.status && (this.data.item.itemDecision.status.toLowerCase() === 'approved' || this.data.item.itemDecision.status.toLowerCase() === 'partial')) {
           this.FormItem.controls.startDate.disable();
           this.FormItem.controls.endDate.disable();

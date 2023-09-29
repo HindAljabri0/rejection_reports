@@ -117,3 +117,22 @@
     justify-content: space-between;
     place-items: center;
 }
+.custom-checkbox {
+  display: inline-block;
+  cursor: pointer;
+  user-select: none; /* Prevent text selection on click */
+}
+
+.custom-checkbox input {
+  display: none; /* Hide the default checkbox input */
+}
+
+.custom-checkbox span {
+  padding-left: 5px; /* Add spacing between the label text and the checkbox area */
+}
+
+.custom-checkbox input:checked + span::before {
+  
+  display: none;
+ 
+}
