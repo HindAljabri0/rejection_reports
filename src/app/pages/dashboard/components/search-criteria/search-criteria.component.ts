@@ -51,7 +51,7 @@ export class SearchCriteriaComponent implements OnInit {
     if (this.payersList.findIndex(payer => payer.id == 102) != -1) {
       this.selectedPayer = 102;
     } else {
-      this.selectedPayer = this.payersList[0].id;
+      this.selectedPayer = this.payersList.length>0 ?this.payersList[0].id:0;
     }
     const defaultPayer = Number.parseInt(localStorage.getItem('defaultDashboardPayer'), 10);
     if (Number.isInteger(defaultPayer) && this.payersList.findIndex(payer => payer.id == defaultPayer) != -1) {

@@ -444,13 +444,13 @@
             </mat-accordion>
 
 
-            <div class="list-title" *ngIf="userPrivileges.ProviderPrivileges.chronicDisease.isCDM || userPrivileges.ProviderPrivileges.chronicDisease.isCDMAdmin || userPrivileges.ProviderPrivileges.chronicDisease.isCDMConfig">
+            <div class="list-title" *ngIf="userPrivileges.ProviderPrivileges.chronicDisease.isCDMAdmin">
                 <hr>
             </div>
-            <div class="list-title primary" *ngIf="userPrivileges.ProviderPrivileges.chronicDisease.isCDM || userPrivileges.ProviderPrivileges.chronicDisease.isCDMAdmin || userPrivileges.ProviderPrivileges.chronicDisease.isCDMConfig">
+            <div class="list-title primary" *ngIf="userPrivileges.ProviderPrivileges.chronicDisease.isCDMAdmin">
                 CDM
             </div>
-            <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.chronicDisease.isCDM || userPrivileges.ProviderPrivileges.chronicDisease.isCDMAdmin || userPrivileges.ProviderPrivileges.chronicDisease.isCDMConfig">
+            <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.chronicDisease.isCDMAdmin">
                 <li>
                     <a routerLink="/cdm/chronic-patients" routerLinkActive="is-active">
                         <span class="text">Chronic Patients</span>
@@ -762,7 +762,7 @@
                         <span class="text">Ticket Management</span>
                     </a>
                 </li>
-                <ul class="nav-list" *ngIf= "userPrivileges.ProviderPrivileges.chronicDisease.isCDM || userPrivileges.ProviderPrivileges.chronicDisease.isCDMAdmin || userPrivileges.ProviderPrivileges.chronicDisease.isCDMConfig">
+                <ul class="nav-list" *ngIf= "userPrivileges.ProviderPrivileges.chronicDisease.isCDM || userPrivileges.ProviderPrivileges.chronicDisease.isCDMConfig">
                     <li>
                         <a routerLink="/cdm/provider-config" routerLinkActive="is-active">
                             <span class="text">CDM Provider Configuration</span>
@@ -776,7 +776,7 @@
                                 userPrivileges.WaseelPrivileges.RCM.scrubbing.isAdmin ||
                                 userPrivileges.WaseelPrivileges.RCM.scrubbing.isDoctor || userPrivileges.WaseelPrivileges.RCM.scrubbing.isCoder">
                 <ul class="nav-list">
-                    <li *ngIf="userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.isPAM">
+                    <li *ngIf="userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.isPAM ">
                         <a routerLink="/administration/switch-provider" routerLinkActive="is-active">
                             <span class="text">Switch Provider</span>
                         </a>

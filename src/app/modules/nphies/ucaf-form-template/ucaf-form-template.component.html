@@ -173,7 +173,7 @@
                                 <p>Policy No.:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{UCAFData.beneficiary.policyNumber}}</p>
+                                <p class="value-holder">{{printFor !=='eligibility' ?UCAFData.beneficiary.policyNumber:UCAFData.policyNumber}}</p>
                             </td>
                         </tr>
                     </table>
@@ -183,7 +183,7 @@
                                 <p>Expiry Date:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{UCAFData.beneficiary.expiryDate | date: 'dd / MM / yyyy'}}</p>
+                                <p class="value-holder">{{printFor !=='eligibility' ?UCAFData.beneficiary.expiryDate:UCAFData.expiryDate | date: 'dd / MM / yyyy'}}</p>
                             </td>
                             <td width="10">
                                 <p>Class:&nbsp;</p>
