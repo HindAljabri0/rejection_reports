@@ -552,16 +552,16 @@
         <h5 class="form-title" [ngClass]="{'text-danger': IsItemRequired}">
           <span>Items<span class="asterisk">*</span></span>
           <div class="ml-auto" [matTooltip]="ItemsAddButtonToolTip()" [matTooltipDisabled]="!disableItemsButton()">
-            <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary" [disabled]="disableItemsButton()">
+            <button type="button" (click)="openAddEditItemDialog('addItem')" class="btn-icon btn-primary" [disabled]="disableItemsButton()">
               <mat-icon>add</mat-icon>
             </button>
           </div>
         </h5>
-        <div *ngIf="Items.length > 0" class="table-responsive">
+        <div *ngIf="itemDetails" class="table-responsive">
           <table class="primary-grid claim-view-table">
             <thead>
               <tr>
-                <th width="10"></th>
+                <th width="2"></th>
                 <th>Type</th>
                 <th>Standard Code - Description</th>
                 <th>
@@ -579,411 +579,300 @@
                 <th>Adjudication Reason Code</th>
                 <th>Note No.</th>
                 <!-- <th>Quantity</th>
+                <th>Quantity</th>
                 <th>Unit Price</th>
                 <th>Non Standard Code</th> -->
                 <th width="10"></th>
               </tr>
             </thead>
             <tbody>
-              <ng-container *ngFor="let item of Items; let i = index">
+              <ng-container>
                 <tr>
-                  <td class="text-primary text-center row-click" width="10" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                    <mat-icon *ngIf="currentOpenItem!=i" class="size-21">add_circle_outline</mat-icon>
-                    <mat-icon *ngIf="currentOpenItem==i" class="size-21">remove_circle_outline</mat-icon>
+                  <td class="text-primary text-center row-click" width="10">
+                    <mat-icon class="size-21">add_circle_outline</mat-icon>
                   </td>
-                  <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.typeName}}
-                  </td>
-                  <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.itemCode}}
-                    - {{item.itemDescription}}</td>
-
-                  <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                    {{item.net}} <span class="currency">SR</span> / {{item.tax}} <span class="currency">SR</span></td>
-
-                  <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                    <ng-container *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
-                      <ng-container *ngFor="let x of item.itemDecision.claimItemDecisionCategories">
-                        <span *ngIf="x.category === 'benefit'">{{x.categoryValue}} <span class="currency">SR</span></span>
-                      </ng-container>
-                    </ng-container>
-                  </td>
-                  <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                    <span *ngIf="item.itemDecision">{{item.itemDecision.status}}</span>
-                    <span *ngIf="!item.itemDecision"></span>
-                  </td>
-                  <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                    <span *ngIf="item.reasonCodes">{{item.reasonCodes}}</span>
-                    <span *ngIf="!item.reasonCodes">-</span>
-                  </td>
-                  <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                    <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo : '-'}}</span>
-                    <span *ngIf="!item.itemDecision"></span>
-                  </td>
-                  <!-- <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.quantity}}
-                  </td>
-                  <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                    {{item.unitPrice}} <span class="currency">SR</span></td>
-                  <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                    {{item.nonStandardCode}}</td> -->
+                  <td class="row-click">Type Name</td>
+                  <td class="row-click">Item Code - Item Description</td>
+                  <td class="text-nowrap row-click">Net SR / Tax SR</td>
+                  <td class="text-nowrap row-click">Benefit SR</td>
+                  <td class="text-nowrap row-click">Status</td>
+                  <td class="text-nowrap row-click">Reason Codes</td>
+                  <td class="text-nowrap row-click">Note No</td>
                   <td class="actions">
-                    <mat-menu #itemsActionsMenu xPosition="before">
+                    <mat-menu #itemsActionsMenu1 xPosition="before">
                       <ng-template matMenuContent>
-                        <button mat-menu-item type="button" (click)="openAddEditItemDialog()">
+                        <button mat-menu-item type="button" (click)="openAddEditItemDialog('addDetails')">
                           <mat-icon class="material-icons-outlined">Add Details</mat-icon>
                           <span>Add Details</span>
                         </button>
-                        <button mat-menu-item type="button" (click)="openAddEditItemDialog()">
+                        <button mat-menu-item type="button" (click)="openAddEditItemDialog('addDosageTiming')">
                           <mat-icon class="material-icons-outlined">Add Dosage Details</mat-icon>
                           <span>Add Dosage Details</span>
                         </button>
-                        <button mat-menu-item type="button" (click)="openAddEditItemDialog(item)">
+                        <button mat-menu-item type="button" (click)="openAddEditItemDialog('addItem')">
                           <mat-icon class="material-icons-outlined">edit</mat-icon>
                           <span>Edit</span>
                         </button>
-                        <button mat-menu-item type="button" (click)="deleteItem(i)">
+                        <button mat-menu-item type="button">
                           <mat-icon class="material-icons-outlined">delete</mat-icon>
                           <span>Delete</span>
                         </button>
                       </ng-template>
                     </mat-menu>
-                    <button type="button" mat-icon-button [matMenuTriggerFor]="itemsActionsMenu">
+                    <button type="button" mat-icon-button [matMenuTriggerFor]="itemsActionsMenu1">
                       <mat-icon>more_vert</mat-icon>
                     </button>
                   </td>
                 </tr>
-                <tr *ngIf="currentOpenItem==i">
-                  <td colspan="9">
-                    <div class="box mb-2">
-                      <h5 class="align-self-center medium pb-2">Item Info</h5>
-                      <div class="row">
-                        <div class="col-4">
-                          <table class="inline-label-table">
-                            <tbody>
-
-                              <tr>
-                                <td class="label">Non Standard Code</td>
-                                <td>{{item.nonStandardCode}}</td>
-                              </tr>
-                              <tr>
-                                <td class="label">Non Standard Desc.</td>
-                                <td>{{item.display}}</td>
-                              </tr>
-                              <tr>
-                                <td class="label">Serviced Date/Period</td>
-                                <td><span *ngIf="item.startDateStr">{{item.startDateStr }} - </span>{{item.endDateStr}}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="label">Is Package?</td>
-                                <td>
-                                  <span *ngIf="item.isPackage">Yes</span>
-                                  <span *ngIf="!item.isPackage">No</span>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="label">Body Site</td>
-                                <td>{{item.bodySiteName}}</td>
-                              </tr>
-                              <tr>
-                                <td class="label">Sub Site</td>
-                                <td>{{item.subSiteName}}</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                        <div class="col-4">
-                          <table class="inline-label-table">
-                            <tbody>
-                              <tr>
-                                <td class="label">Quantity</td>
-                                <td>{{item.quantity}} {{item.quantityCode}}</td>
-                              </tr>
-                              <tr>
-                                <td class="label">Unit Price</td>
-                                <td>{{item.unitPrice}} <span class="currency">SR</span></td>
-                              </tr>
-                              <tr>
-                                <td class="label">Discount Amount</td>
-                                <td>{{item.discount}} <span class="currency">SR</span></td>
-                              </tr>
-                              <tr>
-                                <td class="label">
-                                  <div class="d-flex align-items-center">
-                                    <span class="pr-1">Tax</span>
-                                    <mat-icon class="material-icons-outlined size-20" matTooltip="Payer share Tax only">
-                                      info</mat-icon>
-                                  </div>
-                                </td>
-                                <td>{{item.tax}} <span class="currency">SR</span></td>
-                              </tr>
-                              <tr>
-                                <td class="label">
-                                  <div class="d-flex align-items-center">
-                                    <span class="pr-1">Patient Share</span>
-                                    <mat-icon class="material-icons-outlined size-20" matTooltip="Patient share without TAX">info</mat-icon>
-                                  </div>
-                                </td>
-                                <td>{{item.patientShare}} <span class="currency">SR</span>
-                                  ({{item.patientSharePercent}}<span class="currency">%</span>)</td>
-                              </tr>
-                              <tr>
-                                <td class="label">Payer Share</td>
-                                <td>{{item.payerShare}} <span class="currency">SR</span></td>
-                              </tr>
-
-
-                            </tbody>
-                          </table>
-                        </div>
-                        <div class="col-4">
-                          <table class="inline-label-table">
-                            <tbody>
-                              <tr>
-                                <td class="label">
-                                  <div class="d-flex align-items-center">
-                                    <span class="pr-1">Factor</span>
-                                    <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount (%)">info
-                                    </mat-icon>
-                                  </div>
-                                </td>
-                                <td>{{item.factor}}</td>
-                              </tr>
-                              <tr>
-                                <td class="label">Medication Selection Reason </td>
-                                <td>{{item.drugSelectionReasonName ?
-                                  item.drugSelectionReasonName:"-"}}</td>
-                              </tr>
-                              <tr>
-                                <td class="label">Prescribed Medication </td>
-                                <td>{{item.prescribedDrugCode ?
-                                  item.prescribedDrugCode:"-"}}</td>
-                              </tr>
-                              <tr>
-                                <td class="label">Supporting Info</td>
-                                <td>{{item.supportingInfoNames}}</td>
-                              </tr>
-                              <tr>
-                                <td class="label">Diagnosis</td>
-                                <td>{{item.diagnosisNames}}</td>
-                              </tr>
-                              <tr>
-                                <td class="label">Care Teams</td>
-                                <td>{{item.careTeamNames}}</td>
-                              </tr>
-                            </tbody>
-                          </table>
+                  <tr>
+                    <td colspan="9">
+                      <div class="box mb-2">
+                        <h5 class="align-self-center medium pb-2">Item Detail Info</h5>
+                        <div class="row">
+                          <div class="col-4">
+                            <table class="inline-label-table">
+                              <tbody>
+                                <tr>
+                                  <td class="label">Prescribed Medication</td>
+                                  <td>-</td>
+                                </tr>
+                                <tr>
+                                  <td class="label">GTIN Code</td>
+                                  <td>-</td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Non Standard Code</td>
+                                  <td>-</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <div class="col-4">
+                            <table class="inline-label-table">
+                              <tbody>
+                                <tr>
+                                  <td class="label">Non Standard Desc.</td>
+                                  <td>-</td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Absence of Scientific Code</td>
+                                  <td>-</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <div class="col-4">
+                            <table class="inline-label-table">
+                              <tbody>
+                                <tr>
+                                  <td class="label">Strength</td>
+                                  <td>-</td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Quantity</td>
+                                  <td>-</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
                       </div>
-                    </div>
-
-                    <div class="box" *ngIf="item.itemDetails && item.itemDetails.length > 0">
-                      <h5 class="align-self-center medium pb-2">Item Detail</h5>
-                      <table class="primary-grid claim-view-table">
-                        <thead>
-                          <tr>
-                            <th>Seq.</th>
-                            <th>Type</th>
-                            <th>Code - Description</th>
-                            <th>Non Standard Code</th>
-                            <th>Display</th>
-                            <th>Quantity</th>
-                            <th width="10"></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let d of item.itemDetails; let di = index">
-                            <td class="row-click">{{d.sequence}}</td>
-                            <td class="row-click">{{d.typeName}}</td>
-                            <td class="row-click">{{d.itemCode}} - {{d.itemDescription}}</td>
-                            <td class="row-click">{{d.nonStandardCode ? d.nonStandardCode : '-'}}</td>
-                            <td class="row-click">{{d.display ? d.display : '-'}}</td>
-                            <td class="row-click">{{d.quantity ? d.quantity +" "+ d.quantityCode : '-'}}</td>
-                            <td class="actions">
-                              <mat-menu #itemsDetailsActionsMenu xPosition="before">
-                                <ng-template matMenuContent>
-                                  <button mat-menu-item type="button" (click)="openAddEditItemDetailsDialog(item.sequence, d)">
-                                    <mat-icon class="material-icons-outlined">edit</mat-icon>
-                                    <span>Edit</span>
-                                  </button>
-                                  <button mat-menu-item type="button" (click)="deleteItemDetails(item.sequence, di)">
-                                    <mat-icon class="material-icons-outlined">delete</mat-icon>
-                                    <span>Delete</span>
-                                  </button>
-                                </ng-template>
-                              </mat-menu>
-                              <button type="button" mat-icon-button [matMenuTriggerFor]="itemsDetailsActionsMenu">
-                                <mat-icon>more_vert</mat-icon>
-                              </button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td colspan="4">
-                                <div class="box mb-2">
-                                    <h5 class="align-self-center medium pb-2">Item Detail Info</h5>
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <table class="inline-label-table">
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="label">Prescribed Medication</td>
-                                                        <td>-</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="label">GTIN Code</td>
-                                                        <td>-</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="label">Non Standard Code</td>
-                                                        <td>-</td>
-                                                    </tr>
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="col-4">
-                                            <table class="inline-label-table">
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="label">Non Standard Desc.</td>
-                                                        <td>-</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="label">Absence of Scientific Code</td>
-                                                        <td>-</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="col-4">
-                                            <table class="inline-label-table">
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="label">Strength</td>
-                                                        <td>-</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="label">Quantity</td>
-                                                        <td>-</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="box mb-2">
-                                    <h5 class="align-self-center medium pb-2">Dosage Info</h5>
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <table class="inline-label-table">
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="label">Note</td>
-                                                        <td>-</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="label">Patient Instruction</td>
-                                                        <td>-</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="label">Route</td>
-                                                        <td>-</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="col-4">
-                                            <table class="inline-label-table">
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="label">Dose Type</td>
-                                                        <td>-</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="label">Dose Range</td>
-                                                        <td>-</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="label">Dose Unit</td>
-                                                        <td>-</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="col-4">
-                                            <table class="inline-label-table">
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="label">Rate Type</td>
-                                                        <td>-</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="label">Rate Ratio</td>
-                                                        <td>-</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="label">Rate Unit</td>
-                                                        <td>-</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="box">
-                                    <h5 class="align-self-center medium pb-2">Dosage Timing</h5>
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <table class="inline-label-table">
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="label">Start Date</td>
-                                                        <td>-</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="label">End Date</td>
-                                                        <td>-</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="col-4">
-                                            <table class="inline-label-table">
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="label">Refill</td>
-                                                        <td>-</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="label">Duration</td>
-                                                        <td>-</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="col-4">
-                                            <table class="inline-label-table">
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="label">Frequency</td>
-                                                        <td>-</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="label">Period</td>
-                                                        <td>-</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td></tr>
-                        </tbody>
-                      </table>
-                    </div>
+        
+                      <div class="box mb-2">
+                        <div class="d-flex justify-content-between">
+                          <h5 class="align-self-center medium pb-2">Dosage Info</h5>
+                          <div>
+                            <button mat-icon-button [matMenuTriggerFor]="itemsActionsMenu2">
+                              <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #itemsActionsMenu2="matMenu" xPosition="before">
+                              <ng-template matMenuContent>
+                                 <button mat-menu-item type="button">
+                                  <mat-icon class="material-icons-outlined">edit</mat-icon>
+                                  <span>Edit</span>
+                                </button>
+                                <button mat-menu-item type="button">
+                                  <mat-icon class="material-icons-outlined">delete</mat-icon>
+                                  <span>Delete</span>
+                                </button>
+                              </ng-template>
+                            </mat-menu>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-4">
+                            <table class="inline-label-table">
+                              <tbody>
+                                <tr>
+                                  <td class="label">Note</td>
+                                  <td>-</td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Patient Instruction</td>
+                                  <td>-</td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Route</td>
+                                  <td>-</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <div class="col-4">
+                            <table class="inline-label-table">
+                              <tbody>
+                                <tr>
+                                  <td class="label">Dose Type</td>
+                                  <td>-</td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Dose Range</td>
+                                  <td>-</td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Dose Unit</td>
+                                  <td>-</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <div class="col-4">
+                            <table class="inline-label-table">
+                              <tbody>
+                                <tr>
+                                  <td class="label">Rate Type</td>
+                                  <td>-</td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Rate Ratio</td>
+                                  <td>-</td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Rate Unit</td>
+                                  <td>-</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                      
+        
+                      <div class="box">
+                        <h5 class="align-self-center medium pb-2">Dosage Timing</h5>
+                        <div class="row">
+                          <div class="col-4">
+                            <table class="inline-label-table">
+                              <tbody>
+                                <tr>
+                                  <td class="label">Start Date</td>
+                                  <td>-</td>
+                                </tr>
+                                <tr>
+                                  <td class="label">End Date</td>
+                                  <td>-</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <div class="col-4">
+                            <table class="inline-label-table">
+                              <tbody>
+                                <tr>
+                                  <td class="label">Refill</td>
+                                  <td>-</td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Duration</td>
+                                  <td>-</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <div class="col-4">
+                            <table class="inline-label-table">
+                              <tbody>
+                                <tr>
+                                  <td class="label">Frequency</td>
+                                  <td>-</td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Period</td>
+                                  <td>-</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>                             
+                 </ng-container>
+            </tbody>
+          </table>
+          <table class="primary-grid claim-view-table">
+            <thead>
+              <tr>
+                <th width="2"></th>
+                <th>Type</th>
+                <th>Standard Code - Description</th>
+                <th>
+                  <div class="d-flex align-items-center">
+                    <span class="pr-1">Net</span>
+                    <mat-icon class="material-icons-outlined size-20" matTooltip="Unit Price * Quantity * Factor + TAX">
+                      info</mat-icon>
+                    <span class="pr-1">/Tax</span>
+                    <mat-icon class="material-icons-outlined size-20" matTooltip="Payer share Tax only">
+                      info</mat-icon>
+                  </div>
+                </th>
+                <th>Benefit/Tax</th>
+                <th>Status</th>
+                <th>Adjudication Reason Code</th>
+                <th>Note No.</th>
+                <!-- <th>Quantity</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Non Standard Code</th> -->
+                <th width="10"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container>
+                <tr>
+                  <td class="text-primary text-center row-click" width="10">
+                    <mat-icon class="size-21">add_circle_outline</mat-icon>
+                  </td>
+                  <td class="row-click">Type Name</td>
+                  <td class="row-click">Item Code - Item Description</td>
+                  <td class="text-nowrap row-click">Net SR / Tax SR</td>
+                  <td class="text-nowrap row-click">Benefit SR</td>
+                  <td class="text-nowrap row-click">Status</td>
+                  <td class="text-nowrap row-click">Reason Codes</td>
+                  <td class="text-nowrap row-click">Note No</td>
+                  <td class="actions">
+                    <mat-menu #itemsActionsMenu3 xPosition="before">
+                      <ng-template matMenuContent>
+                         <button mat-menu-item type="button" (click)="openAddEditItemDialog('addDosageTiming')">
+                          <mat-icon class="material-icons-outlined">Add Dosage Details</mat-icon>
+                          <span>Add Dosage Details</span>
+                        </button>
+                        <button mat-menu-item type="button" (click)="openAddEditItemDialog('addItem')">
+                          <mat-icon class="material-icons-outlined">edit</mat-icon>
+                          <span>Edit</span>
+                        </button>
+                        <button mat-menu-item type="button">
+                          <mat-icon class="material-icons-outlined">delete</mat-icon>
+                          <span>Delete</span>
+                        </button>
+                      </ng-template>
+                    </mat-menu>
+                    <button type="button" mat-icon-button [matMenuTriggerFor]="itemsActionsMenu3">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
                   </td>
                 </tr>
-              </ng-container>
+                 </ng-container>
             </tbody>
           </table>
         </div>
@@ -995,12 +884,6 @@
         <hr class="hr spaced" />
 
         <div class="form-group text-right btn-list">
-          <button type="button" mat-button color="primary" *ngIf="isPBMValidationVisible" [disabled]="!Pbm_result" (click)="openPbmValidationResponseSummaryDialog(Pbm_result)">
-            <span>PBM Response</span>
-          </button>
-          <button type="button" mat-flat-button color="primary" *ngIf="isPBMValidationVisible" (click)="onSubmit(true)">
-            <span>Request PBM</span>
-          </button>
           <button type="submit" mat-flat-button color="primary" >
             <span>Request Prescription</span>
           </button>
@@ -1013,7 +896,7 @@
 
   <ng-container *ngIf="IsJSONPosted && detailsModel && !claimReuseId">
     <div class="block-header">
-      <h5 class="primary-dialog-title">scription -
+      <h5 class="primary-dialog-title">Prescription -
         {{detailsModel.approvalRequestId}}<span *ngIf="detailsModel.transfer">[Referral]</span></h5>&nbsp;&nbsp;
       <h5 class="primary-dialog-title ml-auto">Transaction -
         {{detailsModel.providertransactionlogId}}</h5>
