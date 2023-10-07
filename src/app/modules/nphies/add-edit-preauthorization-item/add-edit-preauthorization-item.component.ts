@@ -379,95 +379,104 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         this.FormItem.patchValue({
           prescribedDrugCode: ""
         });
-        this.setPrescribedMedication('',type.code);
+        this.setPrescribedMedication(type.code);
       }
     }
   }
 
-  setPrescribedMedication(gtinNumber: any, type) {
-    this.sharedServices.loadingChanged.next(true);
-    if (type.value && type.value === 'medication-codes') {
-      this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, gtinNumber).subscribe(event => {
-        if (event instanceof HttpResponse) {
-          this.itemList = event.body;
-          if(this.itemList.length === 0){
-            const itemType = this.FormItem.controls.itemType == null ? null : this.FormItem.controls.itemType.value;
-
-            if (itemType === "pharmacy") {
-              this.filteredPescribedMedicationItem.next(this.prescribedMedicationList);
-              const res = this.prescribedMedicationList.filter(x => x.gtinNumber === gtinNumber)[0];
-              if (res != undefined) {
-                this.FormItem.patchValue({
-                  prescribedDrugCode: res
-                });
-              } else {
-                this.FormItem.patchValue({
-                  prescribedDrugCode: ""
-                });
-              }
-              this.filteredPescribedMedicationItem.next(this.prescribedMedicationList.slice());
-              this.filterPrescribedMedicationItem();
-            }
-            const searchStr = gtinNumber;
-            const claimType = this.data.type;
-            const RequestDate = this.datePipe.transform(this.data.dateOrdered, 'yyyy-MM-dd');
-            const payerNphiesId = this.data.payerNphiesId;
-            const tpaNphiesId = this.data.tpaNphiesId != -1 ? this.data.tpaNphiesId : null;
-            this.SearchRequest = this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, tpaNphiesId, 0, 10).subscribe(event => {
-              if (event instanceof HttpResponse) {
-                if (event.status === 200) {
-                  const body = event.body;                  
-                  if (body) {
-                    this.typeListResult = body['content'];
-                    this.sharedServices.loadingChanged.next(false);
-                    this.FormItem.patchValue({
-                   
-                      nonStandardCode:  this.typeListResult[0].nonStandardCode,
-                      display:  this.typeListResult[0].nonStandardDescription,
-                      unitPrice:  this.typeListResult[0].unitPrice,
-                      factor:  this.typeListResult[0].factor ?  this.typeListResult[0].factor : 1,
-                      tax: 0
-                    });
-                   
-                  }
-                  this.loadSearchItem = false;
-      
-                } else if (event.status === 204) {
-                  this.loadSearchItem = false;
-                  this.typeListSearchResult = [{ display: 'No Matching found' }];
-                }
-              }
-            }, errorEvent => {
-              if (errorEvent instanceof HttpErrorResponse) {
-                this.loadSearchItem = false;
-                this.typeListSearchResult = [{ display: 'No Matching found' }];
-              }
-            });
-          }
-          else 
-          {
-          const filteredData =  this.itemList.filter((item) => item.code === gtinNumber);
-          this.FormItem.patchValue({
-                   
-            nonStandardCode: filteredData[0].nonStandardCode,
-            display:  filteredData[0].nonStandardDescription,
-            unitPrice:  filteredData[0].unitPrice,
-            factor:  filteredData[0].factor ? filteredData[0].factor : 1,
-            tax: 0
-          });
-          }
-        
-       
-        } 
-      }, error => {
-        if (error instanceof HttpErrorResponse) {
-          console.log(error);
-        }
-      });
+  setPrescribedMedication(gtinNumber: any) {    
+    if (this.data.type === "pharmacy") {
+      this.filteredPescribedMedicationItem.next(this.prescribedMedicationList);
+      const res = this.prescribedMedicationList.filter(x => x.gtinNumber === gtinNumber)[0];
+      if (res != undefined) {
+        this.FormItem.patchValue({
+          prescribedDrugCode: res
+        });
+      } else {
+        this.FormItem.patchValue({
+          prescribedDrugCode: ""
+        });
+      }
+      this.filteredPescribedMedicationItem.next(this.prescribedMedicationList.slice());
+      this.filterPrescribedMedicationItem();
     }
-  
-    
   }
+
+  addUnitPrice(gtinNumber: any, type: any) {  
+      if (type.value === 'medication-codes') {
+        this.sharedServices.loadingChanged.next(true);
+        this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, gtinNumber).subscribe(
+          (event) => {
+            if (event instanceof HttpResponse) {
+              this.itemList = event.body;           
+                  if (this.itemList.length === 0) {
+                const itemType = this.FormItem.controls.itemType == null ? null : this.FormItem.controls.itemType.value;
+                const searchStr = gtinNumber;
+                const claimType = this.data.type;
+                const RequestDate = this.datePipe.transform(this.data.dateOrdered, 'yyyy-MM-dd');
+                const payerNphiesId = this.data.payerNphiesId;
+                const tpaNphiesId = this.data.tpaNphiesId != -1 ? this.data.tpaNphiesId : null;
+                this.SearchRequest = this.providerNphiesSearchService.getItemList(
+                  this.sharedServices.providerId,
+                  itemType,
+                  searchStr,
+                  payerNphiesId,
+                  claimType,
+                  RequestDate,
+                  tpaNphiesId,
+                  0,
+                  10
+                ).subscribe(
+                  (event) => {
+                    if (event instanceof HttpResponse) {
+                      if (event.status === 200) {
+                        const body = event.body;
+                        if (body) {
+                          this.typeListResult = body['content'];
+                          this.sharedServices.loadingChanged.next(false);
+    
+                            this.FormItem.patchValue({
+                            nonStandardCode: this.typeListResult[0].nonStandardCode,
+                            display: this.typeListResult[0].nonStandardDescription,
+                            unitPrice: this.typeListResult[0].unitPrice,
+                            factor: this.typeListResult[0].factor || 1,
+                            tax: 0,
+                          });
+                        }
+                        this.loadSearchItem = false;
+                      } else if (event.status === 204) {
+                        this.loadSearchItem = false;
+                        this.typeListSearchResult = [{ display: 'No Matching found' }];
+                      }
+                    }
+                  },
+                  (errorEvent) => {
+                    if (errorEvent instanceof HttpErrorResponse) {
+                      this.loadSearchItem = false;
+                      this.typeListSearchResult = [{ display: 'No Matching found' }];
+                    }
+                  }
+                );
+              } else {
+               const filteredData = this.itemList.filter((item) => item.code === gtinNumber);
+               this.FormItem.patchValue({
+                  nonStandardCode: filteredData[0].nonStandardCode,
+                  display: filteredData[0].nonStandardDescription,
+                  unitPrice: filteredData[0].unitPrice,
+                  factor: filteredData[0].factor || 1,
+                  tax: 0,
+                });
+              }
+            }
+          },
+          (error) => {
+            if (error instanceof HttpErrorResponse) {
+              console.log(error);
+            }
+          }
+        );
+      }    
+    }
   
 
   SetSingleRecord(type = null) {
@@ -503,18 +512,18 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     });
   }
   typeChange(type = null) {
-    const controls = this.FormItem.controls;
-      if (controls.type.value && controls.type.value.value === 'medication-codes') {
-      controls.quantityCode.setValidators([Validators.required]);
+    if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
+      this.FormItem.controls.quantityCode.setValidators([Validators.required]);
+      this.FormItem.controls.quantityCode.updateValueAndValidity();
     } else {
-      controls.quantityCode.clearValidators();
-      controls.quantityCode.setValue('');
-      controls.quantityCode.disable();
+      this.FormItem.controls.quantityCode.clearValidators();
+      this.FormItem.controls.quantityCode.updateValueAndValidity();
+      this.FormItem.controls.quantityCode.setValue('');
+      this.FormItem.controls.quantityCode.disable();
       this.showQuantityCode = false;
     }
-      controls.quantityCode.updateValueAndValidity();
-    controls.item.setValue('');
-        if (type) {
+    this.FormItem.controls.item.setValue('');
+    if (type) {
       this.getItemList(type);
     } else {
       this.getItemList();
@@ -578,7 +587,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     );
   }
 
-  filterPrescribedMedicationItem() {
+  filterPrescribedMedicationItem() {  
     if (!this.prescribedMedicationList) {
       return;
     }
