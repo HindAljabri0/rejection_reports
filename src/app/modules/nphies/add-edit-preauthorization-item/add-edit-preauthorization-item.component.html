@@ -45,15 +45,14 @@
         </div>
       </div>
       <div class="col-4 col-lg-3">
-        <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')}">
+        <div class="form-group" [ngClass]="{'has-error': (isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')}">
           <label class="control-label">Standard Code - Description<span class="asterisk">*</span></label>
           <mat-form-field class="form-control custom-select-control">
-            <mat-select formControlName="item" [disabled]="IsItemLoading" #itemSelect (selectionChange)="setPrescribedMedication($event.value.code)">
-              <mat-option>
-                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="itemFilter" noEntriesFoundLabel="No items found" name='searchedItem'>
-                </ngx-mat-select-search>
-              </mat-option>
+            <mat-select formControlName="item" [disabled]="IsItemLoading" #itemSelect (selectionChange)="addUnitPrice($event.value.code,FormItem.controls.type.value); setPrescribedMedication($event.value.code)">
 
+              <mat-option>
+                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="itemFilter" noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
+              </mat-option>
               <ng-container *ngIf="IsItemLoading">
                 <mat-option value="">Loading Code - Description ...</mat-option>
               </ng-container>
@@ -63,7 +62,6 @@
                   {{item.code}} - {{item.description}}
                 </mat-option>
               </ng-container>
-
             </mat-select>
           </mat-form-field>
           <div *ngIf="(isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')">
@@ -71,6 +69,7 @@
           </div>
         </div>
       </div>
+         
       <div class="col-4 col-lg-3">
         <div class="form-group">
           <label class="control-label">Non Standard Code</label>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSelect } from '@angular/material';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { AdminService } from 'src/app/services/adminService/admin.service';
@@ -87,8 +87,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
   today: Date;
   loadSearchItem = false;
+  typeListResult: any;
 
-  constructor(
+  constructor(    
     private sharedDataService: SharedDataService,
     private dialogRef: MatDialogRef<AddEditPreauthorizationItemComponent>, @Inject(MAT_DIALOG_DATA) public data, private datePipe: DatePipe,
     private sharedServices: SharedServices, private formBuilder: FormBuilder,
@@ -98,8 +99,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   }
   
 
-  ngOnInit() {
-    if (this.data.providerType === 'vision' && !this.data.item) {
+  ngOnInit() {    
+      if (this.data.providerType === 'vision' && !this.data.item) {
       const principalDiagnosis = this.data.diagnosises.filter(x => x.type === "principal");
       if (principalDiagnosis.length > 0) {
         this.FormItem.controls.diagnosisSequence.setValue([principalDiagnosis[0]]);
@@ -383,7 +384,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     }
   }
 
-  setPrescribedMedication(gtinNumber: any) {
+  setPrescribedMedication(gtinNumber: any) {    
     if (this.data.type === "pharmacy") {
       this.filteredPescribedMedicationItem.next(this.prescribedMedicationList);
       const res = this.prescribedMedicationList.filter(x => x.gtinNumber === gtinNumber)[0];
@@ -400,6 +401,83 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.filterPrescribedMedicationItem();
     }
   }
+
+  addUnitPrice(gtinNumber: any, type: any) {  
+      if (type.value === 'medication-codes') {
+        this.sharedServices.loadingChanged.next(true);
+        this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, gtinNumber).subscribe(
+          (event) => {
+            if (event instanceof HttpResponse) {
+              this.itemList = event.body;           
+                  if (this.itemList.length === 0) {
+                const itemType = this.FormItem.controls.itemType == null ? null : this.FormItem.controls.itemType.value;
+                const searchStr = gtinNumber;
+                const claimType = this.data.type;
+                const RequestDate = this.datePipe.transform(this.data.dateOrdered, 'yyyy-MM-dd');
+                const payerNphiesId = this.data.payerNphiesId;
+                const tpaNphiesId = this.data.tpaNphiesId != -1 ? this.data.tpaNphiesId : null;
+                this.SearchRequest = this.providerNphiesSearchService.getItemList(
+                  this.sharedServices.providerId,
+                  itemType,
+                  searchStr,
+                  payerNphiesId,
+                  claimType,
+                  RequestDate,
+                  tpaNphiesId,
+                  0,
+                  10
+                ).subscribe(
+                  (event) => {
+                    if (event instanceof HttpResponse) {
+                      if (event.status === 200) {
+                        const body = event.body;
+                        if (body) {
+                          this.typeListResult = body['content'];
+                          this.sharedServices.loadingChanged.next(false);
+    
+                            this.FormItem.patchValue({
+                            nonStandardCode: this.typeListResult[0].nonStandardCode,
+                            display: this.typeListResult[0].nonStandardDescription,
+                            unitPrice: this.typeListResult[0].unitPrice,
+                            factor: this.typeListResult[0].factor || 1,
+                            tax: 0,
+                          });
+                        }
+                        this.loadSearchItem = false;
+                      } else if (event.status === 204) {
+                        this.loadSearchItem = false;
+                        this.typeListSearchResult = [{ display: 'No Matching found' }];
+                      }
+                    }
+                  },
+                  (errorEvent) => {
+                    if (errorEvent instanceof HttpErrorResponse) {
+                      this.loadSearchItem = false;
+                      this.typeListSearchResult = [{ display: 'No Matching found' }];
+                    }
+                  }
+                );
+              } else {
+               const filteredData = this.itemList.filter((item) => item.code === gtinNumber);
+               this.FormItem.patchValue({
+                  nonStandardCode: filteredData[0].nonStandardCode,
+                  display: filteredData[0].nonStandardDescription,
+                  unitPrice: filteredData[0].unitPrice,
+                  factor: filteredData[0].factor || 1,
+                  tax: 0,
+                });
+              }
+            }
+          },
+          (error) => {
+            if (error instanceof HttpErrorResponse) {
+              console.log(error);
+            }
+          }
+        );
+      }    
+    }
+  
 
   SetSingleRecord(type = null) {
     if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
@@ -420,7 +498,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             item: this.itemList.filter(x => x.code === type.code)[0]
           });
         }
-
         this.filteredItem.next(this.itemList.slice());
         this.FormItem.controls.itemFilter.valueChanges
           .pipe(takeUntil(this.onDestroy))
@@ -433,7 +510,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         console.log(error);
       }
     });
-
   }
   typeChange(type = null) {
     if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
@@ -492,7 +568,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       });
     }
   }
-
+  
   filterItem() {
     if (!this.itemList) {
       return;
@@ -511,11 +587,10 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     );
   }
 
-  filterPrescribedMedicationItem() {
+  filterPrescribedMedicationItem() {  
     if (!this.prescribedMedicationList) {
       return;
     }
-    // get the search keyword
     let search = this.FormItem.controls.prescribedMedicationItemFilter.value;
     if (!search) {
       this.filteredPescribedMedicationItem.next(this.prescribedMedicationList.slice());
@@ -523,8 +598,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     } else {
       search = search.toLowerCase();
     }
-    // filter the nations    
-    this.filteredPescribedMedicationItem.next(
+       this.filteredPescribedMedicationItem.next(
       this.prescribedMedicationList.filter(item => (item.descriptionCode && item.descriptionCode.toLowerCase().indexOf(search) > -1) || (item.tradeName && item.tradeName.toString().toLowerCase().indexOf(search) > -1) || (item.gtinNumber && item.gtinNumber.toString().toLowerCase().indexOf(search) > -1))
     );
   }
