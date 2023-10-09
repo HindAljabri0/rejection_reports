@@ -1,7 +1,7 @@
 <div *ngIf="isAddItemVisible" class="popup">
     <div class="primary-dialog-header has-border">
         <h5 class="primary-dialog-title">Add Item</h5>
-        <button type="button" (click)="showAddItemPopup()" class="dialog-close" matRipple></button>
+        <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
     </div>
     <div class="primary-dialog-body pb-0">
         <div class="form-group flex-grow-1">
@@ -224,7 +224,7 @@
     <div class="primary-dialog-footer has-border">
         <div class="btn-list text-right">
             <button type="button" mat-button (click)="closeDialog()">Close</button>
-            <button type="submit" mat-flat-button color="primary"  (click)="showAddItemDetailsPopup()">
+            <button type="submit" mat-flat-button color="primary">
                 <span>Add</span>
             </button>
         </div>
@@ -233,7 +233,7 @@
 <div *ngIf="isAddItemDetailsVisible" class="popup">
     <div class="primary-dialog-header has-border">
         <h5 class="primary-dialog-title">Add Item Details</h5>
-        <button type="button" (click)="showAddItemDetailsPopup()" class="dialog-close" matRipple></button>
+        <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
     </div>
     <div class="primary-dialog-body pb-0">
     <div class="form-group flex-grow-1">
@@ -350,7 +350,7 @@
     <div class="primary-dialog-footer has-border">
         <div class="btn-list text-right">
             <button type="button" mat-button (click)="closeDialog()">Close</button>
-            <button type="submit" mat-flat-button color="primary"(click)="showAddDosageTimingPopup()">
+            <button type="submit" mat-flat-button color="primary">
                 <span>Add</span>
             </button>
         </div>
@@ -363,7 +363,7 @@
     <!-- Add Dosage Details Section -->
     <div class="primary-dialog-header has-border">
       <h5 class="primary-dialog-title">Add Dosage Details</h5>
-      <button type="button" (click)="showAddDosageTimingPopup()" class="dialog-close" matRipple></button>
+      <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
     </div>
     <div class="primary-dialog-body pb-0">
       <div class="row small-gutter">
