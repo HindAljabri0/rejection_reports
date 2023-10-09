@@ -62,6 +62,7 @@ export class AddPreauthorizationComponent implements OnInit {
   selectedPlanIdError: string;
   IsSubscriberRequired = false;
   IsAccident = false;
+  IsEncounter: boolean = false;
   AllTPA: any[] = [];
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
 
@@ -205,9 +206,14 @@ export class AddPreauthorizationComponent implements OnInit {
   today: Date;
   nationalities = nationalities;
   selectedCountry = '';
-
+  encounterStatusList = this.sharedDataService.encounterStatusList;
+  encounterClassList = this.sharedDataService.encounterClassList;
+  encounterServiceTypeList = this.sharedDataService.encounterServiceTypeList;
+  encounterPriorityList = this.sharedDataService.encounterPriorityList;
+  encounterAdminSourceList = this.sharedDataService.encounterAdminsSourceList;
+  encounterReAdmissionList = this.sharedDataService.encounterReAdmissionList;
+  encounterDischargeDispositionList = this.sharedDataService.encounterDischargeDispositionList;
   currentOpenItem: number = null;
-
   claimType: string;
   defualtPageMode = "";
   selectedDefaultPlan = null;

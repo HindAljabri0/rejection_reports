@@ -192,6 +192,16 @@ export class SharedDataService {
     // { value: 'UD', name: 'UD - Use As Directed' },
     // { value: 'UR', name: 'UR - Urgent' }
   ];
+   
+  encounterAdminsSourceList = [
+      { value: 'RECR', name: 'RECR - Red crescent' },
+    { value: 'WKIN', name: ' WKIN - Walk-in ' },
+    { value: 'FMLYM', name: 'FMLYM - Family member' },
+    { value: 'AA', name: 'AA - Already admitted' },
+    { value: 'PVAMB', name: 'PVAMB - Private ambulance' },
+    { value: 'AAIC', name: 'AAIC - Already admitted- insurance consumed' },
+    { value: 'Others', name: 'Others - Others' }
+  ];
 
   encounterAdminSourceList = [
     { value: 'IA', name: 'IA - Immediate Admission' },
