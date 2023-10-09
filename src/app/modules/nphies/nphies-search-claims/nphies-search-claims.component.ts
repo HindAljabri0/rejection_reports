@@ -1650,7 +1650,7 @@ console.log(this.isSearchByStatus)
 
   get showMoveToReadyState() {
     // tslint:disable-next-line:max-line-length
-    return ['cancelled', 'rejected', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+    return ['cancelled', 'rejected'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase()) || (['queued'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase()) && this.userPrivileges.WaseelPrivileges.isPAM);
   }
 
   get showRevalidate() {
