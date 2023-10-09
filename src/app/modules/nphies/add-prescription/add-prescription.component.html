@@ -602,11 +602,11 @@
                     <mat-menu #itemsActionsMenu1 xPosition="before">
                       <ng-template matMenuContent>
                         <button mat-menu-item type="button" (click)="openAddEditItemDialog('addDetails')">
-                          <mat-icon class="material-icons-outlined">Add Details</mat-icon>
+                          <mat-icon class="material-icons-outlined">Add</mat-icon>
                           <span>Add Details</span>
                         </button>
                         <button mat-menu-item type="button" (click)="openAddEditItemDialog('addDosageTiming')">
-                          <mat-icon class="material-icons-outlined">Add Dosage Details</mat-icon>
+                          <mat-icon class="material-icons-outlined">Add</mat-icon>
                           <span>Add Dosage Details</span>
                         </button>
                         <button mat-menu-item type="button" (click)="openAddEditItemDialog('addItem')">
@@ -680,7 +680,7 @@
         
                       <div class="box mb-2">
                         <div class="d-flex justify-content-between">
-                          <h5 class="align-self-center medium pb-2">Dosage Info</h5>
+                          <h5 class="align-self-center medium pb-2">Dosage Details #1</h5>
                           <div>
                             <button mat-icon-button [matMenuTriggerFor]="itemsActionsMenu2">
                               <mat-icon>more_vert</mat-icon>
@@ -755,10 +755,6 @@
                             </table>
                           </div>
                         </div>
-                      </div>
-                      
-        
-                      <div class="box">
                         <h5 class="align-self-center medium pb-2">Dosage Timing</h5>
                         <div class="row">
                           <div class="col-4">
@@ -805,6 +801,9 @@
                           </div>
                         </div>
                       </div>
+                      
+        
+                     
                     </td>
                   </tr>                             
                  </ng-container>
@@ -854,7 +853,7 @@
                     <mat-menu #itemsActionsMenu3 xPosition="before">
                       <ng-template matMenuContent>
                          <button mat-menu-item type="button" (click)="openAddEditItemDialog('addDosageTiming')">
-                          <mat-icon class="material-icons-outlined">Add Dosage Details</mat-icon>
+                          <mat-icon class="material-icons-outlined">Add</mat-icon>
                           <span>Add Dosage Details</span>
                         </button>
                         <button mat-menu-item type="button" (click)="openAddEditItemDialog('addItem')">

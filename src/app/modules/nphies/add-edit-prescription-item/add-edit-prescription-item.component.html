@@ -1,7 +1,7 @@
 <div *ngIf="isAddItemVisible" class="popup">
     <div class="primary-dialog-header has-border">
         <h5 class="primary-dialog-title">Add Item</h5>
-        <button type="button" (click)="showAddItemPopup()" class="dialog-close" matRipple></button>
+        <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
     </div>
     <div class="primary-dialog-body pb-0">
         <div class="form-group flex-grow-1">
@@ -224,7 +224,7 @@
     <div class="primary-dialog-footer has-border">
         <div class="btn-list text-right">
             <button type="button" mat-button (click)="closeDialog()">Close</button>
-            <button type="submit" mat-flat-button color="primary"  (click)="showAddItemDetailsPopup()">
+            <button type="submit" mat-flat-button color="primary">
                 <span>Add</span>
             </button>
         </div>
@@ -233,7 +233,7 @@
 <div *ngIf="isAddItemDetailsVisible" class="popup">
     <div class="primary-dialog-header has-border">
         <h5 class="primary-dialog-title">Add Item Details</h5>
-        <button type="button" (click)="showAddItemDetailsPopup()" class="dialog-close" matRipple></button>
+        <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
     </div>
     <div class="primary-dialog-body pb-0">
     <div class="form-group flex-grow-1">
@@ -350,7 +350,7 @@
     <div class="primary-dialog-footer has-border">
         <div class="btn-list text-right">
             <button type="button" mat-button (click)="closeDialog()">Close</button>
-            <button type="submit" mat-flat-button color="primary"(click)="showAddDosageTimingPopup()">
+            <button type="submit" mat-flat-button color="primary">
                 <span>Add</span>
             </button>
         </div>
@@ -363,7 +363,7 @@
     <!-- Add Dosage Details Section -->
     <div class="primary-dialog-header has-border">
       <h5 class="primary-dialog-title">Add Dosage Details</h5>
-      <button type="button" (click)="showAddDosageTimingPopup()" class="dialog-close" matRipple></button>
+      <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
     </div>
     <div class="primary-dialog-body pb-0">
       <div class="row small-gutter">
@@ -395,14 +395,14 @@
               <label class="control-label">Dose Type</label>
               <mat-form-field class="form-control custom-select-control">
                 <mat-select placeholder="Select dose type" [(ngModel)]="selectedDoseType">
-                  <mat-option value="Dose Strength Range">Dose Quantity Range</mat-option>
-                  <mat-option value="Dose Strength">Dose Quantity</mat-option>
+                  <mat-option value="Dose_Quantity_Range">Dose Quantity Range</mat-option>
+                  <mat-option value="Dose_Quantity">Dose Quantity</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
           </div>
           
-          <div class="col-4" *ngIf="selectedDoseType === 'Dose Quantity Range'">
+          <div class="col-4" *ngIf="selectedDoseType === 'Dose_Quantity_Range'">
             <div class="form-group">
               <label class="control-label">Dose Quantity Range</label>
               <div class="row small-gutter">
@@ -416,15 +416,13 @@
             </div>
           </div>
           
-          <div class="col-4" *ngIf="selectedDoseType === 'Dose Quantity'">
+          <div class="col-4" *ngIf="selectedDoseType === 'Dose_Quantity'">
             <div class="form-group">
               <label class="control-label">Dose Quantity</label>
               <input class="form-control" placeholder="Enter the dose quantity">
             </div>
           </div>
-          
-        
-        <div class="col-4">
+           <div class="col-4">
           <div class="form-group">
             <label class="control-label">Dose Unit</label>
             <mat-form-field class="form-control custom-select-control">
@@ -501,6 +499,7 @@
                 <mat-option value="days">days</mat-option>
                 <mat-option value="weeks">week</mat-option>
                 <mat-option value="months">month</mat-option>
+                <mat-option value="months">a- unit of time (UCUM)</mat-option>
               </mat-select>
             </mat-form-field>
           </div>
@@ -601,13 +600,13 @@
                     <div class="col-auto">
                         <mat-form-field class="form-control custom-select-control">
                             <mat-select value="days">
-                                <mat-option value="BID">BID</mat-option>
-                                <mat-option value="TID">TID</mat-option>
-                                <mat-option value="QID">QID</mat-option>
-                                <mat-option value="AM">AM</mat-option>
-                                <mat-option value="PM">PM</mat-option>
-                                <mat-option value="QD">QD</mat-option>
-                                <mat-option value="QOD">QOD</mat-option>
+                              <mat-option value="seconds">seconds</mat-option>
+                              <mat-option value="minutes">minutes</mat-option>
+                              <mat-option value="hours">hours</mat-option>
+                              <mat-option value="days">days</mat-option>
+                              <mat-option value="weeks">week</mat-option>
+                              <mat-option value="months">month</mat-option>
+                              <mat-option value="months">a- unit of time (UCUM)</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>

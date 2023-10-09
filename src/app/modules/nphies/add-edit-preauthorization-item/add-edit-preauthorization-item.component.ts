@@ -87,7 +87,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
   today: Date;
   loadSearchItem = false;
-  typeListResult: any;
+
 
   constructor(    
     private sharedDataService: SharedDataService,
@@ -384,7 +384,12 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     }
   }
 
-  setPrescribedMedication(gtinNumber: any) {    
+  setPrescribedMedication(gtinNumber: any) {     
+    const filteredData = this.itemList.filter((item) => item.code === gtinNumber);    
+    this.FormItem.patchValue({      
+      unitPrice: filteredData[0].unitPrice,     
+    });
+    this.itemList.filter(x => x.code === this.data.item.itemCode)[0] 
     if (this.data.type === "pharmacy") {
       this.filteredPescribedMedicationItem.next(this.prescribedMedicationList);
       const res = this.prescribedMedicationList.filter(x => x.gtinNumber === gtinNumber)[0];
@@ -402,81 +407,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     }
   }
 
-  addUnitPrice(gtinNumber: any, type: any) {  
-      if (type.value === 'medication-codes') {
-        this.sharedServices.loadingChanged.next(true);
-        this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, gtinNumber).subscribe(
-          (event) => {
-            if (event instanceof HttpResponse) {
-              this.itemList = event.body;           
-                  if (this.itemList.length === 0) {
-                const itemType = this.FormItem.controls.itemType == null ? null : this.FormItem.controls.itemType.value;
-                const searchStr = gtinNumber;
-                const claimType = this.data.type;
-                const RequestDate = this.datePipe.transform(this.data.dateOrdered, 'yyyy-MM-dd');
-                const payerNphiesId = this.data.payerNphiesId;
-                const tpaNphiesId = this.data.tpaNphiesId != -1 ? this.data.tpaNphiesId : null;
-                this.SearchRequest = this.providerNphiesSearchService.getItemList(
-                  this.sharedServices.providerId,
-                  itemType,
-                  searchStr,
-                  payerNphiesId,
-                  claimType,
-                  RequestDate,
-                  tpaNphiesId,
-                  0,
-                  10
-                ).subscribe(
-                  (event) => {
-                    if (event instanceof HttpResponse) {
-                      if (event.status === 200) {
-                        const body = event.body;
-                        if (body) {
-                          this.typeListResult = body['content'];
-                          this.sharedServices.loadingChanged.next(false);
-    
-                            this.FormItem.patchValue({
-                            nonStandardCode: this.typeListResult[0].nonStandardCode,
-                            display: this.typeListResult[0].nonStandardDescription,
-                            unitPrice: this.typeListResult[0].unitPrice,
-                            factor: this.typeListResult[0].factor || 1,
-                            tax: 0,
-                          });
-                        }
-                        this.loadSearchItem = false;
-                      } else if (event.status === 204) {
-                        this.loadSearchItem = false;
-                        this.typeListSearchResult = [{ display: 'No Matching found' }];
-                      }
-                    }
-                  },
-                  (errorEvent) => {
-                    if (errorEvent instanceof HttpErrorResponse) {
-                      this.loadSearchItem = false;
-                      this.typeListSearchResult = [{ display: 'No Matching found' }];
-                    }
-                  }
-                );
-              } else {
-               const filteredData = this.itemList.filter((item) => item.code === gtinNumber);
-               this.FormItem.patchValue({
-                  nonStandardCode: filteredData[0].nonStandardCode,
-                  display: filteredData[0].nonStandardDescription,
-                  unitPrice: filteredData[0].unitPrice,
-                  factor: filteredData[0].factor || 1,
-                  tax: 0,
-                });
-              }
-            }
-          },
-          (error) => {
-            if (error instanceof HttpErrorResponse) {
-              console.log(error);
-            }
-          }
-        );
-      }    
-    }
   
 
   SetSingleRecord(type = null) {
