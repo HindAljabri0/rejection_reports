@@ -308,7 +308,7 @@
               </mat-option>
               <ng-container>
                 <mat-option value="">Select Prescribed Medication</mat-option>
-                <mat-option *ngFor="let type of filteredPrescribedMedicationItem | async" [value]="type">
+                <mat-option *ngFor="let type of filteredPescribedMedicationItem | async" [value]="type">
                   <span>{{type.descriptionCode}} ( {{type.tradeName}} )</span><br/>
                   <span class="text-primary non-standard-code">{{type.gtinNumber}}</span>
                 </mat-option>
