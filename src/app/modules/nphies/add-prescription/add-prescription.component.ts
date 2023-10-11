@@ -61,12 +61,14 @@ export class AddPrescriptionComponent implements OnInit {
   selectedPlanId: string;
   selectedPlanIdError: string;
   IsSubscriberRequired = false;
+  itemDetails = false;
   IsAccident = false;
   AllTPA: any[] = [];
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
 
   beneficiaryPatientShare = 0;
   beneficiaryMaxLimit = 0;
+  public addDialogRef;
 
   PrescriberDefault = '';
 
@@ -1067,10 +1069,10 @@ export class AddPrescriptionComponent implements OnInit {
     }
   }
 
-  openAddEditItemDialog(itemModel: any = null) {
+  openAddEditItemDialog(popupType: string, itemModel: any = null) {
+    this.itemDetails = true
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
-
     dialogConfig.data = {
       source: 'APPROVAL',
       // tslint:disable-next-line:max-line-length
@@ -1091,9 +1093,12 @@ export class AddPrescriptionComponent implements OnInit {
       tpaNphiesId: this.FormPrescription.controls.insurancePlanTpaNphiesId.value,
       providerType: this.providerType,
     };
-
-    const dialogRef = this.dialog.open(AddEditPrescriptionItemComponent, dialogConfig);
-
+    // Open the dialog with the specified popupType
+    const dialogRef = this.dialog.open(AddEditPrescriptionItemComponent, {
+      ...dialogConfig,
+      data: { popupType }
+    });
+  
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         if (this.Items.find(x => x.sequence === result.sequence)) {
