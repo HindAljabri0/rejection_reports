@@ -152,9 +152,9 @@ const _mainReducer = createReducer(
       },
       ProviderPrivileges: {
         chronicDisease: {
-          isCDM: providerId != '101' && AuthService.hasPrivilege(providerId, '102', '90.0'),
+          isCDM: providerId != '102' && AuthService.hasPrivilege(providerId, '102', '90.0'),
           isCDMAdmin : providerId != '101' && AuthService.hasPrivilege(providerId, '101', '90.1'),
-          isCDMConfig : providerId != '101' && AuthService.hasPrivilege(providerId, '102', '90.2')
+          isCDMConfig : providerId != '102' && AuthService.hasPrivilege(providerId, '102', '90.2')
         },
         Contract_Bill: {
           isAdmin: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '27'),
