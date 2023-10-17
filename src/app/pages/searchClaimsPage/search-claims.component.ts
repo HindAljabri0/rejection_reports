@@ -597,6 +597,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                         this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
                     }
                 }
+                else if (errorEvent.status === 400 || errorEvent.status === 404) {
+                    this.dialogService.openMessageDialog(new MessageDialogData(errorEvent.error['errors'][0].errorDescription, '', true));
+                  }
                 if (errorEvent.error['errors'] != null) {
                     for (const error of errorEvent.error['errors']) {
                         this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
@@ -644,6 +647,9 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                             this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
                         }
                     }
+                    else if (errorEvent.status === 400 || errorEvent.status === 404) {
+                        this.dialogService.openMessageDialog(new MessageDialogData(errorEvent.error['errors'][0].errorDescription, '', true));
+                      }
                     if (errorEvent.error['errors'] != null) {
                         for (const error of errorEvent.error['errors']) {
                             this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);

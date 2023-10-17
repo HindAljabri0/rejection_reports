@@ -285,6 +285,16 @@
                             </a>
                         </li>
                         <li>
+                            <a routerLink="/nphies/beneficiary/upload-cchi" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="is-active">
+                                <span class="text">Upload by Inquire CCHI</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLink="/nphies/beneficiary/upload-summary" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="is-active">
+                                <span class="text">Uploads Summary</span>
+                            </a>
+                        </li>
+                        <li>
                             <a routerLink="/nphies/beneficiary/add" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="is-active">
                                 <span class="text">Create Beneficiary</span>
                             </a>
@@ -762,14 +772,14 @@
                         <span class="text">Ticket Management</span>
                     </a>
                 </li>
-                <ul class="nav-list" *ngIf= "userPrivileges.ProviderPrivileges.chronicDisease.isCDM || userPrivileges.ProviderPrivileges.chronicDisease.isCDMConfig">
+                <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.chronicDisease.isCDM || userPrivileges.ProviderPrivileges.chronicDisease.isCDMConfig">
                     <li>
                         <a routerLink="/cdm/provider-config" routerLinkActive="is-active">
                             <span class="text">CDM Provider Configuration</span>
                         </a>
                     </li>
                 </ul>
-              </ul>
+            </ul>
 
             <ng-container *ngIf="userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.isPAM ||
                                 userPrivileges.ProviderPrivileges.NPHIES.canSwitchGroupProvider ||

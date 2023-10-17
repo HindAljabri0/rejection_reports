@@ -118,7 +118,7 @@ export class AddEditPrescriptionItemComponent implements OnInit {
   isAddItemDetailsVisible: boolean = false;
   isAddDosageTimingVisible: boolean = false;
   selectedOption: string = '';
-  selectedDoseType: string = 'Dose Quantity'; 
+  selectedDoseType: string = 'Dose_Quantity'; 
   selectedRateType: string = 'Rate Quantity';
   selectedAbsenceOption: string = ''; 
   onOptionChange: string = '';
