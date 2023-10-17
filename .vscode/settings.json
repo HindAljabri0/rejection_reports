@@ -4,5 +4,8 @@
     ],
     "scm.alwaysShowActions": true,
     "scm.alwaysShowRepositories": true,
-    "diffEditor.codeLens": true
+    "diffEditor.codeLens": true,
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false
 }

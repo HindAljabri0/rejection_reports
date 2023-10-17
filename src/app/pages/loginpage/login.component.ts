@@ -112,7 +112,7 @@ export class LoginComponent implements OnInit {
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
-
+        
         if (errorEvent.status == 403) {
           this.errors = 'Your account has been blocked, kindly contact Waseel Customer Care!';
         }
@@ -160,9 +160,9 @@ export class LoginComponent implements OnInit {
       }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
-       
+        
         if (errorEvent.status == 403) {
-          this.errors = 'Your account has been blocked, kindly contact Waseel Customer Care!';
+          this.errors = errorEvent.error !=null && errorEvent.error.message !=null ? errorEvent.error.message : 'Your account has been blocked, kindly contact Waseel Customer Care!';
         }
         else if (errorEvent.status == 401 || errorEvent.status == 406) {
           this.errors = 'Please reset your password using https://sso.waseel.com/';

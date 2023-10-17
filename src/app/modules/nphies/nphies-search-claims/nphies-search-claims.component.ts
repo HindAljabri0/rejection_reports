@@ -725,7 +725,7 @@ console.log(this.isSearchByStatus)
             this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
           }
         }else if (errorEvent.status === 400 || errorEvent.status === 404) {
-          this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error, true));
+          this.dialogService.openMessageDialog(new MessageDialogData(errorEvent.error.message, errorEvent.error.error, true));
         }
         if (errorEvent.error['errors'] != null) {
           for (const error of errorEvent.error['errors']) {
@@ -1650,7 +1650,7 @@ console.log(this.isSearchByStatus)
 
   get showMoveToReadyState() {
     // tslint:disable-next-line:max-line-length
-    return ['cancelled', 'rejected', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+    return ['cancelled', 'rejected'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase()) || (['queued'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase()) && this.userPrivileges.WaseelPrivileges.isPAM);
   }
 
   get showRevalidate() {
