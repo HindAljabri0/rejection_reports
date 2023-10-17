@@ -253,6 +253,9 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 /* select panel
 --------------------------------------------------------------------------------------------------------*/
 .mat-select-panel-wrap .mat-select-panel,.cdk-overlay-pane .mat-menu-panel,.mat-datepicker-popup .mat-datepicker-content{background: rgba(255,255,255,0.8);-webkit-backdrop-filter: blur(16px);backdrop-filter: blur(16px);}
+.custom-dropdown {
+    max-height: none !important;
+  }
 .mat-select-panel-wrap .mat-optgroup-label,.menu-opt-group{color: #3060AA;font-weight: 600;height: auto;line-height: 32px;}
 .menu-opt-group{padding: 6px 16px;text-align: left;text-decoration: none;max-width: 100%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;display: block;font-size: 14px;line-height: 20px;}
 .mat-select-panel .mat-option:hover:not(.mat-option-disabled), .mat-select-panel .mat-option:focus:not(.mat-option-disabled){background-color: rgba(0,0,0,0.06);}
