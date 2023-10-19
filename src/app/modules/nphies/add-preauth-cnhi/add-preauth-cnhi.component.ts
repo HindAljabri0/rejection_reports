@@ -1,18 +1,14 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogConfig, ErrorStateMatcher } from '@angular/material';
 import { AddEditPreauthorizationItemComponent } from '../add-edit-preauthorization-item/add-edit-preauthorization-item.component';
-import { AddEditCareTeamModalComponent } from './add-edit-care-team-modal/add-edit-care-team-modal.component';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { SharedServices } from 'src/app/services/shared.services';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFullTextSearchResult';
 import { DatePipe } from '@angular/common';
-import { AddEditDiagnosisModalComponent } from './add-edit-diagnosis-modal/add-edit-diagnosis-modal.component';
-import { AddEditSupportingInfoModalComponent } from './add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
 import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
 import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
 // tslint:disable-next-line:max-line-length
-import { AddEditVisionLensSpecificationsComponent } from './add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
 import * as moment from 'moment';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { nationalities } from 'src/app/claim-module-components/store/claim.reducer';
@@ -30,14 +26,18 @@ import { DbMappingService } from 'src/app/services/administration/dbMappingServi
 import { PbmValidationResponseSummaryDialogComponent } from 'src/app/components/dialogs/pbm-validation-response-summary-dialog/pbm-validation-response-summary-dialog.component';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { AddEditDiagnosisModalComponent } from '../add-preauthorization/add-edit-diagnosis-modal/add-edit-diagnosis-modal.component';
+import { AddEditCareTeamModalComponent } from '../add-preauthorization/add-edit-care-team-modal/add-edit-care-team-modal.component';
+import { AddEditSupportingInfoModalComponent } from '../add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
+import { AddEditVisionLensSpecificationsComponent } from '../add-preauthorization/add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
 
 
 @Component({
-  selector: 'app-add-preauthorization',
-  templateUrl: './add-preauthorization.component.html',
+  selector: 'app-add-preauth-cnhi',
+  templateUrl: './add-preauth-cnhi.component.html',
   styles: []
 })
-export class AddPreauthorizationComponent implements OnInit {
+export class AddCNHIPreauthorizationComponent implements OnInit {
 
   @Input() claimReuseId: number;
   @Input() data: any;
@@ -62,6 +62,7 @@ export class AddPreauthorizationComponent implements OnInit {
   selectedPlanIdError: string;
   IsSubscriberRequired = false;
   IsAccident = false;
+  IsEncounter: boolean = false;
   AllTPA: any[] = [];
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
 
@@ -173,7 +174,7 @@ export class AddPreauthorizationComponent implements OnInit {
     postalCode: ['']
   });
 
-  typeList = this.sharedDataService.claimTypeList;
+  typeList = this.sharedDataService.cnhiTypeList;
   payeeTypeList = this.sharedDataService.payeeTypeList;
   payeeList = [];
   providerList = [];
@@ -205,6 +206,13 @@ export class AddPreauthorizationComponent implements OnInit {
   today: Date;
   nationalities = nationalities;
   selectedCountry = '';
+  encounterStatusList = this.sharedDataService.encounterStatusList;
+  encounterClassList = this.sharedDataService.encounterClassList;
+  encounterServiceTypeList = this.sharedDataService.encounterServiceTypeList;
+  encounterPriorityList = this.sharedDataService.encounterPriorityList;
+  encounterAdminSourceList = this.sharedDataService.encounterAdminsSourceList;
+  encounterReAdmissionList = this.sharedDataService.encounterReAdmissionList;
+  encounterDischargeDispositionList = this.sharedDataService.encounterDischargeDispositionList;
   currentOpenItem: number = null;
   claimType: string;
   defualtPageMode = "";
@@ -302,7 +310,7 @@ export class AddPreauthorizationComponent implements OnInit {
     }
     this.claimType = this.data.preAuthorizationInfo.type;
     // tslint:disable-next-line:max-line-length
-    this.FormPreAuthorization.controls.type.setValue(this.sharedDataService.claimTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] ? this.sharedDataService.claimTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] : '');
+    this.FormPreAuthorization.controls.type.setValue(this.sharedDataService.cnhiTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] ? this.sharedDataService.cnhiTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] : '');
     switch (this.data.preAuthorizationInfo.type) {
       case 'institutional':
         this.subTypeList = this.sharedDataService.subTypeList.filter(x => x.value === 'ip' || x.value === 'emr');
@@ -869,7 +877,6 @@ export class AddPreauthorizationComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
     dialogConfig.data = {
-      // tslint:disable-next-line:max-line-length
       Sequence: (visionSpecification !== null) ? visionSpecification.sequence : (this.VisionSpecifications.length === 0 ? 1 : (this.VisionSpecifications[this.VisionSpecifications.length - 1].sequence + 1)),
       item: visionSpecification
     };
@@ -1070,7 +1077,7 @@ export class AddPreauthorizationComponent implements OnInit {
     dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
 
     dialogConfig.data = {
-      source: 'APPROVAL',
+      source: 'CNHI',
       // tslint:disable-next-line:max-line-length
       Sequence: (itemModel !== null) ? itemModel.sequence : (this.Items.length === 0 ? 1 : (this.Items[this.Items.length - 1].sequence + 1)),
       item: itemModel,
@@ -1673,9 +1680,9 @@ export class AddPreauthorizationComponent implements OnInit {
   onSubmit(isPbmvalidation=false) {
     this.providerType = this.providerType == null || this.providerType == "" ? 'any' : this.providerType;
     if (this.providerType.toLowerCase() !== 'any' && this.FormPreAuthorization.controls.type.value.value !== this.providerType) {
-      const filteredClaimType = this.sharedDataService.claimTypeList.filter(x => x.value === this.providerType)[0];
+      const filteredClaimType = this.sharedDataService.cnhiTypeList.filter(x => x.value === this.providerType)[0];
       const providerTypeName = filteredClaimType != null ? filteredClaimType.name : null;
-      const claimTypeName = this.sharedDataService.claimTypeList.filter(x => x.value === this.FormPreAuthorization.controls.type.value.value)[0].name;
+      const claimTypeName = this.sharedDataService.cnhiTypeList.filter(x => x.value === this.FormPreAuthorization.controls.type.value.value)[0].name;
       this.dialogService.showMessage('Error', 'Claim type ' + claimTypeName + ' is not supported for Provider type ' + providerTypeName, 'alert', true, 'OK');
       return;
     }

@@ -108,6 +108,7 @@ import { ExtractClaimsComponent } from './extract-claims/extract-claims.componen
 import { UploadBeneficiaryInquireCchiComponent } from './upload-beneficiary-inquire-cchi/upload-beneficiary-inquire-cchi.component';
 import { BeneficiaryUploadsSummaryComponent } from './beneficiary-uploads-summary/beneficiary-uploads-summary.component';
 import { UploadBeneficiaryCchiErrorsDialogComponent } from './upload-beneficiary-cchi-errors-dialog/upload-beneficiary-cchi-errors-dialog.component';
+import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth-cnhi.component';
 
 @NgModule({
     declarations: [
@@ -115,6 +116,7 @@ import { UploadBeneficiaryCchiErrorsDialogComponent } from './upload-beneficiary
         ViewEligibilityDetailsComponent,
         BeneficiaryComponent,
         AddPreauthorizationComponent,
+        AddCNHIPreauthorizationComponent,
         EligibilityTransactionsComponent,
         InsurancePlanComponent,
         AddInsurancePlanDialogComponent,
