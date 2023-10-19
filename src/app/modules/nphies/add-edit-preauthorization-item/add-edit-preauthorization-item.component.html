@@ -35,10 +35,15 @@
           <label class="control-label">Type<span class="asterisk">*</span></label>
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="type" (selectionChange)="typeChange()">
-              <mat-option value="">Select Type</mat-option>
-              <mat-option *ngFor="let type of typeList" [value]="type">{{type.name}}</mat-option>
-            </mat-select>
-          </mat-form-field>
+                <mat-option value="">Select Type</mat-option>
+                <ng-container *ngIf="!(data.source === 'CNHI')">
+                  <mat-option *ngFor="let type of typeList" [value]="type">{{type.name}}</mat-option>
+                </ng-container>
+                <ng-container *ngIf="data.source === 'CNHI'">
+                  <mat-option value="type">MOH Billing Code</mat-option>
+                </ng-container>
+              </mat-select>
+               </mat-form-field>
           <div *ngIf="(isSubmitted || FormItem.get('type').touched) && FormItem.get('type').hasError('required')">
             <span class="error-text">Please select a Type</span>
           </div>
