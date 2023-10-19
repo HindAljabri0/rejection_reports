@@ -18,6 +18,9 @@ export class SharedDataService {
     { value: 'professional', name: 'Professional' },
     { value: 'vision', name: 'Optical' },
   ];
+  cnhiTypeList = [
+    { value: 'institutional', name: 'Institutional' },
+  ];
   searchClaimTypeList = [
     { value: 'institutional,oral,pharmacy,professional,vision', name: 'Any' },
     { value: 'institutional', name: 'Institutional' },

@@ -29,6 +29,7 @@ import { PrescriptionTransactionsComponent } from './prescription-transactions/p
 import { ExtractClaimsComponent } from './extract-claims/extract-claims.component';
 import { UploadBeneficiaryInquireCchiComponent } from './upload-beneficiary-inquire-cchi/upload-beneficiary-inquire-cchi.component';
 import { BeneficiaryUploadsSummaryComponent } from './beneficiary-uploads-summary/beneficiary-uploads-summary.component';
+import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth-cnhi.component';
 
 const routes: Routes = [
     { path: 'eligibility', component: EligibilityComponent },
@@ -40,6 +41,7 @@ const routes: Routes = [
     { path: 'beneficiary/:beneficiaryId', component: BeneficiaryComponent },
     { path: 'beneficiary/add', component: BeneficiaryComponent },
     { path: 'add-preauthorization', component: AddPreauthorizationComponent },
+    { path: 'add-cnhi-preauthorization', component: AddCNHIPreauthorizationComponent },
     { path: 'preauthorization-transactions', component: PreauthorizationTransactionsComponent },
     { path: 'add-prescription', component: AddPrescriptionComponent },
     { path: 'prescription-transactions', component: PrescriptionTransactionsComponent },

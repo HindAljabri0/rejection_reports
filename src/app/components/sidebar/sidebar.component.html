@@ -284,12 +284,12 @@
                                 <span class="text">Upload Beneficiaries</span>
                             </a>
                         </li>
-                        <li>
+                        <li *ngIf="!envProd && !envStaging">
                             <a routerLink="/nphies/beneficiary/upload-cchi" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="is-active">
                                 <span class="text">Upload by Inquire CCHI</span>
                             </a>
                         </li>
-                        <li>
+                        <li *ngIf="!envProd && !envStaging">
                             <a routerLink="/nphies/beneficiary/upload-summary" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="is-active">
                                 <span class="text">Uploads Summary</span>
                             </a>
@@ -348,6 +348,11 @@
                         <li>
                             <a routerLink="/nphies/add-preauthorization" routerLinkActive="is-active">
                                 <span class="text">Request Pre Authorization</span>
+                            </a>
+                        </li>
+                        <li *ngIf="!envProd && !envStaging">
+                            <a routerLink="/nphies/add-cnhi-preauthorization" routerLinkActive="is-active">
+                                <span class="text">Request CNHI Pre Authorization</span>
                             </a>
                         </li>
                         <li>
@@ -634,6 +639,11 @@
                                     <span class="text">Feedback Surveys</span>
                                 </a>
                             </li>
+                            <li i18n="@@announcement">
+                                <a routerLink="/notification-management" routerLinkActive="is-active">
+                                    <span class="text">Announcement</span>
+                                </a>
+                            </li>
                         </ul>
                     </mat-expansion-panel>
                 </mat-accordion>
@@ -804,12 +814,6 @@
                     <li *ngIf="userPrivileges.WaseelPrivileges.RCM.scrubbing.isDoctor || userPrivileges.WaseelPrivileges.RCM.scrubbing.isCoder">
                         <a routerLink="/review/scrubbing/upload" routerLinkActive="is-active">
                             <span class="text">Claims Scrubbing - Auditing</span>
-                        </a>
-                    </li>
-
-                    <li *ngIf="!envProd && !envStaging && userPrivileges.WaseelPrivileges.RCM.isAdmin">
-                        <a routerLink="/notification-management" routerLinkActive="is-active">
-                            <span class="text">Announcement</span>
                         </a>
                     </li>
                 </ul>
