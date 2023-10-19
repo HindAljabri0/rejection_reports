@@ -18,6 +18,9 @@ export class SharedDataService {
     { value: 'professional', name: 'Professional' },
     { value: 'vision', name: 'Optical' },
   ];
+  cnhiTypeList = [
+    { value: 'institutional', name: 'Institutional' },
+  ];
   searchClaimTypeList = [
     { value: 'institutional,oral,pharmacy,professional,vision', name: 'Any' },
     { value: 'institutional', name: 'Institutional' },
@@ -191,6 +194,16 @@ export class SharedDataService {
     // { value: 'T', name: 'T - Timing Critical' },
     // { value: 'UD', name: 'UD - Use As Directed' },
     // { value: 'UR', name: 'UR - Urgent' }
+  ];
+   
+  encounterAdminsSourceList = [
+      { value: 'RECR', name: 'RECR - Red crescent' },
+    { value: 'WKIN', name: ' WKIN - Walk-in ' },
+    { value: 'FMLYM', name: 'FMLYM - Family member' },
+    { value: 'AA', name: 'AA - Already admitted' },
+    { value: 'PVAMB', name: 'PVAMB - Private ambulance' },
+    { value: 'AAIC', name: 'AAIC - Already admitted- insurance consumed' },
+    { value: 'Others', name: 'Others - Others' }
   ];
 
   encounterAdminSourceList = [

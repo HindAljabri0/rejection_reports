@@ -10,11 +10,12 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { X } from '@angular/cdk/keycodes';
 import { DatePipe } from '@angular/common';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-add-edit-preauthorization-item',
+  styleUrls : ['./add-edit-preauthorization-item.component.css'],
   templateUrl: './add-edit-preauthorization-item.component.html',
-  styles: []
 })
 export class AddEditPreauthorizationItemComponent implements OnInit {
 
@@ -29,6 +30,10 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   IsItemLoading = false;
 
   onDestroy = new Subject<void>();
+
+  @ViewChild(CdkVirtualScrollViewport, { static: true })
+  cdkVirtualScrollViewPort: CdkVirtualScrollViewport; 
+
 
   FormItem: FormGroup = this.formBuilder.group({
     type: ['', Validators.required],
@@ -96,10 +101,10 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     private providerNphiesSearchService: ProviderNphiesSearchService) {
     this.today = new Date();
     this.today.setSeconds(0, 0);
-  }
+   }
   
 
-  ngOnInit() {    
+  ngOnInit() {   
       if (this.data.providerType === 'vision' && !this.data.item) {
       const principalDiagnosis = this.data.diagnosises.filter(x => x.type === "principal");
       if (principalDiagnosis.length > 0) {
@@ -277,7 +282,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.FormItem.controls.factor.disable();
     }
   }
-
+  
   setTypes(type) {
 
     switch (type) {
@@ -389,8 +394,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     this.FormItem.patchValue({      
       unitPrice: filteredData[0].unitPrice,     
     });
-    this.itemList.filter(x => x.code === this.data.item.itemCode)[0] 
+
     if (this.data.type === "pharmacy") {
+      this.itemList.filter(x => x.code === this.data.item.itemCode)[0] 
       this.filteredPescribedMedicationItem.next(this.prescribedMedicationList);
       const res = this.prescribedMedicationList.filter(x => x.gtinNumber === gtinNumber)[0];
       if (res != undefined) {
@@ -428,7 +434,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             item: this.itemList.filter(x => x.code === type.code)[0]
           });
         }
-        this.filteredItem.next(this.itemList.slice());
+        this.filteredItem.next(this.itemList.slice());      
         this.FormItem.controls.itemFilter.valueChanges
           .pipe(takeUntil(this.onDestroy))
           .subscribe(() => {
