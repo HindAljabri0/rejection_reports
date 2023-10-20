@@ -392,8 +392,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   setPrescribedMedication(gtinNumber: any) {     
     const filteredData = this.itemList.filter((item) => item.code === gtinNumber);    
     this.FormItem.patchValue({      
-      unitPrice: filteredData[0].unitPrice,     
-    });
+      unitPrice: filteredData[0].unitPrice, 
+     });
+     this.updateNet(); 
 
     if (this.data.type === "pharmacy") {
       this.itemList.filter(x => x.code === this.data.item.itemCode)[0] 
@@ -643,7 +644,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       }
       // tslint:disable-next-line:max-line-length
       const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value)) + tax;
-      console.log("Quntity = " + parseFloat(this.FormItem.controls.quantity.value) + " * Unit Price = " + parseFloat(this.FormItem.controls.unitPrice.value) + " * factor = " + parseFloat(this.FormItem.controls.factor.value) + " + tax = " + tax)
+     // console.log("Quntity = " + parseFloat(this.FormItem.controls.quantity.value) + " * Unit Price = " + parseFloat(this.FormItem.controls.unitPrice.value) + " * factor = " + parseFloat(this.FormItem.controls.factor.value) + " + tax = " + tax)
       this.FormItem.controls.net.setValue(this.roundTo(netValue));
     } else {
       this.FormItem.controls.net.setValue('');
