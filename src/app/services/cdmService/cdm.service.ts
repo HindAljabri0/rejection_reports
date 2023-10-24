@@ -11,7 +11,7 @@ export class CdmService {
 
   getPatientList(providerId: string, body: any, page, size) {
     const requestUrl = `/cdm/providers/${providerId}/search?page=${page}&size=${size}`;
-    const request = new HttpRequest('GET', environment.chronicDiseaseManagement + requestUrl, body);
+    const request = new HttpRequest('POST', environment.chronicDiseaseManagement + requestUrl, body);
     return this.http.request(request);
   }
   getPatientApproval(providerId: string, model: any) {
