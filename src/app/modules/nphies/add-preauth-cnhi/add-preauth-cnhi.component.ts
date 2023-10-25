@@ -78,8 +78,8 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
     dateOrdered: ['', Validators.required],
     payee: ['', Validators.required],
     payeeType: ['', Validators.required],
-    type: ['', Validators.required],
-    subType: [''],
+    type: ['Institutional'],
+    subType:  new FormControl('emergency'),
     preAuthRefNo: [''],
     accidentType: [''],
     streetName: [''],
@@ -140,6 +140,17 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
     insurancePlanPolicyNumber: [''],
     insurancePlanMaxLimit: [''],
     insurancePlanPatientShare: [''],
+    status: [''],
+    encounterClass: [''],
+    serviceType: [''],
+    priority: [''],
+    startDate: [''],
+    periodEnd: [''],
+    origin: [''],
+    adminSource: [''],
+    reAdmission: [''],
+    dischargeDispotion: [''],
+    serviceProvider: [''],
   });
 
   FormSubscriber: FormGroup = this.formBuilder.group({
