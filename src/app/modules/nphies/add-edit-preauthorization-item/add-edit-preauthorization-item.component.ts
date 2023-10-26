@@ -174,7 +174,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         nonStandardCode: this.data.item.nonStandardCode,
         display: this.data.item.display,
         isPackage: this.data.item.isPackage,
-        bodySite: this.data.item.bodySite && this.data.type === 'oral' ? this.data.item.bodySite : (this.data.item.bodySite != null ? this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0] : ""),
+        bodySite: this.data.item.bodySite && (this.data.type === 'oral' || (this.data.type === 'institutional' && this.data.item.type === 'oral-health-ip' ) )? this.data.item.bodySite : (this.data.item.bodySite != null ? this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0] : ""),
 
         subSite: this.data.item.subSite != null ? this.subSiteList.filter(x => x.value === this.data.item.subSite)[0] : "",
         quantity: this.data.item.quantity,
@@ -865,8 +865,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       model.nonStandardCode = this.FormItem.controls.nonStandardCode.value;
       model.display = this.FormItem.controls.display.value;
       model.isPackage = this.FormItem.controls.isPackage.value;
-      if (this.data.type === 'oral') {
-        let bodySite = this.bodySiteList.filter(x => x.value === this.FormItem.controls.bodySite.value)[0];
+      if (this.data.type === 'oral' || (this.data.type === 'institutional' && this.FormItem.controls.type.value.value === 'oral-health-ip' )) {
+        this.bodySiteList = this.sharedDataService.getBodySite('oral');         
+        let bodySite = this.bodySiteList.filter(x => x.value === this.FormItem.controls.bodySite.value)[0];       
         model.bodySite = this.FormItem.controls.bodySite ? bodySite ? bodySite.value : '' : '';
         model.bodySiteName = this.FormItem.controls.bodySite ? bodySite ? bodySite.name : '' : '';
       } else {
