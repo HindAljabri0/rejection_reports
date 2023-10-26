@@ -216,7 +216,7 @@ export class ChronicPatientsComponent implements OnInit {
     }
     if (this.cdmForm.controls.diagnosis.value) {
       model.diagnosis = this.cdmForm.controls.diagnosis.value;
-      model.diagnosis = JSON.parse(model.diagnosis);
+    //  model.diagnosis = JSON.parse(model.diagnosis);
       //odel.diagnosis = model.diagnosis.split(',');
     } else {
       this.diagnosisError = 'Please select diagnosis';
