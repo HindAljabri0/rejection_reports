@@ -321,6 +321,7 @@
                 <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin && !envStaging && !envProd">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Prescription Verification</mat-panel-title>
+                        <span *ngIf="NewPrescriberTransactions > 0" class="alert-marker ml-auto alert-count">{{NewPrescriberTransactions}}</span>
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li>
@@ -331,6 +332,7 @@
                         <li>
                             <a routerLink="/nphies/prescription-transactions" routerLinkActive="is-active">
                                 <span class="text">Prescription Transactions</span>
+                                <span *ngIf="NewPrescriberTransactions > 0" class="alert-marker alert-count">{{NewPrescriberTransactions}}</span>
                             </a>
                         </li>
                     </ul>

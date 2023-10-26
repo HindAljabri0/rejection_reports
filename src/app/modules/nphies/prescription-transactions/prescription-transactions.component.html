@@ -238,23 +238,23 @@
       <ng-template mat-tab-label>
         <div class="d-flex align-items-center">
           <span>Processed</span>
-          <span *ngIf="NewTransactionProcessed > 0" class="alert-marker ml-2 alert-count">{{NewTransactionProcessed}}</span>
+          <span *ngIf="NewTransactionPrescriberProcessed > 0" class="alert-marker ml-2 alert-count">{{NewTransactionPrescriberProcessed}}</span>
         </div>
       </ng-template>
 
-      <app-processed-transactions #processedTransactions *ngIf="payersList" [payersList]="payersList" (openDetailsDialogEvent)="openDetailsDialoEv($event)">
-      </app-processed-transactions>
+      <app-prescription-processed-transactions #processedTransactions *ngIf="payersList" [payersList]="payersList" (openDetailsDialogEvent)="openDetailsDialoEv($event)">
+      </app-prescription-processed-transactions>
 
     </mat-tab>
     <mat-tab>
       <ng-template mat-tab-label>
         <div class="d-flex align-items-center">
           <span>Communication Request</span>
-          <span *ngIf="NewComunicationRequests > 0" class="alert-marker ml-2 alert-count">{{NewComunicationRequests}}</span>
+          <span *ngIf="NewPrescriberCommunicationRequests > 0" class="alert-marker ml-2 alert-count">{{NewPrescriberCommunicationRequests}}</span>
         </div>
       </ng-template>
-      <app-communication-requests #communicationRequests *ngIf="payersList" [payersList]="payersList" (openDetailsDialogEvent)="openDetailsDialogCR($event)">
-      </app-communication-requests>
+      <app-prescription-communication-requests #communicationRequests *ngIf="payersList" [payersList]="payersList" (openDetailsDialogEvent)="openDetailsDialogCR($event)">
+      </app-prescription-communication-requests>
     </mat-tab>
   </mat-tab-group>
 </div>
