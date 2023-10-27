@@ -209,7 +209,7 @@ export class ChronicPatientsComponent implements OnInit {
       model.city = null;
     }*/
     if (this.cdmForm.controls.region.value) {
-      model.region = model.region = this.regionCodes[this.regionNames.indexOf(this.cdmForm.controls.region.value)];
+    model.region = this.regionCodes[this.regionNames.indexOf(this.cdmForm.controls.region.value)];
       //this.cdmForm.controls.region.value;
     } else {
       this.regionError = 'Please select region';
