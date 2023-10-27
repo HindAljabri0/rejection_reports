@@ -209,15 +209,14 @@ export class ChronicPatientsComponent implements OnInit {
       model.city = null;
     }*/
     if (this.cdmForm.controls.region.value) {
-      model.region = this.cdmForm.controls.region.value;
+      model.region = model.region = this.regionCodes[this.regionNames.indexOf(this.cdmForm.controls.region.value)];
+      //this.cdmForm.controls.region.value;
     } else {
       this.regionError = 'Please select region';
       this.thereIsError = true;
     }
     if (this.cdmForm.controls.diagnosis.value) {
-      model.diagnosis = this.cdmForm.controls.diagnosis.value;
-    //  model.diagnosis = JSON.parse(model.diagnosis);
-      //odel.diagnosis = model.diagnosis.split(',');
+      model.diagnosis = model.diagnosis = [this.diagnosisCodes[this.diagnosisNames.indexOf(this.cdmForm.controls.diagnosis.value)]];
     } else {
       this.diagnosisError = 'Please select diagnosis';
       this.thereIsError = true;
