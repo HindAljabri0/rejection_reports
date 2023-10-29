@@ -1650,7 +1650,8 @@ console.log(this.isSearchByStatus)
 
   get showMoveToReadyState() {
     // tslint:disable-next-line:max-line-length
-    return ['cancelled', 'rejected'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase()) || (['queued'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase()) && this.userPrivileges.WaseelPrivileges.isPAM);
+    return ['cancelled', 'rejected'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase()) || 
+    (['queued','error','failednphies','pended'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase()) && this.userPrivileges.WaseelPrivileges.isPAM);
   }
 
   get showRevalidate() {
@@ -2139,12 +2140,29 @@ console.log(this.isSearchByStatus)
   }
 
   moveToReadyState() {
+    if(this.userPrivileges.WaseelPrivileges.isPAM){
+    this.dialogService.openMessageDialog(
+      new MessageDialogData('Move To Ready Status?',
+          `Are you sure you want to move the status of claims to ready for submission? This cannot be undone`,
+          false,
+          true)).subscribe(res=>{
+            if(res===true){
+              this.callmoveToReadyState();
+          }})}else{
+            this.callmoveToReadyState();
+          }
+   
+   
+  
+  }
+  callmoveToReadyState(){
     if (this.selectedClaims.length == 0) {
       this.moveAllToReadyState();
     } else {
       this.moveSelectedToReadyState();
     }
   }
+  
 
   moveAllToReadyState() {
     if (this.commen.loading) {
