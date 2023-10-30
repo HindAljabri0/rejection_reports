@@ -5,6 +5,7 @@ import * as actions from './mainStore.actions';
 export interface UserPrivileges {
   WaseelPrivileges: {
     isPAM: boolean,
+    isNphiesAdmin: boolean,
     RCM: {
       isAdmin: boolean,
       scrubbing: {
@@ -72,6 +73,7 @@ export const initState: MainState = {
   userPrivileges: {
     WaseelPrivileges: {
       isPAM: false,
+      isNphiesAdmin:false,
       RCM: {
         isAdmin: false,
         scrubbing: {
@@ -141,6 +143,7 @@ const _mainReducer = createReducer(
     const userPrivileges = {
       WaseelPrivileges: {
         isPAM: AuthService.hasPrivilege('101', '101', '22'),
+        isNphiesAdmin:AuthService.hasPrivilege('101', '101', '25.99'),
         RCM: {
           isAdmin: AuthService.hasPrivilege('101', '101', '24.0'),
           scrubbing: {
