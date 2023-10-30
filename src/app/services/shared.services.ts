@@ -46,12 +46,18 @@ export class SharedServices {
   notificationsList: Notification[];
   notificationsListChange: Subject<Notification[]> = new Subject();
 
+  unReadPrescriberProcessedCount = 0;
+  unReadPrescriberProcessedCountChange: Subject<number> = new Subject();
+
   unReadProcessedCount = 0;
   unReadProcessedCountChange: Subject<number> = new Subject();
 
   unReadProcessedApaCount = 0;
   unReadProcessedApaCountChange: Subject<number> = new Subject();
 
+  unReadPrescriberCommunicationRequestCount = 0;
+  unReadPrescriberCommunicationRequestCountChange: Subject<number> = new Subject();
+  
   unReadComunicationRequestCount = 0;
   unReadComunicationRequestCountChange: Subject<number> = new Subject();
 
@@ -158,15 +164,21 @@ export class SharedServices {
 
     this.getNotifications();
 
+    this.unReadPrescriberProcessedCountChange.subscribe(value => {
+        this.unReadPrescriberProcessedCount = value;
+      });
     this.unReadProcessedCountChange.subscribe(value => {
       this.unReadProcessedCount = value;
     });
     this.unReadProcessedApaCountChange.subscribe(value => {
       this.unReadProcessedApaCount = value;
     });
-    this.unReadComunicationRequestCountChange.subscribe(value => {
-      this.unReadComunicationRequestCount = value;
+    this.unReadPrescriberCommunicationRequestCountChange.subscribe(value => {
+      this.unReadPrescriberCommunicationRequestCount = value;
     });
+    this.unReadComunicationRequestCountChange.subscribe(value => {
+        this.unReadComunicationRequestCount = value;
+      });
     this.unReadApaComunicationRequestCountChange.subscribe(value => {
       this.unReadApaComunicationRequestCount = value;
     });
@@ -258,6 +270,22 @@ export class SharedServices {
     });
   }
 
+  getPrescriberProcessedCount() {
+    // tslint:disable-next-line:max-line-length
+    this.notifications.getNotificationsCountByWeek(this.providerId, 'approval-notifications', 'unread').subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        const count = Number.parseInt(`${event.body}`, 10);
+        if (!Number.isNaN(count)) {
+          this.unReadPrescriberProcessedCountChange.next(count);
+        }
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        this.unReadPrescriberProcessedCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+      }
+    });
+  }
+
   getProcessedCount() {
     // tslint:disable-next-line:max-line-length
     this.notifications.getNotificationsCountByWeek(this.providerId, 'approval-notifications', 'unread').subscribe((event: any) => {
@@ -301,6 +329,21 @@ export class SharedServices {
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
         this.unReadComunicationRequestCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+      }
+    });
+  }
+  getPrescriberCommunicationRequestCount() {
+    // tslint:disable-next-line:max-line-length
+    this.notifications.getNotificationsCountByWeek(this.providerId, 'prescriber-communication-request-notification', 'unread').subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        const count = Number.parseInt(`${event.body}`, 10);
+        if (!Number.isNaN(count)) {
+          this.unReadPrescriberCommunicationRequestCountChange.next(count);
+        }
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+        this.unReadPrescriberCommunicationRequestCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
       }
     });
   }

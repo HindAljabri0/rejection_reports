@@ -301,6 +301,12 @@ export class ProviderNphiesApprovalService {
     return this.http.request(request);
   }
 
+  getPrescriberRequestTransactions(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/prescriber/fetch/criteria`;
+    const request = new HttpRequest('POST', environment.providerNphiesSearch + requestUrl, body);
+    return this.http.request(request);
+  }
+
   cancelApprovalRequest(providerId: string, body: any, isApproval = false) {
     if (isApproval) {
       let requestURL = `/providers/${providerId}/approval/cancel/request`;

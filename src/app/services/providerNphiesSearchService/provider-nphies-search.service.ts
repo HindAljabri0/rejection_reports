@@ -232,7 +232,17 @@ export class ProviderNphiesSearchService {
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
     return this.http.request(request);
   }
+  getPrescriptionProcessedTransaction(providerId: string) {
+      const requestUrl = `/providers/${providerId}/prescriberprocessed/processed`;
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+    return this.http.request(request);
+  }
 
+  getPrescriptionCommunicationRequests(providerId: string) {
+    const requestUrl = `/providers/${providerId}/prescribercommunication/communication-requests`;
+  const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+  return this.http.request(request);
+}
 
   getCommunicationRequests(providerId: string, claimType: string, page?: number, pageSize?: number) {
     if (page == null) {
