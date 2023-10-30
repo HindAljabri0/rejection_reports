@@ -104,9 +104,9 @@
       <div *ngIf="transactions.length>0" class="pagination-header">
 
 
-        <button matRipple type="button" class="ml-auto btn action-btn my-n2 mr-n2" (click)="downloadSheetFormat()" matTooltip="Download">
+        <!-- <button matRipple type="button" class="ml-auto btn action-btn my-n2 mr-n2" (click)="downloadSheetFormat()" matTooltip="Download">
           <img src="./assets/{{detailTopActionIcon}}" />
-        </button>
+        </button> -->
       </div>
 
       <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="transactionModel && transactions.length > 0">
