@@ -20,14 +20,9 @@ export const setCardError = createAction('[ Dashboard ] set one card error', pro
 export const dashboardCardNames: DashboardCardNames[] = [
   'notSubmittedClaims',
   'submittedClaims',
-  'rejectionByDepartment',
-  'rejectionByDoctor',
-  'rejectionByService'];
+  ];
 export type DashboardCardNames = 'notSubmittedClaims' |
-  'submittedClaims' |
-  'rejectionByDepartment' |
-  'rejectionByDoctor' |
-  'rejectionByService';
+  'submittedClaims';
 
 
 
