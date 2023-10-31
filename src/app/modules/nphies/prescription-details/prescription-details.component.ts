@@ -69,9 +69,9 @@ export class PrescriptionDetailsComponent implements OnInit {
     if (this.data.notificationStatus === 'unread') {
       const notificationId: string = this.data.notificationId;
       if (this.data.communicationId) {
-        this.sharedServices.unReadComunicationRequestCount = this.sharedServices.unReadComunicationRequestCount - 1;
+        this.sharedServices.unReadPrescriberCommunicationRequestCount = this.sharedServices.unReadPrescriberCommunicationRequestCount - 1;
       } else {
-        this.sharedServices.unReadProcessedCount = this.sharedServices.unReadProcessedCount - 1;
+        this.sharedServices.unReadPrescriberProcessedCount = this.sharedServices.unReadPrescriberProcessedCount - 1;
       }
       if (notificationId) {
         this.sharedServices.markAsRead(notificationId, this.sharedServices.providerId);
