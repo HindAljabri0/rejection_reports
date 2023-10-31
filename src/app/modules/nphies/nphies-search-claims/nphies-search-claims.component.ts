@@ -1651,7 +1651,7 @@ console.log(this.isSearchByStatus)
   get showMoveToReadyState() {
     // tslint:disable-next-line:max-line-length
     return ['cancelled', 'rejected','error'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase()) || 
-    (['queued','error','failednphies','pended'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase()) && this.userPrivileges.WaseelPrivileges.isNphiesAdmin);
+    (['queued','error','failednphies','pended'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase()) && this.userPrivileges.WaseelPrivileges.isPAM);
   }
 
   get showRevalidate() {
