@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { MatDialog, MatDialogConfig, ErrorStateMatcher } from '@angular/material';
+import { MatDialog, MatDialogConfig, ErrorStateMatcher, MatSlideToggleChange } from '@angular/material';
 import { AddEditPreauthorizationItemComponent } from '../add-edit-preauthorization-item/add-edit-preauthorization-item.component';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -218,7 +218,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
   nationalities = nationalities;
   selectedCountry = '';
   encounterStatusList = this.sharedDataService.encounterStatusList;
-  encounterClassList = this.sharedDataService.encounterClassList;
+  encounterClassList = this.sharedDataService.encounterCnhiClassList;
   encounterServiceTypeList = this.sharedDataService.encounterServiceTypeList;
   encounterPriorityList = this.sharedDataService.encounterPriorityList;
   encounterAdminSourceList = this.sharedDataService.encounterAdminsSourceList;
@@ -449,6 +449,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
       return rightList;
     }
   }
+  
   setBeneficiary(res) {
     // tslint:disable-next-line:max-line-length
     this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, res.beneficiary.documentId).subscribe(event => {
@@ -686,7 +687,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
   }
 
   onTypeChange($event) {
-    if ($event.value) {
+     if ($event.value) {
       this.claimType = $event.value.value;
       this.FormPreAuthorization.controls.subType.setValue('');
 
@@ -695,14 +696,6 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
           this.subTypeList = [
             { value: 'ip', name: 'InPatient' },
             { value: 'emr', name: 'Emergency' },
-          ];
-          break;
-        case 'professional':
-        case 'vision':
-        case 'pharmacy':
-        case 'oral':
-          this.subTypeList = [
-            { value: 'op', name: 'OutPatient' },
           ];
           break;
       }
@@ -1998,6 +1991,22 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
         this.model.accident = accidentModel;
       }
 
+      if (this.FormPreAuthorization.controls.status.value) {
+        const encounterModel: any = {};
+        encounterModel.status = this.FormPreAuthorization.controls.status.value;
+        encounterModel.encounterClass = this.FormPreAuthorization.controls.encounterClass.value;
+        encounterModel.serviceType = this.FormPreAuthorization.controls.serviceType.value;
+        encounterModel.startDate = moment(this.FormPreAuthorization.controls.startDate.value).utc();
+        encounterModel.periodEnd = moment(this.FormPreAuthorization.controls.periodEnd.value).utc();
+        encounterModel.origin = parseFloat(this.FormPreAuthorization.controls.origin.value);
+        encounterModel.admitSource = this.FormPreAuthorization.controls.adminSource.value;
+        encounterModel.reAdmission = this.FormPreAuthorization.controls.reAdmission.value;
+        encounterModel.dischargeDispotion = this.FormPreAuthorization.controls.dischargeDispotion.value;
+        encounterModel.priority = this.FormPreAuthorization.controls.priority.value;
+        encounterModel.serviceProvider = this.FormPreAuthorization.controls.serviceProvider.value;
+        this.model.encounter = encounterModel;
+      }
+
       this.model.careTeam = this.CareTeams.map(x => {
         const model: any = {};
         model.sequence = x.sequence;
@@ -2163,9 +2172,8 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
         this.model.totalNet += x.net;
       });
 
-      console.log('Model', this.model);
-      this.sharedServices.loadingChanged.next(true);
-      let requestOb = this.providerNphiesApprovalService.sendApprovalRequest(this.sharedServices.providerId, this.model);
+           this.sharedServices.loadingChanged.next(true);
+      let requestOb = this.providerNphiesApprovalService.sendCnhiApprovalRequest(this.sharedServices.providerId, this.model);
       if(isPbmvalidation){
         requestOb = this.providerNphiesApprovalService.sendApprovalPBMRequest(this.sharedServices.providerId, this.model);
       }
