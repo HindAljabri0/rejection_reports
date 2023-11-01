@@ -10,9 +10,14 @@ import { AuthService } from '../authService/authService.service';
 export class ProviderNphiesApprovalService {
 
   constructor(private http: HttpClient) { }
-
+ 
   sendApprovalRequest(providerId: string, body: any) {
     const requestUrl = `/providers/${providerId}/approval/request`;
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
+    return this.http.request(request);
+  }
+  sendCnhiApprovalRequest(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/approval/cnhi/request`;
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
     return this.http.request(request);
   }

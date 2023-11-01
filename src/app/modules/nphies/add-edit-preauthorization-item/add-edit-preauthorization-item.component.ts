@@ -92,8 +92,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
   today: Date;
   loadSearchItem = false;
-
-
+    cnhiTypeList: { value: string; name: string; }[];
+   
   constructor(    
     private sharedDataService: SharedDataService,
     private dialogRef: MatDialogRef<AddEditPreauthorizationItemComponent>, @Inject(MAT_DIALOG_DATA) public data, private datePipe: DatePipe,
@@ -105,7 +105,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
   
 
   ngOnInit() {   
-      if (this.data.providerType === 'vision' && !this.data.item) {
+     this.cnhiTypeList = [{ value: 'moh-category', name: 'MOH Billing Codes' }];
+     if (this.data.providerType === 'vision' && !this.data.item) {
       const principalDiagnosis = this.data.diagnosises.filter(x => x.type === "principal");
       if (principalDiagnosis.length > 0) {
         this.FormItem.controls.diagnosisSequence.setValue([principalDiagnosis[0]]);
@@ -338,8 +339,9 @@ if (this.data.type) {
           { value: 'procedures', name: 'Procedures' },
           { value: 'services', name: 'Services' },
           { value: 'laboratory', name: 'Laboratory' },
-          { value: 'oral-health-ip', name: 'Oral Health IP' }
+          { value: 'oral-health-ip', name: 'Oral Health IP' }    
         ];
+    
         this.FormItem.controls.careTeamSequence.setValidators([Validators.required]);
         this.FormItem.controls.careTeamSequence.updateValueAndValidity();
         this.IscareTeamSequenceRequired = true;
@@ -481,11 +483,9 @@ if (this.data.type) {
       this.sharedServices.loadingChanged.next(true);
       this.IsItemLoading = true;
       this.FormItem.controls.item.disable();
-      // tslint:disable-next-line:max-line-length
       this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, this.FormItem.controls.type.value.value).subscribe(event => {
         if (event instanceof HttpResponse) {
           this.itemList = event.body;
-
           if (this.data.item && this.data.item.itemCode) {
             this.FormItem.patchValue({
               item: this.itemList.filter(x => x.code === this.data.item.itemCode)[0]
