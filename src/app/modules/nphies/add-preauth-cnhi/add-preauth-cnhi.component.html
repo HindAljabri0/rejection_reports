@@ -115,26 +115,24 @@
                 <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')}">
                   <label class="control-label">Type<span class="asterisk">*</span></label>
                   <mat-form-field class="form-control custom-select-control">
-                    <mat-select formControlName="type" [disabled]="true" (selectionChange)="onTypeChange($event)">
-                        <mat-option *ngFor="let type of typeList" [value]="type.name">{{type.name}}</mat-option>
-                     </mat-select>
+                    <mat-select formControlName="type">
+                      <mat-option value="">Select Type</mat-option>
+                      <mat-option *ngFor="let type of typeList" [value]="type">{{type.name}}</mat-option>
+                    </mat-select>
                   </mat-form-field>
+                  
                   <div *ngIf="(isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')">
                     <span class="error-text">Please select a Type</span>
                   </div>
                 </div>
-              </div>             
+              </div>
               <div class="col-4 col-xxl-3">
                 <div class="form-group">
                   <label class="control-label">Sub Type</label>
                   <mat-form-field class="form-control custom-select-control">
-                    <mat-select formControlName="subType"  [disabled]="!this.FormPreAuthorization.controls.transfer.value">
+                    <mat-select formControlName="subType">
                       <mat-option value="">Select Sub Type</mat-option>
-                      <mat-option value="">Inpatient</mat-option>
-                      <mat-option value="emergency">Emergency</mat-option>
-                  </mat-select>
-                  
-                          
+                      <mat-option *ngFor="let sub of cnhiSubType" [value]="sub">{{sub.name}}</mat-option>
                       <!-- <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'institutional'" value="ip">InPatient
                       </mat-option>
                       <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'professional' ||
@@ -143,6 +141,7 @@
                     FormPreAuthorization.controls.type.value === 'pharmacy'" value="op">OutPatient</mat-option>
                       <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'institutional'" value="emr">Emergency
                       </mat-option> -->
+                    </mat-select>
                   </mat-form-field>
                 </div>
               </div>
