@@ -78,8 +78,8 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
     dateOrdered: ['', Validators.required],
     payee: ['', Validators.required],
     payeeType: ['', Validators.required],
-    type: ['Institutional'],
-    subType:  new FormControl('emergency'),
+    type: ['', Validators.required],
+    subType: [''],
     preAuthRefNo: [''],
     accidentType: [''],
     streetName: [''],
@@ -190,6 +190,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
   payeeList = [];
   providerList = [];
   subTypeList = [];
+  cnhiSubType = [];
 
   accidentTypeList = this.sharedDataService.accidentTypeList;
 
@@ -251,7 +252,8 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
 
   ngOnInit() {
     
-   
+    this.cnhiSubType = [ { value: 'ip', name: 'InPatient' },
+    { value: 'emr', name: 'Emergency' },];
     this.getPayees();
     this.getTPA();
     this.getPBMValidation();
@@ -322,18 +324,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
     this.claimType = this.data.preAuthorizationInfo.type;
     // tslint:disable-next-line:max-line-length
     this.FormPreAuthorization.controls.type.setValue(this.sharedDataService.cnhiTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] ? this.sharedDataService.cnhiTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] : '');
-    switch (this.data.preAuthorizationInfo.type) {
-      case 'institutional':
-        this.subTypeList = this.sharedDataService.subTypeList.filter(x => x.value === 'ip' || x.value === 'emr');
-        break;
-      case 'professional':
-      case 'vision':
-      case 'pharmacy':
-      case 'oral':
-        this.subTypeList = this.sharedDataService.subTypeList.filter(x => x.value === 'op');
-        break;
-    }
-    if (this.data.preAuthorizationInfo.subType != null) {
+     if (this.data.preAuthorizationInfo.subType != null) {
       // tslint:disable-next-line:max-line-length
       this.FormPreAuthorization.controls.subType.setValue(this.sharedDataService.subTypeList.filter(x => x.value === this.data.preAuthorizationInfo.subType)[0] ? this.sharedDataService.subTypeList.filter(x => x.value === this.data.preAuthorizationInfo.subType)[0] : '');
     }
