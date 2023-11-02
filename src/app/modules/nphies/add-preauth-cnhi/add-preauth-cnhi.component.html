@@ -3,7 +3,7 @@
     <ng-container *ngIf="!IsJSONPosted">
       <form [formGroup]="FormPreAuthorization" (ngSubmit)="onSubmit()">
         <div class="block-header">
-          <p>Request CNHI Pre Authorization</p>
+            <p>Request CNHI Pre Authorization</p>
           <mat-slide-toggle  formControlName="transfer" color="primary" id="referral" [disabled]="detailsModel && detailsModel.approvalRequestId" class="ml-auto">Referral
           </mat-slide-toggle>
   
@@ -112,39 +112,38 @@
               </div>
             </div>
             <div class="col-4 col-xxl-3">
-                <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')}">
-                  <label class="control-label">Type<span class="asterisk">*</span></label>
-                  <mat-form-field class="form-control custom-select-control">
-                    <mat-select formControlName="type">
-                      <mat-option value="">Select Type</mat-option>
-                      <mat-option *ngFor="let type of typeList" [value]="type">{{type.name}}</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                  
-                  <div *ngIf="(isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')">
-                    <span class="error-text">Please select a Type</span>
-                  </div>
+              <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')}">
+                <label class="control-label">Type<span class="asterisk">*</span></label>
+                <mat-form-field class="form-control custom-select-control">
+                  <mat-select formControlName="type" (selectionChange)="onTypeChange($event)">
+                    <mat-option value="">Select Type</mat-option>
+                    <mat-option *ngFor="let type of typeList" [value]="type">{{type.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div *ngIf="(isSubmitted || FormPreAuthorization.get('type').touched) && FormPreAuthorization.get('type').hasError('required')">
+                  <span class="error-text">Please select a Type</span>
                 </div>
               </div>
-              <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                  <label class="control-label">Sub Type</label>
-                  <mat-form-field class="form-control custom-select-control">
-                    <mat-select formControlName="subType">
-                      <mat-option value="">Select Sub Type</mat-option>
-                      <mat-option *ngFor="let sub of cnhiSubType" [value]="sub">{{sub.name}}</mat-option>
-                      <!-- <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'institutional'" value="ip">InPatient
-                      </mat-option>
-                      <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'professional' ||
-                    FormPreAuthorization.controls.type.value === 'oral' ||
-                    FormPreAuthorization.controls.type.value === 'vision' ||
-                    FormPreAuthorization.controls.type.value === 'pharmacy'" value="op">OutPatient</mat-option>
-                      <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'institutional'" value="emr">Emergency
-                      </mat-option> -->
-                    </mat-select>
-                  </mat-form-field>
-                </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">Sub Type</label>
+                <mat-form-field class="form-control custom-select-control">
+                  <mat-select formControlName="subType">
+                    <mat-option value="">Select Sub Type</mat-option>
+                    <mat-option *ngFor="let sub of cnhiSubType" [value]="sub">{{sub.name}}</mat-option>
+                    <!-- <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'institutional'" value="ip">InPatient
+                    </mat-option>
+                    <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'professional' ||
+                  FormPreAuthorization.controls.type.value === 'oral' ||
+                  FormPreAuthorization.controls.type.value === 'vision' ||
+                  FormPreAuthorization.controls.type.value === 'pharmacy'" value="op">OutPatient</mat-option>
+                    <mat-option *ngIf="FormPreAuthorization.controls.type.value === 'institutional'" value="emr">Emergency
+                    </mat-option> -->
+                  </mat-select>
+                </mat-form-field>
               </div>
+            </div>
   
             <div class="col-4 col-xxl-3">
               <div class="form-group">
@@ -548,7 +547,7 @@
               </div>
             </div>
           </div>
-  
+            
           <h5 class="form-title">
             <span>Encounter<span class="asterisk">*</span></span>
               </h5>
@@ -991,7 +990,7 @@
               <span>Request PBM</span>
             </button>
             <button type="submit" mat-flat-button color="primary"  id="requestAuthorizationButton">
-              <span>Request CNHI Pre-Authorization</span>
+                <span>Request CNHI Pre-Authorization</span>
             </button>
           </div>
   

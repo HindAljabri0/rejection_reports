@@ -33,9 +33,9 @@ import { AddEditVisionLensSpecificationsComponent } from '../add-preauthorizatio
 
 
 @Component({
-  selector: 'app-add-preauth-cnhi',
-  templateUrl: './add-preauth-cnhi.component.html',
-  styles: []
+    selector: 'app-add-preauth-cnhi',
+    templateUrl: './add-preauth-cnhi.component.html',
+    styles: []
 })
 export class AddCNHIPreauthorizationComponent implements OnInit {
 
@@ -323,8 +323,8 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
     }
     this.claimType = this.data.preAuthorizationInfo.type;
     // tslint:disable-next-line:max-line-length
-    this.FormPreAuthorization.controls.type.setValue(this.sharedDataService.cnhiTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] ? this.sharedDataService.cnhiTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] : '');
-     if (this.data.preAuthorizationInfo.subType != null) {
+    this.FormPreAuthorization.controls.type.setValue(this.sharedDataService.cnhiTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] ? this.sharedDataService.claimTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] : '');
+    if (this.data.preAuthorizationInfo.subType != null) {
       // tslint:disable-next-line:max-line-length
       this.FormPreAuthorization.controls.subType.setValue(this.sharedDataService.subTypeList.filter(x => x.value === this.data.preAuthorizationInfo.subType)[0] ? this.sharedDataService.subTypeList.filter(x => x.value === this.data.preAuthorizationInfo.subType)[0] : '');
     }
@@ -440,7 +440,6 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
       return rightList;
     }
   }
-  
   setBeneficiary(res) {
     // tslint:disable-next-line:max-line-length
     this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, res.beneficiary.documentId).subscribe(event => {
@@ -678,7 +677,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
   }
 
   onTypeChange($event) {
-     if ($event.value) {
+    if ($event.value) {
       this.claimType = $event.value.value;
       this.FormPreAuthorization.controls.subType.setValue('');
 
@@ -687,6 +686,14 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
           this.subTypeList = [
             { value: 'ip', name: 'InPatient' },
             { value: 'emr', name: 'Emergency' },
+          ];
+          break;
+        case 'professional':
+        case 'vision':
+        case 'pharmacy':
+        case 'oral':
+          this.subTypeList = [
+            { value: 'op', name: 'OutPatient' },
           ];
           break;
       }
@@ -872,6 +879,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
     dialogConfig.data = {
+      // tslint:disable-next-line:max-line-length
       Sequence: (visionSpecification !== null) ? visionSpecification.sequence : (this.VisionSpecifications.length === 0 ? 1 : (this.VisionSpecifications[this.VisionSpecifications.length - 1].sequence + 1)),
       item: visionSpecification
     };
@@ -1675,9 +1683,9 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
   onSubmit(isPbmvalidation=false) {
     this.providerType = this.providerType == null || this.providerType == "" ? 'any' : this.providerType;
     if (this.providerType.toLowerCase() !== 'any' && this.FormPreAuthorization.controls.type.value.value !== this.providerType) {
-      const filteredClaimType = this.sharedDataService.cnhiTypeList.filter(x => x.value === this.providerType)[0];
-      const providerTypeName = filteredClaimType != null ? filteredClaimType.name : null;
-      const claimTypeName = this.sharedDataService.cnhiTypeList.filter(x => x.value === this.FormPreAuthorization.controls.type.value.value)[0].name;
+        const filteredClaimType = this.sharedDataService.cnhiTypeList.filter(x => x.value === this.providerType)[0];
+        const providerTypeName = filteredClaimType != null ? filteredClaimType.name : null;
+        const claimTypeName = this.sharedDataService.cnhiTypeList.filter(x => x.value === this.FormPreAuthorization.controls.type.value.value)[0].name;
       this.dialogService.showMessage('Error', 'Claim type ' + claimTypeName + ' is not supported for Provider type ' + providerTypeName, 'alert', true, 'OK');
       return;
     }
