@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { MatDialog, MatDialogConfig, ErrorStateMatcher, MatSlideToggleChange } from '@angular/material';
+import { MatDialog,MatDialogRef, MatDialogConfig, ErrorStateMatcher, MatSlideToggleChange } from '@angular/material';
 import { AddEditPreauthorizationItemComponent } from '../add-edit-preauthorization-item/add-edit-preauthorization-item.component';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -30,6 +30,7 @@ import { AddEditDiagnosisModalComponent } from '../add-preauthorization/add-edit
 import { AddEditCareTeamModalComponent } from '../add-preauthorization/add-edit-care-team-modal/add-edit-care-team-modal.component';
 import { AddEditSupportingInfoModalComponent } from '../add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
 import { AddEditVisionLensSpecificationsComponent } from '../add-preauthorization/add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -141,11 +142,11 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
     insurancePlanMaxLimit: [''],
     insurancePlanPatientShare: [''],
     status: [''],
-    encounterClass: [''],
-    serviceType: [''],
+    encounterClass: ['', Validators.required],
+    serviceType: ['', Validators.required],
     priority: [''],
-    startDate: [''],
-    periodEnd: [''],
+    startDate: ['', Validators.required],
+    periodEnd: ['', Validators.required],
     origin: [''],
     adminSource: [''],
     reAdmission: [''],
@@ -245,7 +246,9 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
     private adminService:AdminService,
     private providersBeneficiariesService: ProvidersBeneficiariesService,
     private providerNphiesApprovalService: ProviderNphiesApprovalService,
-    private dbMapping: DbMappingService
+    private dbMapping: DbMappingService,
+    private router: Router,
+    
   ) {
     this.today = new Date();
   }
@@ -833,7 +836,31 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
     const plan: any = {};
     plan.value = planObj.payerNphiesId;
     plan.memberCardId = planObj.memberCardId;
-    this.selectPlan(plan);
+    if (planObj.payerId === '69') {
+    
+if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.contactNumber === null) {
+     const dialogRef: MatDialogRef<ConfirmationAlertDialogComponent> = this.dialog.open(
+      ConfirmationAlertDialogComponent,
+      {
+        data: {
+          mainMessage: 'Error',
+          subMessage: 'Please add contact number and nationality for CNHI Pre-auth Request',
+          mode: 'alert',
+          hideNoButton: true,
+          yesButtonText: 'Edit Beneficiary'
+        }
+      }
+    );
+  
+     dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+         this.router.navigate(['nphies/beneficiary/' + this.selectedBeneficiary.id]); // Replace 'other-url' with the desired URL
+        
+      }
+    });
+  }
+    }
+    this.selectPlan(plan); 
   }
 
   selectPlan(plan) {
@@ -1994,7 +2021,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
         const encounterModel: any = {};
         encounterModel.status = this.FormPreAuthorization.controls.status.value;
         encounterModel.encounterClass = this.FormPreAuthorization.controls.encounterClass.value;
-        encounterModel.serviceType = this.FormPreAuthorization.controls.serviceType.value;
+        encounterModel.serviceType = this.FormPreAuthorization.controls.payee.value;
         encounterModel.startDate = moment(this.FormPreAuthorization.controls.startDate.value).utc();
         encounterModel.periodEnd = moment(this.FormPreAuthorization.controls.periodEnd.value).utc();
         encounterModel.origin = parseFloat(this.FormPreAuthorization.controls.origin.value);
