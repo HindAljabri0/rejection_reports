@@ -15,7 +15,7 @@ import { SharedServices } from 'src/app/services/shared.services';
 export class CancelPreviousClaimComponent implements OnInit {
   submitted = false;
   providerCHHI = '';
-  providerCode='';
+  providerCode = '';
   providers: any[] = [];
   filteredProviders: any[] = [];
   selectedProvider: string;
@@ -23,13 +23,14 @@ export class CancelPreviousClaimComponent implements OnInit {
   selectedPayer: string;
   selectedDestination: string;
   selectedPayerError: string;
-  claimIdentifierUrl:string
+  claimIdentifierUrl: string
+
 
 
   CancellClaimForm: FormGroup;
 
-  constructor(private sharedServices: SharedServices, private superAdmin: SuperAdminService, private formBuilder: FormBuilder, 
-    private providerNphiesApprovalService: ProviderNphiesApprovalService,   private dialogService: DialogService,) { }
+  constructor(private sharedServices: SharedServices, private superAdmin: SuperAdminService, private formBuilder: FormBuilder,
+    private providerNphiesApprovalService: ProviderNphiesApprovalService, private dialogService: DialogService,) { }
 
   ngOnInit() {
 
@@ -39,12 +40,29 @@ export class CancelPreviousClaimComponent implements OnInit {
 
     this.CancellClaimForm = this.formBuilder.group({
       providerId: ['', Validators.required],
-      claimIdentifier: ['', Validators.required],
-      claimIdentifierUrl:null
+      claimIdentifier: null,
+      requestBundleId: null,
+      claimIdentifierUrl: null,
+      cancelBy: false
     });
 
   }
+  isValidBundleIdAndClaimsIdentifierFiled() {
+    if (this.isCancellByBundleIds && (this.CancellClaimForm.controls.requestBundleId.value == null ||
+      this.CancellClaimForm.controls.requestBundleId.value == "")) {
+      return false;
+    }
+    if (!this.isCancellByBundleIds && (this.CancellClaimForm.controls.claimIdentifier.value == null ||
+      this.CancellClaimForm.controls.claimIdentifier.value == "")) {
+      return false;
+    }
+    return true
+  }
+  get isCancellByBundleIds() {
+    return this.CancellClaimForm.controls.cancelBy.value;
 
+
+  }
   getProviders() {
     this.sharedServices.loadingChanged.next(true);
     this.providerLoader = true;
@@ -72,17 +90,17 @@ export class CancelPreviousClaimComponent implements OnInit {
     this.filteredProviders = this.providers.filter(provider => `${provider.providerId} | ${provider.providerCode} | ${provider.providerEnglishName} | ${provider.cchi_ID}`.toLowerCase().includes(this.CancellClaimForm.controls.providerId.value.toLowerCase())
     );
   }
-  selectProvider(providerId: string = null, cchi_ID: string = null ,providerCode:string=null ) {
+  selectProvider(providerId: string = null, cchi_ID: string = null, providerCode: string = null) {
     if (providerId !== null) {
       this.selectedProvider = providerId;
       this.providerCHHI = cchi_ID;
-      this.providerCode=providerCode;
+      this.providerCode = providerCode;
     } else {
       // tslint:disable-next-line:no-shadowed-variable
       const providerId = this.CancellClaimForm.controls.providerId.value.split('|')[0].trim();
       this.providerCHHI = this.CancellClaimForm.controls.providerId.value.split('|')[3].trim();
       this.selectedProvider = providerId;
-      this.providerCode=providerCode;
+      this.providerCode = providerCode;
 
       console.log(this.providerCHHI);
     }
@@ -94,41 +112,43 @@ export class CancelPreviousClaimComponent implements OnInit {
   cancellClaim() {
     console.log(this.providerCHHI)
     this.submitted = true
-    if (this.CancellClaimForm.valid && this.selectedPayer != null) {
+    if (this.CancellClaimForm.valid && this.selectedPayer != null && this.isValidBundleIdAndClaimsIdentifierFiled()) {
       this.sharedServices.loadingChanged.next(true);
-     
-    this.providerLoader = true;
+
+      this.providerLoader = true;
       const body = {
 
-        "claimIdentifier": this.CancellClaimForm.controls.claimIdentifier.value,
+        "claimIdentifier": !this.isCancellByBundleIds ?this.CancellClaimForm.controls.claimIdentifier.value:null,
+        "bundleId": this.isCancellByBundleIds ?this.CancellClaimForm.controls.requestBundleId.value:null,
         "payerNphiesId": this.selectedDestination,
         "memberId": "10073343178",
         "destinationId": this.selectedDestination,
         "cancelReason": "TAS",
         "claimIdentifierUrl": this.CancellClaimForm.controls.claimIdentifierUrl.value,
-        "providerCHHI": this.providerCHHI ,
-        "providerCode": this.providerCode 
+        "providerCHHI": this.providerCHHI,
+        "providerCode": this.providerCode
 
       }
 
-   
+
       this.providerNphiesApprovalService.cancelPreviousClaim(this.selectedProvider, body).subscribe((event) => {
 
         if (event instanceof HttpResponse) {
           this.sharedServices.loadingChanged.next(false);
-         // this.providerLoader = false;
-         console.log(event.body['message'])
-          this.dialogService.showMessage('Success', event.body['message'] , 'success', true, 'OK');
-       
+          // this.providerLoader = false;
+          console.log(event.body['message'])
+          this.dialogService.showMessage('Success',event.body['statusReason']!=null
+          ? event.body['message']+'<br> Reason :'+event.body['statusReason']: event.body['message'], 'success', true, 'OK');
+
 
         }
 
-      },error=>{
+      }, error => {
         this.sharedServices.loadingChanged.next(false);
-     //  this.providerLoader = false;
-     console.log(  error)
-        this.dialogService.showMessage('Error', error.error['errors'][0], 'alert', true, 'OK');
-      
+        //  this.providerLoader = false;
+        console.log(error)
+        this.dialogService.showMessage('Error', error.error['errors'], 'alert', true, 'OK');
+
 
       });
       //   console.log(  this.CancellClaimForm.controls.claimIdentifier.value)
