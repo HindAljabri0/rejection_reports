@@ -23,7 +23,12 @@ export class CancelPreviousClaimComponent implements OnInit {
   selectedPayer: string;
   selectedDestination: string;
   selectedPayerError: string;
-  claimIdentifierUrl: string
+  claimIdentifierUrl: string;
+  JsonRequest:string;
+  JsonResponse:string;
+  requestDate : any ;
+  responsDate:any;
+
 
 
 
@@ -113,6 +118,9 @@ export class CancelPreviousClaimComponent implements OnInit {
     console.log(this.providerCHHI)
     this.submitted = true
     if (this.CancellClaimForm.valid && this.selectedPayer != null && this.isValidBundleIdAndClaimsIdentifierFiled()) {
+      this.JsonRequest=null;
+      this.JsonResponse=null;
+
       this.sharedServices.loadingChanged.next(true);
 
       this.providerLoader = true;
@@ -130,13 +138,16 @@ export class CancelPreviousClaimComponent implements OnInit {
 
       }
 
-
+      this.requestDate=new Date() ;
       this.providerNphiesApprovalService.cancelPreviousClaim(this.selectedProvider, body).subscribe((event) => {
 
         if (event instanceof HttpResponse) {
           this.sharedServices.loadingChanged.next(false);
+          this.responsDate=new Date() ;
           // this.providerLoader = false;
           console.log(event.body['message'])
+          this.JsonRequest=event.body['requestJsonUrl'];
+          this.JsonResponse=event.body['responseJsonUrl'];
           this.dialogService.showMessage('Success',event.body['statusReason']!=null
           ? event.body['message']+'<br> Reason :'+event.body['statusReason']: event.body['message'], 'success', true, 'OK');
 
