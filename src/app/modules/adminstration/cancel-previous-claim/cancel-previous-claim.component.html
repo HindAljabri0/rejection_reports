@@ -76,3 +76,35 @@
           </div>
         </div>
       </div>
+        <table   *ngIf="JsonRequest!=null || JsonResponse!=null" class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+          <thead>
+            <tr>
+              <!-- <th>Transaction ID</th> -->
+              <th>Transaction Type</th>
+              <th>Date</th>
+              <!-- <th width="10"></th> -->
+              <th width="10"></th>
+            </tr>
+          </thead>
+        <tbody>
+          <tr >
+            <!-- <td>{{transaction.transactionId}}</td> -->
+            <td>cancel-request</td>
+            <td>{{ requestDate | date : 'yyyy/MM/dd hh:mm:ss aa'}}</td>
+            <td>
+              <a href='{{JsonRequest}}' title="Download" class="primary-link"
+              >Download</a>
+            </td>
+          </tr>
+
+          <tr >
+            <!-- <td>{{transaction.transactionId}}</td> -->
+            <td>cancel-response</td>
+            <td>{{ responsDate | date : 'yyyy/MM/dd hh:mm:ss aa'}}</td>
+            <td>
+              <a href='{{JsonResponse}}' title="Download" class="primary-link"
+              >Download</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
