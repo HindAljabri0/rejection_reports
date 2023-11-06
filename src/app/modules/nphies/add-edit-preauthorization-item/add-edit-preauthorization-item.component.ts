@@ -170,6 +170,35 @@ if (this.data.type) {
           this.FormItem.controls.endDate.disable();
         }
       }
+      this.FormItem.patchValue({
+        type: this.data.source ==='CNHI' ? this.cnhiTypeList.filter(x => x.value === this.data.item.type)[0] : this.typeList.filter(x => x.value === this.data.item.type)[0],
+        itemDescription: this.itemList.filter(x => x.code === this.data.item.itemDescription)[0],
+        itemCode :  this.itemList.filter(x => x.code === this.data.item.itemCode)[0],
+        nonStandardCode: this.data.item.nonStandardCode,
+        display: this.data.item.display,
+        isPackage: this.data.item.isPackage,
+        bodySite: this.data.item.bodySite && (this.data.type === 'oral' || (this.data.type === 'institutional' && this.data.item.type === 'oral-health-ip' ) )? this.data.item.bodySite : (this.data.item.bodySite != null ? this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0] : ""),
+        subSite: this.data.item.subSite != null ? this.subSiteList.filter(x => x.value === this.data.item.subSite)[0] : "",
+        quantity: this.data.item.quantity,
+        quantityCode: this.data.item.quantityCode != null ? this.data.item.quantityCode : "",
+        unitPrice: this.data.item.unitPrice,
+        discount: this.data.item.discount,
+        discountPercent: this.data.item.discountPercent,
+        // (this.data.item.discount * 100) / (this.data.item.quantity * this.data.item.unitPrice)
+        // dp = d * 100 / (qty * up)
+        factor: this.data.item.factor ? this.data.item.factor : 1,
+        taxPercent: this.data.item.taxPercent,
+        patientSharePercent: this.data.item.patientSharePercent,
+        tax: this.data.item.tax,
+        net: this.data.item.net,
+        patientShare: this.data.item.patientShare,
+        payerShare: this.data.item.payerShare,
+        startDate: this.data.item.startDate ? new Date(this.data.item.startDate) : null,
+        endDate: this.data.item.endDate ? new Date(this.data.item.endDate) : null,
+        invoiceNo: this.data.item.invoiceNo,
+        drugSelectionReason: this.medicationReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0] ? this.medicationReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0] : ''
+
+      });
     
       if (this.data.careTeams) {
         this.FormItem.patchValue({
@@ -256,40 +285,7 @@ if (this.data.type) {
     }
   }
 
-  ngAfterViewInit() {
-    setTimeout(() => {
-        this.FormItem.patchValue({
-            type: this.data.source ==='CNHI' ? this.cnhiTypeList.filter(x => x.value === this.data.item.type)[0] : this.typeList.filter(x => x.value === this.data.item.type)[0],
-            itemDescription: this.data.item.itemDescription,
-            itemCode :  this.itemList.filter(x => x.code === this.data.item.itemCode)[0],
-            nonStandardCode: this.data.item.nonStandardCode,
-            display: this.data.item.display,
-            isPackage: this.data.item.isPackage,
-            bodySite: this.data.item.bodySite && (this.data.type === 'oral' || (this.data.type === 'institutional' && this.data.item.type === 'oral-health-ip' ) )? this.data.item.bodySite : (this.data.item.bodySite != null ? this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0] : ""),
-            subSite: this.data.item.subSite != null ? this.subSiteList.filter(x => x.value === this.data.item.subSite)[0] : "",
-            quantity: this.data.item.quantity,
-            quantityCode: this.data.item.quantityCode != null ? this.data.item.quantityCode : "",
-            unitPrice: this.data.item.unitPrice,
-            discount: this.data.item.discount,
-            discountPercent: this.data.item.discountPercent,
-            // (this.data.item.discount * 100) / (this.data.item.quantity * this.data.item.unitPrice)
-            // dp = d * 100 / (qty * up)
-            factor: this.data.item.factor ? this.data.item.factor : 1,
-            taxPercent: this.data.item.taxPercent,
-            patientSharePercent: this.data.item.patientSharePercent,
-            tax: this.data.item.tax,
-            net: this.data.item.net,
-            patientShare: this.data.item.patientShare,
-            payerShare: this.data.item.payerShare,
-            startDate: this.data.item.startDate ? new Date(this.data.item.startDate) : null,
-            endDate: this.data.item.endDate ? new Date(this.data.item.endDate) : null,
-            invoiceNo: this.data.item.invoiceNo,
-            drugSelectionReason: this.medicationReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0] ? this.medicationReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0] : ''
-    
-          });
-       
-    });
-  }
+ 
   
   setTypes(type) {
 
@@ -485,6 +481,7 @@ if (this.data.type) {
   }
 
   getItemList(type = null) {
+   
     if (this.FormItem.controls.type.value) {
       this.sharedServices.loadingChanged.next(true);
       this.IsItemLoading = true;
