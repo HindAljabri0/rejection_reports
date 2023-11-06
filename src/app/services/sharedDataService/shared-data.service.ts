@@ -170,6 +170,10 @@ export class SharedDataService {
     { value: 'SS', name: 'Short Stay' }
   ];
 
+  encounterCnhiClassList = [
+    { value: 'ALTC', name: 'ALTC' },
+  ];
+
   encounterServiceTypeList = [
     { value: '237', name: '237 - Acute Inpatient Serv' },
     { value: '576', name: '576 - Rehabilitation' },
@@ -356,6 +360,7 @@ export class SharedDataService {
     { value: 'laboratory', name: 'Laboratory' },
     { value: 'oral-health-ip', name: 'Oral Health IP' },
     { value: 'oral-health-op', name: 'Oral Health OP' },
+    { value: 'moh-category', name: 'MOH Billing Codes' },
   ];
 
   itemMedicationReasonList = [

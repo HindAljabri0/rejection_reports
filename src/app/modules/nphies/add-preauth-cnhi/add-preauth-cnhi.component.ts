@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { MatDialog, MatDialogConfig, ErrorStateMatcher } from '@angular/material';
+import { MatDialog,MatDialogRef, MatDialogConfig, ErrorStateMatcher, MatSlideToggleChange } from '@angular/material';
 import { AddEditPreauthorizationItemComponent } from '../add-edit-preauthorization-item/add-edit-preauthorization-item.component';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -30,12 +30,13 @@ import { AddEditDiagnosisModalComponent } from '../add-preauthorization/add-edit
 import { AddEditCareTeamModalComponent } from '../add-preauthorization/add-edit-care-team-modal/add-edit-care-team-modal.component';
 import { AddEditSupportingInfoModalComponent } from '../add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
 import { AddEditVisionLensSpecificationsComponent } from '../add-preauthorization/add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
+import { Router } from '@angular/router';
 
 
 @Component({
-  selector: 'app-add-preauth-cnhi',
-  templateUrl: './add-preauth-cnhi.component.html',
-  styles: []
+    selector: 'app-add-preauth-cnhi',
+    templateUrl: './add-preauth-cnhi.component.html',
+    styles: []
 })
 export class AddCNHIPreauthorizationComponent implements OnInit {
 
@@ -78,8 +79,8 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
     dateOrdered: ['', Validators.required],
     payee: ['', Validators.required],
     payeeType: ['', Validators.required],
-    type: ['Institutional'],
-    subType:  new FormControl('emergency'),
+    type: ['', Validators.required],
+    subType: ['', Validators.required],
     preAuthRefNo: [''],
     accidentType: [''],
     streetName: [''],
@@ -142,12 +143,12 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
     insurancePlanPatientShare: [''],
     status: [''],
     encounterClass: [''],
-    serviceType: [''],
+    serviceType: ['', Validators.required],
     priority: [''],
-    startDate: [''],
-    periodEnd: [''],
+    startDate: ['', Validators.required],
+    periodEnd: ['', Validators.required],
     origin: [''],
-    adminSource: [''],
+    adminSource: ['', Validators.required],
     reAdmission: [''],
     dischargeDispotion: [''],
     serviceProvider: [''],
@@ -190,6 +191,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
   payeeList = [];
   providerList = [];
   subTypeList = [];
+  cnhiSubType = [];
 
   accidentTypeList = this.sharedDataService.accidentTypeList;
 
@@ -218,7 +220,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
   nationalities = nationalities;
   selectedCountry = '';
   encounterStatusList = this.sharedDataService.encounterStatusList;
-  encounterClassList = this.sharedDataService.encounterClassList;
+  encounterClassList = this.sharedDataService.encounterCnhiClassList;
   encounterServiceTypeList = this.sharedDataService.encounterServiceTypeList;
   encounterPriorityList = this.sharedDataService.encounterPriorityList;
   encounterAdminSourceList = this.sharedDataService.encounterAdminsSourceList;
@@ -244,14 +246,17 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
     private adminService:AdminService,
     private providersBeneficiariesService: ProvidersBeneficiariesService,
     private providerNphiesApprovalService: ProviderNphiesApprovalService,
-    private dbMapping: DbMappingService
+    private dbMapping: DbMappingService,
+    private router: Router,
+    
   ) {
     this.today = new Date();
   }
 
   ngOnInit() {
     
-   
+    this.cnhiSubType = [ { value: 'ip', name: 'InPatient' },
+    { value: 'emr', name: 'Emergency' },];
     this.getPayees();
     this.getTPA();
     this.getPBMValidation();
@@ -321,18 +326,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
     }
     this.claimType = this.data.preAuthorizationInfo.type;
     // tslint:disable-next-line:max-line-length
-    this.FormPreAuthorization.controls.type.setValue(this.sharedDataService.cnhiTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] ? this.sharedDataService.cnhiTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] : '');
-    switch (this.data.preAuthorizationInfo.type) {
-      case 'institutional':
-        this.subTypeList = this.sharedDataService.subTypeList.filter(x => x.value === 'ip' || x.value === 'emr');
-        break;
-      case 'professional':
-      case 'vision':
-      case 'pharmacy':
-      case 'oral':
-        this.subTypeList = this.sharedDataService.subTypeList.filter(x => x.value === 'op');
-        break;
-    }
+    this.FormPreAuthorization.controls.type.setValue(this.sharedDataService.cnhiTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] ? this.sharedDataService.claimTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] : '');
     if (this.data.preAuthorizationInfo.subType != null) {
       // tslint:disable-next-line:max-line-length
       this.FormPreAuthorization.controls.subType.setValue(this.sharedDataService.subTypeList.filter(x => x.value === this.data.preAuthorizationInfo.subType)[0] ? this.sharedDataService.subTypeList.filter(x => x.value === this.data.preAuthorizationInfo.subType)[0] : '');
@@ -842,7 +836,31 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
     const plan: any = {};
     plan.value = planObj.payerNphiesId;
     plan.memberCardId = planObj.memberCardId;
-    this.selectPlan(plan);
+    if (planObj.payerId === '69') {
+    
+if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.contactNumber === null) {
+     const dialogRef: MatDialogRef<ConfirmationAlertDialogComponent> = this.dialog.open(
+      ConfirmationAlertDialogComponent,
+      {
+        data: {
+          mainMessage: 'Error',
+          subMessage: 'Please add contact number and nationality for CNHI Pre-auth Request',
+          mode: 'alert',
+          hideNoButton: true,
+          yesButtonText: 'Edit Beneficiary'
+        }
+      }
+    );
+  
+     dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+         this.router.navigate(['nphies/beneficiary/' + this.selectedBeneficiary.id]); // Replace 'other-url' with the desired URL
+        
+      }
+    });
+  }
+    }
+    this.selectPlan(plan); 
   }
 
   selectPlan(plan) {
@@ -888,6 +906,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
     dialogConfig.data = {
+      // tslint:disable-next-line:max-line-length
       Sequence: (visionSpecification !== null) ? visionSpecification.sequence : (this.VisionSpecifications.length === 0 ? 1 : (this.VisionSpecifications[this.VisionSpecifications.length - 1].sequence + 1)),
       item: visionSpecification
     };
@@ -1228,12 +1247,12 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
   }
 
   openAddEditItemDetailsDialog(itemSequence: number, itemModel: any = null) {
-
     const item = this.Items.filter(x => x.sequence === itemSequence)[0];
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
     dialogConfig.data = {
+        source: 'CNHI',
       // tslint:disable-next-line:max-line-length
       Sequence: (itemModel !== null) ? itemModel.sequence : (item.itemDetails.length === 0 ? 1 : (item.itemDetails[item.itemDetails.length - 1].sequence + 1)),
       item: itemModel,
@@ -1691,9 +1710,9 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
   onSubmit(isPbmvalidation=false) {
     this.providerType = this.providerType == null || this.providerType == "" ? 'any' : this.providerType;
     if (this.providerType.toLowerCase() !== 'any' && this.FormPreAuthorization.controls.type.value.value !== this.providerType) {
-      const filteredClaimType = this.sharedDataService.cnhiTypeList.filter(x => x.value === this.providerType)[0];
-      const providerTypeName = filteredClaimType != null ? filteredClaimType.name : null;
-      const claimTypeName = this.sharedDataService.cnhiTypeList.filter(x => x.value === this.FormPreAuthorization.controls.type.value.value)[0].name;
+        const filteredClaimType = this.sharedDataService.cnhiTypeList.filter(x => x.value === this.providerType)[0];
+        const providerTypeName = filteredClaimType != null ? filteredClaimType.name : null;
+        const claimTypeName = this.sharedDataService.cnhiTypeList.filter(x => x.value === this.FormPreAuthorization.controls.type.value.value)[0].name;
       this.dialogService.showMessage('Error', 'Claim type ' + claimTypeName + ' is not supported for Provider type ' + providerTypeName, 'alert', true, 'OK');
       return;
     }
@@ -1758,13 +1777,25 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
         this.IsPrescriberRequired = false;
       }
     }
+    const reasonForVisit = this.SupportingInfo.filter(f=>f.category == 'reason-for-visit').length
 
+    const attachment = this.SupportingInfo.filter(f=>f.category == 'attachment').length
+ 
+    if ((reasonForVisit == 0 || attachment == 0 ) && this.FormPreAuthorization.controls.transfer.value ) {
+      this.dialogService.showMessage('Error', 'please add Attachment and Reason For Visit to complete Pre-auth CNHI request', 'alert', true, 'OK');
+      return;
+    }
+       if (attachment == 0 && !this.FormPreAuthorization.controls.transfer.value) {
+          this.dialogService.showMessage('Error', 'please add Attachment to complete Pre-auth CNHI request', 'alert', true, 'OK');
+          return;
+        }
     if (isPbmvalidation) {
       let weightValidtation = this.SupportingInfo.filter(f=>f.category == 'vital-sign-weight').length;
       if (weightValidtation == 0) {
         this.dialogService.showMessage('Error', 'please add vital sign weight to complete PBM request', 'alert', true, 'OK');
         return;
       }
+    
     }
     if (this.FormPreAuthorization.valid) {
 
@@ -1998,6 +2029,22 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
         this.model.accident = accidentModel;
       }
 
+      if (this.FormPreAuthorization.controls.status.value) {
+        const encounterModel: any = {};
+        encounterModel.status = this.FormPreAuthorization.controls.status.value;
+        encounterModel.encounterClass = this.FormPreAuthorization.controls.encounterClass.value;
+        encounterModel.serviceType = this.FormPreAuthorization.controls.payee.value;
+        encounterModel.startDate = moment(this.FormPreAuthorization.controls.startDate.value).utc();
+        encounterModel.periodEnd = moment(this.FormPreAuthorization.controls.periodEnd.value).utc();
+        encounterModel.origin = parseFloat(this.FormPreAuthorization.controls.origin.value);
+        encounterModel.admitSource = this.FormPreAuthorization.controls.adminSource.value;
+        encounterModel.reAdmission = this.FormPreAuthorization.controls.reAdmission.value;
+        encounterModel.dischargeDispotion = this.FormPreAuthorization.controls.dischargeDispotion.value;
+        encounterModel.priority = this.FormPreAuthorization.controls.priority.value;
+        encounterModel.serviceProvider = this.FormPreAuthorization.controls.serviceProvider.value;
+        this.model.encounter = encounterModel;
+      }
+
       this.model.careTeam = this.CareTeams.map(x => {
         const model: any = {};
         model.sequence = x.sequence;
@@ -2163,9 +2210,8 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
         this.model.totalNet += x.net;
       });
 
-      console.log('Model', this.model);
-      this.sharedServices.loadingChanged.next(true);
-      let requestOb = this.providerNphiesApprovalService.sendApprovalRequest(this.sharedServices.providerId, this.model);
+           this.sharedServices.loadingChanged.next(true);
+      let requestOb = this.providerNphiesApprovalService.sendCnhiApprovalRequest(this.sharedServices.providerId, this.model);
       if(isPbmvalidation){
         requestOb = this.providerNphiesApprovalService.sendApprovalPBMRequest(this.sharedServices.providerId, this.model);
       }

@@ -92,8 +92,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
   today: Date;
   loadSearchItem = false;
-
-
+    cnhiTypeList: { value: string; name: string; }[];
+   
   constructor(    
     private sharedDataService: SharedDataService,
     private dialogRef: MatDialogRef<AddEditPreauthorizationItemComponent>, @Inject(MAT_DIALOG_DATA) public data, private datePipe: DatePipe,
@@ -104,8 +104,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
    }
   
 
-  ngOnInit() {   
-      if (this.data.providerType === 'vision' && !this.data.item) {
+  ngOnInit() {  
+     this.cnhiTypeList = [{ value: 'moh-category', name: 'MOH Billing Codes' }];
+     if (this.data.providerType === 'vision' && !this.data.item) {
       const principalDiagnosis = this.data.diagnosises.filter(x => x.type === "principal");
       if (principalDiagnosis.length > 0) {
         this.FormItem.controls.diagnosisSequence.setValue([principalDiagnosis[0]]);
@@ -113,7 +114,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         this.FormItem.controls.diagnosisSequence.setValue([this.data.diagnosises[0]]);
       }
     }
-
     if (this.data.source === 'APPROVAL') {
       this.FormItem.controls.invoiceNo.clearValidators();
       this.FormItem.controls.invoiceNo.updateValueAndValidity();
@@ -130,6 +130,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 if (this.data.type) {
     this.setTypes(this.data.type);
     this.bodySiteList = this.sharedDataService.getBodySite(this.data.type);
+    this.subSiteList = this.sharedDataService.getSubSite(this.data.type);
   }
 
     if (this.data.type === "pharmacy") {
@@ -169,13 +170,10 @@ if (this.data.type) {
           this.FormItem.controls.endDate.disable();
         }
       }
-      if (this.data.item.type === 'oral-health-ip') {
-        this.subSiteList = (this.data.type === 'institutional' && this.data.item.type === 'oral-health-ip')
-          ? this.sharedDataService.getSubSite('oral')
-          : this.sharedDataService.getSubSite(this.data.type);
-      }
       this.FormItem.patchValue({
-        type: this.typeList.filter(x => x.value === this.data.item.type)[0],
+        type: this.data.source ==='CNHI' ? this.cnhiTypeList.filter(x => x.value === this.data.item.type)[0] : this.typeList.filter(x => x.value === this.data.item.type)[0],
+        itemDescription: this.itemList.filter(x => x.code === this.data.item.itemDescription)[0],
+        itemCode :  this.itemList.filter(x => x.code === this.data.item.itemCode)[0],
         nonStandardCode: this.data.item.nonStandardCode,
         display: this.data.item.display,
         isPackage: this.data.item.isPackage,
@@ -201,7 +199,7 @@ if (this.data.type) {
         drugSelectionReason: this.medicationReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0] ? this.medicationReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0] : ''
 
       });
-
+    
       if (this.data.careTeams) {
         this.FormItem.patchValue({
           // tslint:disable-next-line:max-line-length
@@ -286,6 +284,8 @@ if (this.data.type) {
       this.FormItem.controls.factor.disable();
     }
   }
+
+ 
   
   setTypes(type) {
 
@@ -338,8 +338,9 @@ if (this.data.type) {
           { value: 'procedures', name: 'Procedures' },
           { value: 'services', name: 'Services' },
           { value: 'laboratory', name: 'Laboratory' },
-          { value: 'oral-health-ip', name: 'Oral Health IP' }
+          { value: 'oral-health-ip', name: 'Oral Health IP' }    
         ];
+    
         this.FormItem.controls.careTeamSequence.setValidators([Validators.required]);
         this.FormItem.controls.careTeamSequence.updateValueAndValidity();
         this.IscareTeamSequenceRequired = true;
@@ -458,6 +459,9 @@ if (this.data.type) {
       this.FormItem.controls.quantityCode.setValidators([Validators.required]);
       this.FormItem.controls.quantityCode.updateValueAndValidity();
     } 
+         this.subSiteList = (this.data.type === 'institutional' && this.FormItem.controls.type.value.value === 'oral-health-ip')
+          ? this.sharedDataService.getSubSite('oral')
+          : this.sharedDataService.getSubSite(this.data.type);
     if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'oral-health-ip') 
     {
     this.subSiteList = this.sharedDataService.getSubSite('oral');        
@@ -477,15 +481,14 @@ if (this.data.type) {
   }
 
   getItemList(type = null) {
+   
     if (this.FormItem.controls.type.value) {
       this.sharedServices.loadingChanged.next(true);
       this.IsItemLoading = true;
       this.FormItem.controls.item.disable();
-      // tslint:disable-next-line:max-line-length
       this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, this.FormItem.controls.type.value.value).subscribe(event => {
         if (event instanceof HttpResponse) {
           this.itemList = event.body;
-
           if (this.data.item && this.data.item.itemCode) {
             this.FormItem.patchValue({
               item: this.itemList.filter(x => x.code === this.data.item.itemCode)[0]
