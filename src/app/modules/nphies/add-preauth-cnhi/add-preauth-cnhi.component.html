@@ -126,7 +126,7 @@
               </div>
             </div>
             <div class="col-4 col-xxl-3">
-              <div class="form-group">
+              <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('subType').touched) && FormPreAuthorization.get('subType').hasError('required')}">
                 <label class="control-label">Sub Type</label>
                 <mat-form-field class="form-control custom-select-control">
                   <mat-select formControlName="subType">
@@ -142,6 +142,9 @@
                     </mat-option> -->
                   </mat-select>
                 </mat-form-field>
+                <div *ngIf="(isSubmitted || FormPreAuthorization.get('subType').touched) && FormPreAuthorization.get('subType').hasError('required')">
+                    <span class="error-text">Please select a Subtype</span>
+                  </div>
               </div>
             </div>
   
@@ -627,19 +630,25 @@
                   <label class="control-label">Period<span class="asterisk">*</span> </label>
                   <div class="row small-gutter">
                     <div class="col-6">
-                      <div class="date-picker">
+                      <div class="date-picker" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('startDate').touched) && FormPreAuthorization.get('startDate').hasError('required')}">
                         <input [matDatepicker]="periodStartDate" class="form-control" placeholder="Start date" formControlName="startDate">
                         <mat-datepicker-toggle [for]="periodStartDate"></mat-datepicker-toggle>
                         <mat-datepicker #periodStartDate></mat-datepicker>
                       </div>
                     </div>
+                    <div *ngIf="(isSubmitted || FormPreAuthorization.get('startDate').touched) && FormPreAuthorization.get('startDate').hasError('required')">
+                        <span class="error-text">Please select the start date</span>
+                      </div>
                     <div class="col-6">
-                      <div class="date-picker">
+                      <div class="date-picker" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('periodEnd').touched) && FormPreAuthorization.get('periodEnd').hasError('required')}">
                         <input [matDatepicker]="periodEndDate" class="form-control" placeholder="End date" formControlName="periodEnd">
                         <mat-datepicker-toggle [for]="periodEndDate"></mat-datepicker-toggle>
                         <mat-datepicker #periodEndDate></mat-datepicker>
                       </div>
                     </div>
+                    <div *ngIf="(isSubmitted || FormPreAuthorization.get('periodEnd').touched) && FormPreAuthorization.get('periodEnd').hasError('required')">
+                        <span class="error-text">Please select a end date</span>
+                      </div>                 
                   </div>
                 </div>
               </div>
@@ -663,7 +672,7 @@
                   
                   
               <div class="col-4 col-xxl-3">
-                <div class="form-group">
+                <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('adminSource').touched) && FormPreAuthorization.get('adminSource').hasError('required')}">
                   <label class="control-label">Admin Source<span class="asterisk">*</span></label>
                   <mat-form-field class="form-control custom-select-control">
                     <mat-select formControlName="adminSource" placeholder="Select admin source">
@@ -673,6 +682,9 @@
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
+                  <div *ngIf="(isSubmitted || FormPreAuthorization.get('adminSource').touched) && FormPreAuthorization.get('adminSource').hasError('required')">
+                    <span class="error-text">Please select the admin source</span>
+                  </div>
                 </div>
               </div>
               <div class="col-4 col-xxl-3">

@@ -80,7 +80,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
     payee: ['', Validators.required],
     payeeType: ['', Validators.required],
     type: ['', Validators.required],
-    subType: [''],
+    subType: ['', Validators.required],
     preAuthRefNo: [''],
     accidentType: [''],
     streetName: [''],
@@ -142,13 +142,13 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
     insurancePlanMaxLimit: [''],
     insurancePlanPatientShare: [''],
     status: [''],
-    encounterClass: ['', Validators.required],
+    encounterClass: [''],
     serviceType: ['', Validators.required],
     priority: [''],
     startDate: ['', Validators.required],
     periodEnd: ['', Validators.required],
     origin: [''],
-    adminSource: [''],
+    adminSource: ['', Validators.required],
     reAdmission: [''],
     dischargeDispotion: [''],
     serviceProvider: [''],
@@ -1247,12 +1247,12 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
   }
 
   openAddEditItemDetailsDialog(itemSequence: number, itemModel: any = null) {
-
     const item = this.Items.filter(x => x.sequence === itemSequence)[0];
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
     dialogConfig.data = {
+        source: 'CNHI',
       // tslint:disable-next-line:max-line-length
       Sequence: (itemModel !== null) ? itemModel.sequence : (item.itemDetails.length === 0 ? 1 : (item.itemDetails[item.itemDetails.length - 1].sequence + 1)),
       item: itemModel,
@@ -1777,13 +1777,25 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
         this.IsPrescriberRequired = false;
       }
     }
+    const reasonForVisit = this.SupportingInfo.filter(f=>f.category == 'reason-for-visit').length
 
+    const attachment = this.SupportingInfo.filter(f=>f.category == 'attachment').length
+ 
+    if ((reasonForVisit == 0 || attachment == 0 ) && this.FormPreAuthorization.controls.transfer.value ) {
+      this.dialogService.showMessage('Error', 'please add Attachment and Reason For Visit to complete Pre-auth CNHI request', 'alert', true, 'OK');
+      return;
+    }
+       if (attachment == 0 && !this.FormPreAuthorization.controls.transfer.value) {
+          this.dialogService.showMessage('Error', 'please add Attachment to complete Pre-auth CNHI request', 'alert', true, 'OK');
+          return;
+        }
     if (isPbmvalidation) {
       let weightValidtation = this.SupportingInfo.filter(f=>f.category == 'vital-sign-weight').length;
       if (weightValidtation == 0) {
         this.dialogService.showMessage('Error', 'please add vital sign weight to complete PBM request', 'alert', true, 'OK');
         return;
       }
+    
     }
     if (this.FormPreAuthorization.valid) {
 
