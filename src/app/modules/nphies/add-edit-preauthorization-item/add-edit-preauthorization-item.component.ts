@@ -127,11 +127,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.FormItem.controls.invoiceNo.setValue('');
     }
 
-if (this.data.type) {
-    this.setTypes(this.data.type);
-    this.bodySiteList = this.sharedDataService.getBodySite(this.data.type);
-    this.subSiteList = this.sharedDataService.getSubSite(this.data.type);
-  }
+    if (this.data.type) {
+        this.setTypes(this.data.type);
+        this.bodySiteList = this.sharedDataService.getBodySite(this.data.type);
+        this.subSiteList = this.sharedDataService.getSubSite(this.data.type);
+      }
 
     if (this.data.type === "pharmacy") {
       this.providerNphiesSearchService.getPrescribedMedicationList(this.sharedServices.providerId).subscribe(event => {
@@ -456,17 +456,10 @@ if (this.data.type) {
   }
   typeChange(type = null) {
     if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
-      this.FormItem.controls.quantityCode.setValidators([Validators.required]);
-      this.FormItem.controls.quantityCode.updateValueAndValidity();
-    } 
-         this.subSiteList = (this.data.type === 'institutional' && this.FormItem.controls.type.value.value === 'oral-health-ip')
-          ? this.sharedDataService.getSubSite('oral')
-          : this.sharedDataService.getSubSite(this.data.type);
-    if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'oral-health-ip') 
-    {
-    this.subSiteList = this.sharedDataService.getSubSite('oral');        
-}else {
-      this.FormItem.controls.quantityCode.clearValidators();
+        this.FormItem.controls.quantityCode.setValidators([Validators.required]);
+        this.FormItem.controls.quantityCode.updateValueAndValidity();
+      } else {
+        this.FormItem.controls.quantityCode.clearValidators();
       this.FormItem.controls.quantityCode.updateValueAndValidity();
       this.FormItem.controls.quantityCode.setValue('');
       this.FormItem.controls.quantityCode.disable();
@@ -879,7 +872,6 @@ if (this.data.type) {
       model.isPackage = this.FormItem.controls.isPackage.value;
       if (this.data.type === 'oral' || (this.data.type === 'institutional' && this.FormItem.controls.type.value.value === 'oral-health-ip' )) {
         this.bodySiteList = this.sharedDataService.getBodySite('oral');   
-        this.subSiteList = this.sharedDataService.getSubSite('oral');      
         let bodySite = this.bodySiteList.filter(x => x.value === this.FormItem.controls.bodySite.value)[0];       
         model.bodySite = this.FormItem.controls.bodySite ? bodySite ? bodySite.value : '' : '';
         model.bodySiteName = this.FormItem.controls.bodySite ? bodySite ? bodySite.name : '' : '';
