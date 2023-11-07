@@ -854,12 +854,17 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
   
      dialogRef.afterClosed().subscribe(result => {
       if (result) {
-         this.router.navigate(['nphies/beneficiary/' + this.selectedBeneficiary.id]); // Replace 'other-url' with the desired URL
+         this.router.navigate(['nphies/beneficiary/' + this.selectedBeneficiary.id]);
         
       }
     });
   }
-    }
+} else
+    if (planObj.payerId !== '69') {
+    
+        this.dialogService.showMessage('Error', 'Selected Payer is not valid for CNHI Pre-Auth Request Transaction ', 'alert', true, 'OK');
+        return;
+   }
     this.selectPlan(plan); 
   }
 
