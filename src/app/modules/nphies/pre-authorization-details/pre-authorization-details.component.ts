@@ -156,6 +156,21 @@ export class PreAuthorizationDetailsComponent implements OnInit {
         ? this.sharedDataService.accidentTypeList.filter(x => x.value === this.data.accident.accidentType)[0].name
         : '';
     }
+       if (this.data.encounter) {
+        this.data.encounter.status = this.data.encounter.status;
+        this.data.encounter.encounterClass = this.data.encounter.encounterClass;
+        this.data.encounter.startDate = this.data.encounter.startDate;
+        this.data.encounter.endDate = this.data.encounter.periodEnd;
+        this.data.encounter.origin = this.data.encounter.origin;
+        this.data.encounter.admitSource = this.data.encounter.admitSource;
+        this.data.encounter.reAdmission = this.data.encounter.reAdmission;
+        this.data.encounter.dischargeDispotion = this.data.encounter.dischargeDispotion;
+      this.data.encounter.priority = this.data.encounter.priority;
+      this.data.encounter.serviceProvider = this.data.encounter.serviceProvider;
+        this.data.encounter.claimEncounterId = this.data.encounter.claimEncounterId;
+       }
+
+
 
     if (this.data.careTeam && this.data.careTeam.length > 0) {
       this.data.careTeam.forEach(i => {

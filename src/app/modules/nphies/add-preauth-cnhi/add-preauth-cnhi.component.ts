@@ -143,7 +143,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
     insurancePlanPatientShare: [''],
     status: [''],
     encounterClass: [''],
-    serviceType: ['', Validators.required],
+    serviceType: [''],
     priority: [''],
     startDate: ['', Validators.required],
     periodEnd: ['', Validators.required],
@@ -1661,6 +1661,22 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
     }
   }
 
+  checkCnhiValidation(){
+    const reasonForVisit = this.SupportingInfo.filter(f=>f.category == 'reason-for-visit').length
+
+    const attachment = this.SupportingInfo.filter(f=>f.category == 'attachment').length
+    let hasError = false;
+
+    if ((reasonForVisit == 0 || attachment == 0 ) && this.FormPreAuthorization.controls.transfer.value ) {
+      this.dialogService.showMessage('Error', 'please add Attachment and Reason For Visit to complete Pre-auth CNHI request', 'alert', true, 'OK');
+      hasError = true;
+    }
+       if (attachment == 0 && !this.FormPreAuthorization.controls.transfer.value) {
+          this.dialogService.showMessage('Error', 'please add Attachment to complete Pre-auth CNHI request', 'alert', true, 'OK');
+          hasError = true;
+        }
+        return hasError;
+  }
   checkCareTeamValidation() {
     let hasError = false;
     if (this.CareTeams.length !== 0) {
@@ -1796,6 +1812,9 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
       this.checkDiagnosisValidation();
       this.checkItemValidation();
       if (this.checkCareTeamValidation()) {
+        hasError = true;
+      }
+      if (this.checkCnhiValidation()) {
         hasError = true;
       }
 
@@ -2030,8 +2049,9 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
         encounterModel.reAdmission = this.FormPreAuthorization.controls.reAdmission.value;
         encounterModel.dischargeDispotion = this.FormPreAuthorization.controls.dischargeDispotion.value;
         encounterModel.priority = this.FormPreAuthorization.controls.priority.value;
-        encounterModel.serviceProvider = this.FormPreAuthorization.controls.payee.value;
-        this.model.encounter = encounterModel;
+   //     encounterModel.serviceProvider = this.FormPreAuthorization.controls.payee.value;
+        encounterModel.serviceProvider = preAuthorizationModel.payeeId     
+   this.model.encounter = encounterModel;
       }
 
       this.model.careTeam = this.CareTeams.map(x => {
