@@ -42,6 +42,9 @@ export class CdmService {
     if (model.diagnosis != null) {
       requestURL += `&diagnosis=${model.diagnosis}`;
     }
+    if ( model.region != null) {
+      requestURL += `&region=${model.region}`;
+    }
     const request = new HttpRequest('GET', environment.chronicDiseaseManagement + requestURL, '', { responseType: 'text', reportProgress: true });
     return this.http.request(request);
   }

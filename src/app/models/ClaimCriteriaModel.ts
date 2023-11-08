@@ -43,7 +43,8 @@ export class ClaimCriteriaModel {
 
     size?: string;
 
-    requestBundleId?:string
+    requestBundleId?:string;
+    bundleIds?:string
 
     constructor() {
 
@@ -111,6 +112,9 @@ export class ClaimCriteriaModel {
         }
         if(this.requestBundleId != null && this.requestBundleId.trim().length > 0){
             params += `requestBundleId=${this.requestBundleId}&`
+        }
+        if(this.bundleIds != null && this.bundleIds.trim().length > 0){
+            params += `bundleIds=${this.bundleIds}&`
         }
         if(this.page != null && this.page.trim().length > 0){
             params += `page=${this.page}&`
