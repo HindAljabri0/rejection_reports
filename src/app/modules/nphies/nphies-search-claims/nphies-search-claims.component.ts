@@ -267,6 +267,11 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       this.commen.loadingChanged.next(false);
       this.router.navigate(['']);
     }
+    if (this.params.bundleIds.split(',').length>1000) {
+      this.dialogService.showMessage("should be number of Bundle IDa less then  1000", '', 'alert', true, 'OK', "");
+      this.commen.loadingChanged.next(false);
+      this.router.navigate(['']);
+    }
 console.log(this.params.organizationId);
     this.isSearchByStatus =this.params.claimStatus!=null;
     if(this.isSearchByStatus){
