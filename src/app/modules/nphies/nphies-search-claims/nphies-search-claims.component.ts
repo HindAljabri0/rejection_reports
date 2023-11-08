@@ -256,6 +256,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         uploadId: this.params.uploadId,
         nationalId: this.params.nationalId,
         requestBundleId: this.params.requestBundleId,
+        bundleIds: this.params.bundleIds,
         isRelatedClaim:this.params.isRelatedClaim,
         reissueReason:this.params.reissueReason,
 
@@ -263,6 +264,11 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       }));
     }).unsubscribe();
     if (this.params.hasNoQueryParams()) {
+      this.commen.loadingChanged.next(false);
+      this.router.navigate(['']);
+    }
+    if (this.params.bundleIds.split(',').length>1000) {
+      this.dialogService.showMessage("should be number of Bundle IDa less then  1000", '', 'alert', true, 'OK', "");
       this.commen.loadingChanged.next(false);
       this.router.navigate(['']);
     }
@@ -393,15 +399,16 @@ console.log(this.params.organizationId);
     this.claimSearchCriteriaModel.memberId = this.params.memberId;
     this.claimSearchCriteriaModel.documentId = this.params.nationalId;
     this.claimSearchCriteriaModel.requestBundleId = this.params.requestBundleId;
+    this.claimSearchCriteriaModel.bundleIds=this.params.bundleIds.split(",");
     this.claimSearchCriteriaModel.invoiceNo = this.params.invoiceNo;
     this.claimSearchCriteriaModel.providerId = this.commen.providerId;
     this.claimSearchCriteriaModel.claimDate = this.params.from;
     this.claimSearchCriteriaModel.toDate = this.params.to;
     this.claimSearchCriteriaModel.reissueReason = this.params.reissueReason;
 
+    //debugger;
 
     this.claimSearchCriteriaModel.organizationId = this.params.organizationId;
-console.log(this.isSearchByStatus)
     event = await this.providerNphiesSearchService.getClaimSummary(this.claimSearchCriteriaModel, this.isSearchByStatus
 
     ).toPromise().catch(error => {
@@ -700,7 +707,7 @@ console.log(this.isSearchByStatus)
     this.providerNphiesApprovalService.submitClaims(this.providerId, this.selectedClaims,
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-      this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, this.params.organizationId, this.params.requestBundleId, status
+      this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, this.params.organizationId, this.params.requestBundleId,this.params.bundleIds.split(","), status
       , this.params.isRelatedClaim
     ).subscribe((event) => {
       if (event instanceof HttpResponse) {
@@ -1685,6 +1692,7 @@ console.log(this.isSearchByStatus)
         model.from = this.params.from;
       model.nationalId = this.params.nationalId;
       model.requestBundleId = this.params.requestBundleId;
+      model.bundleIds=this.params.bundleIds;
       model.statuses = [];
       model.statuses.push(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
       model.organizationId = this.params.organizationId;
@@ -1821,7 +1829,7 @@ console.log(this.isSearchByStatus)
             this.params.uploadId, this.params.claimRefNo, this.params.to,
             payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
             this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, this.params.organizationId,
-             status, this.params.requestBundleId,this.params.isRelatedClaim 
+             status, this.params.requestBundleId,this.params.bundleIds.split(","),this.params.isRelatedClaim 
           ).subscribe(event => {
             if (event instanceof HttpResponse) {
 
@@ -1918,7 +1926,7 @@ console.log(this.isSearchByStatus)
       action = this.providerNphiesApprovalService.inquireClaims(model.providerId, model.selectedClaims,
         model.uploadId, model.claimRefNo, model.to,
         model.payerIds, model.batchId, model.memberId, model.invoiceNo,
-        model.patientFileNo, model.from, model.claimTypes, model.netAmount, model.nationalId, model.statuses, this.params.organizationId, this.params.requestBundleId,
+        model.patientFileNo, model.from, model.claimTypes, model.netAmount, model.nationalId, model.statuses, this.params.organizationId, this.params.requestBundleId,this.params.bundleIds.split(","),
         this.params.isRelatedClaim
         );
     } else {
@@ -1994,7 +2002,7 @@ console.log(this.isSearchByStatus)
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
       this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, this.params.organizationId,
-       attachmentStatus, this.params.requestBundleId,this.selectedstatus,
+       attachmentStatus, this.params.requestBundleId,this.params.bundleIds.split(","),this.selectedstatus,
        this.params.isRelatedClaim 
     ).subscribe((event) => {
       if (event instanceof HttpResponse) {
@@ -2099,6 +2107,7 @@ console.log(this.isSearchByStatus)
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
       this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId,
        this.params.organizationId, status, this.params.requestBundleId,
+       this.params.bundleIds.split(","),
        this.params.isRelatedClaim ).subscribe(event => {
         if (event instanceof HttpResponse) {
           this.commen.loadingChanged.next(false);
@@ -2183,7 +2192,7 @@ console.log(this.isSearchByStatus)
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
       this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, 
-      this.params.organizationId, status, this.params.requestBundleId,this.params.isRelatedClaim 
+      this.params.organizationId, status, this.params.requestBundleId,this.params.bundleIds.split(","),this.params.isRelatedClaim 
     ).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['status'] == 'Queued') {
@@ -2420,6 +2429,7 @@ console.log(this.isSearchByStatus)
       model.from = this.params.from;
     model.nationalId = this.params.nationalId;
     model.requestBundleId = this.params.requestBundleId;
+    model.bundleIds=this.params.bundleIds;
     model.statuses = [];
     model.statuses.push(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
     model.organizationId = this.params.organizationId;

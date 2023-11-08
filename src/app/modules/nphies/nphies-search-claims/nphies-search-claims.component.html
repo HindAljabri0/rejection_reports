@@ -638,6 +638,7 @@
             {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
         </ng-container>
         <ng-container
+        
           *ngIf="(summaries[this.selectedCardKey].statuses[0].toLowerCase() === statusSelected.Accepted.toLowerCase()
                     || summaries[this.selectedCardKey].statuses[0].toLowerCase() === statusSelected.Downloadable.toLowerCase()) && (selectedCardKey != 0) && (isPBMValidationVisible)">
           <button (click)="applyPBMValidation()" mat-flat-button color="primary">PBM Validate
