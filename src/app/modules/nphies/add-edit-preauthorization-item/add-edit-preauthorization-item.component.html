@@ -6,7 +6,7 @@
 
 <form [formGroup]="FormItem" (ngSubmit)="onSubmit()">
   <div class="primary-dialog-body pb-0">
-    <div class="form-group flex-grow-1">
+    <div class="form-group flex-grow-1"  [hidden]="data.source === 'CNHI'">
 
       <input type="text" class="form-control search-box" placeholder="Search for item by standard code, standard description, internal code or internal description" formControlName="searchQuery" [matAutocomplete]="auto" (keyup)="searchItems()">
       <mat-autocomplete #auto="matAutocomplete" class="nphies-items">
@@ -17,6 +17,7 @@
             <span class="text-primary non-standard-code" *ngIf="type.nonStandardCode || type.nonStandardDescription">{{type.nonStandardCode}} <ng-container
                 *ngIf="type.nonStandardDescription">({{type.nonStandardDescription}})</ng-container></span>
           </mat-option>
+
         </ng-container>
 
         <mat-option *ngIf="loadSearchItem">
@@ -27,48 +28,54 @@
         </mat-option>
       </mat-autocomplete>
 
-    </div>
+    </div> 
     <hr class="hr mb-3">
     <div class="row small-gutter">
       <div class="col-4 col-lg-3">
         <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('type').touched) && FormItem.get('type').hasError('required')}">
           <label class="control-label">Type<span class="asterisk">*</span></label>
-          <mat-form-field class="form-control custom-select-control">
+          <mat-form-field class="form-control custom-select-control">            
             <mat-select formControlName="type" (selectionChange)="typeChange()">
-              <mat-option value="">Select Type</mat-option>
-              <mat-option *ngFor="let type of typeList" [value]="type">{{type.name}}</mat-option>
-            </mat-select>
-          </mat-form-field>
+                <mat-option value="">Select Type</mat-option>
+              
+                <ng-container *ngIf="data.source === 'CNHI'">
+                  <mat-option *ngFor="let type of cnhiTypeList"  [value]="type">  {{ type.name }}</mat-option>
+                </ng-container>
+              
+                <ng-container *ngIf="data.source !== 'CNHI'">
+                  <mat-option *ngFor="let type of typeList" [value]="type">
+                    {{ type.name }}
+                  </mat-option>
+                </ng-container>
+              </mat-select>
+               </mat-form-field>
           <div *ngIf="(isSubmitted || FormItem.get('type').touched) && FormItem.get('type').hasError('required')">
             <span class="error-text">Please select a Type</span>
           </div>
         </div>
-      </div>
+      </div>      
       <div class="col-4 col-lg-3">
         <div class="form-group" [ngClass]="{'has-error': (isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')}">
           <label class="control-label">Standard Code - Description<span class="asterisk">*</span></label>
           <mat-form-field class="form-control custom-select-control">
-            <mat-select formControlName="item" [disabled]="IsItemLoading" #itemSelect (selectionChange)="setPrescribedMedication($event.value.code)">
-
+            <mat-select panelClass="custom-dropdown" formControlName="item" [disabled]="IsItemLoading" #itemSelect (selectionChange)="setPrescribedMedication($event.value.code)" placeholder="Select Code-Description">
               <mat-option>
-                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="itemFilter" noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
+                  <ngx-mat-select-search placeholderLabel="Search Item" formControlName="itemFilter" noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
               </mat-option>
-              <ng-container *ngIf="IsItemLoading">
-                <mat-option value="">Loading Code - Description ...</mat-option>
-              </ng-container>
-              <ng-container *ngIf="!IsItemLoading">
-                <mat-option value="">Select Code - Description</mat-option>
-                <mat-option *ngFor="let item of filteredItem  | async" [value]="item">
-                  {{item.code}} - {{item.description}}
+              <cdk-virtual-scroll-viewport itemSize="10" minBufferPx="{{itemList.length}}" maxBufferPx="{{itemList.length * 10}}" class="viewport">  
+                <mat-option *cdkVirtualFor="let item of filteredItem | async" [value]="item" >
+                    {{item.code}} - {{item.description}}
                 </mat-option>
-              </ng-container>
-            </mat-select>
+            </cdk-virtual-scroll-viewport>
+          </mat-select>
+          
           </mat-form-field>          
           <div *ngIf="(isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')">
             <span class="error-text">Please select a Code - Description</span>
           </div>
         </div>
       </div>
+      
          
       <div class="col-4 col-lg-3">
         <div class="form-group">
@@ -82,31 +89,29 @@
           <input class="form-control" placeholder="Enter non standard description" formControlName="display">
         </div>
       </div>
-
-
-      <div class="col-4 col-lg-3" *ngIf="data.type !== 'oral'" [hidden]="data.source === 'APPROVAL' && data.providerType ==='vision'">
+      <div class="col-4 col-lg-3" *ngIf="((data.type !== 'oral') && !(data.type === 'institutional' && FormItem.controls.type.value.value === 'oral-health-ip'))" [hidden]="data.source === 'APPROVAL' && data.providerType === 'vision'">
         <div class="form-group">
           <label class="control-label">Body Site</label>
           <mat-form-field class="form-control custom-select-control">
-            <mat-select formControlName="bodySite" (selectionChange)="onBodySiteChange($event)">
+            <mat-select formControlName="bodySite" [disabled]="!(FormItem.controls.type.value)" (selectionChange)="onBodySiteChange($event)">
               <mat-option value="">Select Body Site</mat-option>
-              <mat-option *ngFor="let bodySite of bodySiteList" [value]="bodySite" >{{bodySite.name}}</mat-option>
+              <mat-option *ngFor="let bodySite of bodySiteList" [value]="bodySite">{{bodySite.name}}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
       </div>
-      <div class="col-4 col-lg-3" *ngIf="data.type === 'oral'" [hidden]="data.source === 'APPROVAL' && data.providerType ==='vision'">
+       <div class="col-4 col-lg-3" *ngIf="((data.type === 'oral') || (data.type === 'institutional' && FormItem.controls.type.value.value === 'oral-health-ip'))" [hidden]="data.source === 'APPROVAL' && data.providerType === 'vision'">
         <div class="form-group">
           <label class="control-label">Body Site</label>
           <div class="input-group">
-            <input class="form-control" placeholder="Select tooth number" formControlName="bodySite">
+            <input class="form-control" placeholder="Select tooth number" formControlName="bodySite" [disabled]="!(FormItem.controls.type.value)">
             <span class="input-group-append">
               <span class="input-group-text medium" [matMenuTriggerFor]="SelectToothMenu">Select</span>
             </span>
           </div>
         </div>
       </div>
-
+      
       <div class="col-4 col-lg-3" [hidden]="data.source === 'APPROVAL' && data.providerType ==='vision'">
         <div class="form-group">
           <label class="control-label">Sub Site</label>
@@ -131,7 +136,7 @@
                   <mat-datepicker-toggle [owlDateTimeTrigger]="startDate" ></mat-datepicker-toggle>
                   <owl-date-time #startDate></owl-date-time>
             </ng-container>
-            <ng-container *ngIf="data.source === 'APPROVAL'">
+            <ng-container *ngIf="data.source === 'APPROVAL' || data.source === 'CNHI'">
               <input [owlDateTime]="startDate"  class="form-control" placeholder="Select service start date" [max]="FormItem.controls.endDate.value" formControlName="startDate">
                   <mat-datepicker-toggle [owlDateTimeTrigger]="startDate" ></mat-datepicker-toggle>
                   <owl-date-time #startDate ></owl-date-time>
@@ -165,7 +170,7 @@
                   <mat-datepicker-toggle [owlDateTimeTrigger]="endDate"></mat-datepicker-toggle>
                   <owl-date-time #endDate></owl-date-time>
             </ng-container>
-            <ng-container *ngIf="data.source === 'APPROVAL'">
+            <ng-container *ngIf="data.source === 'APPROVAL' || data.source === 'CNHI'">
               <input [owlDateTime]="endDate"  class="form-control" placeholder="Select service end date" formControlName="endDate" [min]="FormItem.controls.startDate.value">
               <mat-datepicker-toggle [owlDateTimeTrigger]="endDate" ></mat-datepicker-toggle>
               <owl-date-time #endDate ></owl-date-time>

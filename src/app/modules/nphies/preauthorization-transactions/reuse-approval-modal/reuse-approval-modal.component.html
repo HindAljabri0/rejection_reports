@@ -1,5 +1,10 @@
-<app-add-preauthorization *ngIf="data && data.claimReuseId && data.detailsModel && IsDescriptionLoaded" [claimReuseId]="data.claimReuseId" (closeEvent)="closeDialog($event)"
+<app-add-preauthorization *ngIf="data && data.claimReuseId && data.detailsModel && IsDescriptionLoaded && data.detailsModel.beneficiary.insurancePlan.payerId !== '0000000163'" [claimReuseId]="data.claimReuseId" (closeEvent)="closeDialog($event)"
   [data]="data.detailsModel"></app-add-preauthorization>
+  
+  <app-add-preauth-cnhi *ngIf="data && data.claimReuseId && data.detailsModel && IsDescriptionLoaded && data.detailsModel.beneficiary.insurancePlan.payerId === '0000000163'"
+  [claimReuseId]="data.claimReuseId" (closeEvent)="closeDialog($event)"
+  [data]="data.detailsModel"></app-add-preauth-cnhi>
+
 <div class="primary-dialog-footer has-border">
   <div class="btn-list text-right">
     <button mat-flat-button color="primary" (click)="closeDialog()">Close</button>
