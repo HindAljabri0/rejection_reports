@@ -17,6 +17,7 @@ import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSear
 import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { DownloadStatus } from 'src/app/models/downloadRequest';
 import { NphiesDownloadApprovalEligibilityService } from 'src/app/services/nphies_download_approval_eligibility/nphies-download-approval-eligibility.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-eligibility-transactions',
@@ -31,6 +32,7 @@ export class EligibilityTransactionsComponent implements OnInit {
   manualPage = null;
   page: number;
   pageSize: number;
+  downloadData: any;
 
   beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
   selectedBeneficiary: BeneficiariesSearchResult;
@@ -252,6 +254,7 @@ export class EligibilityTransactionsComponent implements OnInit {
 
       model.page = this.page;
       model.pageSize = this.pageSize;
+     // this.downloadEligibilityAsJson(this.eligibilitySearchModel);
 
       this.editURL(model.fromDate, model.toDate);
       this.detailTopActionIcon = 'ic-download.svg';
@@ -281,99 +284,148 @@ export class EligibilityTransactionsComponent implements OnInit {
     }
   }
 
-  async downloadSheetFormat() {
+  downloadEligibilityAsJson(eligibilitySearchModel){ 
     if (this.detailTopActionIcon === 'ic-check-circle.svg') { return; }
     this.eligibilitySearchModel={};
-    let event;
-  
+    
     this.eligibilitySearchModel.providerId=this.sharedServices.providerId;
     this.eligibilitySearchModel.fromDate = this.datePipe.transform(this.FormEligibilityTransaction.controls.fromDate.value, 'yyyy-MM-dd');
     this.eligibilitySearchModel.toDate = this.datePipe.transform(this.FormEligibilityTransaction.controls.toDate.value, 'yyyy-MM-dd');
-
     if (this.FormEligibilityTransaction.controls.eligibilityId.value) {
-      this.eligibilitySearchModel.eligibilityId = this.FormEligibilityTransaction.controls.eligibilityId.value;
-    }
+        this.eligibilitySearchModel.eligibilityId = this.FormEligibilityTransaction.controls.eligibilityId.value;
+      }
+  
+      if (this.FormEligibilityTransaction.controls.payerId.value) {
+        this.eligibilitySearchModel.payerId = this.FormEligibilityTransaction.controls.payerId.value;
+      }
+  
+      
+      // tslint:disable-next-line:max-line-length
+      if (this.FormEligibilityTransaction.controls.beneficiaryName.value && this.FormEligibilityTransaction.controls.beneficiaryId.value && this.FormEligibilityTransaction.controls.documentId.value) {
+        //model.documentId = parseInt(this.FormEligibilityTransaction.controls.documentId.value, 10);
+        this.eligibilitySearchModel.documentId = this.FormEligibilityTransaction.controls.documentId.value;
+      }
+  
+      if (this.FormEligibilityTransaction.controls.status.value) {
+        this.eligibilitySearchModel.status = this.FormEligibilityTransaction.controls.status.value;
+      }
 
-    if (this.FormEligibilityTransaction.controls.payerId.value) {
-      this.eligibilitySearchModel.payerId = this.FormEligibilityTransaction.controls.payerId.value;
-    }
-
+    this.nphiesDownloadApprovalEligibilityService.downloadEligibilityAsJson(eligibilitySearchModel).subscribe((event) => {
+      
+      if (event instanceof HttpResponse) {
+        this.downloadData = event.body; 
+        if (Array.isArray(this.downloadData) && this.downloadData.length > 0){
+        const formattedData =  this.downloadData.map(item => {
+             const rowData: any = {
+            FULL_NAME: item.fullName,
+            DOCUMENTID: item.documentId,
+            ELIGIBILITYREQUESTID: item.eligibilityRequestId,
+            OUTCOME: item.outcome,
+            DESTINATIONID: item.destinationId,
+            PAYERNPHIESID: item.payerNphiesId,
+            CREATEDDATE: item.createdDate,
+            SITE_ELIGIBILITY: item.siteEligibility,
+            ISBENEFIT: item.isBenefit,
+            ISDISCOVERY: item.isDiscovery,
+            ISVALIDATION: item.isValidation,
+            ISTRANSFER: item.isTransfer,
+            ISEMERGENCY: item.isEmergency
+           
+        };
+          return rowData;
+          });
     
-    // tslint:disable-next-line:max-line-length
-    if (this.FormEligibilityTransaction.controls.beneficiaryName.value && this.FormEligibilityTransaction.controls.beneficiaryId.value && this.FormEligibilityTransaction.controls.documentId.value) {
-      //model.documentId = parseInt(this.FormEligibilityTransaction.controls.documentId.value, 10);
-      this.eligibilitySearchModel.documentId = this.FormEligibilityTransaction.controls.documentId.value;
-    }
+    const ws: XLSX.WorkSheet = XLSX.utils.sheet_to_json(formattedData);
 
-    if (this.FormEligibilityTransaction.controls.status.value) {
-      this.eligibilitySearchModel.status = this.FormEligibilityTransaction.controls.status.value;
-    }
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
+    XLSX.writeFile(wb, eligibilitySearchModel.document.Id +'.xlsx');
+      }else
+      {
+        const headers = [
+            'FULL_NAME',
+            'DOCUMENTID',
+            'ELIGIBILITYREQUESTID',
+            'OUTCOME',
+            'DESTINATIONID',
+            'PAYERNPHIESID',
+            'CREATEDDATE',
+            'SITE_ELIGIBILITY',
+            'ISBENEFIT',
+            'ISDISCOVERY',
+            'ISVALIDATION',
+            'ISTRANSFER',
+            'ISEMERGENCY'
+        ];
+        const nullData = [headers]; 
 
-    event = this.nphiesDownloadApprovalEligibilityService.downloadEligibilityExcelsheet( this.eligibilitySearchModel);
-    if (event != null) {
-      this.downloadService.startGeneratingDownloadFile(event)
-        .subscribe(status => {
-          if (status !== DownloadStatus.ERROR) {
-            this.detailTopActionIcon = 'ic-check-circle.svg';
-          } else {
-            this.detailTopActionIcon = 'ic-download.svg';
-          }
-        });
+        const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(nullData);
+
+        const wb: XLSX.WorkBook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+        XLSX.writeFile(wb, eligibilitySearchModel.documentId + '.xlsx');
+      }
+      }
+    }, errorEvent => {
+      if (errorEvent instanceof HttpErrorResponse) {
+      }
+    });
     }
-  }
 
   editURL(fromDate?: string, toDate?: string) {
-    let path = '/nphies/eligibility-transactions?';
+   let path = '/nphies/eligibility-transactions?';
 
-    if (this.FormEligibilityTransaction.controls.fromDate.value) {
-      path += `fromDate=${this.datePipe.transform(this.FormEligibilityTransaction.controls.fromDate.value, 'dd-MM-yyyy')}&`;
+  if (this.FormEligibilityTransaction.controls.fromDate.value) {
+     path += `fromDate=${this.datePipe.transform(this.FormEligibilityTransaction.controls.fromDate.value, 'dd-MM-yyyy')}&`;
     }
 
-    if (this.FormEligibilityTransaction.controls.toDate.value) {
-      path += `toDate=${this.datePipe.transform(this.FormEligibilityTransaction.controls.toDate.value, 'dd-MM-yyyy')}&`;
-    }
+  if (this.FormEligibilityTransaction.controls.toDate.value) {
+     path += `toDate=${this.datePipe.transform(this.FormEligibilityTransaction.controls.toDate.value, 'dd-MM-yyyy')}&`;
+   }
 
-    if (this.FormEligibilityTransaction.controls.payerId.value) {
-      path += `payerId=${this.FormEligibilityTransaction.controls.payerId.value}&`;
-    }
+   if (this.FormEligibilityTransaction.controls.payerId.value) {
+     path += `payerId=${this.FormEligibilityTransaction.controls.payerId.value}&`;
+   }
 
-    if (this.FormEligibilityTransaction.controls.destinationId.value) {
-      path += `destinationId=${this.FormEligibilityTransaction.controls.destinationId.value}&`;
-    }
+   if (this.FormEligibilityTransaction.controls.destinationId.value) {
+     path += `destinationId=${this.FormEligibilityTransaction.controls.destinationId.value}&`;
+   }
 
-    if (this.FormEligibilityTransaction.controls.eligibilityId.value) {
-      path += `eligibilityId=${this.FormEligibilityTransaction.controls.eligibilityId.value}&`;
-    }
+   if (this.FormEligibilityTransaction.controls.eligibilityId.value) {
+     path += `eligibilityId=${this.FormEligibilityTransaction.controls.eligibilityId.value}&`;
+   }
 
-    // tslint:disable-next-line:max-line-length
-    if (this.FormEligibilityTransaction.controls.beneficiaryName.value && this.FormEligibilityTransaction.controls.beneficiaryId.value && this.FormEligibilityTransaction.controls.documentId.value) {
-      path += `beneficiaryId=${this.FormEligibilityTransaction.controls.beneficiaryId.value}&`;
+    //tslint:disable-next-line:max-line-length
+   if (this.FormEligibilityTransaction.controls.beneficiaryName.value && this.FormEligibilityTransaction.controls.beneficiaryId.value && this.FormEligibilityTransaction.controls.documentId.value) {
+     path += `beneficiaryId=${this.FormEligibilityTransaction.controls.beneficiaryId.value}&`;
       path += `beneficiaryName=${this.FormEligibilityTransaction.controls.beneficiaryName.value}&`;
-      path += `documentId=${this.FormEligibilityTransaction.controls.documentId.value}&`;
-    }
+     path += `documentId=${this.FormEligibilityTransaction.controls.documentId.value}&`;
+   }
 
-    if (this.FormEligibilityTransaction.controls.status.value) {
-      path += `status=${this.FormEligibilityTransaction.controls.status.value}&`;
-    }
+   if (this.FormEligibilityTransaction.controls.status.value) {
+     path += `status=${this.FormEligibilityTransaction.controls.status.value}&`;
+   }
 
     if (this.page > 0) {
       path += `page=${this.page}&`;
     }
     if (this.pageSize > 10) {
-      path += `pageSize=${this.pageSize}`;
+     path += `pageSize=${this.pageSize}`;
     }
     if (path.endsWith('?') || path.endsWith('&')) {
       path = path.substr(0, path.length - 1);
     }
     this.location.go(path);
   }
+  
 
   openDetailsDialog(transactionResponseId: number) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog', 'full-screen-dialog'];
     dialogConfig.data = {
-      // tslint:disable-next-line:max-line-length
+     //  tslint:disable-next-line:max-line-length,
       responseId: transactionResponseId,
       providerId: this.sharedServices.providerId
     };
@@ -381,7 +433,7 @@ export class EligibilityTransactionsComponent implements OnInit {
 
     const dialogRef = this.dialog.open(ViewEligibilityDetailsComponent, dialogConfig);
 
-    // dialogRef.afterClosed().subscribe(result => {
+      // dialogRef.afterClosed().subscribe(result => {
     //   if (result) {
 
     //   }
@@ -393,6 +445,4 @@ export class EligibilityTransactionsComponent implements OnInit {
       payerId: event.value.payerNphiesId,
       destinationId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
     });
-  }
-
-}
+  }}
