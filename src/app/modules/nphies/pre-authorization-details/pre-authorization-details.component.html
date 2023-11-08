@@ -690,6 +690,38 @@
 </div>
 <!-- Items end -->
 
+
+<!-- Encounter  start -->
+<h5 class="form-title" *ngIf="data.beneficiary.insurancePlan.payerId === '0000000163'" >
+    Encounter
+  </h5>
+  <div class="table-responsive" *ngIf="data.beneficiary.insurancePlan.payerId === '0000000163'">
+    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+      <thead>
+        <tr>
+          <th>Status</th>
+          <th>encounterClass</th>
+          <th>service Provider</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Admit Source</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{data.encounter.status}}</td>
+          <td>{{data.encounter.encounterClass}}</td>
+          <td>{{data.encounter.serviceProvider}}</td>
+          <td>{{data.encounter.startDate}}</td>
+          <td>{{data.encounter.periodEnd}}</td>
+          <td>{{data.encounter.admitSource}}</td>
+        
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Encounter end -->
+
 <!-- Care Teams start -->
 <h5 class="form-title" *ngIf="data.careTeam.length!=0" id="careTeamsTitle">
   Care Teams

@@ -40,7 +40,7 @@ export class PrescriptionCommunicationRequestsComponent implements OnInit {
   getCommunicationRequests() {
     this.sharedServices.loadingChanged.next(true);
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesSearchService.getCommunicationRequests(this.sharedServices.providerId, 'approval', this.page, this.pageSize).subscribe((event: any) => {
+    this.providerNphiesSearchService.getPrescriptionCommunicationRequests(this.sharedServices.providerId).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
@@ -76,8 +76,8 @@ export class PrescriptionCommunicationRequestsComponent implements OnInit {
 
   readAllNotification() {
     this.communicationRequests.forEach(x=>x.notificationStatus = 'read');
-    this.sharedServices.unReadComunicationRequestCount = 0;
-    this.sharedServices.markAllAsRead(this.sharedServices.providerId, "approval-communication-request-notification");
+    this.sharedServices.unReadPrescriberCommunicationRequestCount = 0;
+    this.sharedServices.markAllAsRead(this.sharedServices.providerId, "prescriber-communication-request-notification");
   }
 
   updateManualPage(index) {
