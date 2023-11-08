@@ -40,6 +40,7 @@ export class ProviderNphiesApprovalService {
     statuses?: string[],
     organizationId?: string,
     requestBundleId?: string,
+    bundleIds?:string[],
     isRelatedClaim?:boolean
   ) {
     let requestURL = `/providers/${providerId}/claims/link/attachment?isReplace=${isReplace}`;
@@ -105,6 +106,9 @@ export class ProviderNphiesApprovalService {
     }
     if (requestBundleId) {
       requestURL += `&requestBundleId=${requestBundleId}`;
+    }
+    if (bundleIds != null) {
+      requestURL += `&bundleIds=${bundleIds}`;
     }
     if (isRelatedClaim) {
       requestURL += `&isRelatedClaim=${isRelatedClaim}`;
@@ -231,6 +235,7 @@ export class ProviderNphiesApprovalService {
     organizationId?: string,
     statuses?: string[],
     requestBundleId?: string,
+    bundleIds?:string[],
     isRelatedClaim?:boolean
     ) {
 
@@ -282,6 +287,7 @@ export class ProviderNphiesApprovalService {
     if (requestBundleId) {
       requestURL += `&requestBundleId=${requestBundleId}`;
     }
+    
     if (claimTypes) {
       requestURL += `&claimTypes=${claimTypes}`;
     }
@@ -290,6 +296,9 @@ export class ProviderNphiesApprovalService {
     }
     if (isRelatedClaim) {
       requestURL += `&isRelatedClaim=${isRelatedClaim}`;
+    }
+    if (bundleIds != null) {
+      requestURL += `&bundleIds=${bundleIds}`;
     }
     const request = new HttpRequest('DELETE', environment.providerNphiesClaim + requestURL);
     return this.http.request(request);
@@ -393,6 +402,7 @@ export class ProviderNphiesApprovalService {
     documentId?: string,
     organizationId?: string,
     requestBundleId?: string,
+    bundleIds?:string[],
     statuses?: string[],
     isRelatedClaim?:boolean
   ) {
@@ -471,6 +481,9 @@ export class ProviderNphiesApprovalService {
     if (organizationId) {
       requestURL += `&organizationId=${organizationId}`;
     }
+    if (bundleIds != null) {
+      requestURL += `&bundleIds=${bundleIds}`;
+    }
 
     // if (claimTypes && claimTypes.length > 0) {
     //   requestURL += `&claimTypes=${claimTypes.join(',')}`;
@@ -523,6 +536,7 @@ export class ProviderNphiesApprovalService {
     statuses?: string[],
     organizationId?: string,
     requestBundleId?: string,
+    bundleIds?:string[],
     isRelatedClaim?:boolean
   ) {
     const isHeadOffice = AuthService.isProviderHeadOffice();
@@ -595,9 +609,14 @@ export class ProviderNphiesApprovalService {
     if (requestBundleId) {
       requestURL += `&requestBundleId=${requestBundleId}`;
     }
+    
     if (isRelatedClaim) {
       requestURL += `&isRelatedClaim=${isRelatedClaim}`;
     }
+    console.log(bundleIds);
+     if (bundleIds.length>0 && bundleIds) {
+       requestURL += `&bundleIds=${bundleIds}`;
+     }
     const request = new HttpRequest('POST', environment.providerNphiesClaim + requestURL, {});
     return this.http.request(request);
   }
@@ -630,7 +649,9 @@ export class ProviderNphiesApprovalService {
     statuses?: string[],
     organizationId?: string,
     requestBundleId?: string,
-    isRelatedClaim?:boolean
+    bundleIds?:string[],
+    isRelatedClaim?:boolean,
+   
   ) {
     const isHeadOffice = AuthService.isProviderHeadOffice();
     let requestURL = `/providers/${providerId}/claims/inquiry?`;
@@ -701,6 +722,9 @@ export class ProviderNphiesApprovalService {
     }
     if (isRelatedClaim) {
       requestURL += `&isRelatedClaim=${isRelatedClaim}`;
+    }
+    if (bundleIds != null) {
+      requestURL += `&bundleIds=${bundleIds}`;
     }
     const request = new HttpRequest('POST', environment.providerNphiesClaim + requestURL, {});
     return this.http.request(request);
@@ -782,7 +806,7 @@ export class ProviderNphiesApprovalService {
     documentId?: string,
     organizationId?: string,
     attachmentStatus?: string,
-    requestBundleId?: string, statuses?: string[],
+    requestBundleId?: string, bundleIds?:string[], statuses?: string[],
     isRelatedClaim?:boolean) {
     const isHeadOffice = AuthService.isProviderHeadOffice();
     let requestURL = `/providers/${providerId}/claims/generate/attchment?`;
@@ -877,6 +901,7 @@ export class ProviderNphiesApprovalService {
     organizationId?: string,
     statuses?: string[],
     requestBundleId?: string,
+    bundleIds?:string[],
     isRelatedClaim?:boolean) {
     let requestURL = `/providers/${providerId}/claims/pbm-validation?`;
     if (provderClaimReferenceNumber) {
@@ -931,6 +956,9 @@ export class ProviderNphiesApprovalService {
     if (requestBundleId) {
       requestURL += `&requestBundleId=${requestBundleId}`;
     }
+    if (bundleIds != null) {
+      requestURL += `&bundleIds=${bundleIds}`;
+    }
     if (claimTypes) {
       requestURL += `&claimTypes=${claimTypes}`;
     }
@@ -964,6 +992,7 @@ export class ProviderNphiesApprovalService {
     organizationId?: string,
     statuses?: string[],
     requestBundleId?: string,
+    bundleIds?:string[],
     isRelatedClaim?:boolean
   ) {
     const isHeadOffice = AuthService.isProviderHeadOffice();
@@ -1022,6 +1051,10 @@ export class ProviderNphiesApprovalService {
     }
     if (requestBundleId) {
       requestURL += `&requestBundleId=${requestBundleId}`;
+    }
+
+    if (bundleIds != null) {
+      requestURL += `&bundleIds=${bundleIds}`;
     }
     if (claimTypes) {
       requestURL += `&claimTypes=${claimTypes}`;

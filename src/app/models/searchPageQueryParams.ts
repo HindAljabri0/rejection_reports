@@ -23,7 +23,8 @@ export class SearchPageQueryParams {
     patientFileNo?: string;
     policyNo?: string;
     nationalId?: string;
-    requestBundleId?: string
+    requestBundleId?: string;
+    bundleIds?:string;
     filter_claimRefNo?: string;
     filter_memberId?: string;
     filter_patientFileNo?: string;
@@ -58,6 +59,7 @@ export class SearchPageQueryParams {
         pageParams.organizationId = params.organizationId;
         pageParams.batchId = params.batchId;
         pageParams.requestBundleId = params.requestBundleId;
+        pageParams.bundleIds=params.bundleIds;
         pageParams.uploadId = params.uploadId;
         pageParams.caseTypes = params.caseTypes;
         pageParams.claimId = params.claimId;
@@ -89,6 +91,7 @@ export class SearchPageQueryParams {
 
         criteria.batchId = this.batchId;
         criteria.requestBundleId = this.requestBundleId;
+        criteria.bundleIds=this.bundleIds;
         criteria.caseTypes = this.caseTypes;
         criteria.claimRefNo = this.claimRefNo;
         criteria.fromDate = this.from;

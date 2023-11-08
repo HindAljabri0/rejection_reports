@@ -38,6 +38,7 @@ export interface SearchCriteria {
     uploadId?: string;
     nationalId?:string;
     requestBundleId?:string;
+    bundleIds?:string,
     isRelatedClaim?:boolean;
     reissueReason?: boolean;
 }
