@@ -836,7 +836,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
     const plan: any = {};
     plan.value = planObj.payerNphiesId;
     plan.memberCardId = planObj.memberCardId;
-    if (planObj.payerId === '69') {
+    if (planObj.payerNphiesId === '0000000163') {
     
 if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.contactNumber === null) {
      const dialogRef: MatDialogRef<ConfirmationAlertDialogComponent> = this.dialog.open(
@@ -860,7 +860,7 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
     });
   }
 } else
-    if (planObj.payerId !== '69') {
+    if (planObj.payerNphiesId !== '0000000163') {
     
         this.dialogService.showMessage('Error', 'Selected Payer is not valid for CNHI Pre-Auth Request Transaction ', 'alert', true, 'OK');
         return;
