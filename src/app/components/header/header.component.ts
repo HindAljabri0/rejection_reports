@@ -120,8 +120,10 @@ export class HeaderComponent implements OnInit {
             this.sharedServices.getClaimProcessedCount();
             this.sharedServices.getClaimCommunicationRequestCount();
         }*/
+        this.sharedServices.getPrescriberProcessedCount();
         this.sharedServices.getProcessedCount();
         this.sharedServices.getProcessedApaCount();
+        this.sharedServices.getPrescriberCommunicationRequestCount();
         this.sharedServices.getCommunicationRequestCount();
         this.sharedServices.getApaCommunicationRequestCount();
         this.sharedServices.getRecentReconciliationCount();
@@ -222,13 +224,18 @@ export class HeaderComponent implements OnInit {
             value = value.replace(`"`, '').replace(`"`, '');
             const splitedValue: string[] = value.split(':');
 
+            if (splitedValue[0] === 'prescriberprocessed-notifications') {
+                this.sharedServices.getPrescriberProcessedCount();
+            }
             if (splitedValue[0] === 'approval-notifications') {
                 this.sharedServices.getProcessedCount();
             }
             if (splitedValue[0] === 'advanced-approval-notifications') {
                 this.sharedServices.getProcessedApaCount();
             }
-
+            if (splitedValue[0] === 'prescriber-communication-request-notification') {
+                this.sharedServices.getPrescriberCommunicationRequestCount();
+            }
             if (splitedValue[0] === 'approval-communication-request-notification') {
                 this.sharedServices.getCommunicationRequestCount();
             }

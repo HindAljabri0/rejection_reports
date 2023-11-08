@@ -337,7 +337,7 @@ export class PrescriptionTransactionsComponent implements OnInit {
 
       this.editURL(model.fromDate, model.toDate);
       this.detailTopActionIcon = 'ic-download.svg';
-      this.providerNphiesApprovalService.getApprovalRequestTransactions(this.sharedServices.providerId, model).subscribe((event: any) => {
+      this.providerNphiesApprovalService.getPrescriberRequestTransactions(this.sharedServices.providerId, model).subscribe((event: any) => {
         if (event instanceof HttpResponse) {
           const body = event.body;
           // this.transactions = body;
@@ -751,12 +751,12 @@ export class PrescriptionTransactionsComponent implements OnInit {
     });
   }
 
-  get NewTransactionProcessed() {
-    return this.sharedServices.unReadProcessedCount;
+  get NewTransactionPrescriberProcessed() {
+    return this.sharedServices.unReadPrescriberProcessedCount;
   }
 
-  get NewComunicationRequests() {
-    return this.sharedServices.unReadComunicationRequestCount;
+  get NewPrescriberCommunicationRequests() {
+    return this.sharedServices.unReadPrescriberCommunicationRequestCount;
   }
 
 }

@@ -21,15 +21,15 @@ import { AddEditCareTeamModalComponent } from './add-preauthorization/add-edit-c
 import { PaymentReconciliationComponent } from './payment-reconciliation/payment-reconciliation.component';
 import { PaymentReconciliationDetailsComponent } from './payment-reconciliation-details/payment-reconciliation-details.component';
 import {
-  AddEditDiagnosisModalComponent
+    AddEditDiagnosisModalComponent
 } from './add-preauthorization/add-edit-diagnosis-modal/add-edit-diagnosis-modal.component';
 import {
-  AddEditSupportingInfoModalComponent
+    AddEditSupportingInfoModalComponent
 } from './add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
 import { SearchBeneficiaryComponent } from './search-beneficiary/search-beneficiary.component';
 import { PreAuthorizationDetailsComponent } from './pre-authorization-details/pre-authorization-details.component';
 import {
-  AddEditVisionLensSpecificationsComponent
+    AddEditVisionLensSpecificationsComponent
 } from './add-preauthorization/add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
 import { ApiErrorsDialogComponent } from './api-errors-dialog/api-errors-dialog.component';
 import { ProcessedTransactionsComponent } from './preauthorization-transactions/processed-transactions/processed-transactions.component';
@@ -43,10 +43,10 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
 import { RecentReconciliationComponent } from './payment-reconciliation/recent-reconciliation/recent-reconciliation.component';
 import { ClaimTransactionsComponent } from './claim-transactions/claim-transactions.component';
 import {
-  ClaimProcessedTransactionsComponent
+    ClaimProcessedTransactionsComponent
 } from './claim-transactions/claim-processed-transactions/claim-processed-transactions.component';
 import {
-  ClaimCommunicationRequestsComponent
+    ClaimCommunicationRequestsComponent
 } from './claim-transactions/claim-communication-requests/claim-communication-requests.component';
 import { ReuseApprovalModalComponent } from './preauthorization-transactions/reuse-approval-modal/reuse-approval-modal.component';
 import { UploadsHistoryComponent } from './uploads-history/uploads-history.component';
@@ -61,7 +61,7 @@ import { UploadPhysiciansDialogComponent } from './upload-physicians-dialog/uplo
 import { AddPhysicianDialogComponent } from './add-physician-dialog/add-physician-dialog.component';
 import { TagInputModule } from 'ngx-chips';
 import {
-  NphiesUploadSummaryDialogComponent
+    NphiesUploadSummaryDialogComponent
 } from './upload-claim/nphies-claim-summary/nphies-upload-summary-dialog/nphies-upload-summary-dialog.component';
 import { PricelistComponent } from './pricelist/pricelist.component';
 import { PricelistDetailsComponent } from './pricelist-details/pricelist-details.component';
@@ -105,136 +105,145 @@ import { PrescriptionDetailsComponent } from './prescription-details/prescriptio
 
 import { ApaProcessedTransactionsComponent } from './advance-preauth-transactions/apa-processed-transactions/apa-processed-transactions.component';
 import { ExtractClaimsComponent } from './extract-claims/extract-claims.component';
+import { UploadBeneficiaryInquireCchiComponent } from './upload-beneficiary-inquire-cchi/upload-beneficiary-inquire-cchi.component';
+import { BeneficiaryUploadsSummaryComponent } from './beneficiary-uploads-summary/beneficiary-uploads-summary.component';
+import { UploadBeneficiaryCchiErrorsDialogComponent } from './upload-beneficiary-cchi-errors-dialog/upload-beneficiary-cchi-errors-dialog.component';
+import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth-cnhi.component';
 
 @NgModule({
-  declarations: [
-    EligibilityComponent,
-    ViewEligibilityDetailsComponent,
-    BeneficiaryComponent,
-    AddPreauthorizationComponent,
-    EligibilityTransactionsComponent,
-    InsurancePlanComponent,
-    AddInsurancePlanDialogComponent,
-    AddEditPreauthorizationItemComponent,
-    PreauthorizationTransactionsComponent,
-    EligibilityDetailsComponent,
-    AddEditCareTeamModalComponent,
-    ViewPreauthorizationDetailsComponent,
-    PaymentReconciliationComponent,
-    PaymentReconciliationDetailsComponent,
-    AddEditDiagnosisModalComponent,
-    AddEditSupportingInfoModalComponent,
-    SearchBeneficiaryComponent,
-    AddEditVisionLensSpecificationsComponent,
-    PreAuthorizationDetailsComponent,
-    ApiErrorsDialogComponent,
-    ProcessedTransactionsComponent,
-    CommunicationRequestsComponent,
-    AddCommunicationDialogComponent,
-    NphiesUploadsComponent,
-    NphiesUploadCardComponent,
-    CancelReasonModalComponent,
-    AddEditItemDetailsModalComponent,
-    RecentReconciliationComponent,
-    ClaimTransactionsComponent,
-    ClaimProcessedTransactionsComponent,
-    ClaimCommunicationRequestsComponent,
-    ReuseApprovalModalComponent,
-    UploadsHistoryComponent,
-    NphiesConfigurationsComponent,
-    UploadBeneficiaryComponent,
-    PhysiciansComponent,
-    UploadPhysiciansDialogComponent,
-    AddPhysicianDialogComponent,
-    NphiesUploadSummaryDialogComponent,
-    PricelistComponent,
-    PricelistDetailsComponent,
-    PricelistUploadComponent,
-    AddPricelistDialogComponent,
-    PreparePreAuthForClaimComponent,
-    ConvertPreAuthToClaimComponent,
-    EligiblityJsonResponseComponent,
-    ApprovalJsonResponseComponent,
-    DaysOfSupplyUploadComponent,
-    MedicationDaysUploadComponent,
-    AddMedicationSupplyDialogComponent,
-    ViewPrintPreviewDialogComponent,
-    UcafFormTemplateComponent,
-    DcafFormTemplateComponent,
-    OcafFormTemplateComponent,
-    SwitchGroupProviderComponent,
-    TwoDigitDecimaNumberDirective,
-    AdvancePreauthTransactionsComponent,
-    AttachmentsReportComponent,
-    PbmValidationResponseSummaryDialogComponent,
-    AddPrescriptionComponent,
-    PrescriptionTransactionsComponent,
-    AddEditPrescriptionItemComponent,
-    ViewPrescriptionDetailsDialogComponent,
-    ApaCommunicationRequestsComponent,
-    PrescriptionCancelReasonModalComponent,
-    PrescriptionCommunicationRequestsComponent,
-    PrescriptionProcessedTransactionsComponent,
-    PrescriptionReuseApprovalModalComponent,
-    ViewPrescriptionDetailsComponent,
-    PrescriptionAddEditCareTeamModalComponent,
-    PrescriptionAddEditDiagnosisModalComponent,
-    PrescriptionAddEditSupportingInfoModalComponent,
-    PrescriptionAddEditVisionLensSpecificationsComponent,
-    PrescriptionManageSupportingInfoComponent,
-    PrescriptionDetailsComponent,
-    ApaProcessedTransactionsComponent,
-    ExtractClaimsComponent
-  ],
-  imports: [
-    CommonModule,
-    SharedModule,
-    MaterialModule,
-    MatTabsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    BsDatepickerModule,
-    NgScrollbarModule,
-    SmoothScrollModule,
-    NphiesRoutingModule,
-    CarouselModule,
-    StoreModule.forFeature('nphiesConfigurationState', configurationReducer),
-    EffectsModule.forFeature([ConfigurationsEffects]),
-    TagInputModule,
-    OwlDateTimeModule,
-    OwlNativeDateTimeModule,
-  ],
-  entryComponents: [
-    ViewEligibilityDetailsComponent,
-    AddInsurancePlanDialogComponent,
-    AddEditPreauthorizationItemComponent,
-    ViewPreauthorizationDetailsComponent,
-    AddEditCareTeamModalComponent,
-    AddEditDiagnosisModalComponent,
-    AddEditVisionLensSpecificationsComponent,
-    AddEditSupportingInfoModalComponent,
-    ApiErrorsDialogComponent,
-    AddCommunicationDialogComponent,
-    CancelReasonModalComponent,
-    AddEditItemDetailsModalComponent,
-    ReuseApprovalModalComponent,
-    UploadPhysiciansDialogComponent,
-    AddPhysicianDialogComponent,
-    NphiesUploadSummaryDialogComponent,
-    PricelistUploadComponent,
-    AddPricelistDialogComponent,
-    DaysOfSupplyUploadComponent,
-    MedicationDaysUploadComponent,
-    AddMedicationSupplyDialogComponent,
-    ViewPrintPreviewDialogComponent,
-    PbmValidationResponseSummaryDialogComponent,
-    AddEditPrescriptionItemComponent,
-    ViewPrescriptionDetailsDialogComponent,
-    PrescriptionCancelReasonModalComponent,
-    PrescriptionReuseApprovalModalComponent
-  ],
-  exports: [
-    ApiErrorsDialogComponent
-  ]
+    declarations: [
+        EligibilityComponent,
+        ViewEligibilityDetailsComponent,
+        BeneficiaryComponent,
+        AddPreauthorizationComponent,
+        AddCNHIPreauthorizationComponent,
+        EligibilityTransactionsComponent,
+        InsurancePlanComponent,
+        AddInsurancePlanDialogComponent,
+        AddEditPreauthorizationItemComponent,
+        PreauthorizationTransactionsComponent,
+        EligibilityDetailsComponent,
+        AddEditCareTeamModalComponent,
+        ViewPreauthorizationDetailsComponent,
+        PaymentReconciliationComponent,
+        PaymentReconciliationDetailsComponent,
+        AddEditDiagnosisModalComponent,
+        AddEditSupportingInfoModalComponent,
+        SearchBeneficiaryComponent,
+        AddEditVisionLensSpecificationsComponent,
+        PreAuthorizationDetailsComponent,
+        ApiErrorsDialogComponent,
+        ProcessedTransactionsComponent,
+        CommunicationRequestsComponent,
+        AddCommunicationDialogComponent,
+        NphiesUploadsComponent,
+        NphiesUploadCardComponent,
+        CancelReasonModalComponent,
+        AddEditItemDetailsModalComponent,
+        RecentReconciliationComponent,
+        ClaimTransactionsComponent,
+        ClaimProcessedTransactionsComponent,
+        ClaimCommunicationRequestsComponent,
+        ReuseApprovalModalComponent,
+        UploadsHistoryComponent,
+        NphiesConfigurationsComponent,
+        UploadBeneficiaryComponent,
+        PhysiciansComponent,
+        UploadPhysiciansDialogComponent,
+        AddPhysicianDialogComponent,
+        NphiesUploadSummaryDialogComponent,
+        PricelistComponent,
+        PricelistDetailsComponent,
+        PricelistUploadComponent,
+        AddPricelistDialogComponent,
+        PreparePreAuthForClaimComponent,
+        ConvertPreAuthToClaimComponent,
+        EligiblityJsonResponseComponent,
+        ApprovalJsonResponseComponent,
+        DaysOfSupplyUploadComponent,
+        MedicationDaysUploadComponent,
+        AddMedicationSupplyDialogComponent,
+        ViewPrintPreviewDialogComponent,
+        UcafFormTemplateComponent,
+        DcafFormTemplateComponent,
+        OcafFormTemplateComponent,
+        SwitchGroupProviderComponent,
+        TwoDigitDecimaNumberDirective,
+        AdvancePreauthTransactionsComponent,
+        AttachmentsReportComponent,
+        PbmValidationResponseSummaryDialogComponent,
+        AddPrescriptionComponent,
+        PrescriptionTransactionsComponent,
+        AddEditPrescriptionItemComponent,
+        ViewPrescriptionDetailsDialogComponent,
+        ApaCommunicationRequestsComponent,
+        PrescriptionCancelReasonModalComponent,
+        PrescriptionCommunicationRequestsComponent,
+        PrescriptionProcessedTransactionsComponent,
+        PrescriptionReuseApprovalModalComponent,
+        ViewPrescriptionDetailsComponent,
+        PrescriptionAddEditCareTeamModalComponent,
+        PrescriptionAddEditDiagnosisModalComponent,
+        PrescriptionAddEditSupportingInfoModalComponent,
+        PrescriptionAddEditVisionLensSpecificationsComponent,
+        PrescriptionManageSupportingInfoComponent,
+        PrescriptionDetailsComponent,
+        ApaProcessedTransactionsComponent,
+        ExtractClaimsComponent,
+        UploadBeneficiaryInquireCchiComponent,
+        BeneficiaryUploadsSummaryComponent,
+        UploadBeneficiaryCchiErrorsDialogComponent
+    ],
+    imports: [
+        CommonModule,
+        SharedModule,
+        MaterialModule,
+        MatTabsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        BsDatepickerModule,
+        NgScrollbarModule,
+        SmoothScrollModule,
+        NphiesRoutingModule,
+        CarouselModule,
+        StoreModule.forFeature('nphiesConfigurationState', configurationReducer),
+        EffectsModule.forFeature([ConfigurationsEffects]),
+        TagInputModule,
+        OwlDateTimeModule,
+        OwlNativeDateTimeModule,
+    ],
+    entryComponents: [
+        ViewEligibilityDetailsComponent,
+        AddInsurancePlanDialogComponent,
+        AddEditPreauthorizationItemComponent,
+        ViewPreauthorizationDetailsComponent,
+        AddEditCareTeamModalComponent,
+        AddEditDiagnosisModalComponent,
+        AddEditVisionLensSpecificationsComponent,
+        AddEditSupportingInfoModalComponent,
+        ApiErrorsDialogComponent,
+        AddCommunicationDialogComponent,
+        CancelReasonModalComponent,
+        AddEditItemDetailsModalComponent,
+        ReuseApprovalModalComponent,
+        UploadPhysiciansDialogComponent,
+        AddPhysicianDialogComponent,
+        NphiesUploadSummaryDialogComponent,
+        PricelistUploadComponent,
+        AddPricelistDialogComponent,
+        DaysOfSupplyUploadComponent,
+        MedicationDaysUploadComponent,
+        AddMedicationSupplyDialogComponent,
+        ViewPrintPreviewDialogComponent,
+        PbmValidationResponseSummaryDialogComponent,
+        AddEditPrescriptionItemComponent,
+        ViewPrescriptionDetailsDialogComponent,
+        PrescriptionCancelReasonModalComponent,
+        PrescriptionReuseApprovalModalComponent,
+        UploadBeneficiaryCchiErrorsDialogComponent
+    ],
+    exports: [
+        ApiErrorsDialogComponent
+    ]
 })
 export class NphiesModule { }

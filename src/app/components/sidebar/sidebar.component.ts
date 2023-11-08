@@ -53,6 +53,16 @@ export class SidebarComponent implements OnInit {
     get NewAPAProcessed() {
         return this.sharedServices.unReadProcessedApaCount;
       }
+      get PrescriberProcessed() {
+        return this.sharedServices.unReadPrescriberProcessedCount;
+      }
+      get PrescriberComunicationRequests() {
+        return this.sharedServices.unReadPrescriberCommunicationRequestCount;
+      } 
+      get NewPrescriberTransactions() {
+        const transCount = this.PrescriberProcessed + this.PrescriberComunicationRequests;
+        return transCount;
+    }
     get NewAPAComunicationRequests() {
         return this.sharedServices.unReadApaComunicationRequestCount;
       }
