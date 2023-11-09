@@ -164,7 +164,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         });
     }
     if (this.data.item) {
-      if (this.data.source === 'APPROVAL') {
+      if (this.data.source === 'APPROVAL' || this.data.source === 'CNHI') {
         if (this.data.item.itemDecision && this.data.item.itemDecision.status && (this.data.item.itemDecision.status.toLowerCase() === 'approved' || this.data.item.itemDecision.status.toLowerCase() === 'partial')) {
           this.FormItem.controls.startDate.disable();
           this.FormItem.controls.endDate.disable();
@@ -223,7 +223,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
       this.getItemList();
     } else {
-      if (this.data.source === 'APPROVAL') {
+      if (this.data.source === 'APPROVAL' || this.data.source === 'CNHI') {
         this.FormItem.controls.quantity.setValue(1);
         this.FormItem.controls.startDate.setValue(this.today);
         this.FormItem.controls.endDate.setValue(this.today);

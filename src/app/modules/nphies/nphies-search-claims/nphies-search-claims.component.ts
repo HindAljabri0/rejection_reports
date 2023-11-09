@@ -145,6 +145,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   showFirstLastButtons = true;
   allFilters: any = [
     { key: 'CLAIMDATE', value: 'claimDate' },
+    { key: 'CLAIMSUBMISSIONDATE', value: 'claimSubmissionDate' },
+    { key: 'CLAIMRESPONSEDATE', value: 'claimResponseDate' },
     { key: 'CLAIMREFNO', value: 'claimRefNO' },
     //{ key: 'DR_NAME', value: 'drName' },
     { key: 'MEMBERID', value: 'memberID' },
@@ -383,6 +385,8 @@ console.log(this.params.organizationId);
     this.claimSearchCriteriaModel.batchId = this.params.batchId;
 
     this.claimSearchCriteriaModel.claimDate = this.params.filter_claimDate;
+    this.claimSearchCriteriaModel.claimSubmissionDate = this.params.filter_claimSubmissionDate;
+    this.claimSearchCriteriaModel.claimResponseDate = this.params.filter_claimResponseDate;
 
     this.claimSearchCriteriaModel.provderClaimReferenceNumber = this.params.claimRefNo;
 
@@ -396,6 +400,8 @@ console.log(this.params.organizationId);
     this.claimSearchCriteriaModel.invoiceNo = this.params.invoiceNo;
     this.claimSearchCriteriaModel.providerId = this.commen.providerId;
     this.claimSearchCriteriaModel.claimDate = this.params.from;
+    this.claimSearchCriteriaModel.claimSubmissionDate = this.params.claimSubmissionDate;
+    this.claimSearchCriteriaModel.claimResponseDate = this.params.claimResponseDate;
     this.claimSearchCriteriaModel.toDate = this.params.to;
     this.claimSearchCriteriaModel.reissueReason = this.params.reissueReason;
 
@@ -520,6 +526,8 @@ console.log(this.isSearchByStatus)
     this.claimSearchCriteriaModel.batchId = this.params.batchId;
     this.claimSearchCriteriaModel.netAmount = this.params.filter_netAmount;
     this.claimSearchCriteriaModel.claimDate = this.params.filter_claimDate || this.params.from;
+    this.claimSearchCriteriaModel.claimSubmissionDate = this.params.filter_claimSubmissionDate || this.params.claimSubmissionDate;
+    this.claimSearchCriteriaModel.claimResponseDate = this.params.filter_claimResponseDate || this.params.claimResponseDate;
     this.claimSearchCriteriaModel.provderClaimReferenceNumber = this.params.filter_claimRefNo || this.params.claimRefNo;
     this.claimSearchCriteriaModel.claimIds = this.params.claimId;
     this.claimSearchCriteriaModel.patientFileNo = this.params.patientFileNo || this.params.filter_patientFileNo;
@@ -741,6 +749,8 @@ console.log(this.isSearchByStatus)
     this.params.patientFileNo = this.params.filter_patientFileNo ? this.params.filter_patientFileNo : this.params.patientFileNo;
     this.params.nationalId = this.params.filter_nationalId ? this.params.filter_nationalId : this.params.nationalId;
     this.params.from = this.params.filter_claimDate ? this.params.filter_claimDate : this.params.from;
+    this.params.claimSubmissionDate = this.params.filter_claimSubmissionDate ? this.params.filter_claimSubmissionDate : this.params.claimSubmissionDate;
+    this.params.claimResponseDate = this.params.filter_claimResponseDate ? this.params.filter_claimResponseDate : this.params.claimResponseDate;
     this.params.netAmount = this.params.filter_netAmount ? this.params.filter_netAmount : this.params.netAmount;
     this.params.isRelatedClaim  = this.params.filter_isRelatedClaim ? this.params.filter_isRelatedClaim : this.params.isRelatedClaim;
     this.params.reissueReason  = this.params.reissueReason ? this.params.reissueReason : this.params.reissueReason;
@@ -1107,6 +1117,14 @@ console.log(this.isSearchByStatus)
         const dates: any = this.claimList.claimDate;
         this.params.filter_claimDate = dates.format('DD-MM-yyyy');
         break;
+      case ClaimListFilterSelection.CLAIMSUBMISSIONDATE:
+            const submissiondates: any = this.claimList.claimSubmissionDate;
+            this.params.filter_claimSubmissionDate = submissiondates.format('DD-MM-yyyy');
+            break;
+      case ClaimListFilterSelection.CLAIMRESPONSEDATE:
+                const responsedates: any = this.claimList.claimResponseDate;
+                this.params.filter_claimResponseDate = responsedates.format('DD-MM-yyyy');
+                break;
       case ClaimListFilterSelection.CLAIMREFNO:
         this.params.filter_claimRefNo = this.claimList.claimRefNO;
         break;
@@ -1140,6 +1158,12 @@ console.log(this.isSearchByStatus)
     const dates = this.claimList.claimDate !== undefined && this.claimList.claimDate !== null &&
       this.claimList.claimDate !== '' ? this.claimList.claimDate.format('DD-MM-yyyy') : '';
     this.params.filter_claimDate = ClaimListFilterSelection.CLAIMDATE ? dates : this.params.filter_claimDate;
+    const submissiondates = this.claimList.claimSubmissionDate !== undefined && this.claimList.claimSubmissionDate !== null &&
+    this.claimList.claimSubmissionDate !== '' ? this.claimList.claimSubmissionDate.format('DD-MM-yyyy') : '';
+  this.params.filter_claimSubmissionDate = ClaimListFilterSelection.CLAIMSUBMISSIONDATE ? submissiondates : this.params.filter_claimSubmissionDate;
+  const responsedates = this.claimList.claimResponseDate !== undefined && this.claimList.claimResponseDate !== null &&
+  this.claimList.claimResponseDate !== '' ? this.claimList.claimResponseDate.format('DD-MM-yyyy') : '';
+this.params.filter_claimResponseDate = ClaimListFilterSelection.CLAIMRESPONSEDATE ? responsedates : this.params.filter_claimResponseDate;
     this.params.filter_netAmount = ClaimListFilterSelection.CLAIMNET ? this.claimList.netAmount : this.params.filter_netAmount;
     this.params.filter_isRelatedClaim = ClaimListFilterSelection.ISREALTED ? this.claimList.isRelatedClaim : this.params.filter_isRelatedClaim;
     this.params.filter_batchNum = ClaimListFilterSelection.BATCHNUM ? this.claimList.batchNo : this.params.filter_batchNum;
@@ -1176,6 +1200,20 @@ console.log(this.isSearchByStatus)
             this.params.filter_claimDate = ClaimListFilterSelection.CLAIMDATE ? dates : this.params.filter_claimDate;
             delete this.params.filter_claimDate;
             break;
+        case ClaimListFilterSelection.CLAIMSUBMISSIONDATE:
+                const submissiondates = this.claimList.claimSubmissionDate !== undefined && this.claimList.claimSubmissionDate !== null &&
+                  this.claimList.claimSubmissionDate !== '' &&
+                  typeof this.claimList.claimSubmissionDate !== 'string' ? this.claimList.claimSubmissionDate.format('DD-MM-yyyy') : '';
+                this.params.filter_claimSubmissionDate = ClaimListFilterSelection.CLAIMSUBMISSIONDATE ? submissiondates : this.params.filter_claimSubmissionDate;
+                delete this.params.filter_claimSubmissionDate;
+                break;
+        case ClaimListFilterSelection.CLAIMRESPONSEDATE:
+                    const responsedates = this.claimList.claimResponseDate !== undefined && this.claimList.claimResponseDate !== null &&
+                      this.claimList.claimResponseDate !== '' &&
+                      typeof this.claimList.claimResponseDate !== 'string' ? this.claimList.claimResponseDate.format('DD-MM-yyyy') : '';
+                    this.params.filter_claimResponseDate = ClaimListFilterSelection.CLAIMRESPONSEDATE ? responsedates : this.params.filter_claimResponseDate;
+                    delete this.params.filter_claimResponseDate;
+                    break;
           case ClaimListFilterSelection.CLAIMREFNO:
             this.params.filter_claimRefNo = this.claimList.claimRefNO;
             delete this.params.filter_claimRefNo;
@@ -1232,6 +1270,14 @@ console.log(this.isSearchByStatus)
       typeof this.claimList.claimDate !== 'string') {
       this.setReloadedFilters(ClaimListFilterSelection.CLAIMDATE);
     }
+    if (this.params.filter_claimSubmissionDate != null && this.params.filter_claimSubmissionDate !== '' && this.params.filter_claimSubmissionDate !== undefined &&
+    typeof this.claimList.claimSubmissionDate !== 'string') {
+    this.setReloadedFilters(ClaimListFilterSelection.CLAIMSUBMISSIONDATE);
+   }
+   if (this.params.filter_claimResponseDate != null && this.params.filter_claimResponseDate !== '' && this.params.filter_claimResponseDate !== undefined &&
+  typeof this.claimList.claimResponseDate !== 'string') {
+  this.setReloadedFilters(ClaimListFilterSelection.CLAIMRESPONSEDATE);
+}
     if (this.params.filter_claimRefNo != null && this.params.filter_claimRefNo !== '' && this.params.filter_claimRefNo !== undefined &&
       (this.params.claimRefNo === null || this.params.claimRefNo === undefined || this.params.claimRefNo === '')) {
       this.setReloadedFilters(ClaimListFilterSelection.CLAIMREFNO);
@@ -1280,6 +1326,22 @@ console.log(this.isSearchByStatus)
         this.claimList.claimDate = moment(dates);
       }
     }
+    if (this.params.filter_claimSubmissionDate != null && this.params.filter_claimSubmissionDate !== '' && this.params.filter_claimSubmissionDate !== undefined) {
+        const splitDate = this.params.filter_claimSubmissionDate.split('-');
+        if (splitDate.length > 2) {
+          const finaldate = splitDate[1] + '-' + splitDate[0] + '-' + splitDate[2];
+          const dates = new Date(finaldate);
+          this.claimList.claimSubmissionDate = moment(dates);
+        }
+      }
+      if (this.params.filter_claimResponseDate != null && this.params.filter_claimResponseDate !== '' && this.params.filter_claimResponseDate !== undefined) {
+        const splitDate = this.params.filter_claimResponseDate.split('-');
+        if (splitDate.length > 2) {
+          const finaldate = splitDate[1] + '-' + splitDate[0] + '-' + splitDate[2];
+          const dates = new Date(finaldate);
+          this.claimList.claimResponseDate = moment(dates);
+        }
+      }
     if (this.params.filter_claimRefNo != null && this.params.filter_claimRefNo !== '' && this.params.filter_claimRefNo !== undefined &&
       (this.params.claimRefNo === null || this.params.claimRefNo === undefined || this.params.claimRefNo === '')) {
       this.setReloadedInputFilters('claimRefNO', this.params.filter_claimRefNo);
@@ -1605,6 +1667,11 @@ console.log(this.isSearchByStatus)
   get showInquireAll() {
     // tslint:disable-next-line:max-line-length
     return ['queued', 'pended', 'approved', 'partial', 'rejected', 'failednphies', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+  }
+
+  get showLatestDate() {
+    // tslint:disable-next-line:max-line-length
+    return ['queued', 'pended', 'approved', 'partial', 'rejected', 'failednphies', 'invalid', 'cancelled'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
 
   get showGenerateAttachment() {
