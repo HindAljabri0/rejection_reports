@@ -19,7 +19,7 @@ export class ClaimSearchCriteriaModel {
   invoiceNo?: string;
   organizationId?: string;
   requestBundleId?: string;
-  bundleIds?:string []
+  bundleIds?:string
   isRelatedClaim?:boolean;
   reissueReason?: boolean;
 }

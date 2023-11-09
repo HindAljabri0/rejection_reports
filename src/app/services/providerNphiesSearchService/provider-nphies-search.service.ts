@@ -576,7 +576,7 @@ export class ProviderNphiesSearchService {
     }
 
     if (claimSearchCriteriaModel.bundleIds != null) {
-      requestURL += `&bundleIds=${claimSearchCriteriaModel.bundleIds}`;
+      requestURL += `&bundleIds=${claimSearchCriteriaModel.bundleIds.split(',')}`;
     }
 
     requestURL += (claimSearchCriteriaModel.statuses != null ? `&statuses=${claimSearchCriteriaModel.statuses.toString()}` : '');

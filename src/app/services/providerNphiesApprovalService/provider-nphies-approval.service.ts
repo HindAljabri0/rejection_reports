@@ -240,7 +240,7 @@ export class ProviderNphiesApprovalService {
     organizationId?: string,
     statuses?: string[],
     requestBundleId?: string,
-    bundleIds?:string[],
+    bundleIds?:string,
     isRelatedClaim?:boolean
     ) {
 
@@ -302,8 +302,8 @@ export class ProviderNphiesApprovalService {
     if (isRelatedClaim) {
       requestURL += `&isRelatedClaim=${isRelatedClaim}`;
     }
-    if (bundleIds != null) {
-      requestURL += `&bundleIds=${bundleIds}`;
+    if (bundleIds&& bundleIds != null) {
+      requestURL += `&bundleIds=${bundleIds.split(",")}`;
     }
     const request = new HttpRequest('DELETE', environment.providerNphiesClaim + requestURL);
     return this.http.request(request);
@@ -413,7 +413,7 @@ export class ProviderNphiesApprovalService {
     documentId?: string,
     organizationId?: string,
     requestBundleId?: string,
-    bundleIds?:string[],
+    bundleIds?:string,
     statuses?: string[],
     isRelatedClaim?:boolean
   ) {
@@ -492,8 +492,8 @@ export class ProviderNphiesApprovalService {
     if (organizationId) {
       requestURL += `&organizationId=${organizationId}`;
     }
-    if (bundleIds != null) {
-      requestURL += `&bundleIds=${bundleIds}`;
+    if (bundleIds && bundleIds != null) {
+      requestURL += `&bundleIds=${bundleIds.split(",")}`;
     }
 
     // if (claimTypes && claimTypes.length > 0) {
@@ -660,7 +660,7 @@ export class ProviderNphiesApprovalService {
     statuses?: string[],
     organizationId?: string,
     requestBundleId?: string,
-    bundleIds?:string[],
+    bundleIds?:string,
     isRelatedClaim?:boolean,
    
   ) {
@@ -734,8 +734,8 @@ export class ProviderNphiesApprovalService {
     if (isRelatedClaim) {
       requestURL += `&isRelatedClaim=${isRelatedClaim}`;
     }
-    if (bundleIds != null) {
-      requestURL += `&bundleIds=${bundleIds}`;
+    if (bundleIds && bundleIds != null) {
+      requestURL += `&bundleIds=${bundleIds.split(",")}`;
     }
     const request = new HttpRequest('POST', environment.providerNphiesClaim + requestURL, {});
     return this.http.request(request);
@@ -817,7 +817,7 @@ export class ProviderNphiesApprovalService {
     documentId?: string,
     organizationId?: string,
     attachmentStatus?: string,
-    requestBundleId?: string, bundleIds?:string[], statuses?: string[],
+    requestBundleId?: string, bundleIds?, statuses?: string[],
     isRelatedClaim?:boolean) {
     const isHeadOffice = AuthService.isProviderHeadOffice();
     let requestURL = `/providers/${providerId}/claims/generate/attchment?`;
@@ -889,6 +889,9 @@ export class ProviderNphiesApprovalService {
     if (isRelatedClaim) {
       requestURL += `&isRelatedClaim=${isRelatedClaim}`;
     }
+    if (bundleIds != null) {
+        requestURL += `&bundleIds=${bundleIds.split(',')}`;
+      }
 
     const request = new HttpRequest('POST', environment.providerNphiesClaim + requestURL, {});
     return this.http.request(request);
@@ -912,7 +915,7 @@ export class ProviderNphiesApprovalService {
     organizationId?: string,
     statuses?: string[],
     requestBundleId?: string,
-    bundleIds?:string[],
+    bundleIds?:string,
     isRelatedClaim?:boolean) {
     let requestURL = `/providers/${providerId}/claims/pbm-validation?`;
     if (provderClaimReferenceNumber) {
@@ -968,7 +971,7 @@ export class ProviderNphiesApprovalService {
       requestURL += `&requestBundleId=${requestBundleId}`;
     }
     if (bundleIds != null) {
-      requestURL += `&bundleIds=${bundleIds}`;
+      requestURL += `&bundleIds=${bundleIds.split(',')}`;
     }
     if (claimTypes) {
       requestURL += `&claimTypes=${claimTypes}`;
@@ -1003,7 +1006,7 @@ export class ProviderNphiesApprovalService {
     organizationId?: string,
     statuses?: string[],
     requestBundleId?: string,
-    bundleIds?:string[],
+    bundleIds?:string,
     isRelatedClaim?:boolean
   ) {
     const isHeadOffice = AuthService.isProviderHeadOffice();
@@ -1064,8 +1067,8 @@ export class ProviderNphiesApprovalService {
       requestURL += `&requestBundleId=${requestBundleId}`;
     }
 
-    if (bundleIds != null) {
-      requestURL += `&bundleIds=${bundleIds}`;
+    if (bundleIds && bundleIds != null) {
+      requestURL += `&bundleIds=${bundleIds.split(",")}`;
     }
     if (claimTypes) {
       requestURL += `&claimTypes=${claimTypes}`;
