@@ -1672,10 +1672,18 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
     const attachment = this.SupportingInfo.filter(f=>f.category == 'attachment').length
     let hasError = false;
 
-    if ((reasonForVisit == 0 || attachment == 0 ) && this.FormPreAuthorization.controls.transfer.value ) {
+    if ((reasonForVisit == 0 && attachment == 0 ) && this.FormPreAuthorization.controls.transfer.value ) {
       this.dialogService.showMessage('Error', 'please add Attachment and Reason For Visit to complete Pre-auth CNHI request', 'alert', true, 'OK');
       hasError = true;
     }
+    if ((reasonForVisit == 0 && attachment != 0 ) && this.FormPreAuthorization.controls.transfer.value ) {
+        this.dialogService.showMessage('Error', 'please add Reason For Visit to complete Pre-auth CNHI request', 'alert', true, 'OK');
+        hasError = true;
+      }
+      if ((reasonForVisit != 0 && attachment == 0 ) && this.FormPreAuthorization.controls.transfer.value ) {
+        this.dialogService.showMessage('Error', 'please add Attachment to complete Pre-auth CNHI request', 'alert', true, 'OK');
+        hasError = true;
+      }
        if (attachment == 0 && !this.FormPreAuthorization.controls.transfer.value) {
           this.dialogService.showMessage('Error', 'please add Attachment to complete Pre-auth CNHI request', 'alert', true, 'OK');
           hasError = true;

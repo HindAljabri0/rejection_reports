@@ -1,6 +1,8 @@
 export class ClaimSearchCriteriaModel {
   providerId?: string;
   claimDate?: string;
+  claimSubmissionDate?: string;
+  claimResponseDate?: string;
   toDate?: string;
   batchId?: string;
   uploadId?: string;
