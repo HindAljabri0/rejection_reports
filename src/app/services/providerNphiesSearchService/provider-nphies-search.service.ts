@@ -329,6 +329,12 @@ export class ProviderNphiesSearchService {
     if (claimSearchCriteriaModel.claimDate != null) {
       requestURL += `&claimDate=${this.formatDate(claimSearchCriteriaModel.claimDate)}`;
     }
+    if (claimSearchCriteriaModel.claimSubmissionDate != null) {
+        requestURL += `&claimSubmissionDate=${this.formatDate(claimSearchCriteriaModel.claimSubmissionDate)}`;
+      }
+      if (claimSearchCriteriaModel.claimResponseDate != null) {
+        requestURL += `&claimResponseDate=${this.formatDate(claimSearchCriteriaModel.claimResponseDate)}`;
+      }
 
     if (claimSearchCriteriaModel.toDate != null) {
       requestURL += `&toDate=${this.formatDate(claimSearchCriteriaModel.toDate)}`;
@@ -401,6 +407,12 @@ export class ProviderNphiesSearchService {
     if (claimSearchCriteriaModel.claimDate != null) {
       requestURL += `&claimDate=${this.formatDate(claimSearchCriteriaModel.claimDate)}`;
     }
+    if (claimSearchCriteriaModel.claimSubmissionDate != null) {
+        requestURL += `&claimSubmissionDate=${this.formatDate(claimSearchCriteriaModel.claimSubmissionDate)}`;
+      }
+      if (claimSearchCriteriaModel.claimResponseDate != null) {
+        requestURL += `&claimResponseDate=${this.formatDate(claimSearchCriteriaModel.claimResponseDate)}`;
+      }
 
     if (claimSearchCriteriaModel.toDate != null) {
       requestURL += `&toDate=${this.formatDate(claimSearchCriteriaModel.toDate)}`;
@@ -565,6 +577,12 @@ export class ProviderNphiesSearchService {
     if (claimSearchCriteriaModel.claimDate != null) {
       requestURL += `&claimDate=${this.formatDate(claimSearchCriteriaModel.claimDate)}`;
     }
+    if (claimSearchCriteriaModel.claimSubmissionDate != null) {
+        requestURL += `&claimSubmissionDate=${this.formatDate(claimSearchCriteriaModel.claimSubmissionDate)}`;
+      }
+    if (claimSearchCriteriaModel.claimResponseDate != null) {
+        requestURL += `&claimResponseDate=${this.formatDate(claimSearchCriteriaModel.claimResponseDate)}`;
+      }
 
     if (claimSearchCriteriaModel.toDate != null) {
       requestURL += `&toDate=${this.formatDate(claimSearchCriteriaModel.toDate)}`;
