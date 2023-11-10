@@ -1,6 +1,8 @@
 export class ClaimSearchCriteriaModel {
   providerId?: string;
   claimDate?: string;
+  claimSubmissionDate?: string;
+  claimResponseDate?: string;
   toDate?: string;
   batchId?: string;
   uploadId?: string;
@@ -19,7 +21,7 @@ export class ClaimSearchCriteriaModel {
   invoiceNo?: string;
   organizationId?: string;
   requestBundleId?: string;
-  bundleIds?:string []
+  bundleIds?:string
   isRelatedClaim?:boolean;
   reissueReason?: boolean;
 }
