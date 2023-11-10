@@ -141,8 +141,8 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
     insurancePlanPolicyNumber: [''],
     insurancePlanMaxLimit: [''],
     insurancePlanPatientShare: [''],
-    status: [''],
-    encounterClass: [''],
+    status: ['', Validators.required],
+    encounterClass: ['', Validators.required],
     serviceType: [''],
     priority: [''],
     startDate: ['', Validators.required],
@@ -776,6 +776,36 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
 
     if (beneficiary.plans.length > 0 && beneficiary.plans.filter(x => x.primary)[0]) {
       this.FormPreAuthorization.controls.insurancePlanId.setValue(beneficiary.plans.filter(x => x.primary)[0].payerNphiesId);
+
+      if (beneficiary.plans.filter(x => x.primary)[0].payerNphiesId === '0000000163') {
+    
+        if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.contactNumber === null) {
+             const dialogRef: MatDialogRef<ConfirmationAlertDialogComponent> = this.dialog.open(
+              ConfirmationAlertDialogComponent,
+              {
+                data: {
+                  mainMessage: 'Error',
+                  subMessage: 'Please add contact number and nationality for CNHI Pre-auth Request',
+                  mode: 'alert',
+                  hideNoButton: true,
+                  yesButtonText: 'Edit Beneficiary'
+                }
+              }
+            );
+          
+             dialogRef.afterClosed().subscribe(result => {
+              if (result) {
+                 this.router.navigate(['nphies/beneficiary/' + this.selectedBeneficiary.id]);
+                
+              }
+            });
+          }
+        } else
+            if (beneficiary.plans.filter(x => x.primary)[0].payerNphiesId !== '0000000163') {
+            
+                this.dialogService.showMessage('Error', 'Selected Payer is not valid for CNHI Pre-Auth Request Transaction ', 'alert', true, 'OK');
+                return;
+           }
       const plan: any = {};
       plan.value = this.selectedBeneficiary.plans.filter(x => x.primary)[0].payerNphiesId;
       plan.memberCardId = this.selectedBeneficiary.plans.filter(x => x.primary)[0].memberCardId;

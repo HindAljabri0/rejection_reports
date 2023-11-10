@@ -637,20 +637,20 @@
                   <div class="row small-gutter">
                     <div class="col-6">
                         <div class="date-picker" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('startDate').touched) && FormPreAuthorization.get('startDate').hasError('required')}">
-                            <input [matDatepicker]="periodStartDate" class="form-control" placeholder="Start date" formControlName="startDate">
-                            <mat-datepicker-toggle [for]="periodStartDate"></mat-datepicker-toggle>
-                            <mat-datepicker #periodStartDate></mat-datepicker>
-                          </div>
+                            <input [owlDateTime]="startDate" class="form-control" placeholder="Select service end date" formControlName="startDate">
+                                 <mat-datepicker-toggle [owlDateTimeTrigger]="startDate"></mat-datepicker-toggle>
+                                 <owl-date-time #startDate></owl-date-time>
                         </div>
+                           </div>
                         <div *ngIf="(isSubmitted || FormPreAuthorization.get('startDate').touched) && FormPreAuthorization.get('startDate').hasError('required')">
                             <span class="error-text">Please select the start date</span>
                           </div>
                         <div class="col-6">
-                          <div class="date-picker" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('periodEnd').touched) && FormPreAuthorization.get('periodEnd').hasError('required')}">
-                            <input [matDatepicker]="periodEndDate" class="form-control" placeholder="End date" formControlName="periodEnd">
-                            <mat-datepicker-toggle [for]="periodEndDate"></mat-datepicker-toggle>
-                            <mat-datepicker #periodEndDate></mat-datepicker>
-                          </div>
+                            <div class="date-picker" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('periodEnd').touched) && FormPreAuthorization.get('periodEnd').hasError('required')}">
+                                <input [owlDateTime]="periodEnd" class="form-control" placeholder="End date" formControlName="periodEnd">
+                                     <mat-datepicker-toggle [owlDateTimeTrigger]="periodEnd"></mat-datepicker-toggle>
+                                     <owl-date-time #periodEnd></owl-date-time>
+                            </div>
                         </div>
                         <div *ngIf="(isSubmitted || FormPreAuthorization.get('periodEnd').touched) && FormPreAuthorization.get('periodEnd').hasError('required')">
                             <span class="error-text">Please select a end date</span>
