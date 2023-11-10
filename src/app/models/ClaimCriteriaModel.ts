@@ -34,7 +34,8 @@ export class ClaimCriteriaModel {
     nationalId?: string;
 
     claimDate?: string;
-
+    claimSubmissionDate?: string;
+    claimResponseDate?: string;
     netAmount?: string;
 
     batchNo?: string;
@@ -43,7 +44,8 @@ export class ClaimCriteriaModel {
 
     size?: string;
 
-    requestBundleId?:string
+    requestBundleId?:string;
+    bundleIds?:string
 
     constructor() {
 
@@ -103,6 +105,12 @@ export class ClaimCriteriaModel {
         if(this.claimDate != null && this.claimDate.trim().length > 0){
             params += `claimDate=${this.claimDate}&`
         }
+        if(this.claimSubmissionDate != null && this.claimSubmissionDate.trim().length > 0){
+            params += `claimSubmissionDate=${this.claimSubmissionDate}&`
+        }
+        if(this.claimResponseDate != null && this.claimResponseDate.trim().length > 0){
+            params += `claimResponseDate=${this.claimResponseDate}&`
+        }
         if(this.netAmount != null && this.netAmount.trim().length > 0){
             params += `netAmount=${this.netAmount}&`
         }
@@ -111,6 +119,9 @@ export class ClaimCriteriaModel {
         }
         if(this.requestBundleId != null && this.requestBundleId.trim().length > 0){
             params += `requestBundleId=${this.requestBundleId}&`
+        }
+        if(this.bundleIds != null && this.bundleIds.trim().length > 0){
+            params += `bundleIds=${this.bundleIds}&`
         }
         if(this.page != null && this.page.trim().length > 0){
             params += `page=${this.page}&`

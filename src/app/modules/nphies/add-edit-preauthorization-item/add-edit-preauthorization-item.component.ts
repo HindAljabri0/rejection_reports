@@ -45,7 +45,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     nonStandardCode: [''],
     display: [''],
     isPackage: [false],
+    cnhiBodysite:[true],
     bodySite: [''],
+    cnhiSubsite: [true],
     subSite: [''],
     quantity: ['', Validators.required],
     quantityCode: [''],
@@ -164,7 +166,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         });
     }
     if (this.data.item) {
-      if (this.data.source === 'APPROVAL') {
+      if (this.data.source === 'APPROVAL' || this.data.source === 'CNHI') {
         if (this.data.item.itemDecision && this.data.item.itemDecision.status && (this.data.item.itemDecision.status.toLowerCase() === 'approved' || this.data.item.itemDecision.status.toLowerCase() === 'partial')) {
           this.FormItem.controls.startDate.disable();
           this.FormItem.controls.endDate.disable();
@@ -177,7 +179,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         nonStandardCode: this.data.item.nonStandardCode,
         display: this.data.item.display,
         isPackage: this.data.item.isPackage,
-        bodySite: this.data.item.bodySite && (this.data.type === 'oral' || (this.data.type === 'institutional' && this.data.item.type === 'oral-health-ip' ) )? this.data.item.bodySite : (this.data.item.bodySite != null ? this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0] : ""),
+        cnhiBodysite:  this.data.item.cnhiBodysite,
+        cnhiSubsite:  this.data.item.cnhiSubsite,
+        bodySite: (!this.FormItem.controls.cnhiBodysite.value || this.data.item.bodySite && (this.data.type === 'oral' || (this.data.type === 'institutional' && this.data.item.type === 'oral-health-ip' ) && this.data.source !== 'CNHI') )? this.data.item.bodySite : (this.data.item.bodySite != null ? this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0] : ""),
         subSite: this.data.item.subSite != null ? this.subSiteList.filter(x => x.value === this.data.item.subSite)[0] : "",
         quantity: this.data.item.quantity,
         quantityCode: this.data.item.quantityCode != null ? this.data.item.quantityCode : "",
@@ -223,7 +227,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
       this.getItemList();
     } else {
-      if (this.data.source === 'APPROVAL') {
+      if (this.data.source === 'APPROVAL' || this.data.source === 'CNHI') {
         this.FormItem.controls.quantity.setValue(1);
         this.FormItem.controls.startDate.setValue(this.today);
         this.FormItem.controls.endDate.setValue(this.today);
@@ -458,6 +462,13 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
         this.FormItem.controls.quantityCode.setValidators([Validators.required]);
         this.FormItem.controls.quantityCode.updateValueAndValidity();
+        this.subSiteList = (this.data.source === 'CNHI' && !this.FormItem.controls.cnhiSubsite.value)
+        ? this.sharedDataService.getSubSite('oral')
+        : this.sharedDataService.getSubSite(this.data.type);
+  if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'oral-health-ip') 
+  {
+  this.subSiteList = this.sharedDataService.getSubSite('oral');        
+}
       } else {
         this.FormItem.controls.quantityCode.clearValidators();
       this.FormItem.controls.quantityCode.updateValueAndValidity();
@@ -470,6 +481,13 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       this.getItemList(type);
     } else {
       this.getItemList();
+    }
+  }
+  onRadioChange(event: any) {
+    if(!this.FormItem.controls.cnhiSubsite.value){
+    this.subSiteList = this.sharedDataService.getSubSite('oral'); 
+    }else{
+        this.subSiteList = this.sharedDataService.getSubSite(this.data.type);
     }
   }
 
@@ -870,18 +888,27 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
       model.nonStandardCode = this.FormItem.controls.nonStandardCode.value;
       model.display = this.FormItem.controls.display.value;
       model.isPackage = this.FormItem.controls.isPackage.value;
-      if (this.data.type === 'oral' || (this.data.type === 'institutional' && this.FormItem.controls.type.value.value === 'oral-health-ip' )) {
+      model.cnhiBodysite = this.FormItem.controls.cnhiBodysite.value;
+      model.cnhiSubsite = this.FormItem.controls.cnhiSubsite.value;
+      if (!this.FormItem.controls.cnhiBodysite.value || (this.data.type === 'oral' || (this.data.type === 'institutional' && this.FormItem.controls.type.value.value === 'oral-health-ip' ) && this.data.source === 'CNHI')) {
         this.bodySiteList = this.sharedDataService.getBodySite('oral');   
         let bodySite = this.bodySiteList.filter(x => x.value === this.FormItem.controls.bodySite.value)[0];       
         model.bodySite = this.FormItem.controls.bodySite ? bodySite ? bodySite.value : '' : '';
         model.bodySiteName = this.FormItem.controls.bodySite ? bodySite ? bodySite.name : '' : '';
+        
+        this.subSiteList = this.sharedDataService.getSubSite('oral'); 
+        let subSite = this.subSiteList.filter(x => x.value === this.FormItem.controls.subSite.value)[0];   
+  
+     model.subSite = this.FormItem.controls.subSite ? subSite ? subSite.value : '': '';
+     model.subSiteName = this.FormItem.controls.subSite ? subSite ? subSite.name:'' : '';
+
       } else {
         model.bodySite = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.value : '';
         model.bodySiteName = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.name : '';
+        model.subSite = this.FormItem.controls.subSite.value ? this.FormItem.controls.subSite.value.value : '';
+      model.subSiteName = this.FormItem.controls.subSite.value ? this.FormItem.controls.subSite.value.name : '';
       }
 
-      model.subSite = this.FormItem.controls.subSite.value ? this.FormItem.controls.subSite.value.value : '';
-      model.subSiteName = this.FormItem.controls.subSite.value ? this.FormItem.controls.subSite.value.name : '';
       // tslint:disable-next-line:radix
       model.quantity = parseFloat(this.FormItem.controls.quantity.value);
       model.quantityCode = this.FormItem.controls.quantityCode.value;

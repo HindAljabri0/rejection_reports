@@ -5,6 +5,8 @@ export class ClaimListModel {
     nationalId: string;
     patientFileNO: string;
     claimDate: any;
+    claimSubmissionDate: any;
+    claimResponseDate: any; 
     netAmount: string;
     batchNo: string;
     isRelatedClaim:boolean;

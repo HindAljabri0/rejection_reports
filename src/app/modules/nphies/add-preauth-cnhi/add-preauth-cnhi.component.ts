@@ -141,8 +141,8 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
     insurancePlanPolicyNumber: [''],
     insurancePlanMaxLimit: [''],
     insurancePlanPatientShare: [''],
-    status: [''],
-    encounterClass: [''],
+    status: ['', Validators.required],
+    encounterClass: ['', Validators.required],
     serviceType: [''],
     priority: [''],
     startDate: ['', Validators.required],
@@ -776,6 +776,36 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
 
     if (beneficiary.plans.length > 0 && beneficiary.plans.filter(x => x.primary)[0]) {
       this.FormPreAuthorization.controls.insurancePlanId.setValue(beneficiary.plans.filter(x => x.primary)[0].payerNphiesId);
+
+      if (beneficiary.plans.filter(x => x.primary)[0].payerNphiesId === '0000000163') {
+    
+        if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.contactNumber === null) {
+             const dialogRef: MatDialogRef<ConfirmationAlertDialogComponent> = this.dialog.open(
+              ConfirmationAlertDialogComponent,
+              {
+                data: {
+                  mainMessage: 'Error',
+                  subMessage: 'Please add contact number and nationality for CNHI Pre-auth Request',
+                  mode: 'alert',
+                  hideNoButton: true,
+                  yesButtonText: 'Edit Beneficiary'
+                }
+              }
+            );
+          
+             dialogRef.afterClosed().subscribe(result => {
+              if (result) {
+                 this.router.navigate(['nphies/beneficiary/' + this.selectedBeneficiary.id]);
+                
+              }
+            });
+          }
+        } else
+            if (beneficiary.plans.filter(x => x.primary)[0].payerNphiesId !== '0000000163') {
+            
+                this.dialogService.showMessage('Error', 'Selected Payer is not valid for CNHI Pre-Auth Request Transaction ', 'alert', true, 'OK');
+                return;
+           }
       const plan: any = {};
       plan.value = this.selectedBeneficiary.plans.filter(x => x.primary)[0].payerNphiesId;
       plan.memberCardId = this.selectedBeneficiary.plans.filter(x => x.primary)[0].memberCardId;
@@ -836,7 +866,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
     const plan: any = {};
     plan.value = planObj.payerNphiesId;
     plan.memberCardId = planObj.memberCardId;
-    if (planObj.payerId === '69') {
+    if (planObj.payerNphiesId === '0000000163') {
     
 if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.contactNumber === null) {
      const dialogRef: MatDialogRef<ConfirmationAlertDialogComponent> = this.dialog.open(
@@ -860,7 +890,7 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
     });
   }
 } else
-    if (planObj.payerId !== '69') {
+    if (planObj.payerNphiesId !== '0000000163') {
     
         this.dialogService.showMessage('Error', 'Selected Payer is not valid for CNHI Pre-Auth Request Transaction ', 'alert', true, 'OK');
         return;
@@ -1672,10 +1702,18 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
     const attachment = this.SupportingInfo.filter(f=>f.category == 'attachment').length
     let hasError = false;
 
-    if ((reasonForVisit == 0 || attachment == 0 ) && this.FormPreAuthorization.controls.transfer.value ) {
+    if ((reasonForVisit == 0 && attachment == 0 ) && this.FormPreAuthorization.controls.transfer.value ) {
       this.dialogService.showMessage('Error', 'please add Attachment and Reason For Visit to complete Pre-auth CNHI request', 'alert', true, 'OK');
       hasError = true;
     }
+    if ((reasonForVisit == 0 && attachment != 0 ) && this.FormPreAuthorization.controls.transfer.value ) {
+        this.dialogService.showMessage('Error', 'please add Reason For Visit to complete Pre-auth CNHI request', 'alert', true, 'OK');
+        hasError = true;
+      }
+      if ((reasonForVisit != 0 && attachment == 0 ) && this.FormPreAuthorization.controls.transfer.value ) {
+        this.dialogService.showMessage('Error', 'please add Attachment to complete Pre-auth CNHI request', 'alert', true, 'OK');
+        hasError = true;
+      }
        if (attachment == 0 && !this.FormPreAuthorization.controls.transfer.value) {
           this.dialogService.showMessage('Error', 'please add Attachment to complete Pre-auth CNHI request', 'alert', true, 'OK');
           hasError = true;

@@ -10,6 +10,8 @@ export class SearchPageQueryParams {
     editMode?: string;
     reSubmitMode?: string;
     from?: string;
+    claimSubmissionDate?: string;
+    claimResponseDate?: string;
     to?: string;
     payerId?: string;
     claimTypes?: string;
@@ -23,7 +25,8 @@ export class SearchPageQueryParams {
     patientFileNo?: string;
     policyNo?: string;
     nationalId?: string;
-    requestBundleId?: string
+    requestBundleId?: string;
+    bundleIds?:string;
     filter_claimRefNo?: string;
     filter_memberId?: string;
     filter_patientFileNo?: string;
@@ -31,6 +34,8 @@ export class SearchPageQueryParams {
     filter_drName?: string;
     filter_nationalId?: string;
     filter_claimDate?: string;
+    filter_claimSubmissionDate?: string;
+    filter_claimResponseDate?: string;
     filter_netAmount?: string;
     filter_isRelatedClaim? :boolean;  
     status?: number;
@@ -58,6 +63,7 @@ export class SearchPageQueryParams {
         pageParams.organizationId = params.organizationId;
         pageParams.batchId = params.batchId;
         pageParams.requestBundleId = params.requestBundleId;
+        pageParams.bundleIds=params.bundleIds;
         pageParams.uploadId = params.uploadId;
         pageParams.caseTypes = params.caseTypes;
         pageParams.claimId = params.claimId;
@@ -73,6 +79,8 @@ export class SearchPageQueryParams {
         pageParams.filter_drName = params.filter_drName;
         pageParams.filter_nationalId = params.filter_nationalId;
         pageParams.filter_claimDate = params.filter_claimDate;
+        pageParams.filter_claimSubmissionDate = params.filter_claimSubmissionDate;
+        pageParams.filter_claimResponseDate = params.filter_claimResponseDate;
         pageParams.filter_batchNum = params.filter_batchNum;
         pageParams.filter_claimRefNo = params.filter_claimRefNo;
         pageParams.filter_memberId = params.filter_memberId;
@@ -89,6 +97,7 @@ export class SearchPageQueryParams {
 
         criteria.batchId = this.batchId;
         criteria.requestBundleId = this.requestBundleId;
+        criteria.bundleIds=this.bundleIds;
         criteria.caseTypes = this.caseTypes;
         criteria.claimRefNo = this.claimRefNo;
         criteria.fromDate = this.from;
@@ -104,6 +113,8 @@ export class SearchPageQueryParams {
         criteria.patientFileNo = this.filter_patientFileNo || this.patientFileNo;
         criteria.batchNo = this.filter_batchNum;
         criteria.claimDate = this.filter_claimDate;
+        criteria.claimSubmissionDate = this.filter_claimSubmissionDate;
+        criteria.claimResponseDate = this.filter_claimResponseDate;
         criteria.drname = this.filter_drName;
         criteria.nationalId = this.filter_nationalId || this.nationalId;
         criteria.netAmount = this.filter_netAmount;

@@ -7,14 +7,14 @@
         </mat-select>
     </mat-form-field>
     <div class="input-wrapper">
-        <input type="text" [formControl]="searchControl" [matChipInputFor]="chipList" autocomplete="off"
+        <input type="text" [formControl]="searchControl" [matChipInputFor]="chipList" autocomplete="off" [placeholder]="bundleIdsHint"
             [readonly]="selectedSearchMode == 'payer&date'" (keyup.enter)="isClaimUser?search(true):search(false)">
         <!-- <button mat-icon-button (click)="search()" class="search-btn">
             <mat-icon>search</mat-icon>
         </button> -->
         <div class="search-btns">
             <button
-                *ngIf="((isClaimUser && selectedSearchMode !== 'payer&date') || (isClaimUser && (selectedPayerType === '' || selectedPayerType === 'W') && selectedSearchMode == 'payer&date') )&& selectedSearchMode!='requestBundleId' &&   selectedSearchMode!='status&date' &&  tpaMode!='tpa_N'"
+                *ngIf="((isClaimUser && selectedSearchMode !== 'payer&date') || (isClaimUser && (selectedPayerType === '' || selectedPayerType === 'W') && selectedSearchMode == 'payer&date') )&& selectedSearchMode!='requestBundleId' &&   selectedSearchMode!='status&date' &&  tpaMode!='tpa_N' && selectedSearchMode!='bundleIds'"
                 type="button" matRipple matRippleColor="rgba(48,96,170,0.1)" class="search-btn" (click)="search(true)">
                 <mat-icon>search</mat-icon>
                 <span>Waseel</span>
@@ -22,7 +22,7 @@
             <span class="separator"
                 *ngIf="(hasNphiesClaims  && selectedCriteriaIsUsedInBoth && selectedSearchMode !== 'payer&date') || (hasNphiesClaims  && selectedCriteriaIsUsedInBoth && (selectedPayerType === '' || selectedPayerType === 'N') && (selectedSearchMode == 'payer&date' && selectedPayerType !== 'N'))"></span>
             <button
-                *ngIf="(hasNphiesClaims  && selectedCriteriaIsUsedInBoth && selectedSearchMode !== 'payer&date') || (hasNphiesClaims  && selectedCriteriaIsUsedInBoth && (selectedPayerType === '' || selectedPayerType === 'N') && selectedSearchMode == 'payer&date') || selectedSearchMode=='requestBundleId' ||  selectedSearchMode=='status&date' ||  tpaMode=='tpa_N'"
+                *ngIf="(hasNphiesClaims  && selectedCriteriaIsUsedInBoth && selectedSearchMode !== 'payer&date') || (hasNphiesClaims  && selectedCriteriaIsUsedInBoth && (selectedPayerType === '' || selectedPayerType === 'N') && selectedSearchMode == 'payer&date') || selectedSearchMode=='requestBundleId' ||  selectedSearchMode=='status&date' ||  tpaMode=='tpa_N' || selectedSearchMode=='bundleIds'"
                 type="button" matRipple matRippleColor="rgba(48,96,170,0.1)" class="search-btn" (click)="search(false)">
                 <mat-icon>search</mat-icon>
                 <span>NPHIES</span>

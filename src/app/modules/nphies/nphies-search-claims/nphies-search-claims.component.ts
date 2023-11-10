@@ -145,6 +145,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   showFirstLastButtons = true;
   allFilters: any = [
     { key: 'CLAIMDATE', value: 'claimDate' },
+    { key: 'CLAIMSUBMISSIONDATE', value: 'claimSubmissionDate' },
+    { key: 'CLAIMRESPONSEDATE', value: 'claimResponseDate' },
     { key: 'CLAIMREFNO', value: 'claimRefNO' },
     //{ key: 'DR_NAME', value: 'drName' },
     { key: 'MEMBERID', value: 'memberID' },
@@ -256,6 +258,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         uploadId: this.params.uploadId,
         nationalId: this.params.nationalId,
         requestBundleId: this.params.requestBundleId,
+        bundleIds: this.params.bundleIds,
         isRelatedClaim:this.params.isRelatedClaim,
         reissueReason:this.params.reissueReason,
 
@@ -263,6 +266,11 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
       }));
     }).unsubscribe();
     if (this.params.hasNoQueryParams()) {
+      this.commen.loadingChanged.next(false);
+      this.router.navigate(['']);
+    }
+    if (this.params.bundleIds!=null&&this.params.bundleIds.split(',').length>1000) {
+      this.dialogService.showMessage("should be number of Bundle IDa less then  1000", '', 'alert', true, 'OK', "");
       this.commen.loadingChanged.next(false);
       this.router.navigate(['']);
     }
@@ -383,6 +391,8 @@ console.log(this.params.organizationId);
     this.claimSearchCriteriaModel.batchId = this.params.batchId;
 
     this.claimSearchCriteriaModel.claimDate = this.params.filter_claimDate;
+    this.claimSearchCriteriaModel.claimSubmissionDate = this.params.filter_claimSubmissionDate;
+    this.claimSearchCriteriaModel.claimResponseDate = this.params.filter_claimResponseDate;
 
     this.claimSearchCriteriaModel.provderClaimReferenceNumber = this.params.claimRefNo;
 
@@ -393,15 +403,18 @@ console.log(this.params.organizationId);
     this.claimSearchCriteriaModel.memberId = this.params.memberId;
     this.claimSearchCriteriaModel.documentId = this.params.nationalId;
     this.claimSearchCriteriaModel.requestBundleId = this.params.requestBundleId;
+    this.claimSearchCriteriaModel.bundleIds=this.params.bundleIds;
     this.claimSearchCriteriaModel.invoiceNo = this.params.invoiceNo;
     this.claimSearchCriteriaModel.providerId = this.commen.providerId;
     this.claimSearchCriteriaModel.claimDate = this.params.from;
+    this.claimSearchCriteriaModel.claimSubmissionDate = this.params.claimSubmissionDate;
+    this.claimSearchCriteriaModel.claimResponseDate = this.params.claimResponseDate;
     this.claimSearchCriteriaModel.toDate = this.params.to;
     this.claimSearchCriteriaModel.reissueReason = this.params.reissueReason;
 
+    //debugger;
 
     this.claimSearchCriteriaModel.organizationId = this.params.organizationId;
-console.log(this.isSearchByStatus)
     event = await this.providerNphiesSearchService.getClaimSummary(this.claimSearchCriteriaModel, this.isSearchByStatus
 
     ).toPromise().catch(error => {
@@ -520,6 +533,8 @@ console.log(this.isSearchByStatus)
     this.claimSearchCriteriaModel.batchId = this.params.batchId;
     this.claimSearchCriteriaModel.netAmount = this.params.filter_netAmount;
     this.claimSearchCriteriaModel.claimDate = this.params.filter_claimDate || this.params.from;
+    this.claimSearchCriteriaModel.claimSubmissionDate = this.params.filter_claimSubmissionDate || this.params.claimSubmissionDate;
+    this.claimSearchCriteriaModel.claimResponseDate = this.params.filter_claimResponseDate || this.params.claimResponseDate;
     this.claimSearchCriteriaModel.provderClaimReferenceNumber = this.params.filter_claimRefNo || this.params.claimRefNo;
     this.claimSearchCriteriaModel.claimIds = this.params.claimId;
     this.claimSearchCriteriaModel.patientFileNo = this.params.patientFileNo || this.params.filter_patientFileNo;
@@ -700,7 +715,7 @@ console.log(this.isSearchByStatus)
     this.providerNphiesApprovalService.submitClaims(this.providerId, this.selectedClaims,
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
-      this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, this.params.organizationId, this.params.requestBundleId, status
+      this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, this.params.organizationId, this.params.requestBundleId,this.params.bundleIds, status
       , this.params.isRelatedClaim
     ).subscribe((event) => {
       if (event instanceof HttpResponse) {
@@ -741,6 +756,8 @@ console.log(this.isSearchByStatus)
     this.params.patientFileNo = this.params.filter_patientFileNo ? this.params.filter_patientFileNo : this.params.patientFileNo;
     this.params.nationalId = this.params.filter_nationalId ? this.params.filter_nationalId : this.params.nationalId;
     this.params.from = this.params.filter_claimDate ? this.params.filter_claimDate : this.params.from;
+    this.params.claimSubmissionDate = this.params.filter_claimSubmissionDate ? this.params.filter_claimSubmissionDate : this.params.claimSubmissionDate;
+    this.params.claimResponseDate = this.params.filter_claimResponseDate ? this.params.filter_claimResponseDate : this.params.claimResponseDate;
     this.params.netAmount = this.params.filter_netAmount ? this.params.filter_netAmount : this.params.netAmount;
     this.params.isRelatedClaim  = this.params.filter_isRelatedClaim ? this.params.filter_isRelatedClaim : this.params.isRelatedClaim;
     this.params.reissueReason  = this.params.reissueReason ? this.params.reissueReason : this.params.reissueReason;
@@ -1107,6 +1124,14 @@ console.log(this.isSearchByStatus)
         const dates: any = this.claimList.claimDate;
         this.params.filter_claimDate = dates.format('DD-MM-yyyy');
         break;
+      case ClaimListFilterSelection.CLAIMSUBMISSIONDATE:
+            const submissiondates: any = this.claimList.claimSubmissionDate;
+            this.params.filter_claimSubmissionDate = submissiondates.format('DD-MM-yyyy');
+            break;
+      case ClaimListFilterSelection.CLAIMRESPONSEDATE:
+                const responsedates: any = this.claimList.claimResponseDate;
+                this.params.filter_claimResponseDate = responsedates.format('DD-MM-yyyy');
+                break;
       case ClaimListFilterSelection.CLAIMREFNO:
         this.params.filter_claimRefNo = this.claimList.claimRefNO;
         break;
@@ -1140,6 +1165,12 @@ console.log(this.isSearchByStatus)
     const dates = this.claimList.claimDate !== undefined && this.claimList.claimDate !== null &&
       this.claimList.claimDate !== '' ? this.claimList.claimDate.format('DD-MM-yyyy') : '';
     this.params.filter_claimDate = ClaimListFilterSelection.CLAIMDATE ? dates : this.params.filter_claimDate;
+    const submissiondates = this.claimList.claimSubmissionDate !== undefined && this.claimList.claimSubmissionDate !== null &&
+    this.claimList.claimSubmissionDate !== '' ? this.claimList.claimSubmissionDate.format('DD-MM-yyyy') : '';
+  this.params.filter_claimSubmissionDate = ClaimListFilterSelection.CLAIMSUBMISSIONDATE ? submissiondates : this.params.filter_claimSubmissionDate;
+  const responsedates = this.claimList.claimResponseDate !== undefined && this.claimList.claimResponseDate !== null &&
+  this.claimList.claimResponseDate !== '' ? this.claimList.claimResponseDate.format('DD-MM-yyyy') : '';
+this.params.filter_claimResponseDate = ClaimListFilterSelection.CLAIMRESPONSEDATE ? responsedates : this.params.filter_claimResponseDate;
     this.params.filter_netAmount = ClaimListFilterSelection.CLAIMNET ? this.claimList.netAmount : this.params.filter_netAmount;
     this.params.filter_isRelatedClaim = ClaimListFilterSelection.ISREALTED ? this.claimList.isRelatedClaim : this.params.filter_isRelatedClaim;
     this.params.filter_batchNum = ClaimListFilterSelection.BATCHNUM ? this.claimList.batchNo : this.params.filter_batchNum;
@@ -1176,6 +1207,20 @@ console.log(this.isSearchByStatus)
             this.params.filter_claimDate = ClaimListFilterSelection.CLAIMDATE ? dates : this.params.filter_claimDate;
             delete this.params.filter_claimDate;
             break;
+        case ClaimListFilterSelection.CLAIMSUBMISSIONDATE:
+                const submissiondates = this.claimList.claimSubmissionDate !== undefined && this.claimList.claimSubmissionDate !== null &&
+                  this.claimList.claimSubmissionDate !== '' &&
+                  typeof this.claimList.claimSubmissionDate !== 'string' ? this.claimList.claimSubmissionDate.format('DD-MM-yyyy') : '';
+                this.params.filter_claimSubmissionDate = ClaimListFilterSelection.CLAIMSUBMISSIONDATE ? submissiondates : this.params.filter_claimSubmissionDate;
+                delete this.params.filter_claimSubmissionDate;
+                break;
+        case ClaimListFilterSelection.CLAIMRESPONSEDATE:
+                    const responsedates = this.claimList.claimResponseDate !== undefined && this.claimList.claimResponseDate !== null &&
+                      this.claimList.claimResponseDate !== '' &&
+                      typeof this.claimList.claimResponseDate !== 'string' ? this.claimList.claimResponseDate.format('DD-MM-yyyy') : '';
+                    this.params.filter_claimResponseDate = ClaimListFilterSelection.CLAIMRESPONSEDATE ? responsedates : this.params.filter_claimResponseDate;
+                    delete this.params.filter_claimResponseDate;
+                    break;
           case ClaimListFilterSelection.CLAIMREFNO:
             this.params.filter_claimRefNo = this.claimList.claimRefNO;
             delete this.params.filter_claimRefNo;
@@ -1232,6 +1277,14 @@ console.log(this.isSearchByStatus)
       typeof this.claimList.claimDate !== 'string') {
       this.setReloadedFilters(ClaimListFilterSelection.CLAIMDATE);
     }
+    if (this.params.filter_claimSubmissionDate != null && this.params.filter_claimSubmissionDate !== '' && this.params.filter_claimSubmissionDate !== undefined &&
+    typeof this.claimList.claimSubmissionDate !== 'string') {
+    this.setReloadedFilters(ClaimListFilterSelection.CLAIMSUBMISSIONDATE);
+   }
+   if (this.params.filter_claimResponseDate != null && this.params.filter_claimResponseDate !== '' && this.params.filter_claimResponseDate !== undefined &&
+  typeof this.claimList.claimResponseDate !== 'string') {
+  this.setReloadedFilters(ClaimListFilterSelection.CLAIMRESPONSEDATE);
+}
     if (this.params.filter_claimRefNo != null && this.params.filter_claimRefNo !== '' && this.params.filter_claimRefNo !== undefined &&
       (this.params.claimRefNo === null || this.params.claimRefNo === undefined || this.params.claimRefNo === '')) {
       this.setReloadedFilters(ClaimListFilterSelection.CLAIMREFNO);
@@ -1280,6 +1333,22 @@ console.log(this.isSearchByStatus)
         this.claimList.claimDate = moment(dates);
       }
     }
+    if (this.params.filter_claimSubmissionDate != null && this.params.filter_claimSubmissionDate !== '' && this.params.filter_claimSubmissionDate !== undefined) {
+        const splitDate = this.params.filter_claimSubmissionDate.split('-');
+        if (splitDate.length > 2) {
+          const finaldate = splitDate[1] + '-' + splitDate[0] + '-' + splitDate[2];
+          const dates = new Date(finaldate);
+          this.claimList.claimSubmissionDate = moment(dates);
+        }
+      }
+      if (this.params.filter_claimResponseDate != null && this.params.filter_claimResponseDate !== '' && this.params.filter_claimResponseDate !== undefined) {
+        const splitDate = this.params.filter_claimResponseDate.split('-');
+        if (splitDate.length > 2) {
+          const finaldate = splitDate[1] + '-' + splitDate[0] + '-' + splitDate[2];
+          const dates = new Date(finaldate);
+          this.claimList.claimResponseDate = moment(dates);
+        }
+      }
     if (this.params.filter_claimRefNo != null && this.params.filter_claimRefNo !== '' && this.params.filter_claimRefNo !== undefined &&
       (this.params.claimRefNo === null || this.params.claimRefNo === undefined || this.params.claimRefNo === '')) {
       this.setReloadedInputFilters('claimRefNO', this.params.filter_claimRefNo);
@@ -1607,6 +1676,11 @@ console.log(this.isSearchByStatus)
     return ['queued', 'pended', 'approved', 'partial', 'rejected', 'failednphies', 'invalid'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
 
+  get showLatestDate() {
+    // tslint:disable-next-line:max-line-length
+    return ['queued', 'pended', 'approved', 'partial', 'rejected', 'failednphies', 'invalid', 'cancelled'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+  }
+
   get showGenerateAttachment() {
     return ['accepted'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
   }
@@ -1650,7 +1724,8 @@ console.log(this.isSearchByStatus)
 
   get showMoveToReadyState() {
     // tslint:disable-next-line:max-line-length
-    return ['cancelled', 'rejected'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase()) || (['queued'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase()) && this.userPrivileges.WaseelPrivileges.isPAM);
+    return ['cancelled', 'rejected','error'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase()) || 
+    (['queued','error','failednphies','pended'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase()) && this.userPrivileges.WaseelPrivileges.isNphiesAdmin);
   }
 
   get showRevalidate() {
@@ -1684,6 +1759,7 @@ console.log(this.isSearchByStatus)
         model.from = this.params.from;
       model.nationalId = this.params.nationalId;
       model.requestBundleId = this.params.requestBundleId;
+      model.bundleIds=this.params.bundleIds;
       model.statuses = [];
       model.statuses.push(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
       model.organizationId = this.params.organizationId;
@@ -1820,7 +1896,7 @@ console.log(this.isSearchByStatus)
             this.params.uploadId, this.params.claimRefNo, this.params.to,
             payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
             this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, this.params.organizationId,
-             status, this.params.requestBundleId,this.params.isRelatedClaim 
+             status, this.params.requestBundleId,this.params.bundleIds,this.params.isRelatedClaim 
           ).subscribe(event => {
             if (event instanceof HttpResponse) {
 
@@ -1918,6 +1994,7 @@ console.log(this.isSearchByStatus)
         model.uploadId, model.claimRefNo, model.to,
         model.payerIds, model.batchId, model.memberId, model.invoiceNo,
         model.patientFileNo, model.from, model.claimTypes, model.netAmount, model.nationalId, model.statuses, this.params.organizationId, this.params.requestBundleId,
+        this.params.bundleIds,
         this.params.isRelatedClaim
         );
     } else {
@@ -1993,7 +2070,7 @@ console.log(this.isSearchByStatus)
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
       this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, this.params.organizationId,
-       attachmentStatus, this.params.requestBundleId,this.selectedstatus,
+       attachmentStatus, this.params.requestBundleId,this.params.bundleIds,this.selectedstatus,
        this.params.isRelatedClaim 
     ).subscribe((event) => {
       if (event instanceof HttpResponse) {
@@ -2098,6 +2175,7 @@ console.log(this.isSearchByStatus)
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
       this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId,
        this.params.organizationId, status, this.params.requestBundleId,
+       this.params.bundleIds,
        this.params.isRelatedClaim ).subscribe(event => {
         if (event instanceof HttpResponse) {
           this.commen.loadingChanged.next(false);
@@ -2139,12 +2217,29 @@ console.log(this.isSearchByStatus)
   }
 
   moveToReadyState() {
+    if(this.userPrivileges.WaseelPrivileges.isNphiesAdmin){
+    this.dialogService.openMessageDialog(
+      new MessageDialogData('Move To Ready Status?',
+          `Are you sure you want to move the status of claims to ready for submission? This cannot be undone`,
+          false,
+          true)).subscribe(res=>{
+            if(res===true){
+              this.callmoveToReadyState();
+          }})}else{
+            this.callmoveToReadyState();
+          }
+   
+   
+  
+  }
+  callmoveToReadyState(){
     if (this.selectedClaims.length == 0) {
       this.moveAllToReadyState();
     } else {
       this.moveSelectedToReadyState();
     }
   }
+  
 
   moveAllToReadyState() {
     if (this.commen.loading) {
@@ -2165,7 +2260,7 @@ console.log(this.isSearchByStatus)
       this.params.uploadId, this.params.claimRefNo, this.params.to,
       payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
       this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId, 
-      this.params.organizationId, status, this.params.requestBundleId,this.params.isRelatedClaim 
+      this.params.organizationId, status, this.params.requestBundleId,this.params.bundleIds,this.params.isRelatedClaim 
     ).subscribe((event) => {
       if (event instanceof HttpResponse) {
         if (event.body['status'] == 'Queued') {
@@ -2402,6 +2497,7 @@ console.log(this.isSearchByStatus)
       model.from = this.params.from;
     model.nationalId = this.params.nationalId;
     model.requestBundleId = this.params.requestBundleId;
+    model.bundleIds=this.params.bundleIds;
     model.statuses = [];
     model.statuses.push(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
     model.organizationId = this.params.organizationId;

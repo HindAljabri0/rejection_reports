@@ -51,7 +51,6 @@ import { NonSubmittedClaimsComponent } from './pages/dashboard/components/non-su
 import { SubmittedClaimsComponent } from './pages/dashboard/components/submitted-claims/submitted-claims.component';
 import { dashboardReducer } from './pages/dashboard/store/dashboard.reducer';
 import { DashboardEffects } from './pages/dashboard/store/dashboard.effects';
-import { TopFiveRejectionsComponent } from './pages/dashboard/components/top-five-rejections/top-five-rejections.component';
 import { RejectionCardComponent } from './pages/dashboard/components/rejection-card/rejection-card.component';
 import { ChartsModule, ThemeService } from 'ng2-charts';
 import { mainReducer } from './store/mainStore.reducer';
@@ -142,7 +141,6 @@ import { SsoComponent } from './sso/sso.component';
         SearchCriteriaComponent,
         NonSubmittedClaimsComponent,
         SubmittedClaimsComponent,
-        TopFiveRejectionsComponent,
         RejectionCardComponent,
         ClaimAttachmentsManagementComponent,
         ImageToolTipDirective,
@@ -225,7 +223,6 @@ import { SsoComponent } from './sso/sso.component';
         ClaimDialogComponent,
         PaymentClaimDetailDailogComponent,
         RejectionReportClaimDialogComponent,
-        TopFiveRejectionsComponent,
         DownloadOverlayComponent,
         ConfirmAdminDeleteDialogComponent,
         AlertDialogComponent
@@ -237,8 +234,7 @@ import { SsoComponent } from './sso/sso.component';
         PaymentClaimDetailDailogComponent,
         RejectionReportClaimDialogComponent,
         NonSubmittedClaimsComponent,
-        SubmittedClaimsComponent,
-        TopFiveRejectionsComponent,
+        SubmittedClaimsComponent,       
         ImageTooltipComponent,
         UploadSummaryDialogComponent,
         ChangeLogDialogComponent,

@@ -2,7 +2,6 @@ import { Component, OnInit, Type } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { NonSubmittedClaimsComponent } from './components/non-submitted-claims/non-submitted-claims.component';
 import { SubmittedClaimsComponent } from './components/submitted-claims/submitted-claims.component';
-import { TopFiveRejectionsComponent } from './components/top-five-rejections/top-five-rejections.component';
 import { GuidedTourService, GuidedTour } from 'ngx-guided-tour';
 import { SharedServices } from 'src/app/services/shared.services';
 import { ViewportScroller } from '@angular/common';
@@ -170,7 +169,6 @@ export class DashboardComponent implements OnInit {
     dashboardSections: { label: string, key: Type<any>, index: string }[] = [
         { label: 'All Claims Before Submission', key: NonSubmittedClaimsComponent, index: '0' },
         { label: 'All Claims After Submission', key: SubmittedClaimsComponent, index: '1' },
-        { label: 'Top 5 Rejections', key: TopFiveRejectionsComponent, index: '2' },
     ];
 
     async ngOnInit() {

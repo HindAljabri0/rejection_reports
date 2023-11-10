@@ -11,9 +11,6 @@ export interface DashboardStatus {
     searchCriteria: SearchCriteria;
     notSubmittedClaims: DashboardCardData;
     submittedClaims: DashboardCardData;
-    rejectionByDepartment: DashboardCardData;
-    rejectionByDoctor: DashboardCardData;
-    rejectionByService: DashboardCardData;
     departmentNames: any;
 }
 
@@ -38,10 +35,7 @@ const initState: DashboardStatus = {
             'OUTSTANDING',
             'PENDING',
             'UNDER_PROCESS'])
-    },
-    rejectionByDepartment: { loading: false, data: new RejectionCardData('Department') },
-    rejectionByDoctor: { loading: false, data: new RejectionCardData('Doctor') },
-    rejectionByService: { loading: false, data: new RejectionCardData('Service') },
+    }, 
     departmentNames: null
 };
 
@@ -87,9 +81,6 @@ export const dashboardSelector = createFeatureSelector<DashboardStatus>('dashboa
 export const getSummaryByName = (name: actions.DashboardCardNames) => createSelector(dashboardSelector, (state) => state[name]);
 export const getNonSubmittedClaims = createSelector(dashboardSelector, (state) => state.notSubmittedClaims);
 export const getSubmittedClaims = createSelector(dashboardSelector, (state) => state.submittedClaims);
-export const getRejectionByDepartment = createSelector(dashboardSelector, (state) => state.rejectionByDepartment);
-export const getRejectionByDoctor = createSelector(dashboardSelector, (state) => state.rejectionByDoctor);
-export const getRejectionByService = createSelector(dashboardSelector, (state) => state.rejectionByService);
 
 
 export const getDepartments = createSelector(dashboardSelector, (state) => state.departmentNames);
