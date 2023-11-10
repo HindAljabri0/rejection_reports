@@ -895,16 +895,20 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         let bodySite = this.bodySiteList.filter(x => x.value === this.FormItem.controls.bodySite.value)[0];       
         model.bodySite = this.FormItem.controls.bodySite ? bodySite ? bodySite.value : '' : '';
         model.bodySiteName = this.FormItem.controls.bodySite ? bodySite ? bodySite.name : '' : '';
+        
+        this.subSiteList = this.sharedDataService.getSubSite('oral'); 
+        let subSite = this.subSiteList.filter(x => x.value === this.FormItem.controls.subSite.value)[0];   
+  
+     model.subSite = this.FormItem.controls.subSite ? subSite ? subSite.value : '': '';
+     model.subSiteName = this.FormItem.controls.subSite ? subSite ? subSite.name:'' : '';
+
       } else {
         model.bodySite = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.value : '';
         model.bodySiteName = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.name : '';
-      }
-if(!this.FormItem.controls.cnhiSubsite.value && this.data.source == 'CNHI'){
-    this.subSiteList = this.sharedDataService.getSubSite('oral'); 
-}else{
-      model.subSite = this.FormItem.controls.subSite.value ? this.FormItem.controls.subSite.value.value : '';
+        model.subSite = this.FormItem.controls.subSite.value ? this.FormItem.controls.subSite.value.value : '';
       model.subSiteName = this.FormItem.controls.subSite.value ? this.FormItem.controls.subSite.value.name : '';
-}
+      }
+
       // tslint:disable-next-line:radix
       model.quantity = parseFloat(this.FormItem.controls.quantity.value);
       model.quantityCode = this.FormItem.controls.quantityCode.value;
