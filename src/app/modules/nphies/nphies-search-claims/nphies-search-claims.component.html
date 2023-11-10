@@ -272,9 +272,9 @@
                       </mat-menu>
                     </div>
                   </th>
-                  <th 
+                  <th *ngIf="showLatestDate === true"
                   class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                  <div *ngIf="showLatestDate === true" class="column-header-action" [ngClass]="checkAppliedFilter(claimSearchSelection.CLAIMSUBMISSIONDATE)">
+                  <div class="column-header-action" [ngClass]="checkAppliedFilter(claimSearchSelection.CLAIMSUBMISSIONDATE)">
                     <span>Submission Date</span>
                     <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="claimSubmissionDateFilter" (click)="checkReloadedFilter()">
                       <mat-icon>filter_list_outline</mat-icon>
@@ -301,9 +301,9 @@
                     </mat-menu>
                   </div>
                 </th>
-                <th 
+                <th *ngIf="showLatestDate === true"
                 class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
-                <div *ngIf="showLatestDate === true" class="column-header-action" [ngClass]="checkAppliedFilter(claimSearchSelection.CLAIMRESPONSEDATE)">
+                <div  class="column-header-action" [ngClass]="checkAppliedFilter(claimSearchSelection.CLAIMRESPONSEDATE)">
                   <span>Response Date</span>
                   <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="claimResponseDateFilter" (click)="checkReloadedFilter()">
                     <mat-icon>filter_list_outline</mat-icon>
