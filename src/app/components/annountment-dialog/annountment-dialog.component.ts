@@ -15,6 +15,7 @@ export class AnnountmentDialogComponent implements OnInit {
   Announcements = [];
 
   ngOnInit() {
+    localStorage.setItem('hasDisplayedAnnouncementDialogue', "true");
     this.Announcements = this.data.AnnouncementsInfo;
   }
 
