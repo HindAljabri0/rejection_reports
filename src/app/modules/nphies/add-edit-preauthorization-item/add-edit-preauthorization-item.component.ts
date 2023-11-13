@@ -369,6 +369,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             if (type.itemType && type.itemType === 'medication-codes') {
                 this.FormItem.controls.quantityCode.setValidators([Validators.required]);
                 this.FormItem.controls.quantityCode.updateValueAndValidity();
+                this.FormItem.controls.quantityCode.setValue('{package}');
             } else {
                 this.FormItem.controls.quantityCode.clearValidators();
                 this.FormItem.controls.quantityCode.updateValueAndValidity();
