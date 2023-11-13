@@ -468,6 +468,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
             this.FormItem.controls.quantityCode.setValidators([Validators.required]);
             this.FormItem.controls.quantityCode.updateValueAndValidity();
+            this.FormItem.controls.quantityCode.setValue('{package}');
+
             this.subSiteList = (this.data.source === 'CNHI' && !this.FormItem.controls.cnhiSubsite.value)
                 ? this.sharedDataService.getSubSite('oral')
                 : this.sharedDataService.getSubSite(this.data.type);
