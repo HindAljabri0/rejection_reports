@@ -272,6 +272,64 @@
                       </mat-menu>
                     </div>
                   </th>
+                  <th *ngIf="showLatestDate === true"
+                  class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
+                  <div class="column-header-action" [ngClass]="checkAppliedFilter(claimSearchSelection.CLAIMSUBMISSIONDATE)">
+                    <span>Submission Date</span>
+                    <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="claimSubmissionDateFilter" (click)="checkReloadedFilter()">
+                      <mat-icon>filter_list_outline</mat-icon>
+                    </button>
+                    <mat-menu #claimSubmissionDateFilter="matMenu" xPosition="before" class="filter-menu">
+                      <div class="menu-body">
+                        <div (click)="$event.stopPropagation()">
+                          <div class="form-group">
+                            <label class="control-label">Submission Date</label>
+                            <div class="date-picker">
+                              <input [(ngModel)]="claimList.claimSubmissionDate" #claimSubmissionDate="ngModel" name="claimSubmissionDate" class="form-control" placeholder="Claim Submission Date"
+                                [matDatepicker]="claimSubmissionDatePicker">
+                              <mat-datepicker-toggle [for]="claimSubmissionDatePicker">
+                              </mat-datepicker-toggle>
+                              <mat-datepicker #claimSubmissionDatePicker></mat-datepicker>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="btn-list text-right">
+                          <button mat-flat-button (click)="clearFilters('claimSubmissionDate')">Clear</button>
+                          <button mat-flat-button color="primary" (click)="searchClaimBased(claimSearchSelection.CLAIMSUBMISSIONDATE)">Filter</button>
+                        </div>
+                      </div>
+                    </mat-menu>
+                  </div>
+                </th>
+                <th *ngIf="showLatestDate === true"
+                class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
+                <div  class="column-header-action" [ngClass]="checkAppliedFilter(claimSearchSelection.CLAIMRESPONSEDATE)">
+                  <span>Response Date</span>
+                  <button type="button" class="action-btn" matRipple [matMenuTriggerFor]="claimResponseDateFilter" (click)="checkReloadedFilter()">
+                    <mat-icon>filter_list_outline</mat-icon>
+                  </button>
+                  <mat-menu #claimResponseDateFilter="matMenu" xPosition="before" class="filter-menu">
+                    <div class="menu-body">
+                      <div (click)="$event.stopPropagation()">
+                        <div class="form-group">
+                          <label class="control-label">Response Date</label>
+                          <div class="date-picker">
+                            <input [(ngModel)]="claimList.claimResponseDate" #claimResponseDate="ngModel" name="claimResponseDate" class="form-control" placeholder="Claim Response Date"
+                              [matDatepicker]="claimResponseDatePicker">
+                            <mat-datepicker-toggle [for]="claimResponseDatePicker">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #claimResponseDatePicker></mat-datepicker>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="btn-list text-right">
+                        <button mat-flat-button (click)="clearFilters('claimResponseDate')">Clear</button>
+                        <button mat-flat-button color="primary" (click)="searchClaimBased(claimSearchSelection.CLAIMRESPONSEDATE)">Filter</button>
+                      </div>
+                    </div>
+                  </mat-menu>
+                </div>
+              </th>
                   <th
                     class="text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                     <div class="column-header-action" [ngClass]="checkAppliedFilter(claimSearchSelection.CLAIMNET)">
@@ -421,6 +479,12 @@
                     <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="row-click text-nowrap">
                       {{claim.claimDate | date: 'dd-MM-yyyy'}}
                     </td>
+                    <td *ngIf="showLatestDate === true" (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="row-click text-nowrap">
+                        {{claim.body.claimSubmissionDate | date: 'dd-MM-yyyy'}}
+                      </td>
+                      <td *ngIf="showLatestDate === true" (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="row-click text-nowrap">
+                        {{claim.body.claimResponseDate | date: 'dd-MM-yyyy'}}
+                      </td>
                     <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="row-click text-nowrap">
                       {{claim.netAmount}}<span class="currency" *ngIf="claim.netAmount"> SR</span>
                     </td>

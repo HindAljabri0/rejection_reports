@@ -214,7 +214,7 @@
             </div>
             <div class="col-4 col-xxl-3">
               <div class="form-group">
-                <label class="control-label">Related Preauthorization Reference No(s).
+                <label class="control-label">GMS Referral ID
                   <mat-icon class="material-icons-outlined size-20" matTooltip="Useful for extending a transferred preauthorization">
                     info</mat-icon>
                 </label>
@@ -565,8 +565,8 @@
 
             <div class="row small-gutter">
               <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                  <label class="control-label">Status</label>
+                <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('status').touched) && FormPreAuthorization.get('status').hasError('required')}">
+                  <label class="control-label">Status<span class="asterisk">*</span></label>
                   <mat-form-field class="form-control custom-select-control">
                     <mat-select formControlName="status" placeholder="Select status">
                       <mat-option value="">Select status</mat-option>
@@ -574,17 +574,23 @@
                     </mat-option>
                     </mat-select>
                   </mat-form-field>
+                  <div *ngIf="(isSubmitted || FormPreAuthorization.get('status').touched) && FormPreAuthorization.get('status').hasError('required')">
+                    <span class="error-text">Please select the status</span>
+                  </div>
                   </div>
               </div>
               <div class="col-4 col-xxl-3">
-                <div class="form-group">
-                  <label class="control-label">Class</label>
+                <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('encounterClass').touched) && FormPreAuthorization.get('encounterClass').hasError('required')}">
+                  <label class="control-label">Class<span class="asterisk">*</span></label>
                   <mat-form-field class="form-control custom-select-control">
                     <mat-select formControlName="encounterClass" placeholder="Select class">
                       <mat-option value="">Select class</mat-option>
                       <mat-option *ngFor="let classType of encounterClassList" [value]="classType.value">{{classType.name}}</mat-option>   
                     </mat-select>
                   </mat-form-field>
+                  <div *ngIf="(isSubmitted || FormPreAuthorization.get('encounterClass').touched) && FormPreAuthorization.get('encounterClass').hasError('required')">
+                    <span class="error-text">Please select the class</span>
+                  </div>
                 </div>
               </div>
               <div class="col-4 col-xxl-3">
@@ -630,29 +636,29 @@
                   <label class="control-label">Period<span class="asterisk">*</span> </label>
                   <div class="row small-gutter">
                     <div class="col-6">
-                      <div class="date-picker" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('startDate').touched) && FormPreAuthorization.get('startDate').hasError('required')}">
-                        <input [matDatepicker]="periodStartDate" class="form-control" placeholder="Start date" formControlName="startDate">
-                        <mat-datepicker-toggle [for]="periodStartDate"></mat-datepicker-toggle>
-                        <mat-datepicker #periodStartDate></mat-datepicker>
+                        <div class="date-picker" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('startDate').touched) && FormPreAuthorization.get('startDate').hasError('required')}">
+                            <input [owlDateTime]="startDate" class="form-control" placeholder="Select service end date" formControlName="startDate">
+                                 <mat-datepicker-toggle [owlDateTimeTrigger]="startDate"></mat-datepicker-toggle>
+                                 <owl-date-time #startDate></owl-date-time>
+                        </div>
+                           </div>
+                        <div *ngIf="(isSubmitted || FormPreAuthorization.get('startDate').touched) && FormPreAuthorization.get('startDate').hasError('required')">
+                            <span class="error-text">Please select the start date</span>
+                          </div>
+                        <div class="col-6">
+                            <div class="date-picker" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('periodEnd').touched) && FormPreAuthorization.get('periodEnd').hasError('required')}">
+                                <input [owlDateTime]="periodEnd" class="form-control" placeholder="End date" formControlName="periodEnd">
+                                     <mat-datepicker-toggle [owlDateTimeTrigger]="periodEnd"></mat-datepicker-toggle>
+                                     <owl-date-time #periodEnd></owl-date-time>
+                            </div>
+                        </div>
+                        <div *ngIf="(isSubmitted || FormPreAuthorization.get('periodEnd').touched) && FormPreAuthorization.get('periodEnd').hasError('required')">
+                            <span class="error-text">Please select a end date</span>
+                          </div>                 
                       </div>
                     </div>
-                    <div *ngIf="(isSubmitted || FormPreAuthorization.get('startDate').touched) && FormPreAuthorization.get('startDate').hasError('required')">
-                        <span class="error-text">Please select the start date</span>
-                      </div>
-                    <div class="col-6">
-                      <div class="date-picker" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('periodEnd').touched) && FormPreAuthorization.get('periodEnd').hasError('required')}">
-                        <input [matDatepicker]="periodEndDate" class="form-control" placeholder="End date" formControlName="periodEnd">
-                        <mat-datepicker-toggle [for]="periodEndDate"></mat-datepicker-toggle>
-                        <mat-datepicker #periodEndDate></mat-datepicker>
-                      </div>
-                    </div>
-                    <div *ngIf="(isSubmitted || FormPreAuthorization.get('periodEnd').touched) && FormPreAuthorization.get('periodEnd').hasError('required')">
-                        <span class="error-text">Please select a end date</span>
-                      </div>                 
                   </div>
                 </div>
-              </div>
-            </div>
   
             <h5 class="form-title">Hospitalization</h5>
             <div class="row small-gutter">
@@ -994,12 +1000,12 @@
           <hr class="hr spaced" />
   
           <div class="form-group text-right btn-list">
-            <button type="button" mat-button color="primary" *ngIf="isPBMValidationVisible" [disabled]="!Pbm_result" (click)="openPbmValidationResponseSummaryDialog(Pbm_result)" id="PbmResponse">
+            <!-- <button type="button" mat-button color="primary" *ngIf="isPBMValidationVisible" [disabled]="!Pbm_result" (click)="openPbmValidationResponseSummaryDialog(Pbm_result)" id="PbmResponse">
               <span>PBM Response</span>
             </button>
             <button type="button" mat-flat-button color="primary" *ngIf="isPBMValidationVisible" (click)="onSubmit(true)" id="pbmRequestButton">
               <span>Request PBM</span>
-            </button>
+            </button> -->
             <button type="submit" mat-flat-button color="primary"  id="requestAuthorizationButton">
                 <span>Request CNHI Pre-Authorization</span>
             </button>

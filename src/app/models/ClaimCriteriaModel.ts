@@ -34,7 +34,8 @@ export class ClaimCriteriaModel {
     nationalId?: string;
 
     claimDate?: string;
-
+    claimSubmissionDate?: string;
+    claimResponseDate?: string;
     netAmount?: string;
 
     batchNo?: string;
@@ -103,6 +104,12 @@ export class ClaimCriteriaModel {
         }
         if(this.claimDate != null && this.claimDate.trim().length > 0){
             params += `claimDate=${this.claimDate}&`
+        }
+        if(this.claimSubmissionDate != null && this.claimSubmissionDate.trim().length > 0){
+            params += `claimSubmissionDate=${this.claimSubmissionDate}&`
+        }
+        if(this.claimResponseDate != null && this.claimResponseDate.trim().length > 0){
+            params += `claimResponseDate=${this.claimResponseDate}&`
         }
         if(this.netAmount != null && this.netAmount.trim().length > 0){
             params += `netAmount=${this.netAmount}&`
