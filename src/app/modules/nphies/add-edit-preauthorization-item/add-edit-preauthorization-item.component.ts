@@ -869,7 +869,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     CalculateUnitPrice(event) {
         if (event == "{unit}") {
             this.FormItem.patchValue({
-                unitPrice: this.granularUnit != null ? this.originalPrice / this.granularUnit.toFixed(2) : this.originalPrice,
+                unitPrice: this.granularUnit != null ? (this.originalPrice / this.granularUnit).toFixed(2): this.originalPrice,
             });
         }
         else if (event == "{package}") {
