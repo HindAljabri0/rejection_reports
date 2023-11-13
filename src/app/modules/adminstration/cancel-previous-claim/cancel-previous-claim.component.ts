@@ -128,7 +128,7 @@ export class CancelPreviousClaimComponent implements OnInit {
 
         "claimIdentifier": !this.isCancellByBundleIds ?this.CancellClaimForm.controls.claimIdentifier.value.split(','):null,
         "bundleId": this.isCancellByBundleIds ?this.CancellClaimForm.controls.requestBundleId.value.split(','):null,
-        "payerNphiesId": this.selectedDestination,
+        "payerNphiesId": this.selectedPayer,
         "memberId": "10073343178",
         "destinationId": this.selectedDestination,
         "cancelReason": "TAS",
@@ -176,5 +176,7 @@ export class CancelPreviousClaimComponent implements OnInit {
   selectPayer(event) {
     this.selectedPayer = event.value.payerNphiesId;
     this.selectedDestination = event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : event.value.payerNphiesId;
+     console.log( this.selectedPayer +"NPHIES ID")
+      console.log( this.selectedDestination +"TPA")
   }
 }
