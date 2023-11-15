@@ -54,11 +54,11 @@ export class CancelPreviousClaimComponent implements OnInit {
   }
   isValidBundleIdAndClaimsIdentifierFiled() {
     if (this.isCancellByBundleIds && (this.CancellClaimForm.controls.requestBundleId.value == null ||
-      this.CancellClaimForm.controls.requestBundleId.value == "")) {
+      this.CancellClaimForm.controls.requestBundleId.value.trim() == "")) {
       return false;
     }
     if (!this.isCancellByBundleIds && (this.CancellClaimForm.controls.claimIdentifier.value == null ||
-      this.CancellClaimForm.controls.claimIdentifier.value == "")) {
+      this.CancellClaimForm.controls.claimIdentifier.value.trim() == "")) {
       return false;
     }
     return true
@@ -126,9 +126,9 @@ export class CancelPreviousClaimComponent implements OnInit {
       this.providerLoader = true;
       const body = {
 
-        "claimIdentifier": !this.isCancellByBundleIds ?this.CancellClaimForm.controls.claimIdentifier.value:null,
-        "bundleId": this.isCancellByBundleIds ?this.CancellClaimForm.controls.requestBundleId.value:null,
-        "payerNphiesId": this.selectedDestination,
+        "claimIdentifier": !this.isCancellByBundleIds ?this.CancellClaimForm.controls.claimIdentifier.value.split(','):null,
+        "bundleId": this.isCancellByBundleIds ?this.CancellClaimForm.controls.requestBundleId.value.split(','):null,
+        "payerNphiesId": this.selectedPayer,
         "memberId": "10073343178",
         "destinationId": this.selectedDestination,
         "cancelReason": "TAS",
@@ -145,13 +145,17 @@ export class CancelPreviousClaimComponent implements OnInit {
           this.sharedServices.loadingChanged.next(false);
           this.responsDate=new Date() ;
           // this.providerLoader = false;
-          console.log(event.body['message'])
-          this.JsonRequest=event.body['requestJsonUrl'];
-          this.JsonResponse=event.body['responseJsonUrl'];
-          this.dialogService.showMessage('Success',event.body['statusReason']!=null
-          ? event.body['message']+'<br> Reason :'+event.body['statusReason']: event.body['message'], 'success', true, 'OK');
+          if(event.body['response'].length>0){
+          console.log(event.body['response'][0]['message'])
+          this.JsonRequest=event.body['response'][0]['requestJsonUrl'];
+          this.JsonResponse=event.body['response'][0]['responseJsonUrl'];
+          this.dialogService.showMessage('Success',event.body['response'][0]['statusReason']!=null
+          ? event.body['response'][0]['message']+'<br> Reason :'+event.body['response'][0]['statusReason']: event.body['response'][0]['message'], 'success', true, 'OK');
 
+          }else{
 
+            this.dialogService.showMessage('Error', event.body['error'][0], 'alert', true, 'OK');
+          }
         }
 
       }, error => {
@@ -172,5 +176,7 @@ export class CancelPreviousClaimComponent implements OnInit {
   selectPayer(event) {
     this.selectedPayer = event.value.payerNphiesId;
     this.selectedDestination = event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : event.value.payerNphiesId;
+     console.log( this.selectedPayer +"NPHIES ID")
+      console.log( this.selectedDestination +"TPA")
   }
 }
