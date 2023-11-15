@@ -34,7 +34,6 @@ export class SearchWithAdvanceComponent implements OnInit {
     { key: 'nationalId', label: 'National ID' },
     { key: 'requestBundleId', label: 'Request Bundle ID' },
     { key: 'bundleIds', label: 'Bundle IDs' }
-    
   ];
 
   searchModesNphies: { key: string, label: string }[] = [
