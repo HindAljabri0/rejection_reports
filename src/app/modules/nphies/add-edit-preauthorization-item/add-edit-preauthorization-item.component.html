@@ -99,7 +99,7 @@
         </div>
       </div>
      
-      <div class="col-4 col-lg-3" *ngIf="(FormItem.controls.isDentalBodySite.value && data.source === 'CNHI') || (((data.type !== 'oral') && data.source !== 'CNHI') || (!(data.type === 'institutional' && FormItem.controls.type.value.value === 'oral-health-ip') && data.source !== 'CNHI'))" [hidden]="data.source === 'APPROVAL' && data.providerType === 'vision'">
+      <div class="col-4 col-lg-3" *ngIf="(FormItem.controls.isDentalBodySite.value && data.source === 'CNHI') || (((data.type !== 'oral') && !(data.type === 'institutional' && FormItem.controls.type.value.value === 'oral-health-ip')) && data.source !== 'CNHI')" [hidden]="data.source === 'APPROVAL' && data.providerType === 'vision'">
         <div class="form-group">
           <label class="control-label">Body Site</label>
           <mat-form-field class="form-control custom-select-control">
