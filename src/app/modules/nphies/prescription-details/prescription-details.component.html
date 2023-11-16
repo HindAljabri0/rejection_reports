@@ -16,7 +16,7 @@
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Date Ordered</div>
-      <p class="form-control-static text-primary">{{data.prescriptionInfo.dateOrdered | date : 'dd-MM-yyyy hh:mm
+      <p class="form-control-static text-primary">{{data.preAuthorizationInfo.dateOrdered | date : 'dd-MM-yyyy hh:mm
         aa'}}</p>
     </div>
   </div>
@@ -35,7 +35,7 @@
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Type</div>
-      <p class="form-control-static text-primary">{{data.prescriptionInfo.typeName}}</p>
+      <p class="form-control-static text-primary">{{data.preAuthorizationInfo.typeName}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
@@ -43,8 +43,8 @@
       <div class="control-label">Sub Type</div>
       <p class="form-control-static text-primary">
         <span
-          *ngIf="data.prescriptionInfo && data.prescriptionInfo.subType">{{data.prescriptionInfo.subTypeName}}</span>
-        <span *ngIf="data.prescriptionInfo && !data.prescriptionInfo.subType">-</span>
+          *ngIf="data.preAuthorizationInfo && data.preAuthorizationInfo.subType">{{data.preAuthorizationInfo.subTypeName}}</span>
+        <span *ngIf="data.preAuthorizationInfo && !data.preAuthorizationInfo.subType">-</span>
       </p>
     </div>
   </div>
@@ -63,7 +63,7 @@
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Prescription Reference No.</div>
-      <p class="form-control-static text-primary">{{data.prescriptionRefNo?data.prescriptionRefNo:'-'}}</p>
+      <p class="form-control-static text-primary">{{data.preAuthRefNo?data.preAuthRefNo:'-'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
@@ -95,14 +95,14 @@
     <div class="form-group form-group-static">
       <div class="control-label">Offline Eligibility ID</div>
       <p class="form-control-static text-primary">
-        {{data.prescriptionInfo.eligibilityOfflineId?data.prescriptionInfo.eligibilityOfflineId:'-'}}</p>
+        {{data.preAuthorizationInfo.eligibilityOfflineId?data.preAuthorizationInfo.eligibilityOfflineId:'-'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Offline Eligibility Date</div>
       <p class="form-control-static text-primary">
-        {{data.prescriptionInfo.eligibilityOfflineDate?(data.prescriptionInfo.eligibilityOfflineDate | date:
+        {{data.preAuthorizationInfo.eligibilityOfflineDate?(data.preAuthorizationInfo.eligibilityOfflineDate | date:
         'dd-MM-yyyy'):'-'}}
       </p>
     </div>
@@ -111,14 +111,14 @@
     <div class="form-group form-group-static">
       <div class="control-label">Eligibility Response Identifier (Value)</div>
       <p class="form-control-static text-primary">
-        {{data.prescriptionInfo.eligibilityResponseId?data.prescriptionInfo.eligibilityResponseId:'-'}}</p>
+        {{data.preAuthorizationInfo.eligibilityResponseId?data.preAuthorizationInfo.eligibilityResponseId:'-'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Eligibility Response Identifier (URL)</div>
       <p class="form-control-static text-primary">
-        {{data.prescriptionInfo.eligibilityResponseUrl?data.prescriptionInfo.eligibilityResponseUrl:'-'}}</p>
+        {{data.preAuthorizationInfo.eligibilityResponseUrl?data.preAuthorizationInfo.eligibilityResponseUrl:'-'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">

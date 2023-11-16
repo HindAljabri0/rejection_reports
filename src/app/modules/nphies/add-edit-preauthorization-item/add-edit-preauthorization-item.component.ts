@@ -173,7 +173,6 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
                 }
             }
             if(this.data.isDentalBodySite){
-            console.log(this.data,"this.data")
             this.bodySiteList =  (this.data.isDentalBodySite === false)
           ? this.sharedDataService.getBodySite('oral')
           : this.sharedDataService.getBodySite(this.data.type)

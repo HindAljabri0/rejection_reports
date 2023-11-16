@@ -254,8 +254,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.data,"ddkkdl")
-    
+  
     this.cnhiSubType = [ { value: 'ip', name: 'InPatient' },
     { value: 'emr', name: 'Emergency' },];
     this.getPayees();
@@ -325,8 +324,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       this.FormPreAuthorization.controls.payee.setValue(this.payeeList.filter(x => x.nphiesId === this.data.preAuthorizationInfo.payeeId)[0] ? this.payeeList.filter(x => x.nphiesId === this.data.preAuthorizationInfo.payeeId)[0].nphiesId : '');
     }
-    console.log(this.data,"jkdkdk")
-    if (this.data.preAuthorizationInfo.type != null) {
+     if (this.data.preAuthorizationInfo.type != null) {
        this.FormPreAuthorization.controls.type.setValue(this.data.preAuthorizationInfo.type);
     }
        if (this.data.preAuthorizationInfo.subType != null) {

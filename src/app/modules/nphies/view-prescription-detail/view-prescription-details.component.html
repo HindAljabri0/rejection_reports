@@ -16,8 +16,8 @@
         <span>Details</span>
       </ng-template>
       <div class="pre-auth-info-wrapper">
-        <app-pre-authorization-details *ngIf="data.detailsModel" [data]="data.detailsModel">
-        </app-pre-authorization-details>
+        <app-prescription-details *ngIf="data.detailsModel" [data]="data.detailsModel">
+        </app-prescription-details>
       </div>
     </mat-tab>
     <mat-tab *ngIf="data.detailsModel.outcome !== 'Error'">

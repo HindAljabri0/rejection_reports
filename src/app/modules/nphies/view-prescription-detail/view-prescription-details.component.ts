@@ -105,9 +105,9 @@ export class ViewPrescriptionDetailsComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
     dialogConfig.data = {
-      prescriptionId: this.data.detailsModel.approvalRequestId,
-      type: this.data.detailsModel.prescriptionInfo.type,
-      printFor:"prescription"
+        preAuthId: this.data.detailsModel.approvalRequestId,
+        type: this.data.detailsModel.preAuthorizationInfo.type,
+        printFor:"prescription"
     };
     const dialogRef = this.dialog.open(ViewPrintPreviewDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
@@ -118,9 +118,9 @@ export class ViewPrescriptionDetailsComponent implements OnInit {
   }
 
   getType(){
-    const {type} = this.data.detailsModel.prescriptionInfo;
-    if( type === 'oral') return "DCAF Form"
-    else if (type === 'vision') return "OCAF Form"
-    else return "UCAF Form"
+    const {type} = this.data.detailsModel.preAuthorizationInfo;
+    // if( type === 'oral') return "DCAF Form"
+    // else if (type === 'vision') return "OCAF Form"
+    // else return "UCAF Form"
   } 
 }
