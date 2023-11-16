@@ -277,6 +277,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
             if (this.params.bundleIds.includes(",,")) {
                 this.dialogService.showMessage("Please put single ',' in between two Bundle Ids for separation.", '',
                     'alert', true, 'OK', "");
+                    this.router.navigate(['']);
             }
 
             else if (this.params.bundleIds.split(',').length > 1000) {
@@ -285,13 +286,6 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
                 this.router.navigate(['']);
 
             }
-
-
-
-
-
-
-
         }
 
         console.log(this.params.organizationId);
