@@ -8,7 +8,7 @@
         <span>Requests</span>
       </ng-template>
       <div class="block-filter-panel">
-        <form [formGroup]="FormPrescriptionTransaction" (ngSubmit)="onSubmit()">
+        <form [formGroup]="FormPreAuthTransaction" (ngSubmit)="onSubmit()">
           <div class="row small-gutter">
             <div class="col-4 col-xxl-3">
               <div class="form-group">
@@ -24,7 +24,7 @@
               <div class="form-group">
                 <label class="control-label">To Date</label>
                 <div class="date-picker">
-                  <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date" [min]="FormPrescriptionTransaction.controls.fromDate.value"
+                  <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date" [min]="FormPreAuthTransaction.controls.fromDate.value"
                     formControlName="toDate">
                   <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>
                   <mat-datepicker #filterToDate></mat-datepicker>
@@ -80,7 +80,7 @@
             <div class="col-4 col-xxl-3">
               <div class="form-group">
                 <label class="control-label">Prescription Reference No</label>
-                <input placeholder="Enter Prescription Ref No" class="form-control" formControlName="prescriptionRefNo">
+                <input placeholder="Enter Prescription Ref No" class="form-control" formControlName="preAuthRefNo">
               </div>
             </div>
             <div class="col-4 col-xxl-3">
@@ -151,7 +151,7 @@
                 <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
                   {{transaction.nphiesRequestId}}</td>
                 <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
-                  {{transaction.prescriptionRefNo ? transaction.prescriptionRefNo : '-'}}</td>
+                  {{transaction.preAuthRefNo ? transaction.preAuthRefNo : '-'}}</td>
                 <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">
                   {{transaction.provClaimNo ? transaction.provClaimNo : '-'}}</td>
                 <td class="row-click" (click)="openDetailsDialog(transaction.requestId, transaction.responseId)">

@@ -222,6 +222,7 @@ import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth
         AddEditVisionLensSpecificationsComponent,
         AddEditSupportingInfoModalComponent,
         ApiErrorsDialogComponent,
+        ViewPrescriptionDetailsComponent,
         AddCommunicationDialogComponent,
         CancelReasonModalComponent,
         AddEditItemDetailsModalComponent,
