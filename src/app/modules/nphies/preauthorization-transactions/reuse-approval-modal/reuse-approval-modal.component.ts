@@ -40,17 +40,29 @@ export class ReuseApprovalModalComponent implements OnInit {
         if (this.data.detailsModel.visionPrescription && this.data.detailsModel.visionPrescription.dateWritten) {
             // tslint:disable-next-line:max-line-length
         }
-
-        this.data.detailsModel.preAuthorizationInfo.typeName = this.sharedDataService.claimTypeList.filter(
-            x => x.value === this.data.detailsModel.preAuthorizationInfo.type)[0]
-            ? this.sharedDataService.claimTypeList.filter(x => x.value === this.data.detailsModel.preAuthorizationInfo.type)[0].name
+        if( this.data.detailsModel.preAuthorizationInfo.typeName){
+        if (this.data.detailsModel.beneficiary.insurancePlan.payerId === '0000000163') {
+            this.data.detailsModel.preAuthorizationInfo.typeName = this.sharedDataService.cnhiTypeList.filter(
+                x => x.value === this.data.detailsModel.preAuthorizationInfo.type)[0]
+                ? this.sharedDataService.cnhiTypeList.filter(x => x.value === this.data.detailsModel.preAuthorizationInfo.type)[0].value
+                : '';
+                
+        this.data.detailsModel.preAuthorizationInfo.subTypeName = this.sharedDataService.subTypeList.filter(
+            x => x.value === this.data.detailsModel.preAuthorizationInfo.subType)[0]
+            ? this.sharedDataService.subTypeList.filter(x => x.value === this.data.detailsModel.preAuthorizationInfo.subType)[0].value
             : '';
-
+        } else {
+            this.data.detailsModel.preAuthorizationInfo.typeName = this.sharedDataService.claimTypeList.filter(
+                x => x.value === this.data.detailsModel.preAuthorizationInfo.type)[0]
+                ? this.sharedDataService.claimTypeList.filter(x => x.value === this.data.detailsModel.preAuthorizationInfo.type)[0].name
+                : '';
+            
         this.data.detailsModel.preAuthorizationInfo.subTypeName = this.sharedDataService.subTypeList.filter(
             x => x.value === this.data.detailsModel.preAuthorizationInfo.subType)[0]
             ? this.sharedDataService.subTypeList.filter(x => x.value === this.data.detailsModel.preAuthorizationInfo.subType)[0].name
             : '';
-
+        }
+    }
         if (this.data.detailsModel.accident) {
             this.data.detailsModel.accident.accidentTypeName = this.sharedDataService.accidentTypeList.filter(
                 x => x.value === this.data.detailsModel.accident.accidentType)[0]
@@ -61,51 +73,51 @@ export class ReuseApprovalModalComponent implements OnInit {
             if (this.data.detailsModel.encounter.adminSource != null) {
                 this.data.detailsModel.encounter.adminSource = this.sharedDataService.encounterAdminsSourceList.filter(
                     x => x.value === this.data.detailsModel.encounter.adminSource)[0]
-                    ? this.sharedDataService.encounterAdminsSourceList.filter(x => x.value === this.data.detailsModel.encounter.adminSource)[0].name
+                    ? this.sharedDataService.encounterAdminsSourceList.filter(x => x.value === this.data.detailsModel.encounter.adminSource)[0].value
                     : '';
             }
             if (this.data.detailsModel.encounter.status != null) {
                 this.data.detailsModel.encounter.status = this.sharedDataService.encounterStatusList.filter(
                     x => x.value === this.data.detailsModel.encounter.status)[0]
-                    ? this.sharedDataService.encounterStatusList.filter(x => x.value === this.data.detailsModel.encounter.status)[0].name
+                    ? this.sharedDataService.encounterStatusList.filter(x => x.value === this.data.detailsModel.encounter.status)[0].value
                     : '';
             }
             if (this.data.detailsModel.encounter.encounterClass != null) {
                 this.data.detailsModel.encounter.encounterClass = this.sharedDataService.encounterCnhiClassList.filter(
                     x => x.value === this.data.detailsModel.encounter.encounterClass)[0]
-                    ? this.sharedDataService.encounterCnhiClassList.filter(x => x.value === this.data.detailsModel.encounter.encounterClass)[0].name
+                    ? this.sharedDataService.encounterCnhiClassList.filter(x => x.value === this.data.detailsModel.encounter.encounterClass)[0].value
                     : '';
             }
             if (this.data.detailsModel.encounter.serviceType != null) {
                 this.data.detailsModel.encounter.serviceType = this.sharedDataService.encounterServiceTypeList.filter(
                     x => x.value === this.data.detailsModel.encounter.serviceType)[0]
-                    ? this.sharedDataService.encounterServiceTypeList.filter(x => x.value === this.data.detailsModel.encounter.serviceType)[0].name
+                    ? this.sharedDataService.encounterServiceTypeList.filter(x => x.value === this.data.detailsModel.encounter.serviceType)[0].value
                     : '';
             }
             if (this.data.detailsModel.encounter.priority != null) {
                 this.data.detailsModel.encounter.priority = this.sharedDataService.encounterPriorityList.filter(
                     x => x.value === this.data.detailsModel.encounter.priority)[0]
-                    ? this.sharedDataService.encounterPriorityList.filter(x => x.value === this.data.detailsModel.encounter.priority)[0].name
+                    ? this.sharedDataService.encounterPriorityList.filter(x => x.value === this.data.detailsModel.encounter.priority)[0].value
                     : '';
             }
             if (this.data.detailsModel.encounter.reAdmission != null) {
                 this.data.detailsModel.encounter.reAdmission = this.sharedDataService.encounterReAdmissionList.filter(
                     x => x.value === this.data.detailsModel.encounter.reAdmission)[0]
-                    ? this.sharedDataService.encounterReAdmissionList.filter(x => x.value === this.data.detailsModel.encounter.reAdmission)[0].name
+                    ? this.sharedDataService.encounterReAdmissionList.filter(x => x.value === this.data.detailsModel.encounter.reAdmission)[0].value
                     : '';
             }
             if (this.data.detailsModel.encounter.dischargeDispotion != null) {
                 this.data.detailsModel.encounter.dischargeDispotion = this.sharedDataService.encounterDischargeDispositionList.filter(
                     x => x.value === this.data.detailsModel.encounter.dischargeDispotion)[0]
-                    ? this.sharedDataService.encounterDischargeDispositionList.filter(x => x.value === this.data.detailsModel.encounter.dischargeDispotion)[0].name
+                    ? this.sharedDataService.encounterDischargeDispositionList.filter(x => x.value === this.data.detailsModel.encounter.dischargeDispotion)[0].value
                     : '';
             }
             if (this.data.detailsModel.encounter.startDate != null) {
-                this.data.detailsModel.encounter.startDate = moment(this.data.detailsModel.encounter.startDate).utc;
+                this.data.detailsModel.encounter.startDate = this.data.detailsModel.encounter.startDate;
             }
 
             if (this.data.detailsModel.encounter.periodEnd != null) {
-                this.data.detailsModel.encounter.periodEnd = moment(this.data.detailsModel.encounter.periodEnd).utc;
+                this.data.detailsModel.encounter.periodEnd = this.data.detailsModel.encounter.periodEnd;
             }
 
         }
