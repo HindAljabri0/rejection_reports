@@ -182,15 +182,11 @@
             <div class="col-4 col-lg-3">
                 <div class="form-group">
                     <label class="control-label">Is Package?</label>
-                    <mat-form-field class="form-control custom-select-control">
-                        <mat-select placeholder="Select">
-                            <mat-option value="">Select</mat-option>
-                            <mat-option value="Yes">Yes</mat-option>
-                            <mat-option value="No">No</mat-option>
-    
-                        </mat-select>
-                    </mat-form-field>
-                </div>
+                    <mat-radio-group class="radio-group inline" formControlName="isPackage">
+                      <mat-radio-button color="primary" [value]="true">Yes</mat-radio-button>
+                      <mat-radio-button color="primary" [value]="false">No</mat-radio-button>
+                    </mat-radio-group>
+                   </div>
             </div>
     
             <div class="col-4 col-lg-3">

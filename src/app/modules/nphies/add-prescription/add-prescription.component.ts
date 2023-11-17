@@ -2251,7 +2251,7 @@ export class AddPrescriptionComponent implements OnInit {
     this.sharedServices.loadingChanged.next(true);
 
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesApprovalService.getTransactionDetails(this.sharedServices.providerId, requestId, responseId).subscribe((event: any) => {
+    this.providerNphiesApprovalService.getPrescriberTransactionDetails(this.sharedServices.providerId, requestId, responseId).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;

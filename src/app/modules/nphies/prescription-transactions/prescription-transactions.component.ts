@@ -481,7 +481,7 @@ export class PrescriptionTransactionsComponent implements OnInit {
     if (communicationId) {
       action = this.providerNphiesApprovalService.getTransactionDetailsFromCR(this.sharedServices.providerId, requestId, communicationId);
     } else {
-      action = this.providerNphiesApprovalService.getTransactionDetails(this.sharedServices.providerId, requestId, responseId);
+      action = this.providerNphiesApprovalService.getPrescriberTransactionDetails(this.sharedServices.providerId, requestId, responseId);
     }
     // tslint:disable-next-line:max-line-length
     action.subscribe((event: any) => {
@@ -603,7 +603,7 @@ export class PrescriptionTransactionsComponent implements OnInit {
     this.sharedServices.loadingChanged.next(true);
 
     let action: any;
-    action = this.providerNphiesApprovalService.getTransactionDetails(this.sharedServices.providerId, requestId, responseId);
+    action = this.providerNphiesApprovalService.getPrescriberTransactionDetails(this.sharedServices.providerId, requestId, responseId);
 
     // tslint:disable-next-line:max-line-length
     action.subscribe((event: any) => {
