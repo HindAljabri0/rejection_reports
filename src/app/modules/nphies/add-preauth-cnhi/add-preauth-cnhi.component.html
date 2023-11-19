@@ -637,7 +637,7 @@
                   <div class="row small-gutter">
                     <div class="col-6">
                         <div class="date-picker" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('startDate').touched) && FormPreAuthorization.get('startDate').hasError('required')}">
-                            <input [owlDateTime]="startDate" class="form-control" placeholder="Select service end date" formControlName="startDate">
+                            <input [owlDateTime]="startDate" class="form-control" placeholder="Start date" formControlName="startDate">
                                  <mat-datepicker-toggle [owlDateTimeTrigger]="startDate"></mat-datepicker-toggle>
                                  <owl-date-time #startDate></owl-date-time>
                         </div>

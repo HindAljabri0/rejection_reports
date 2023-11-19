@@ -51,7 +51,7 @@ export class PrescriptionTransactionsComponent implements OnInit {
 
   typeList = this.sharedDataService.claimTypeList;
 
-  FormPrescriptionTransaction: FormGroup = this.formBuilder.group({
+  FormPreAuthTransaction: FormGroup = this.formBuilder.group({
     fromDate: [''],
     toDate: [''],
     payerId: [''],
@@ -60,7 +60,7 @@ export class PrescriptionTransactionsComponent implements OnInit {
     beneficiaryName: [''],
     documentId: [''],
     status: [''],
-    prescriptionRefNo: [''],
+    preAuthRefNo: [''],
     provClaimNo: [''],
     destinationId: [''],
     type: [''],
@@ -109,8 +109,8 @@ export class PrescriptionTransactionsComponent implements OnInit {
 
   ngOnInit() {
 
-    this.FormPrescriptionTransaction.controls.fromDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
-    this.FormPrescriptionTransaction.controls.toDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+    this.FormPreAuthTransaction.controls.fromDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+    this.FormPreAuthTransaction.controls.toDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
 
     this.routeActive.queryParams.subscribe(params => {
 
@@ -118,62 +118,62 @@ export class PrescriptionTransactionsComponent implements OnInit {
 
       if (params.fromDate != null) {
         const d1 = moment(moment(params.fromDate, 'DD-MM-YYYY')).format('YYYY-MM-DD');
-        this.FormPrescriptionTransaction.controls.fromDate.patchValue(this.datePipe.transform(d1, 'yyyy-MM-dd'));
+        this.FormPreAuthTransaction.controls.fromDate.patchValue(this.datePipe.transform(d1, 'yyyy-MM-dd'));
       }
 
       if (params.toDate != null) {
         const d2 = moment(moment(params.toDate, 'DD-MM-YYYY')).format('YYYY-MM-DD');
-        this.FormPrescriptionTransaction.controls.toDate.patchValue(this.datePipe.transform(d2, 'yyyy-MM-dd'));
+        this.FormPreAuthTransaction.controls.toDate.patchValue(this.datePipe.transform(d2, 'yyyy-MM-dd'));
       }
 
       if (params.payerId != null) {
         // tslint:disable-next-line:radix
-        this.FormPrescriptionTransaction.controls.payerId.patchValue(params.payerId);
+        this.FormPreAuthTransaction.controls.payerId.patchValue(params.payerId);
       }
 
       if (params.destinationId != null) {
         // tslint:disable-next-line:radix
-        this.FormPrescriptionTransaction.controls.destinationId.patchValue(params.destinationId);
+        this.FormPreAuthTransaction.controls.destinationId.patchValue(params.destinationId);
       }
 
       if (params.nphiesRequestId != null) {
         // tslint:disable-next-line:radix
-        this.FormPrescriptionTransaction.controls.nphiesRequestId.patchValue(params.nphiesRequestId);
+        this.FormPreAuthTransaction.controls.nphiesRequestId.patchValue(params.nphiesRequestId);
       }
 
       if (params.beneficiaryId != null) {
         // tslint:disable-next-line:radix
-        this.FormPrescriptionTransaction.controls.beneficiaryId.patchValue(parseInt(params.beneficiaryId));
+        this.FormPreAuthTransaction.controls.beneficiaryId.patchValue(parseInt(params.beneficiaryId));
       }
 
       if (params.documentId != null) {
         // tslint:disable-next-line:radix
-        this.FormPrescriptionTransaction.controls.documentId.patchValue(parseInt(params.documentId));
+        this.FormPreAuthTransaction.controls.documentId.patchValue(parseInt(params.documentId));
       }
 
       if (params.beneficiaryName != null) {
-        this.FormPrescriptionTransaction.controls.beneficiaryName.patchValue(params.beneficiaryName);
+        this.FormPreAuthTransaction.controls.beneficiaryName.patchValue(params.beneficiaryName);
       }
 
       if (params.status != null) {
-        this.FormPrescriptionTransaction.controls.status.patchValue(params.status);
+        this.FormPreAuthTransaction.controls.status.patchValue(params.status);
       }
 
       if(params.type != null){
-        this.FormPrescriptionTransaction.controls.type.patchValue(params.type);
+        this.FormPreAuthTransaction.controls.type.patchValue(params.type);
       }
 
-      if (params.prescriptionRefNo != null) {
-        // const prescriptionValue = params.prescriptionRefNo.split(',').map(x => {
+      if (params.preAuthRefNo != null) {
+        // const preAuthValue = params.preAuthRefNo.split(',').map(x => {
         //   const model: any = {};
         //   model.display = x.trim();
         //   model.value = x.trim();
         //   return model;
         // });
-        this.FormPrescriptionTransaction.controls.prescriptionRefNo.patchValue(params.prescriptionRefNo);
+        this.FormPreAuthTransaction.controls.preAuthRefNo.patchValue(params.preAuthRefNo);
       }
       if (params.provClaimNo != null) {
-        this.FormPrescriptionTransaction.controls.provClaimNo.patchValue(params.provClaimNo);
+        this.FormPreAuthTransaction.controls.provClaimNo.patchValue(params.provClaimNo);
       }
 
       if (params.page != null) {
@@ -195,8 +195,8 @@ export class PrescriptionTransactionsComponent implements OnInit {
 
   searchBeneficiaries() {
     // tslint:disable-next-line:max-line-length
-    if (this.FormPrescriptionTransaction.controls.beneficiaryName.value.length > 3) {
-      this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.FormPrescriptionTransaction.controls.beneficiaryName.value).subscribe(event => {
+    if (this.FormPreAuthTransaction.controls.beneficiaryName.value.length > 3) {
+      this.providerNphiesSearchService.beneficiaryFullTextSearch(this.sharedServices.providerId, this.FormPreAuthTransaction.controls.beneficiaryName.value).subscribe(event => {
         if (event instanceof HttpResponse) {
           const body = event.body;
           if (body instanceof Array) {
@@ -212,7 +212,7 @@ export class PrescriptionTransactionsComponent implements OnInit {
   }
 
   selectPayer(event) {
-    this.FormPrescriptionTransaction.patchValue({
+    this.FormPreAuthTransaction.patchValue({
       payerId: event.value.payerNphiesId,
       destinationId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
     });
@@ -220,7 +220,7 @@ export class PrescriptionTransactionsComponent implements OnInit {
 
   selectBeneficiary(beneficiary: BeneficiariesSearchResult) {
     this.selectedBeneficiary = beneficiary;
-    this.FormPrescriptionTransaction.patchValue({
+    this.FormPreAuthTransaction.patchValue({
       beneficiaryName: beneficiary.name + ' (' + beneficiary.documentId + ')',
       beneficiaryId: beneficiary.id,
       documentId: beneficiary.documentId
@@ -235,7 +235,7 @@ export class PrescriptionTransactionsComponent implements OnInit {
         if (body instanceof Array) {
           this.payersList = body;
           if (isFromUrl) {
-            if (this.FormPrescriptionTransaction.valid) {
+            if (this.FormPreAuthTransaction.valid) {
               this.onSubmit();
             }
           } else {
@@ -285,50 +285,50 @@ export class PrescriptionTransactionsComponent implements OnInit {
 
   onSubmit() {
     this.isSubmitted = true;
-    if (this.FormPrescriptionTransaction.valid) {
+    if (this.FormPreAuthTransaction.valid) {
       this.sharedServices.loadingChanged.next(true);
 
       const model: any = {};
-      model.fromDate = this.datePipe.transform(this.FormPrescriptionTransaction.controls.fromDate.value, 'yyyy-MM-dd');
-      model.toDate = this.datePipe.transform(this.FormPrescriptionTransaction.controls.toDate.value, 'yyyy-MM-dd');
+      model.fromDate = this.datePipe.transform(this.FormPreAuthTransaction.controls.fromDate.value, 'yyyy-MM-dd');
+      model.toDate = this.datePipe.transform(this.FormPreAuthTransaction.controls.toDate.value, 'yyyy-MM-dd');
 
-      if (this.FormPrescriptionTransaction.controls.nphiesRequestId.value) {
-        model.nphiesRequestId = this.FormPrescriptionTransaction.controls.nphiesRequestId.value;
+      if (this.FormPreAuthTransaction.controls.nphiesRequestId.value) {
+        model.nphiesRequestId = this.FormPreAuthTransaction.controls.nphiesRequestId.value;
       }
 
-      if (this.FormPrescriptionTransaction.controls.payerId.value) {
-        model.payerId = this.FormPrescriptionTransaction.controls.payerId.value;
+      if (this.FormPreAuthTransaction.controls.payerId.value) {
+        model.payerId = this.FormPreAuthTransaction.controls.payerId.value;
       }
 
-      if (this.FormPrescriptionTransaction.controls.destinationId.value) {
-        model.destinationId = this.FormPrescriptionTransaction.controls.destinationId.value;
+      if (this.FormPreAuthTransaction.controls.destinationId.value) {
+        model.destinationId = this.FormPreAuthTransaction.controls.destinationId.value;
       }
 
       // tslint:disable-next-line:max-line-length
-      if (this.FormPrescriptionTransaction.controls.beneficiaryName.value && this.FormPrescriptionTransaction.controls.beneficiaryId.value && this.FormPrescriptionTransaction.controls.documentId.value) {
-        model.documentId = parseInt(this.FormPrescriptionTransaction.controls.documentId.value, 10);
+      if (this.FormPreAuthTransaction.controls.beneficiaryName.value && this.FormPreAuthTransaction.controls.beneficiaryId.value && this.FormPreAuthTransaction.controls.documentId.value) {
+        model.documentId = parseInt(this.FormPreAuthTransaction.controls.documentId.value, 10);
       }
 
-      if (this.FormPrescriptionTransaction.controls.status.value) {
-        model.status = this.FormPrescriptionTransaction.controls.status.value;
+      if (this.FormPreAuthTransaction.controls.status.value) {
+        model.status = this.FormPreAuthTransaction.controls.status.value;
       }
 
-      if (this.FormPrescriptionTransaction.controls.prescriptionRefNo.value) {
-        model.prescriptionRefNo = this.FormPrescriptionTransaction.controls.prescriptionRefNo.value;
-        // model.prescriptionRefNo = this.FormPrescriptionTransaction.controls.prescriptionRefNo.value.map(x => {
+      if (this.FormPreAuthTransaction.controls.preAuthRefNo.value) {
+        model.preAuthRefNo = this.FormPreAuthTransaction.controls.preAuthRefNo.value;
+        // model.preAuthRefNo = this.FormPreAuthTransaction.controls.preAuthRefNo.value.map(x => {
         //   return x.value;
         // });
       }
 
-      if (this.FormPrescriptionTransaction.controls.provClaimNo.value) {
-        model.provClaimNo = this.FormPrescriptionTransaction.controls.provClaimNo.value;
+      if (this.FormPreAuthTransaction.controls.provClaimNo.value) {
+        model.provClaimNo = this.FormPreAuthTransaction.controls.provClaimNo.value;
       }
 
-      if (this.FormPrescriptionTransaction.controls.type.value) {
-        model.type = this.FormPrescriptionTransaction.controls.type.value;
+      if (this.FormPreAuthTransaction.controls.type.value) {
+        model.type = this.FormPreAuthTransaction.controls.type.value;
       }
-      if (this.FormPrescriptionTransaction.controls.RequestBundleId.value) {
-        model.requestBundleId = this.FormPrescriptionTransaction.controls.RequestBundleId.value;
+      if (this.FormPreAuthTransaction.controls.RequestBundleId.value) {
+        model.requestBundleId = this.FormPreAuthTransaction.controls.RequestBundleId.value;
       }
 
 
@@ -369,40 +369,40 @@ export class PrescriptionTransactionsComponent implements OnInit {
   editURL(fromDate?: string, toDate?: string) {
     let path = '/nphies/prescription-transactions?';
 
-    if (this.FormPrescriptionTransaction.controls.fromDate.value) {
-      path += `fromDate=${this.datePipe.transform(this.FormPrescriptionTransaction.controls.fromDate.value, 'dd-MM-yyyy')}&`;
+    if (this.FormPreAuthTransaction.controls.fromDate.value) {
+      path += `fromDate=${this.datePipe.transform(this.FormPreAuthTransaction.controls.fromDate.value, 'dd-MM-yyyy')}&`;
     }
 
-    if (this.FormPrescriptionTransaction.controls.toDate.value) {
-      path += `toDate=${this.datePipe.transform(this.FormPrescriptionTransaction.controls.toDate.value, 'dd-MM-yyyy')}&`;
+    if (this.FormPreAuthTransaction.controls.toDate.value) {
+      path += `toDate=${this.datePipe.transform(this.FormPreAuthTransaction.controls.toDate.value, 'dd-MM-yyyy')}&`;
     }
 
-    if (this.FormPrescriptionTransaction.controls.payerId.value) {
-      path += `payerId=${this.FormPrescriptionTransaction.controls.payerId.value}&`;
+    if (this.FormPreAuthTransaction.controls.payerId.value) {
+      path += `payerId=${this.FormPreAuthTransaction.controls.payerId.value}&`;
     }
 
-    if (this.FormPrescriptionTransaction.controls.destinationId.value) {
-      path += `destinationId=${this.FormPrescriptionTransaction.controls.destinationId.value}&`;
+    if (this.FormPreAuthTransaction.controls.destinationId.value) {
+      path += `destinationId=${this.FormPreAuthTransaction.controls.destinationId.value}&`;
     }
 
-    if (this.FormPrescriptionTransaction.controls.nphiesRequestId.value) {
-      path += `nphiesRequestId=${this.FormPrescriptionTransaction.controls.nphiesRequestId.value}&`;
+    if (this.FormPreAuthTransaction.controls.nphiesRequestId.value) {
+      path += `nphiesRequestId=${this.FormPreAuthTransaction.controls.nphiesRequestId.value}&`;
     }
 
     // tslint:disable-next-line:max-line-length
-    if (this.FormPrescriptionTransaction.controls.beneficiaryName.value && this.FormPrescriptionTransaction.controls.beneficiaryId.value && this.FormPrescriptionTransaction.controls.documentId.value) {
-      path += `beneficiaryId=${this.FormPrescriptionTransaction.controls.beneficiaryId.value}&`;
-      path += `beneficiaryName=${this.FormPrescriptionTransaction.controls.beneficiaryName.value}&`;
-      path += `documentId=${this.FormPrescriptionTransaction.controls.documentId.value}&`;
+    if (this.FormPreAuthTransaction.controls.beneficiaryName.value && this.FormPreAuthTransaction.controls.beneficiaryId.value && this.FormPreAuthTransaction.controls.documentId.value) {
+      path += `beneficiaryId=${this.FormPreAuthTransaction.controls.beneficiaryId.value}&`;
+      path += `beneficiaryName=${this.FormPreAuthTransaction.controls.beneficiaryName.value}&`;
+      path += `documentId=${this.FormPreAuthTransaction.controls.documentId.value}&`;
     }
 
-    if (this.FormPrescriptionTransaction.controls.status.value) {
-      path += `status=${this.FormPrescriptionTransaction.controls.status.value}&`;
+    if (this.FormPreAuthTransaction.controls.status.value) {
+      path += `status=${this.FormPreAuthTransaction.controls.status.value}&`;
     }
 
-    if (this.FormPrescriptionTransaction.controls.prescriptionRefNo.value) {
-      path += `prescriptionRefNo=${this.FormPrescriptionTransaction.controls.prescriptionRefNo.value}&`;
-      // path += `prescriptionRefNo=${this.FormPrescriptionTransaction.controls.prescriptionRefNo.value.map(x => {
+    if (this.FormPreAuthTransaction.controls.preAuthRefNo.value) {
+      path += `preAuthRefNo=${this.FormPreAuthTransaction.controls.preAuthRefNo.value}&`;
+      // path += `preAuthRefNo=${this.FormPreAuthTransaction.controls.preAuthRefNo.value.map(x => {
       //   return x.value;
       // })}&`;
     }
@@ -481,7 +481,7 @@ export class PrescriptionTransactionsComponent implements OnInit {
     if (communicationId) {
       action = this.providerNphiesApprovalService.getTransactionDetailsFromCR(this.sharedServices.providerId, requestId, communicationId);
     } else {
-      action = this.providerNphiesApprovalService.getTransactionDetails(this.sharedServices.providerId, requestId, responseId);
+      action = this.providerNphiesApprovalService.getPrescriberTransactionDetails(this.sharedServices.providerId, requestId, responseId);
     }
     // tslint:disable-next-line:max-line-length
     action.subscribe((event: any) => {
@@ -603,7 +603,7 @@ export class PrescriptionTransactionsComponent implements OnInit {
     this.sharedServices.loadingChanged.next(true);
 
     let action: any;
-    action = this.providerNphiesApprovalService.getTransactionDetails(this.sharedServices.providerId, requestId, responseId);
+    action = this.providerNphiesApprovalService.getPrescriberTransactionDetails(this.sharedServices.providerId, requestId, responseId);
 
     // tslint:disable-next-line:max-line-length
     action.subscribe((event: any) => {
@@ -656,43 +656,43 @@ export class PrescriptionTransactionsComponent implements OnInit {
     let event;
     const model: any = {};
     this.approvalSearchRequest.providerId=this.sharedServices.providerId;
-    this.approvalSearchRequest.fromDate = this.datePipe.transform(this.FormPrescriptionTransaction.controls.fromDate.value, 'yyyy-MM-dd');
-    this.approvalSearchRequest.toDate = this.datePipe.transform(this.FormPrescriptionTransaction.controls.toDate.value, 'yyyy-MM-dd');
+    this.approvalSearchRequest.fromDate = this.datePipe.transform(this.FormPreAuthTransaction.controls.fromDate.value, 'yyyy-MM-dd');
+    this.approvalSearchRequest.toDate = this.datePipe.transform(this.FormPreAuthTransaction.controls.toDate.value, 'yyyy-MM-dd');
 
-    if (this.FormPrescriptionTransaction.controls.nphiesRequestId.value) {
-      this.approvalSearchRequest.nphiesRequestId = this.FormPrescriptionTransaction.controls.nphiesRequestId.value;
+    if (this.FormPreAuthTransaction.controls.nphiesRequestId.value) {
+      this.approvalSearchRequest.nphiesRequestId = this.FormPreAuthTransaction.controls.nphiesRequestId.value;
     }
 
-    if (this.FormPrescriptionTransaction.controls.payerId.value) {
-      this.approvalSearchRequest.payerId = this.FormPrescriptionTransaction.controls.payerId.value;
+    if (this.FormPreAuthTransaction.controls.payerId.value) {
+      this.approvalSearchRequest.payerId = this.FormPreAuthTransaction.controls.payerId.value;
     }
 
-    if (this.FormPrescriptionTransaction.controls.destinationId.value) {
-      this.approvalSearchRequest.destinationId = this.FormPrescriptionTransaction.controls.destinationId.value;
+    if (this.FormPreAuthTransaction.controls.destinationId.value) {
+      this.approvalSearchRequest.destinationId = this.FormPreAuthTransaction.controls.destinationId.value;
     }
 
     // tslint:disable-next-line:max-line-length
-    if (this.FormPrescriptionTransaction.controls.beneficiaryName.value && this.FormPrescriptionTransaction.controls.beneficiaryId.value && this.FormPrescriptionTransaction.controls.documentId.value) {
-      this.approvalSearchRequest.documentId = this.FormPrescriptionTransaction.controls.documentId.value;
+    if (this.FormPreAuthTransaction.controls.beneficiaryName.value && this.FormPreAuthTransaction.controls.beneficiaryId.value && this.FormPreAuthTransaction.controls.documentId.value) {
+      this.approvalSearchRequest.documentId = this.FormPreAuthTransaction.controls.documentId.value;
     }
 
-    if (this.FormPrescriptionTransaction.controls.status.value) {
-      this.approvalSearchRequest.status = this.FormPrescriptionTransaction.controls.status.value;
+    if (this.FormPreAuthTransaction.controls.status.value) {
+      this.approvalSearchRequest.status = this.FormPreAuthTransaction.controls.status.value;
     }
 
-    if (this.FormPrescriptionTransaction.controls.prescriptionRefNo.value) {
-      this.approvalSearchRequest.prescriptionRefNo = this.FormPrescriptionTransaction.controls.prescriptionRefNo.value;
-      // model.prescriptionRefNo = this.FormPrescriptionTransaction.controls.prescriptionRefNo.value.map(x => {
+    if (this.FormPreAuthTransaction.controls.preAuthRefNo.value) {
+      this.approvalSearchRequest.preAuthRefNo = this.FormPreAuthTransaction.controls.preAuthRefNo.value;
+      // model.preAuthRefNo = this.FormPreAuthTransaction.controls.preAuthRefNo.value.map(x => {
       //   return x.value;
       // });
     }
 
 
-    if (this.FormPrescriptionTransaction.controls.type.value) {
-      this.approvalSearchRequest.type = this.FormPrescriptionTransaction.controls.type.value;
+    if (this.FormPreAuthTransaction.controls.type.value) {
+      this.approvalSearchRequest.type = this.FormPreAuthTransaction.controls.type.value;
     }
-    if (this.FormPrescriptionTransaction.controls.RequestBundleId.value) {
-      this.approvalSearchRequest.requestBundleId = this.FormPrescriptionTransaction.controls.RequestBundleId.value;
+    if (this.FormPreAuthTransaction.controls.RequestBundleId.value) {
+      this.approvalSearchRequest.requestBundleId = this.FormPreAuthTransaction.controls.RequestBundleId.value;
     }
 
     event = this.nphiesDownloadApprovalEligibilityService.downloadApprovleExcelsheet(this.approvalSearchRequest);
@@ -717,7 +717,7 @@ export class PrescriptionTransactionsComponent implements OnInit {
           const body: any = event.body;
           this.transactions.filter(x => x.requestId === requestId)[0].status = body.outcome;
           this.transactions.filter(x => x.requestId === requestId)[0].inquiryStatus = body.inquiryOutcome;
-          this.transactions.filter(x => x.requestId === requestId)[0].prescriptionRefNo = body.prescriptionRefNo;
+          this.transactions.filter(x => x.requestId === requestId)[0].preAuthRefNo = body.preAuthRefNo;
         }
         this.sharedServices.loadingChanged.next(false);
       }
@@ -750,7 +750,6 @@ export class PrescriptionTransactionsComponent implements OnInit {
       }
     });
   }
-
   get NewTransactionPrescriberProcessed() {
     return this.sharedServices.unReadPrescriberProcessedCount;
   }
@@ -758,5 +757,4 @@ export class PrescriptionTransactionsComponent implements OnInit {
   get NewPrescriberCommunicationRequests() {
     return this.sharedServices.unReadPrescriberCommunicationRequestCount;
   }
-
 }

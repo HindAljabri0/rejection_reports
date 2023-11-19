@@ -72,7 +72,7 @@ export class AddPrescriptionComponent implements OnInit {
 
   PrescriberDefault = '';
 
-  FormPrescription: FormGroup = this.formBuilder.group({
+  FormPreAuthorization: FormGroup = this.formBuilder.group({
     beneficiaryName: ['', Validators.required],
     beneficiaryId: ['', Validators.required],
     insurancePlanId: ['', Validators.required],
@@ -81,7 +81,7 @@ export class AddPrescriptionComponent implements OnInit {
     payeeType: ['', Validators.required],
     type: ['', Validators.required],
     subType: [''],
-    prescriptionRefNo: [''],
+    preAuthRefNo: [''],
     accidentType: [''],
     streetName: [''],
     city: [''],
@@ -207,9 +207,7 @@ export class AddPrescriptionComponent implements OnInit {
   today: Date;
   nationalities = nationalities;
   selectedCountry = '';
-
   currentOpenItem: number = null;
-
   claimType: string;
   defualtPageMode = "";
   selectedDefaultPlan = null;
@@ -240,10 +238,10 @@ export class AddPrescriptionComponent implements OnInit {
     this.getPayees();
     this.getTPA();
     this.getPBMValidation();
-    this.FormPrescription.controls.dateOrdered.setValue(this.removeSecondsFromDate(new Date()));
+    this.FormPreAuthorization.controls.dateOrdered.setValue(this.removeSecondsFromDate(new Date()));
     this.filteredNations.next(this.nationalities.slice());
     if (this.claimReuseId) {
-      this.FormPrescription.controls.transfer.setValue(this.data.transfer)
+      this.FormPreAuthorization.controls.transfer.setValue(this.data.transfer)
       this.getRefferalProviders();
       this.defualtPageMode = "";
     } else {
@@ -270,44 +268,44 @@ export class AddPrescriptionComponent implements OnInit {
   }
   setReuseValues() {
 
-    this.FormPrescription.controls.isNewBorn.setValue(this.data.isNewBorn);
-    if (this.data.transferscriptionProvider) {
-      if (this.providerList.filter(x => x.name === this.data.transferscriptionProvider).length > 0) {
+    this.FormPreAuthorization.controls.isNewBorn.setValue(this.data.isNewBorn);
+    if (this.data.transferAuthProvider) {
+      if (this.providerList.filter(x => x.name === this.data.transferAuthProvider).length > 0) {
         // tslint:disable-next-line:max-line-length
-        this.FormPrescription.controls.referral.setValue(this.providerList.filter(x => x.name === this.data.transferscriptionProvider)[0]);
+        this.FormPreAuthorization.controls.referral.setValue(this.providerList.filter(x => x.name === this.data.transferAuthProvider)[0]);
         this.IsOtherReferral = false;
       } else {
-        this.FormPrescription.controls.referral.setValue('-1');
-        this.FormPrescription.controls.otherReferral.setValue(this.data.transferscriptionProvider);
+        this.FormPreAuthorization.controls.referral.setValue('-1');
+        this.FormPreAuthorization.controls.otherReferral.setValue(this.data.transferAuthProvider);
         this.IsOtherReferral = true;
       }
     }
 
-    if (this.data.prescriptionDetails) {
-      if (this.data.prescriptionDetails.filter(x => x === null).length === 0) {
-        const prescriptionValue = this.data.prescriptionDetails.map(x => {
+    if (this.data.preAuthDetails) {
+      if (this.data.preAuthDetails.filter(x => x === null).length === 0) {
+        const preAuthValue = this.data.preAuthDetails.map(x => {
           const model: any = {};
           model.display = x;
           model.value = x;
           return model;
         });
-        this.FormPrescription.controls.prescriptionRefNo.setValue(prescriptionValue);
+        this.FormPreAuthorization.controls.preAuthRefNo.setValue(preAuthValue);
       }
     }
 
-    const date = this.data.prescriptionInfo.dateOrdered;
+    const date = this.data.preAuthorizationInfo.dateOrdered;
     // tslint:disable-next-line:max-line-length\
-    this.FormPrescription.controls.dateOrdered.setValue(this.removeSecondsFromDate(date));
-    if (this.data.prescriptionInfo.payeeType) {
+    this.FormPreAuthorization.controls.dateOrdered.setValue(this.removeSecondsFromDate(date));
+    if (this.data.preAuthorizationInfo.payeeType) {
       // tslint:disable-next-line:max-line-length
-      this.FormPrescription.controls.payeeType.setValue(this.sharedDataService.payeeTypeList.filter(x => x.value === this.data.prescriptionInfo.payeeType)[0] ? this.sharedDataService.payeeTypeList.filter(x => x.value === this.data.prescriptionInfo.payeeType)[0] : '');
+      this.FormPreAuthorization.controls.payeeType.setValue(this.sharedDataService.payeeTypeList.filter(x => x.value === this.data.preAuthorizationInfo.payeeType)[0] ? this.sharedDataService.payeeTypeList.filter(x => x.value === this.data.preAuthorizationInfo.payeeType)[0] : '');
       // tslint:disable-next-line:max-line-length
-      this.FormPrescription.controls.payee.setValue(this.payeeList.filter(x => x.nphiesId === this.data.prescriptionInfo.payeeId)[0] ? this.payeeList.filter(x => x.nphiesId === this.data.prescriptionInfo.payeeId)[0].nphiesId : '');
+      this.FormPreAuthorization.controls.payee.setValue(this.payeeList.filter(x => x.nphiesId === this.data.preAuthorizationInfo.payeeId)[0] ? this.payeeList.filter(x => x.nphiesId === this.data.preAuthorizationInfo.payeeId)[0].nphiesId : '');
     }
-    this.claimType = this.data.prescriptionInfo.type;
+    this.claimType = this.data.preAuthorizationInfo.type;
     // tslint:disable-next-line:max-line-length
-    this.FormPrescription.controls.type.setValue(this.sharedDataService.claimTypeList.filter(x => x.value === this.data.prescriptionInfo.type)[0] ? this.sharedDataService.claimTypeList.filter(x => x.value === this.data.prescriptionInfo.type)[0] : '');
-    switch (this.data.prescriptionInfo.type) {
+    this.FormPreAuthorization.controls.type.setValue(this.sharedDataService.claimTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] ? this.sharedDataService.claimTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] : '');
+    switch (this.data.preAuthorizationInfo.type) {
       case 'institutional':
         this.subTypeList = this.sharedDataService.subTypeList.filter(x => x.value === 'ip' || x.value === 'emr');
         break;
@@ -318,45 +316,45 @@ export class AddPrescriptionComponent implements OnInit {
         this.subTypeList = this.sharedDataService.subTypeList.filter(x => x.value === 'op');
         break;
     }
-    if (this.data.prescriptionInfo.subType != null) {
+    if (this.data.preAuthorizationInfo.subType != null) {
       // tslint:disable-next-line:max-line-length
-      this.FormPrescription.controls.subType.setValue(this.sharedDataService.subTypeList.filter(x => x.value === this.data.prescriptionInfo.subType)[0] ? this.sharedDataService.subTypeList.filter(x => x.value === this.data.prescriptionInfo.subType)[0] : '');
+      this.FormPreAuthorization.controls.subType.setValue(this.sharedDataService.subTypeList.filter(x => x.value === this.data.preAuthorizationInfo.subType)[0] ? this.sharedDataService.subTypeList.filter(x => x.value === this.data.preAuthorizationInfo.subType)[0] : '');
     }
-    if (this.data.prescriptionInfo.eligibilityOfflineId != null) {
+    if (this.data.preAuthorizationInfo.eligibilityOfflineId != null) {
       // tslint:disable-next-line:max-line-length
-      this.FormPrescription.controls.eligibilityOfflineId.setValue(this.data.prescriptionInfo.eligibilityOfflineId);
+      this.FormPreAuthorization.controls.eligibilityOfflineId.setValue(this.data.preAuthorizationInfo.eligibilityOfflineId);
     }
-    if (this.data.prescriptionInfo.eligibilityOfflineDate != null) {
+    if (this.data.preAuthorizationInfo.eligibilityOfflineDate != null) {
       // tslint:disable-next-line:max-line-length
-      this.FormPrescription.controls.eligibilityOfflineDate.setValue(this.data.prescriptionInfo.eligibilityOfflineDate);
+      this.FormPreAuthorization.controls.eligibilityOfflineDate.setValue(this.data.preAuthorizationInfo.eligibilityOfflineDate);
     }
-    if (this.data.prescriptionInfo.eligibilityResponseId != null) {
+    if (this.data.preAuthorizationInfo.eligibilityResponseId != null) {
       // tslint:disable-next-line:max-line-length
-      this.FormPrescription.controls.eligibilityResponseId.setValue(this.data.prescriptionInfo.eligibilityResponseId);
+      this.FormPreAuthorization.controls.eligibilityResponseId.setValue(this.data.preAuthorizationInfo.eligibilityResponseId);
     }
-    if (this.data.prescriptionInfo.eligibilityResponseUrl != null) {
-      this.FormPrescription.controls.eligibilityResponseUrl.setValue(this.data.prescriptionInfo.eligibilityResponseUrl);
+    if (this.data.preAuthorizationInfo.eligibilityResponseUrl != null) {
+      this.FormPreAuthorization.controls.eligibilityResponseUrl.setValue(this.data.preAuthorizationInfo.eligibilityResponseUrl);
     }
     if (this.data.accident) {
       if (this.data.accident.accidentType) {
         // tslint:disable-next-line:max-line-length
-        this.FormPrescription.controls.accidentType.setValue(this.sharedDataService.accidentTypeList.filter(x => x.value === this.data.accident.accidentType)[0]);
+        this.FormPreAuthorization.controls.accidentType.setValue(this.sharedDataService.accidentTypeList.filter(x => x.value === this.data.accident.accidentType)[0]);
       }
       if (this.data.accident.streetName) {
-        this.FormPrescription.controls.streetName.setValue(this.data.accident.streetName);
+        this.FormPreAuthorization.controls.streetName.setValue(this.data.accident.streetName);
       }
       if (this.data.accident.city) {
-        this.FormPrescription.controls.city.setValue(this.data.accident.city);
+        this.FormPreAuthorization.controls.city.setValue(this.data.accident.city);
       }
       if (this.data.accident.state) {
-        this.FormPrescription.controls.state.setValue(this.data.accident.state);
+        this.FormPreAuthorization.controls.state.setValue(this.data.accident.state);
       }
       if (this.data.accident.country) {
-        this.FormPrescription.controls.country.setValue(this.data.accident.country);
+        this.FormPreAuthorization.controls.country.setValue(this.data.accident.country);
       }
-      // this.FormPrescription.controls.countryName.setValue(this.data.beneficiary.beneficiaryName);
+      // this.FormPreAuthorization.controls.countryName.setValue(this.data.beneficiary.beneficiaryName);
       if (this.data.accident.date) {
-        this.FormPrescription.controls.date.setValue(this.data.accident.date);
+        this.FormPreAuthorization.controls.date.setValue(this.data.accident.date);
       }
     }
     this.Diagnosises = this.data.diagnosis;
@@ -387,9 +385,9 @@ export class AddPrescriptionComponent implements OnInit {
     if (this.data.visionPrescription && this.data.visionPrescription.lensSpecifications) {
       const date = this.data.visionPrescription.dateWritten;
       // tslint:disable-next-line:max-line-length
-      this.FormPrescription.controls.dateWritten.setValue(this.removeSecondsFromDate(date));
-      //this.FormPrescription.controls.dateWritten.setValue(new Date(this.data.visionPrescription.dateWritten));
-      this.FormPrescription.controls.prescriber.setValue(this.data.visionPrescription.prescriber);
+      this.FormPreAuthorization.controls.dateWritten.setValue(this.removeSecondsFromDate(date));
+      //this.FormPreAuthorization.controls.dateWritten.setValue(new Date(this.data.visionPrescription.dateWritten));
+      this.FormPreAuthorization.controls.prescriber.setValue(this.data.visionPrescription.prescriber);
       this.VisionSpecifications = this.ChangeVisiontoView(this.data.visionPrescription.lensSpecifications);//this.data.visionPrescription.lensSpecifications;
     }
 
@@ -442,7 +440,7 @@ export class AddPrescriptionComponent implements OnInit {
         if (body instanceof Array) {
           this.beneficiariesSearchResult = body;
           this.selectedBeneficiary = body.filter(x => x.documentType === res.beneficiary.documentType && x.documentId === res.beneficiary.documentId)[0] ? body.filter(x => x.documentType === res.beneficiary.documentType && x.documentId === res.beneficiary.documentId)[0] : null;
-          this.FormPrescription.patchValue({
+          this.FormPreAuthorization.patchValue({
             beneficiaryName: res.beneficiary.beneficiaryName + ' (' + res.beneficiary.documentId + ')',
             beneficiaryId: res.beneficiary.beneficiaryId,
             dob: res.beneficiary.dob,
@@ -470,7 +468,7 @@ export class AddPrescriptionComponent implements OnInit {
 
           if (res.subscriber) {
 
-            this.FormPrescription.patchValue({
+            this.FormPreAuthorization.patchValue({
               subscriberName: res.subscriber.beneficiaryName + ' (' + res.subscriber.documentId + ')'
             });
             // tslint:disable-next-line:max-line-length
@@ -509,24 +507,24 @@ export class AddPrescriptionComponent implements OnInit {
           }
 
           if (res.beneficiary && res.beneficiary.insurancePlan && res.beneficiary.insurancePlan.payerId) {
-            this.FormPrescription.controls.insurancePlanId.setValue(res.beneficiary.insurancePlan.payerId.toString());
+            this.FormPreAuthorization.controls.insurancePlanId.setValue(res.beneficiary.insurancePlan.payerId.toString());
           }
 
           if (this.claimReuseId) {
-            this.FormPrescription.controls.beneficiaryName.disable();
-            this.FormPrescription.controls.beneficiaryId.disable();
-            this.FormPrescription.controls.insurancePlanId.disable();
-            this.FormPrescription.controls.type.disable();
-            this.FormPrescription.controls.subType.disable();
-            this.FormPrescription.controls.payee.disable();
-            this.FormPrescription.controls.payeeType.disable();
-            this.FormPrescription.controls.accidentType.disable();
-            this.FormPrescription.controls.streetName.disable();
-            this.FormPrescription.controls.city.disable();
-            this.FormPrescription.controls.state.disable();
-            this.FormPrescription.controls.country.disable();
-            this.FormPrescription.controls.countryName.disable();
-            this.FormPrescription.controls.date.disable();
+            this.FormPreAuthorization.controls.beneficiaryName.disable();
+            this.FormPreAuthorization.controls.beneficiaryId.disable();
+            this.FormPreAuthorization.controls.insurancePlanId.disable();
+            this.FormPreAuthorization.controls.type.disable();
+            this.FormPreAuthorization.controls.subType.disable();
+            this.FormPreAuthorization.controls.payee.disable();
+            this.FormPreAuthorization.controls.payeeType.disable();
+            this.FormPreAuthorization.controls.accidentType.disable();
+            this.FormPreAuthorization.controls.streetName.disable();
+            this.FormPreAuthorization.controls.city.disable();
+            this.FormPreAuthorization.controls.state.disable();
+            this.FormPreAuthorization.controls.country.disable();
+            this.FormPreAuthorization.controls.countryName.disable();
+            this.FormPreAuthorization.controls.date.disable();
           }
         }
 
@@ -542,26 +540,26 @@ export class AddPrescriptionComponent implements OnInit {
   }
 
   disableFields() {
-    this.FormPrescription.controls.beneficiaryName.disable();
-    this.FormPrescription.controls.beneficiaryId.disable();
-    this.FormPrescription.controls.insurancePlanId.disable();
-    this.FormPrescription.controls.dateOrdered.disable();
-    this.FormPrescription.controls.payee.disable();
-    this.FormPrescription.controls.payeeType.disable();
-    this.FormPrescription.controls.type.disable();
-    this.FormPrescription.controls.subType.disable();
-    this.FormPrescription.controls.accidentType.disable();
-    this.FormPrescription.controls.streetName.disable();
-    this.FormPrescription.controls.city.disable();
-    this.FormPrescription.controls.state.disable();
-    this.FormPrescription.controls.country.disable();
-    this.FormPrescription.controls.countryName.disable();
-    this.FormPrescription.controls.date.disable();
-    this.FormPrescription.controls.dateWritten.disable();
-    this.FormPrescription.controls.prescriber.disable();
-    this.FormPrescription.controls.eligibilityOfflineDate.disable();
-    this.FormPrescription.controls.eligibilityOfflineId.disable();
-    this.FormPrescription.controls.eligibilityResponseId.disable();
+    this.FormPreAuthorization.controls.beneficiaryName.disable();
+    this.FormPreAuthorization.controls.beneficiaryId.disable();
+    this.FormPreAuthorization.controls.insurancePlanId.disable();
+    this.FormPreAuthorization.controls.dateOrdered.disable();
+    this.FormPreAuthorization.controls.payee.disable();
+    this.FormPreAuthorization.controls.payeeType.disable();
+    this.FormPreAuthorization.controls.type.disable();
+    this.FormPreAuthorization.controls.subType.disable();
+    this.FormPreAuthorization.controls.accidentType.disable();
+    this.FormPreAuthorization.controls.streetName.disable();
+    this.FormPreAuthorization.controls.city.disable();
+    this.FormPreAuthorization.controls.state.disable();
+    this.FormPreAuthorization.controls.country.disable();
+    this.FormPreAuthorization.controls.countryName.disable();
+    this.FormPreAuthorization.controls.date.disable();
+    this.FormPreAuthorization.controls.dateWritten.disable();
+    this.FormPreAuthorization.controls.prescriber.disable();
+    this.FormPreAuthorization.controls.eligibilityOfflineDate.disable();
+    this.FormPreAuthorization.controls.eligibilityOfflineId.disable();
+    this.FormPreAuthorization.controls.eligibilityResponseId.disable();
   }
 
   getPayees() {
@@ -572,7 +570,7 @@ export class AddPrescriptionComponent implements OnInit {
         if (event.body != null && event.body instanceof Array) {
           this.payeeList = event.body;
           // tslint:disable-next-line:max-line-length
-          this.FormPrescription.controls.payeeType.setValue(this.sharedDataService.payeeTypeList.filter(x => x.value === 'provider')[0]);
+          this.FormPreAuthorization.controls.payeeType.setValue(this.sharedDataService.payeeTypeList.filter(x => x.value === 'provider')[0]);
           this.onPayeeTypeChange();
         }
       }
@@ -587,7 +585,7 @@ export class AddPrescriptionComponent implements OnInit {
   getRefferalProviders() {
     this.sharedServices.loadingChanged.next(true);
     this.IsRefferalProviderLoading = true;
-    this.FormPrescription.controls.referral.disable();
+    this.FormPreAuthorization.controls.referral.disable();
     this.superAdminService.getProviders().subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.body != null && event.body instanceof Array) {
@@ -598,8 +596,8 @@ export class AddPrescriptionComponent implements OnInit {
         }
         this.filteredProviderList.next(this.providerList.slice());
         this.IsRefferalProviderLoading = false;
-        this.FormPrescription.controls.referral.enable();
-        this.FormPrescription.controls.referralFilter.valueChanges
+        this.FormPreAuthorization.controls.referral.enable();
+        this.FormPreAuthorization.controls.referralFilter.valueChanges
           .pipe(takeUntil(this.onDestroy))
           .subscribe(() => {
             this.filterRefferalProviders();
@@ -619,7 +617,7 @@ export class AddPrescriptionComponent implements OnInit {
       return;
     }
     // get the search keyword
-    let search = this.FormPrescription.controls.referralFilter.value;
+    let search = this.FormPreAuthorization.controls.referralFilter.value;
     if (!search) {
       this.filteredProviderList.next(this.providerList.slice());
       return;
@@ -638,7 +636,7 @@ export class AddPrescriptionComponent implements OnInit {
       this.IsOtherReferral = true;
     } else {
       this.IsOtherReferral = false;
-      this.FormPrescription.controls.otherReferral.setValue('');
+      this.FormPreAuthorization.controls.otherReferral.setValue('');
     }
   }
 
@@ -648,7 +646,7 @@ export class AddPrescriptionComponent implements OnInit {
       return;
     }
     // get the search keyword
-    let search = this.FormPrescription.controls.nationalityFilterCtrl.value;
+    let search = this.FormPreAuthorization.controls.nationalityFilterCtrl.value;
     if (!search) {
       this.filteredNations.next(this.nationalities.slice());
       return;
@@ -662,18 +660,18 @@ export class AddPrescriptionComponent implements OnInit {
   }
 
   onPayeeTypeChange() {
-    if (this.FormPrescription.controls.payeeType.value && this.FormPrescription.controls.payeeType.value.value === 'provider') {
+    if (this.FormPreAuthorization.controls.payeeType.value && this.FormPreAuthorization.controls.payeeType.value.value === 'provider') {
       // tslint:disable-next-line:max-line-length
-      this.FormPrescription.controls.payee.setValue(this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '');
+      this.FormPreAuthorization.controls.payee.setValue(this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '');
     }
-    this.FormPrescription.controls.payeeType.disable();
-    this.FormPrescription.controls.payee.disable();
+    this.FormPreAuthorization.controls.payeeType.disable();
+    this.FormPreAuthorization.controls.payee.disable();
   }
 
   onTypeChange($event) {
     if ($event.value) {
       this.claimType = $event.value.value;
-      this.FormPrescription.controls.subType.setValue('');
+      this.FormPreAuthorization.controls.subType.setValue('');
 
       switch ($event.value.value) {
         case 'institutional':
@@ -701,9 +699,9 @@ export class AddPrescriptionComponent implements OnInit {
   searchBeneficiaries(IsSubscriber = null) {
     let searchStr = '';
     if (!IsSubscriber) {
-      searchStr = this.FormPrescription.controls.beneficiaryName.value;
+      searchStr = this.FormPreAuthorization.controls.beneficiaryName.value;
     } else {
-      searchStr = this.FormPrescription.controls.subscriberName.value;
+      searchStr = this.FormPreAuthorization.controls.subscriberName.value;
     }
     // tslint:disable-next-line:max-line-length
     if (searchStr.length > 3) {
@@ -731,7 +729,7 @@ export class AddPrescriptionComponent implements OnInit {
 
 
 
-    this.FormPrescription.patchValue({
+    this.FormPreAuthorization.patchValue({
       beneficiaryName: beneficiary.name + ' (' + beneficiary.documentId + ')',
       beneficiaryId: beneficiary.id,
       firstName: beneficiary.firstName ? beneficiary.firstName : '',
@@ -766,7 +764,7 @@ export class AddPrescriptionComponent implements OnInit {
     });
 
     if (beneficiary.plans.length > 0 && beneficiary.plans.filter(x => x.primary)[0]) {
-      this.FormPrescription.controls.insurancePlanId.setValue(beneficiary.plans.filter(x => x.primary)[0].payerNphiesId);
+      this.FormPreAuthorization.controls.insurancePlanId.setValue(beneficiary.plans.filter(x => x.primary)[0].payerNphiesId);
       const plan: any = {};
       plan.value = this.selectedBeneficiary.plans.filter(x => x.primary)[0].payerNphiesId;
       plan.memberCardId = this.selectedBeneficiary.plans.filter(x => x.primary)[0].memberCardId;
@@ -777,7 +775,7 @@ export class AddPrescriptionComponent implements OnInit {
 
   selectSubscriber(beneficiary: BeneficiariesSearchResult) {
     this.selectedSubscriber = beneficiary;
-    this.FormPrescription.controls.subscriberName.setValue(beneficiary.name + ' (' + beneficiary.documentId + ')');
+    this.FormPreAuthorization.controls.subscriberName.setValue(beneficiary.name + ' (' + beneficiary.documentId + ')');
     this.FormSubscriber.patchValue({
       beneficiaryName: beneficiary.name + ' (' + beneficiary.documentId + ')',
       beneficiaryId: beneficiary.id,
@@ -836,34 +834,34 @@ export class AddPrescriptionComponent implements OnInit {
       this.beneficiaryPatientShare = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].patientShare;
       this.beneficiaryMaxLimit = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].maxLimit;
 
-      this.FormPrescription.controls.insurancePlanPayerId.setValue(
+      this.FormPreAuthorization.controls.insurancePlanPayerId.setValue(
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].payerNphiesId, 10);
-      this.FormPrescription.controls.insurancePlanExpiryDate.setValue(
+      this.FormPreAuthorization.controls.insurancePlanExpiryDate.setValue(
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].expiryDate);
-      this.FormPrescription.controls.insurancePlanMemberCardId.setValue(
+      this.FormPreAuthorization.controls.insurancePlanMemberCardId.setValue(
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].memberCardId);
-      this.FormPrescription.controls.insurancePlanRelationWithSubscriber.setValue(
+      this.FormPreAuthorization.controls.insurancePlanRelationWithSubscriber.setValue(
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].relationWithSubscriber);
-      this.FormPrescription.controls.insurancePlanCoverageType.setValue(
+      this.FormPreAuthorization.controls.insurancePlanCoverageType.setValue(
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].coverageType);
 
-      this.FormPrescription.controls.insurancePlanPayerName.setValue(
+      this.FormPreAuthorization.controls.insurancePlanPayerName.setValue(
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].payerName);
-      this.FormPrescription.controls.insurancePayerNphiesId.setValue(
+      this.FormPreAuthorization.controls.insurancePayerNphiesId.setValue(
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].payerNphiesId);
-      // this.FormPrescription.controls.insurancePlanId.setValue(
+      // this.FormPreAuthorization.controls.insurancePlanId.setValue(
       //   this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value)[0].payerNphiesId);
-      this.FormPrescription.controls.insurancePlanPrimary.setValue(
+      this.FormPreAuthorization.controls.insurancePlanPrimary.setValue(
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].primary);
       // tslint:disable-next-line:max-line-length
-      this.FormPrescription.controls.insurancePlanTpaNphiesId.setValue(this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].tpaNphiesId);
-      // this.FormPrescription.controls.insurancePlanPayerId.disable();
+      this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.setValue(this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].tpaNphiesId === '-1' ? null : this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].tpaNphiesId);
+      // this.FormPreAuthorization.controls.insurancePlanPayerId.disable();
 
-      this.FormPrescription.controls.insurancePlanPolicyNumber.setValue(
+      this.FormPreAuthorization.controls.insurancePlanPolicyNumber.setValue(
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].policyNumber);
-      this.FormPrescription.controls.maxLimit.setValue(
+      this.FormPreAuthorization.controls.maxLimit.setValue(
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].maxLimit);
-      this.FormPrescription.controls.patientShare.setValue(
+      this.FormPreAuthorization.controls.patientShare.setValue(
         this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].patientShare);
     }
   }
@@ -930,8 +928,8 @@ export class AddPrescriptionComponent implements OnInit {
   deleteVisionLens(index: number) {
     this.VisionSpecifications.splice(index, 1);
     if (this.VisionSpecifications.length === 0) {
-      this.FormPrescription.controls.dateWritten.clearValidators();
-      this.FormPrescription.controls.dateWritten.updateValueAndValidity();
+      this.FormPreAuthorization.controls.dateWritten.clearValidators();
+      this.FormPreAuthorization.controls.dateWritten.updateValueAndValidity();
       this.IsDateWrittenRequired = false;
     }
   }
@@ -1012,7 +1010,7 @@ export class AddPrescriptionComponent implements OnInit {
       itemTypes: this.Diagnosises.map(x => {
         return x.type;
       }),
-      type: this.FormPrescription.controls.type.value ? this.FormPrescription.controls.type.value.value : ''
+      type: this.FormPreAuthorization.controls.type.value ? this.FormPreAuthorization.controls.type.value.value : ''
     };
 
     const dialogRef = this.dialog.open(PrescriptionAddEditDiagnosisModalComponent, dialogConfig);
@@ -1073,6 +1071,7 @@ export class AddPrescriptionComponent implements OnInit {
     this.itemDetails = true
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
+
     dialogConfig.data = {
       source: 'APPROVAL',
       // tslint:disable-next-line:max-line-length
@@ -1081,24 +1080,24 @@ export class AddPrescriptionComponent implements OnInit {
       careTeams: this.CareTeams,
       diagnosises: this.Diagnosises,
       supportingInfos: this.SupportingInfo,
-      type: this.FormPrescription.controls.type.value.value,
-      subType: this.FormPrescription.controls.subType.value.value,
-      dateOrdered: this.FormPrescription.controls.dateOrdered.value,
-      payerNphiesId: this.FormPrescription.controls.insurancePayerNphiesId.value,
+      type: this.FormPreAuthorization.controls.type.value.value,
+      subType: this.FormPreAuthorization.controls.subType.value.value,
+      dateOrdered: this.FormPreAuthorization.controls.dateOrdered.value,
+      payerNphiesId: this.FormPreAuthorization.controls.insurancePayerNphiesId.value,
       beneficiaryPatientShare: this.beneficiaryPatientShare,
       beneficiaryMaxLimit: this.beneficiaryMaxLimit,
-      documentId: this.FormPrescription.controls.documentId.value,
-      IsNewBorn: this.FormPrescription.controls.isNewBorn.value,
+      documentId: this.FormPreAuthorization.controls.documentId.value,
+      IsNewBorn: this.FormPreAuthorization.controls.isNewBorn.value,
       beneficiaryDob: this.selectedBeneficiary.dob,
-      tpaNphiesId: this.FormPrescription.controls.insurancePlanTpaNphiesId.value,
+      tpaNphiesId: this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value,
       providerType: this.providerType,
     };
-    // Open the dialog with the specified popupType
+
     const dialogRef = this.dialog.open(AddEditPrescriptionItemComponent, {
-      ...dialogConfig,
-      data: { popupType }
-    });
-  
+        ...dialogConfig,
+        data: { popupType }
+      });
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         if (this.Items.find(x => x.sequence === result.sequence)) {
@@ -1226,10 +1225,10 @@ export class AddPrescriptionComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       Sequence: (itemModel !== null) ? itemModel.sequence : (item.itemDetails.length === 0 ? 1 : (item.itemDetails[item.itemDetails.length - 1].sequence + 1)),
       item: itemModel,
-      type: this.FormPrescription.controls.type.value.value,
-      dateOrdered: this.FormPrescription.controls.dateOrdered.value,
-      payerNphiesId: this.FormPrescription.controls.insurancePayerNphiesId.value,
-      tpaNphiesId: this.FormPrescription.controls.insurancePlanTpaNphiesId.value
+      type: this.FormPreAuthorization.controls.type.value.value,
+      dateOrdered: this.FormPreAuthorization.controls.dateOrdered.value,
+      payerNphiesId: this.FormPreAuthorization.controls.insurancePayerNphiesId.value,
+      tpaNphiesId: this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value
     };
 
     const dialogRef = this.dialog.open(AddEditItemDetailsModalComponent, dialogConfig);
@@ -1374,9 +1373,9 @@ export class AddPrescriptionComponent implements OnInit {
 
   checkItemCareTeams() {
     if (this.Items.length > 0) {
-      if (this.FormPrescription.controls.type.value && this.FormPrescription.controls.type.value.value === 'pharmacy') {
+      if (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value === 'pharmacy') {
         return true;
-      } else if (this.FormPrescription.controls.type.value && this.FormPrescription.controls.type.value.value !== 'pharmacy') {
+      } else if (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy') {
         if (this.Items.find(x => (x.careTeamSequence && x.careTeamSequence.length === 0))) {
           this.dialogService.showMessage('Error', 'All Items must have atleast one care team', 'alert', true, 'OK');
           return false;
@@ -1650,10 +1649,10 @@ export class AddPrescriptionComponent implements OnInit {
 
   checkNewBornValidation() {
     // tslint:disable-next-line:max-line-length
-    if (this.FormPrescription.controls.isNewBorn.value && (this.FormPrescription.controls.type.value.value === 'institutional' || this.FormPrescription.controls.type.value.value === 'professional')) {
+    if (this.FormPreAuthorization.controls.isNewBorn.value && (this.FormPreAuthorization.controls.type.value.value === 'institutional' || this.FormPreAuthorization.controls.type.value.value === 'professional')) {
       if (this.SupportingInfo.filter(x => x.category === 'birth-weight').length === 0) {
         // tslint:disable-next-line:max-line-length
-        this.dialogService.showMessage('Error', 'Birth-Weight is required as Supporting Info for a newborn patient in a professional or institutional prescription request', 'alert', true, 'OK', null, true);
+        this.dialogService.showMessage('Error', 'Birth-Weight is required as Supporting Info for a newborn patient in a professional or institutional preauthorization request', 'alert', true, 'OK', null, true);
         return false;
       } else {
         return true;
@@ -1664,10 +1663,10 @@ export class AddPrescriptionComponent implements OnInit {
   }
 
   checkNewBornSupportingInfoCodes() {
-    if (this.FormPrescription.controls.isNewBorn.value) {
+    if (this.FormPreAuthorization.controls.isNewBorn.value) {
       if (this.Diagnosises.filter(x => this.sharedDataService.newBornCodes.includes(x.diagnosisCode)).length === 0) {
         // tslint:disable-next-line:max-line-length
-        this.dialogService.showMessage('Error', 'One of the Z38.x codes is required as a diganosis in the prescription request for a newborn', 'alert', true, 'OK', null, true);
+        this.dialogService.showMessage('Error', 'One of the Z38.x codes is required as a diganosis in the preauth request for a newborn', 'alert', true, 'OK', null, true);
         return false;
       } else {
         return true;
@@ -1679,10 +1678,10 @@ export class AddPrescriptionComponent implements OnInit {
 
   onSubmit(isPbmvalidation=false) {
     this.providerType = this.providerType == null || this.providerType == "" ? 'any' : this.providerType;
-    if (this.providerType.toLowerCase() !== 'any' && this.FormPrescription.controls.type.value.value !== this.providerType) {
+    if (this.providerType.toLowerCase() !== 'any' && this.FormPreAuthorization.controls.type.value.value !== this.providerType) {
       const filteredClaimType = this.sharedDataService.claimTypeList.filter(x => x.value === this.providerType)[0];
       const providerTypeName = filteredClaimType != null ? filteredClaimType.name : null;
-      const claimTypeName = this.sharedDataService.claimTypeList.filter(x => x.value === this.FormPrescription.controls.type.value.value)[0].name;
+      const claimTypeName = this.sharedDataService.claimTypeList.filter(x => x.value === this.FormPreAuthorization.controls.type.value.value)[0].name;
       this.dialogService.showMessage('Error', 'Claim type ' + claimTypeName + ' is not supported for Provider type ' + providerTypeName, 'alert', true, 'OK');
       return;
     }
@@ -1690,60 +1689,60 @@ export class AddPrescriptionComponent implements OnInit {
 
     let hasError = false;
     // tslint:disable-next-line:max-line-length
-    if (this.FormPrescription.controls.date.value && !(this.FormPrescription.controls.accidentType.value && this.FormPrescription.controls.accidentType.value.value)) {
-      this.FormPrescription.controls.accidentType.setValidators([Validators.required]);
-      this.FormPrescription.controls.accidentType.updateValueAndValidity();
+    if (this.FormPreAuthorization.controls.date.value && !(this.FormPreAuthorization.controls.accidentType.value && this.FormPreAuthorization.controls.accidentType.value.value)) {
+      this.FormPreAuthorization.controls.accidentType.setValidators([Validators.required]);
+      this.FormPreAuthorization.controls.accidentType.updateValueAndValidity();
       this.IsAccidentTypeRequired = true;
       hasError = true;
     } else {
-      this.FormPrescription.controls.accidentType.clearValidators();
-      this.FormPrescription.controls.accidentType.updateValueAndValidity();
+      this.FormPreAuthorization.controls.accidentType.clearValidators();
+      this.FormPreAuthorization.controls.accidentType.updateValueAndValidity();
       this.IsAccidentTypeRequired = false;
     }
     // tslint:disable-next-line:max-line-length
-    if (this.FormPrescription.controls.accidentType.value && this.FormPrescription.controls.accidentType.value.value && !this.FormPrescription.controls.date.value) {
-      this.FormPrescription.controls.date.setValidators([Validators.required]);
-      this.FormPrescription.controls.date.updateValueAndValidity();
+    if (this.FormPreAuthorization.controls.accidentType.value && this.FormPreAuthorization.controls.accidentType.value.value && !this.FormPreAuthorization.controls.date.value) {
+      this.FormPreAuthorization.controls.date.setValidators([Validators.required]);
+      this.FormPreAuthorization.controls.date.updateValueAndValidity();
       this.IsDateRequired = true;
       hasError = true;
     } else {
-      this.FormPrescription.controls.date.clearValidators();
-      this.FormPrescription.controls.date.updateValueAndValidity();
+      this.FormPreAuthorization.controls.date.clearValidators();
+      this.FormPreAuthorization.controls.date.updateValueAndValidity();
       this.IsDateRequired = false;
     }
-    if (this.FormPrescription.controls.type.value && this.FormPrescription.controls.type.value.value === 'vision') {
-      if (this.FormPrescription.controls.dateWritten.value && this.VisionSpecifications.length === 0) {
-        this.FormPrescription.controls.prescriber.setValidators([Validators.required]);
-        this.FormPrescription.controls.prescriber.updateValueAndValidity();
+    if (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value === 'vision') {
+      if (this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length === 0) {
+        this.FormPreAuthorization.controls.prescriber.setValidators([Validators.required]);
+        this.FormPreAuthorization.controls.prescriber.updateValueAndValidity();
         this.IsLensSpecificationRequired = true;
         hasError = true;
       } else {
-        this.FormPrescription.controls.prescriber.clearValidators();
-        this.FormPrescription.controls.prescriber.updateValueAndValidity();
+        this.FormPreAuthorization.controls.prescriber.clearValidators();
+        this.FormPreAuthorization.controls.prescriber.updateValueAndValidity();
         this.IsLensSpecificationRequired = false;
       }
 
-      if (!this.FormPrescription.controls.dateWritten.value && this.VisionSpecifications.length > 0) {
-        this.FormPrescription.controls.dateWritten.setValidators([Validators.required]);
-        this.FormPrescription.controls.dateWritten.updateValueAndValidity();
+      if (!this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length > 0) {
+        this.FormPreAuthorization.controls.dateWritten.setValidators([Validators.required]);
+        this.FormPreAuthorization.controls.dateWritten.updateValueAndValidity();
         this.IsDateWrittenRequired = true;
         hasError = true;
       } else {
-        this.FormPrescription.controls.dateWritten.clearValidators();
-        this.FormPrescription.controls.dateWritten.updateValueAndValidity();
+        this.FormPreAuthorization.controls.dateWritten.clearValidators();
+        this.FormPreAuthorization.controls.dateWritten.updateValueAndValidity();
         this.IsDateWrittenRequired = false;
       }
 
       // tslint:disable-next-line:max-line-length
-      if ((this.FormPrescription.controls.dateWritten.value && !this.FormPrescription.controls.prescriber.value) ||
-        (this.VisionSpecifications.length > 0 && !this.FormPrescription.controls.prescriber.value)) {
-        this.FormPrescription.controls.prescriber.setValidators([Validators.required]);
-        this.FormPrescription.controls.prescriber.updateValueAndValidity();
+      if ((this.FormPreAuthorization.controls.dateWritten.value && !this.FormPreAuthorization.controls.prescriber.value) ||
+        (this.VisionSpecifications.length > 0 && !this.FormPreAuthorization.controls.prescriber.value)) {
+        this.FormPreAuthorization.controls.prescriber.setValidators([Validators.required]);
+        this.FormPreAuthorization.controls.prescriber.updateValueAndValidity();
         this.IsPrescriberRequired = true;
         hasError = true;
       } else {
-        this.FormPrescription.controls.prescriber.clearValidators();
-        this.FormPrescription.controls.prescriber.updateValueAndValidity();
+        this.FormPreAuthorization.controls.prescriber.clearValidators();
+        this.FormPreAuthorization.controls.prescriber.updateValueAndValidity();
         this.IsPrescriberRequired = false;
       }
     }
@@ -1755,7 +1754,7 @@ export class AddPrescriptionComponent implements OnInit {
         return;
       }
     }
-    if (this.FormPrescription.valid) {
+    if (this.FormPreAuthorization.valid) {
 
       if (this.Diagnosises.length === 0 || this.Items.length === 0) {
         hasError = true;
@@ -1801,45 +1800,45 @@ export class AddPrescriptionComponent implements OnInit {
         this.model.claimReuseId = this.claimReuseId;
       }
      
-        this.model.transfer = this.FormPrescription.controls.transfer.value;
+        this.model.transfer = this.FormPreAuthorization.controls.transfer.value;
       
 
-      if (this.FormPrescription.controls.otherReferral.value) {
-        this.model.referralName = this.FormPrescription.controls.otherReferral.value;
+      if (this.FormPreAuthorization.controls.otherReferral.value) {
+        this.model.referralName = this.FormPreAuthorization.controls.otherReferral.value;
       } else {
-        this.model.referralName = this.FormPrescription.controls.referral.value.name;
+        this.model.referralName = this.FormPreAuthorization.controls.referral.value.name;
       }
 
-      this.model.isNewBorn = this.FormPrescription.controls.isNewBorn.value;
+      this.model.isNewBorn = this.FormPreAuthorization.controls.isNewBorn.value;
 
       this.model.beneficiary = {};
-      this.model.beneficiary.firstName = this.FormPrescription.controls.firstName.value;
-      this.model.beneficiary.secondName = this.FormPrescription.controls.middleName.value;
-      this.model.beneficiary.thirdName = this.FormPrescription.controls.lastName.value;
-      this.model.beneficiary.familyName = this.FormPrescription.controls.familyName.value;
-      this.model.beneficiary.fullName = this.FormPrescription.controls.fullName.value;
-      this.model.beneficiary.fileId = this.FormPrescription.controls.beneficiaryFileld.value;
-      this.model.beneficiary.dob = this.datePipe.transform(this.FormPrescription.controls.dob.value, 'yyyy-MM-dd');
-      this.model.beneficiary.gender = this.FormPrescription.controls.gender.value;
-      this.model.beneficiary.documentType = this.FormPrescription.controls.documentType.value;
-      this.model.beneficiary.documentId = this.FormPrescription.controls.documentId.value;
-      this.model.beneficiary.eHealthId = this.FormPrescription.controls.eHealthId.value;
-      this.model.beneficiary.nationality = this.FormPrescription.controls.nationality.value;
-      this.model.beneficiary.residencyType = this.FormPrescription.controls.residencyType.value;
-      this.model.beneficiary.contactNumber = this.FormPrescription.controls.contactNumber.value;
-      this.model.beneficiary.maritalStatus = this.FormPrescription.controls.martialStatus.value;
-      this.model.beneficiary.bloodGroup = this.FormPrescription.controls.bloodGroup.value;
-      this.model.beneficiary.preferredLanguage = this.FormPrescription.controls.preferredLanguage.value;
-      this.model.beneficiary.emergencyPhoneNumber = this.FormPrescription.controls.emergencyNumber.value;
-      this.model.beneficiary.email = this.FormPrescription.controls.email.value;
-      this.model.beneficiary.addressLine = this.FormPrescription.controls.addressLine.value;
-      this.model.beneficiary.streetLine = this.FormPrescription.controls.streetLine.value;
-      this.model.beneficiary.city = this.FormPrescription.controls.bcity.value;
-      this.model.beneficiary.state = this.FormPrescription.controls.bstate.value;
-      this.model.beneficiary.country = this.FormPrescription.controls.bcountry.value;
-      this.model.beneficiary.postalCode = this.FormPrescription.controls.postalCode.value;
+      this.model.beneficiary.firstName = this.FormPreAuthorization.controls.firstName.value;
+      this.model.beneficiary.secondName = this.FormPreAuthorization.controls.middleName.value;
+      this.model.beneficiary.thirdName = this.FormPreAuthorization.controls.lastName.value;
+      this.model.beneficiary.familyName = this.FormPreAuthorization.controls.familyName.value;
+      this.model.beneficiary.fullName = this.FormPreAuthorization.controls.fullName.value;
+      this.model.beneficiary.fileId = this.FormPreAuthorization.controls.beneficiaryFileld.value;
+      this.model.beneficiary.dob = this.datePipe.transform(this.FormPreAuthorization.controls.dob.value, 'yyyy-MM-dd');
+      this.model.beneficiary.gender = this.FormPreAuthorization.controls.gender.value;
+      this.model.beneficiary.documentType = this.FormPreAuthorization.controls.documentType.value;
+      this.model.beneficiary.documentId = this.FormPreAuthorization.controls.documentId.value;
+      this.model.beneficiary.eHealthId = this.FormPreAuthorization.controls.eHealthId.value;
+      this.model.beneficiary.nationality = this.FormPreAuthorization.controls.nationality.value;
+      this.model.beneficiary.residencyType = this.FormPreAuthorization.controls.residencyType.value;
+      this.model.beneficiary.contactNumber = this.FormPreAuthorization.controls.contactNumber.value;
+      this.model.beneficiary.maritalStatus = this.FormPreAuthorization.controls.martialStatus.value;
+      this.model.beneficiary.bloodGroup = this.FormPreAuthorization.controls.bloodGroup.value;
+      this.model.beneficiary.preferredLanguage = this.FormPreAuthorization.controls.preferredLanguage.value;
+      this.model.beneficiary.emergencyPhoneNumber = this.FormPreAuthorization.controls.emergencyNumber.value;
+      this.model.beneficiary.email = this.FormPreAuthorization.controls.email.value;
+      this.model.beneficiary.addressLine = this.FormPreAuthorization.controls.addressLine.value;
+      this.model.beneficiary.streetLine = this.FormPreAuthorization.controls.streetLine.value;
+      this.model.beneficiary.city = this.FormPreAuthorization.controls.bcity.value;
+      this.model.beneficiary.state = this.FormPreAuthorization.controls.bstate.value;
+      this.model.beneficiary.country = this.FormPreAuthorization.controls.bcountry.value;
+      this.model.beneficiary.postalCode = this.FormPreAuthorization.controls.postalCode.value;
 
-      if (this.FormPrescription.controls.subscriberName.value) {
+      if (this.FormPreAuthorization.controls.subscriberName.value) {
         this.model.subscriber = {};
 
         this.model.subscriber.firstName = this.FormSubscriber.controls.firstName.value;
@@ -1871,29 +1870,29 @@ export class AddPrescriptionComponent implements OnInit {
         this.model.subscriber = null;
       }
 
-      this.model.destinationId = this.FormPrescription.controls.insurancePlanTpaNphiesId.value;
+      this.model.destinationId = this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value;
 
       this.model.insurancePlan = {};
-      this.model.insurancePlan.payerId = this.FormPrescription.controls.insurancePlanPayerId.value;
-      this.model.insurancePlan.memberCardId = this.FormPrescription.controls.insurancePlanMemberCardId.value;
-      this.model.insurancePlan.policyNumber = this.FormPrescription.controls.insurancePlanPolicyNumber.value;
-      this.model.insurancePlan.maxLimit = this.FormPrescription.controls.insurancePlanMaxLimit.value;
-      this.model.insurancePlan.patientShare = this.FormPrescription.controls.insurancePlanPatientShare.value;
-      this.model.insurancePlan.coverageType = this.FormPrescription.controls.insurancePlanCoverageType.value;
-      this.model.insurancePlan.relationWithSubscriber = this.FormPrescription.controls.insurancePlanRelationWithSubscriber.value;
-      if (this.FormPrescription.controls.insurancePlanExpiryDate.value) {
+      this.model.insurancePlan.payerId = this.FormPreAuthorization.controls.insurancePlanPayerId.value;
+      this.model.insurancePlan.memberCardId = this.FormPreAuthorization.controls.insurancePlanMemberCardId.value;
+      this.model.insurancePlan.policyNumber = this.FormPreAuthorization.controls.insurancePlanPolicyNumber.value;
+      this.model.insurancePlan.maxLimit = this.FormPreAuthorization.controls.insurancePlanMaxLimit.value;
+      this.model.insurancePlan.patientShare = this.FormPreAuthorization.controls.insurancePlanPatientShare.value;
+      this.model.insurancePlan.coverageType = this.FormPreAuthorization.controls.insurancePlanCoverageType.value;
+      this.model.insurancePlan.relationWithSubscriber = this.FormPreAuthorization.controls.insurancePlanRelationWithSubscriber.value;
+      if (this.FormPreAuthorization.controls.insurancePlanExpiryDate.value) {
         // tslint:disable-next-line:max-line-length
 
-        this.model.insurancePlan.expiryDate = this.datePipe.transform(this.FormPrescription.controls.insurancePlanExpiryDate.value, 'yyyy-MM-dd');
+        this.model.insurancePlan.expiryDate = this.datePipe.transform(this.FormPreAuthorization.controls.insurancePlanExpiryDate.value, 'yyyy-MM-dd');
       }
 
-      this.model.insurancePlan.payerName = this.FormPrescription.controls.insurancePlanPayerName.value;
-      this.model.insurancePlan.payerNphiesId = this.FormPrescription.controls.insurancePayerNphiesId.value;
-      // this.model.insurancePlan.planId = this.FormPrescription.controls.insurancePlanId.value;
-      this.model.insurancePlan.primary = this.FormPrescription.controls.insurancePlanPrimary.value;
-      this.model.insurancePlan.tpaNphiesId = this.FormPrescription.controls.insurancePlanTpaNphiesId.value;
-      // this.model.beneficiaryId = this.FormPrescription.controls.beneficiaryId.value;
-      // this.model.payerNphiesId = this.FormPrescription.controls.insurancePlanId.value;
+      this.model.insurancePlan.payerName = this.FormPreAuthorization.controls.insurancePlanPayerName.value;
+      this.model.insurancePlan.payerNphiesId = this.FormPreAuthorization.controls.insurancePayerNphiesId.value;
+      // this.model.insurancePlan.planId = this.FormPreAuthorization.controls.insurancePlanId.value;
+      this.model.insurancePlan.primary = this.FormPreAuthorization.controls.insurancePlanPrimary.value;
+      this.model.insurancePlan.tpaNphiesId = this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value;
+      // this.model.beneficiaryId = this.FormPreAuthorization.controls.beneficiaryId.value;
+      // this.model.payerNphiesId = this.FormPreAuthorization.controls.insurancePlanId.value;
 
       // this.model.coverageType = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].coverageType;
       // this.model.memberCardId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].memberCardId;
@@ -1901,32 +1900,32 @@ export class AddPrescriptionComponent implements OnInit {
       // // tslint:disable-next-line:max-line-length
       // this.model.relationWithSubscriber = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].relationWithSubscriber;
 
-      const prescriptionModel: any = {};
-      prescriptionModel.dateOrdered = moment(this.removeSecondsFromDate(this.FormPrescription.controls.dateOrdered.value)).utc();
-      if (this.FormPrescription.controls.payeeType.value && this.FormPrescription.controls.payeeType.value.value === 'provider') {
+      const preAuthorizationModel: any = {};
+      preAuthorizationModel.dateOrdered = moment(this.removeSecondsFromDate(this.FormPreAuthorization.controls.dateOrdered.value)).utc();
+      if (this.FormPreAuthorization.controls.payeeType.value && this.FormPreAuthorization.controls.payeeType.value.value === 'provider') {
         // tslint:disable-next-line:max-line-length
-        prescriptionModel.payeeId = this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '';
+        preAuthorizationModel.payeeId = this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '';
       } else {
-        prescriptionModel.payeeId = this.FormPrescription.controls.payee.value;
+        preAuthorizationModel.payeeId = this.FormPreAuthorization.controls.payee.value;
       }
 
-      prescriptionModel.payeeType = this.FormPrescription.controls.payeeType.value.value;
-      prescriptionModel.type = this.FormPrescription.controls.type.value.value;
-      prescriptionModel.subType = this.FormPrescription.controls.subType.value.value;
+      preAuthorizationModel.payeeType = this.FormPreAuthorization.controls.payeeType.value.value;
+      preAuthorizationModel.type = this.FormPreAuthorization.controls.type.value.value;
+      preAuthorizationModel.subType = this.FormPreAuthorization.controls.subType.value.value;
 
-      if (this.FormPrescription.controls.prescriptionRefNo.value) {
-        this.model.prescriptionRefNo = this.FormPrescription.controls.prescriptionRefNo.value.map(x => {
+      if (this.FormPreAuthorization.controls.preAuthRefNo.value) {
+        this.model.preAuthRefNo = this.FormPreAuthorization.controls.preAuthRefNo.value.map(x => {
           return x.value;
         });
       }
 
       // tslint:disable-next-line:max-line-length
-      prescriptionModel.eligibilityOfflineDate = this.datePipe.transform(this.FormPrescription.controls.eligibilityOfflineDate.value, 'yyyy-MM-dd');
-      prescriptionModel.eligibilityOfflineId = this.FormPrescription.controls.eligibilityOfflineId.value;
-      prescriptionModel.eligibilityResponseId = this.FormPrescription.controls.eligibilityResponseId.value;
-      prescriptionModel.eligibilityResponseUrl = this.FormPrescription.controls.eligibilityResponseUrl.value;
-      prescriptionModel.episodeId = null;
-      this.model.prescriptionInfo = prescriptionModel;
+      preAuthorizationModel.eligibilityOfflineDate = this.datePipe.transform(this.FormPreAuthorization.controls.eligibilityOfflineDate.value, 'yyyy-MM-dd');
+      preAuthorizationModel.eligibilityOfflineId = this.FormPreAuthorization.controls.eligibilityOfflineId.value;
+      preAuthorizationModel.eligibilityResponseId = this.FormPreAuthorization.controls.eligibilityResponseId.value;
+      preAuthorizationModel.eligibilityResponseUrl = this.FormPreAuthorization.controls.eligibilityResponseUrl.value;
+      preAuthorizationModel.episodeId = null;
+      this.model.preAuthorizationInfo = preAuthorizationModel;
 
       this.model.supportingInfo = this.SupportingInfo.map(x => {
         // const model: any = {};
@@ -1976,14 +1975,14 @@ export class AddPrescriptionComponent implements OnInit {
         return model;
       });
 
-      if (this.FormPrescription.controls.accidentType.value.value) {
+      if (this.FormPreAuthorization.controls.accidentType.value.value) {
         const accidentModel: any = {};
-        accidentModel.accidentType = this.FormPrescription.controls.accidentType.value.value;
-        accidentModel.streetName = this.FormPrescription.controls.streetName.value;
-        accidentModel.city = this.FormPrescription.controls.city.value;
-        accidentModel.state = this.FormPrescription.controls.state.value;
-        accidentModel.country = this.FormPrescription.controls.country.value;
-        accidentModel.date = this.datePipe.transform(this.FormPrescription.controls.date.value, 'yyyy-MM-dd');
+        accidentModel.accidentType = this.FormPreAuthorization.controls.accidentType.value.value;
+        accidentModel.streetName = this.FormPreAuthorization.controls.streetName.value;
+        accidentModel.city = this.FormPreAuthorization.controls.city.value;
+        accidentModel.state = this.FormPreAuthorization.controls.state.value;
+        accidentModel.country = this.FormPreAuthorization.controls.country.value;
+        accidentModel.date = this.datePipe.transform(this.FormPreAuthorization.controls.date.value, 'yyyy-MM-dd');
         this.model.accident = accidentModel;
       }
 
@@ -2000,12 +1999,12 @@ export class AddPrescriptionComponent implements OnInit {
         return model;
       });
 
-      if (this.FormPrescription.controls.type.value && this.FormPrescription.controls.type.value.value === 'vision') {
-        if (this.FormPrescription.controls.prescriber.value) {
+      if (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value === 'vision') {
+        if (this.FormPreAuthorization.controls.prescriber.value) {
           this.model.visionPrescription = {};
           // tslint:disable-next-line:max-line-length
-          this.model.visionPrescription.dateWritten = moment(this.removeSecondsFromDate(this.FormPrescription.controls.dateWritten.value)).utc();
-          this.model.visionPrescription.prescriber = this.FormPrescription.controls.prescriber.value;
+          this.model.visionPrescription.dateWritten = moment(this.removeSecondsFromDate(this.FormPreAuthorization.controls.dateWritten.value)).utc();
+          this.model.visionPrescription.prescriber = this.FormPreAuthorization.controls.prescriber.value;
           let sequence = 1; let index = 0;
           let lens_model: any = [];
           this.VisionSpecifications.forEach(x => {
@@ -2058,7 +2057,7 @@ export class AddPrescriptionComponent implements OnInit {
 
       this.model.items = this.Items.map(x => {
         // tslint:disable-next-line:max-line-length
-        if ((this.FormPrescription.controls.type.value && this.FormPrescription.controls.type.value.value !== 'pharmacy') && x.careTeamSequence && x.careTeamSequence.length > 0) {
+        if ((this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy') && x.careTeamSequence && x.careTeamSequence.length > 0) {
           const model: any = {};
           model.sequence = x.sequence;
           model.type = x.type;
@@ -2100,7 +2099,7 @@ export class AddPrescriptionComponent implements OnInit {
           });
 
           return model;
-        } else if (this.FormPrescription.controls.type.value && this.FormPrescription.controls.type.value.value === 'pharmacy') {
+        } else if (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value === 'pharmacy') {
           const model: any = {};
           model.sequence = x.sequence;
           model.type = x.type;
@@ -2241,9 +2240,9 @@ export class AddPrescriptionComponent implements OnInit {
   }
   SetToMax(data) {
     const ChosenDate = new Date(data);
-    const OrderDate = new Date(this.FormPrescription.controls.dateOrdered.value);
+    const OrderDate = new Date(this.FormPreAuthorization.controls.dateOrdered.value);
     if (ChosenDate > OrderDate) {
-      this.FormPrescription.controls.dateWritten.setValue(this.FormPrescription.controls.dateOrdered.value);
+      this.FormPreAuthorization.controls.dateWritten.setValue(this.FormPreAuthorization.controls.dateOrdered.value);
     }
   }
   getTransactionDetails(requestId = null, responseId = null) {
@@ -2252,7 +2251,7 @@ export class AddPrescriptionComponent implements OnInit {
     this.sharedServices.loadingChanged.next(true);
 
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesApprovalService.getTransactionDetails(this.sharedServices.providerId, requestId, responseId).subscribe((event: any) => {
+    this.providerNphiesApprovalService.getPrescriberTransactionDetails(this.sharedServices.providerId, requestId, responseId).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
@@ -2285,10 +2284,10 @@ export class AddPrescriptionComponent implements OnInit {
     location.reload();
     this.model = {};
     this.detailsModel = {};
-    this.FormPrescription.reset();
-    this.FormPrescription.controls.payee.setValue(this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '');
-    this.FormPrescription.controls.payeeType.setValue(this.sharedDataService.payeeTypeList.filter(x => x.value === 'provider')[0]);
-    this.FormPrescription.patchValue({
+    this.FormPreAuthorization.reset();
+    this.FormPreAuthorization.controls.payee.setValue(this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '');
+    this.FormPreAuthorization.controls.payeeType.setValue(this.sharedDataService.payeeTypeList.filter(x => x.value === 'provider')[0]);
+    this.FormPreAuthorization.patchValue({
       insurancePlanId: '',
       type: '',
       subType: '',
@@ -2310,7 +2309,7 @@ export class AddPrescriptionComponent implements OnInit {
   get IsCareTeamRequired() {
     if (this.isSubmitted) {
       // tslint:disable-next-line:max-line-length
-      if (!this.FormPrescription.controls.type.value || (this.FormPrescription.controls.type.value && this.FormPrescription.controls.type.value.value !== 'pharmacy')) {
+      if (!this.FormPreAuthorization.controls.type.value || (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy')) {
         if (this.CareTeams.length === 0) {
           return true;
         } else {
@@ -2346,12 +2345,12 @@ export class AddPrescriptionComponent implements OnInit {
 
   onNewBornChangeState(event) {
     if (event.checked) {
-      this.FormPrescription.controls.subscriberName.setValidators([Validators.required]);
-      this.FormPrescription.controls.subscriberName.updateValueAndValidity();
+      this.FormPreAuthorization.controls.subscriberName.setValidators([Validators.required]);
+      this.FormPreAuthorization.controls.subscriberName.updateValueAndValidity();
       this.IsSubscriberRequired = true;
     } else {
-      this.FormPrescription.controls.subscriberName.clearValidators();
-      this.FormPrescription.controls.subscriberName.updateValueAndValidity();
+      this.FormPreAuthorization.controls.subscriberName.clearValidators();
+      this.FormPreAuthorization.controls.subscriberName.updateValueAndValidity();
       this.IsSubscriberRequired = false;
     }
   }
@@ -2366,29 +2365,29 @@ export class AddPrescriptionComponent implements OnInit {
   }
 
   disableItemsButton() {
-    return !this.FormPrescription.controls.type.value || !this.FormPrescription.controls.dateOrdered.value
-      || !this.FormPrescription.controls.insurancePlanId.value
-      || (this.FormPrescription.controls.type.value
-        && this.FormPrescription.controls.type.value.value !== 'pharmacy'
+    return !this.FormPreAuthorization.controls.type.value || !this.FormPreAuthorization.controls.dateOrdered.value
+      || !this.FormPreAuthorization.controls.insurancePlanId.value
+      || (this.FormPreAuthorization.controls.type.value
+        && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy'
         && this.CareTeams.length === 0);
   }
 
   ItemsAddButtonToolTip() {
     let str = '';
     let result = false;
-    if (!this.FormPrescription.controls.type.value || !this.FormPrescription.controls.dateOrdered.value
-      || !this.FormPrescription.controls.insurancePlanId.value) {
+    if (!this.FormPreAuthorization.controls.type.value || !this.FormPreAuthorization.controls.dateOrdered.value
+      || !this.FormPreAuthorization.controls.insurancePlanId.value) {
       result = true;
     }
 
-    if (this.FormPrescription.controls.type.value
-      && this.FormPrescription.controls.type.value.value !== 'pharmacy'
+    if (this.FormPreAuthorization.controls.type.value
+      && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy'
       && this.CareTeams.length === 0) {
       str = 'Add Insurance Plan, Date Ordered, Type and Care Team to enable adding Items';
-    } else if (this.FormPrescription.controls.type.value
-      && this.FormPrescription.controls.type.value.value === 'pharmacy') {
+    } else if (this.FormPreAuthorization.controls.type.value
+      && this.FormPreAuthorization.controls.type.value.value === 'pharmacy') {
       str = 'Add Insurance Plan, Date Ordered and Type to enable adding Items';
-    } else if (!this.FormPrescription.controls.type.value) {
+    } else if (!this.FormPreAuthorization.controls.type.value) {
       str = 'Add Insurance Plan, Date Ordered, Type and Care Team to enable adding Items';
     }
 
@@ -2432,36 +2431,36 @@ export class AddPrescriptionComponent implements OnInit {
           this.providerType = data.details.claimType;
           if (data.details.claimType === "vision") {
             if (!this.claimReuseId) {
-              this.FormPrescription.controls.type.setValue(this.typeList.filter(x => x.value === 'vision')[0]);
+              this.FormPreAuthorization.controls.type.setValue(this.typeList.filter(x => x.value === 'vision')[0]);
               this.claimType = "vision";
               this.subTypeList = [
                 { value: 'op', name: 'OutPatient' },
               ];
-              this.FormPrescription.controls.subType.setValue(this.subTypeList.filter(x => x.value === 'op')[0]);
-              this.FormPrescription.controls.type.disable();
-              this.FormPrescription.controls.subType.disable();
+              this.FormPreAuthorization.controls.subType.setValue(this.subTypeList.filter(x => x.value === 'op')[0]);
+              this.FormPreAuthorization.controls.type.disable();
+              this.FormPreAuthorization.controls.subType.disable();
             }
           } else if (data.details.claimType === "oral") {
             if (!this.claimReuseId) {
-              this.FormPrescription.controls.type.setValue(this.typeList.filter(x => x.value === 'oral')[0]);
+              this.FormPreAuthorization.controls.type.setValue(this.typeList.filter(x => x.value === 'oral')[0]);
               this.claimType = "oral";
               this.subTypeList = [
                 { value: 'op', name: 'OutPatient' },
               ];
-              this.FormPrescription.controls.subType.setValue(this.subTypeList.filter(x => x.value === 'op')[0]);
-              this.FormPrescription.controls.type.disable();
-              this.FormPrescription.controls.subType.disable();
+              this.FormPreAuthorization.controls.subType.setValue(this.subTypeList.filter(x => x.value === 'op')[0]);
+              this.FormPreAuthorization.controls.type.disable();
+              this.FormPreAuthorization.controls.subType.disable();
             }
           } else if (data.details.claimType === "pharmacy") {
             if (!this.claimReuseId) {
-              this.FormPrescription.controls.type.setValue(this.typeList.filter(x => x.value === 'pharmacy')[0]);
+              this.FormPreAuthorization.controls.type.setValue(this.typeList.filter(x => x.value === 'pharmacy')[0]);
               this.claimType = "pharmacy";
               this.subTypeList = [
                 { value: 'op', name: 'OutPatient' },
               ];
-              this.FormPrescription.controls.subType.setValue(this.subTypeList.filter(x => x.value === 'op')[0]);
-              this.FormPrescription.controls.type.disable();
-              this.FormPrescription.controls.subType.disable();
+              this.FormPreAuthorization.controls.subType.setValue(this.subTypeList.filter(x => x.value === 'op')[0]);
+              this.FormPreAuthorization.controls.type.disable();
+              this.FormPreAuthorization.controls.subType.disable();
             }
           }
         }

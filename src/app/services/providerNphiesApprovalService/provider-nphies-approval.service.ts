@@ -654,8 +654,9 @@ export class ProviderNphiesApprovalService {
       if (claimResponseDate) {
         requestURL += `&claimResponseDate=${this.formatDate(claimResponseDate)}`;
       }
- 
+
      if ( bundleIds && bundleIds.length>0 ) {
+
        requestURL += `&bundleIds=${bundleIds}`;
      }
     const request = new HttpRequest('POST', environment.providerNphiesClaim + requestURL, {});
@@ -944,7 +945,9 @@ export class ProviderNphiesApprovalService {
       if (claimResponseDate) {
         requestURL += `&claimResponseDate=${this.formatDate(claimResponseDate)}`;
       }
+
     if (bundleIds && bundleIds != null) {
+
         requestURL += `&bundleIds=${bundleIds.split(',')}`;
       }
 

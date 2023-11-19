@@ -13,7 +13,7 @@ export class PrescriptionTransaction extends Paginateable{
   nphiesRequestId: string;
   beneficiaryName: string;
   documentId: number;
-  prescriptionRefNo: string;
+  preAuthRefNo: string;
   provClaimNo: string;
   claimType: string;
   communicationCount:number;
@@ -35,7 +35,7 @@ export class PrescriptionTransaction extends Paginateable{
 
     this.beneficiaryName = body['beneficiaryName'];
     this.documentId = body['documentId'];
-    this.prescriptionRefNo = body['prescriptionRefNo'];
+    this.preAuthRefNo = body['preAuthRefNo'];
     this.provClaimNo = body['provClaimNo'];
     this.claimType = body['claimType'];
     this.inquiryStatus = body['inquiryStatus'];
