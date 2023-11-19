@@ -654,8 +654,9 @@ export class ProviderNphiesApprovalService {
       if (claimResponseDate) {
         requestURL += `&claimResponseDate=${this.formatDate(claimResponseDate)}`;
       }
-    console.log(bundleIds);
-     if (bundleIds.length>0 && bundleIds) {
+
+     if ( bundleIds && bundleIds.length>0 ) {
+
        requestURL += `&bundleIds=${bundleIds}`;
      }
     const request = new HttpRequest('POST', environment.providerNphiesClaim + requestURL, {});
@@ -944,7 +945,9 @@ export class ProviderNphiesApprovalService {
       if (claimResponseDate) {
         requestURL += `&claimResponseDate=${this.formatDate(claimResponseDate)}`;
       }
-    if (bundleIds != null) {
+
+    if (bundleIds && bundleIds != null) {
+
         requestURL += `&bundleIds=${bundleIds.split(',')}`;
       }
 
@@ -1029,7 +1032,7 @@ export class ProviderNphiesApprovalService {
     if (requestBundleId) {
       requestURL += `&requestBundleId=${requestBundleId}`;
     }
-    if (bundleIds != null) {
+    if (bundleIds && bundleIds != null) {
       requestURL += `&bundleIds=${bundleIds.split(',')}`;
     }
     if (claimTypes) {
