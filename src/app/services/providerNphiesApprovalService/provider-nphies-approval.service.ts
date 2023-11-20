@@ -564,7 +564,7 @@ export class ProviderNphiesApprovalService {
     statuses?: string[],
     organizationId?: string,
     requestBundleId?: string,
-    bundleIds?:string[],
+    bundleIds?:string,
     isRelatedClaim?:boolean,
     reissueReason?:boolean,
     claimSubmissionDate?:string,
@@ -655,9 +655,8 @@ export class ProviderNphiesApprovalService {
         requestURL += `&claimResponseDate=${this.formatDate(claimResponseDate)}`;
       }
 
-     if ( bundleIds && bundleIds.length>0 ) {
-
-       requestURL += `&bundleIds=${bundleIds}`;
+     if ( bundleIds) {
+       requestURL += `&bundleIds=${bundleIds.split(",")}`;
      }
     const request = new HttpRequest('POST', environment.providerNphiesClaim + requestURL, {});
     return this.http.request(request);
