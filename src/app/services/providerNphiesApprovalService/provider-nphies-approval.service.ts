@@ -655,7 +655,7 @@ export class ProviderNphiesApprovalService {
         requestURL += `&claimResponseDate=${this.formatDate(claimResponseDate)}`;
       }
 
-     if ( bundleIds && bundleIds.length>0 ) {
+     if ( bundleIds) {
        requestURL += `&bundleIds=${bundleIds.split(",")}`;
      }
     const request = new HttpRequest('POST', environment.providerNphiesClaim + requestURL, {});
