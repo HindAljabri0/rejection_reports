@@ -365,7 +365,6 @@ export class SharedDataService {
     { value: 'laboratory', name: 'Laboratory' },
     { value: 'oral-health-ip', name: 'Oral Health IP' },
     { value: 'oral-health-op', name: 'Oral Health OP' },
-    { value: 'moh-category', name: 'MOH Billing Codes' },
   ];
 
   itemcnhiTypeList = [
