@@ -171,10 +171,9 @@
                   </div>
                 </td>
                 <td class="actions text-center">
-                    <!-- transaction.status === 'partial' || -->
-                    <!-- transaction.status === 'rejected' || -->
+                    
                   <button
-                  *ngIf="transaction.status === 'not-required' || transaction.status === 'Queued' || transaction.status === 'pended' ||    transaction.status === 'Failednphies' || transaction.status === 'FailedNphies'"
+                  *ngIf="transaction.status === 'not-required' || transaction.status === 'Queued' || transaction.status === 'partial' || transaction.status === 'pended' ||   transaction.status === 'rejected' || transaction.status === 'Failednphies' || transaction.status === 'FailedNphies'"
                     (click)="inquireApprovalRequest(transaction.requestId)" class="action-letter-btn"
                     [ngClass]="transaction.inquiryStatus === 'failed' ? 'theme-danger': (transaction.inquiryStatus === 'passed' ? 'theme-success' : '')"
                     [matTooltip]="transaction.inquiryStatus === 'failed' ? 'Failed': (transaction.inquiryStatus === 'passed' ? 'Passed' : 'Get latest preauth response from NPHIES queue')">I</button>
