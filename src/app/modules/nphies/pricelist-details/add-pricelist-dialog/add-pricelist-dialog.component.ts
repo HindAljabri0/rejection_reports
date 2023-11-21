@@ -32,7 +32,7 @@ export class AddPricelistDialogComponent implements OnInit {
     serviceCodeFilter: ['']
   });
 
-  typeList = this.sharedDataService.itemTypeList;
+  typeList = this.sharedDataService.itemsTypeList;
   cnhiTypeList = this.sharedDataService.itemcnhiTypeList;
   IsItemLoading = false;
   nphiesId : any;
