@@ -368,6 +368,9 @@ export class SharedDataService {
     { value: 'moh-category', name: 'MOH Billing Codes' },
   ];
 
+  itemcnhiTypeList = [
+    { value: 'moh-category', name: 'MOH Billing Codes' },
+  ];
   itemMedicationReasonList = [
     { value: 'patient-request', name: '	Requested by patient' },
     { value: 'generic', name: 'Generic' },

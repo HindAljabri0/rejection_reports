@@ -33,7 +33,9 @@ export class AddPricelistDialogComponent implements OnInit {
   });
 
   typeList = this.sharedDataService.itemTypeList;
+  cnhiTypeList = this.sharedDataService.itemcnhiTypeList;
   IsItemLoading = false;
+  nphiesId : any;
 
   onDestroy = new Subject<void>();
 
@@ -53,6 +55,7 @@ export class AddPricelistDialogComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.nphiesId =this.data.nphiesId;
     if (this.data && this.data.priceDetail) {
       this.FormPriceDetail.patchValue({
         // tslint:disable-next-line:max-line-length
