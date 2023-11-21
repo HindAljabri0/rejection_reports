@@ -365,6 +365,19 @@ export class SharedDataService {
     { value: 'laboratory', name: 'Laboratory' },
     { value: 'oral-health-ip', name: 'Oral Health IP' },
     { value: 'oral-health-op', name: 'Oral Health OP' },
+    { value: 'moh-category', name: 'MOH Billing Codes' },
+  ];
+
+  itemsTypeList = [
+    { value: 'medical-devices', name: 'Medical Devices' },
+    { value: 'medication-codes', name: 'Medication Codes' },
+    { value: 'transportation-srca', name: 'Transportation SRCA' },
+    { value: 'imaging', name: 'Imaging' },
+    { value: 'procedures', name: 'Procedures' },
+    { value: 'services', name: 'Services' },
+    { value: 'laboratory', name: 'Laboratory' },
+    { value: 'oral-health-ip', name: 'Oral Health IP' },
+    { value: 'oral-health-op', name: 'Oral Health OP' },
   ];
 
   itemcnhiTypeList = [
