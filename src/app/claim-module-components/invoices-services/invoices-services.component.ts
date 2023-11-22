@@ -69,7 +69,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
             quantity: FormControl,
             patientShare: FormControl,
             serviceDiscount: FormControl,
-            serviceDiscountUnit: 'SAR' | 'PERCENT';
+            serviceDiscountUnit: String;
             toothNumber: FormControl,
             netVatRate: FormControl,
             netVatAmount: number;
@@ -95,7 +95,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     serviceCodeSearchError;
     searchServicesController: FormControl = new FormControl();
     payerId: string;
-
+    currencyCode = "SAR";
     claimType: string;
     visitDate: Date;
     departments: any[] = [];
@@ -136,6 +136,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     _onDestroy = new Subject<void>();
 
     ngOnInit() {
+        this.currencyCode = localStorage.getItem('currencyCode') != null && localStorage.getItem('currencyCode') != undefined ? localStorage.getItem('currencyCode') : "SAR";
         this.store.select(getPageMode).pipe(
             takeUntil(this._onDestroy),
             withLatestFrom(this.store.select(getClaim)),
@@ -346,7 +347,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
                     this.controllers[index].services[serviceIndex].serviceDiscount.setValue(service.serviceGDPN.discount.value);
                 }
                 this.controllers[index].services[serviceIndex].serviceDiscountUnit =
-                    (service.serviceGDPN.discount != null && service.serviceGDPN.discount.type == 'PERCENT') ? 'PERCENT' : 'SAR';
+                    (service.serviceGDPN.discount != null && service.serviceGDPN.discount.type == 'PERCENT') ? 'PERCENT' : this.currencyCode;
 
                 if (service.serviceGDPN.netVATrate != null) {
                     this.controllers[index].services[serviceIndex].netVatRate.setValue(service.serviceGDPN.netVATrate.value);
@@ -364,7 +365,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
                 if (service.serviceGDPN.patientShare != null) {
                     this.controllers[index].services[serviceIndex].patientShare.setValue(service.serviceGDPN.patientShare.value);
                 } else {
-                    service = { ...service, serviceGDPN: { ...service.serviceGDPN, patientShare: { value: 0, type: 'SAR' } } };
+                    service = { ...service, serviceGDPN: { ...service.serviceGDPN, patientShare: { value: 0, type: this.currencyCode } } };
                     this.controllers[index].services[serviceIndex].patientShare.setValue('');
                 }
 
@@ -559,7 +560,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
         this.controllers[i].services[j].patientShare.setValue(service.serviceGDPN.patientShare.value);
         this.controllers[i].services[j].serviceDiscount.setValue(service.serviceGDPN.discount.value);
         this.controllers[i].services[j].serviceDiscountUnit = (service.serviceGDPN.discount != null
-            && service.serviceGDPN.discount.type == 'PERCENT') ? 'PERCENT' : 'SAR';
+            && service.serviceGDPN.discount.type == 'PERCENT') ? 'PERCENT' : this.currencyCode;
         this.controllers[i].services[j].toothNumber.setValue(service.toothNumber);
         this.controllers[i].services[j].daysOfSupply.setValue(service.daysOfSupply);
         this.controllers[i].services[j].daysOfSupply.disable();
@@ -651,7 +652,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
                     return 0;
                 }
             }).reduce((pre, cur) => pre + cur);
-            GDPN.discount.type = 'SAR';
+            GDPN.discount.type = this.currencyCode;
             GDPN.gross.value = invoice.service.map(service => service.serviceGDPN.gross.value).reduce((pre, cur) => pre + cur);
             GDPN.net.value = invoice.service.map(service => service.serviceGDPN.net.value).reduce((pre, cur) => pre + cur);
             GDPN.netVATamount.value = invoice.service.map(service => service.serviceGDPN.netVATamount.value).reduce((pre, cur) => pre + cur);
@@ -684,22 +685,23 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
             serviceDate: service.serviceDate.value == null ? null : new Date(service.serviceDate.value),
             serviceCode: service.serviceCode.value,
             serviceDescription: service.serviceDescription.value,
-            unitPrice: { value: service.unitPrice.value, type: 'SAR' },
+            unitPrice: { value: service.unitPrice.value, type: this.currencyCode },
             requestedQuantity: service.quantity.value,
             toothNumber: service.toothNumber.value,
             daysOfSupply: service.daysOfSupply.value,
             serviceGDPN: {
-                patientShare: { value: this.getAsNumber(service.patientShare.value), type: 'SAR' },
-                discount: { value: this.getAsNumber(service.serviceDiscount.value), type: service.serviceDiscountUnit },
+                patientShare: { value: this.getAsNumber(service.patientShare.value), type: this.currencyCode },
+                discount: { value: this.getAsNumber(service.serviceDiscount.value), type: this.currencyCode },
                 netVATrate: { value: this.getAsNumber(service.netVatRate.value), type: 'PERCENT' },
                 patientShareVATrate: { value: this.getAsNumber(service.patientShareVatRate.value), type: 'PERCENT' },
-                gross: { value: this.getAsNumber(gross), type: 'SAR' },
-                net: { value: this.getAsNumber(net), type: 'SAR' },
-                netVATamount: { value: this.getAsNumber(netVat), type: 'SAR' },
-                patientShareVATamount: { value: this.getAsNumber(patientShareVATamount), type: 'SAR' },
+                gross: { value: this.getAsNumber(gross), type: this.currencyCode },
+                net: { value: this.getAsNumber(net), type: this.currencyCode },
+                netVATamount: { value: this.getAsNumber(netVat), type:this.currencyCode },
+                patientShareVATamount: { value: this.getAsNumber(patientShareVATamount), type:this.currencyCode },
 
             },
         };
+        console.log("Service Data"+JSON.stringify(newService));
         return newService;
     }
 
@@ -754,7 +756,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     }
 
     calcDiscountValue(service) {
-        if (service.serviceDiscountUnit == 'SAR') {
+        if (service.serviceDiscountUnit != 'PERCENT') {
             return service.serviceDiscount.value;
         } else {
             const gross = this.calcGross(service);
