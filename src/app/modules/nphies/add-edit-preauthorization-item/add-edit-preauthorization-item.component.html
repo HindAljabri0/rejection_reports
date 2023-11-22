@@ -91,15 +91,15 @@
       </div>
       <div class="col-4 col-lg-3" *ngIf="data.source === 'CNHI'" >
         <div class="form-group">
-          <label class="control-label">Body Site</label>
-          <mat-radio-group class="radio-group inline" formControlName="cnhiBodysite">
+          <label class="control-label">Body Site Type</label>
+          <mat-radio-group class="radio-group inline" formControlName="isDentalBodySite" (change)="onRadioChange($event)">
             <mat-radio-button color="primary" [value]="true">General</mat-radio-button>
             <mat-radio-button color="primary" [value]="false">Dental</mat-radio-button>
           </mat-radio-group>
         </div>
       </div>
      
-      <div class="col-4 col-lg-3" *ngIf="FormItem.controls.cnhiBodysite.value || ((data.type !== 'oral') && !(data.type === 'institutional' && FormItem.controls.type.value.value === 'oral-health-ip') && data.source !== 'CNHI')" [hidden]="data.source === 'APPROVAL' && data.providerType === 'vision'">
+      <div class="col-4 col-lg-3" *ngIf="(FormItem.controls.isDentalBodySite.value && data.source === 'CNHI') || (((data.type !== 'oral') && !(data.type === 'institutional' && FormItem.controls.type.value.value === 'oral-health-ip')) && data.source !== 'CNHI')" [hidden]="data.source === 'APPROVAL' && data.providerType === 'vision'">
         <div class="form-group">
           <label class="control-label">Body Site</label>
           <mat-form-field class="form-control custom-select-control">
@@ -110,7 +110,7 @@
           </mat-form-field>
         </div>
       </div>
-       <div class="col-4 col-lg-3" *ngIf="!FormItem.controls.cnhiBodysite.value || ((data.type === 'oral') || (data.type === 'institutional' && FormItem.controls.type.value.value === 'oral-health-ip') && data.source !== 'CNHI')" [hidden]="data.source === 'APPROVAL' && data.providerType === 'vision'">
+       <div class="col-4 col-lg-3" *ngIf="(!FormItem.controls.isDentalBodySite.value && data.source === 'CNHI') || ((data.type === 'oral') || (data.type === 'institutional' && FormItem.controls.type.value.value === 'oral-health-ip'))" [hidden]="data.source === 'APPROVAL' && data.providerType === 'vision'">
         <div class="form-group">
           <label class="control-label">Body Site</label>
           <div class="input-group">
@@ -121,16 +121,7 @@
           </div>
         </div>
       </div>
-      <div class="col-4 col-lg-3" *ngIf="data.source === 'CNHI'" >
-        <div class="form-group">
-          <label class="control-label">Sub Site</label>
-          <mat-radio-group class="radio-group inline" (change)="onRadioChange($event)" formControlName="cnhiSubsite">
-            <mat-radio-button color="primary" [value]="true">General</mat-radio-button>
-            <mat-radio-button color="primary" [value]="false">Dental</mat-radio-button>
-          </mat-radio-group>
-        </div>
-      </div>
-      <div class="col-4 col-lg-3" [hidden]="data.source === 'APPROVAL' && data.providerType ==='vision'">
+          <div class="col-4 col-lg-3" [hidden]="data.source === 'APPROVAL' && data.providerType ==='vision'">
         <div class="form-group">
           <label class="control-label">Sub Site</label>
           <mat-form-field class="form-control custom-select-control">
@@ -358,7 +349,7 @@
                 </div>
                 <div *ngIf="showQuantityCode" class="col-auto">
                   <mat-form-field class="form-control custom-select-control">
-                    <mat-select formControlName="quantityCode">
+                    <mat-select   (selectionChange)="CalculateUnitPrice($event.value)" formControlName="quantityCode">
                       <mat-option value="">Code<span *ngIf="IsQuantityCodeRequired">*</span></mat-option>
                       <mat-option value="{unit}">Unit</mat-option>
                       <mat-option value="{package}">Package</mat-option>

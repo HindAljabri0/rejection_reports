@@ -9,7 +9,7 @@ class PrescriptionApprovalSearchRequest {
     destinationId?: string[];
     documentId?: string[];
     status?: string;
-    prescriptionRefNo?: string;
+    preAuthRefNo?: string;
     requestBundleId?: string;
     type?: string;
 

@@ -92,7 +92,7 @@ export class HeaderComponent implements OnInit {
         console.log(this.sharedServices.providerId)
         if (this.sharedServices.providerId != '101' && localStorage.getItem('hasDisplayedAnnouncementDialogue') != "true") {
             this.getAnnouncements();
-            localStorage.setItem('hasDisplayedAnnouncementDialogue', "true");
+           
         }
         this.getAlertMessage();
         if (environment.showFreshChat) {
@@ -325,6 +325,7 @@ export class HeaderComponent implements OnInit {
 
                 AnnouncementsInfo = event.body["content"];
                 if (AnnouncementsInfo.length > 0) {
+                    localStorage.setItem('hasDisplayedAnnouncementDialogue', "true");
                     this.dialog.open(AnnountmentDialogComponent, {
 
                         panelClass: ['primary-dialog'],

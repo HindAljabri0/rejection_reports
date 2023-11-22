@@ -254,8 +254,6 @@ export class EligibilityTransactionsComponent implements OnInit {
 
       model.page = this.page;
       model.pageSize = this.pageSize;
-     // this.downloadEligibilityAsJson(this.eligibilitySearchModel);
-
       this.editURL(model.fromDate, model.toDate);
       this.detailTopActionIcon = 'ic-download.svg';
       this.providersNphiesEligibilityService.getEligibilityTransactions(this.sharedServices.providerId, model).subscribe((event: any) => {
@@ -284,7 +282,7 @@ export class EligibilityTransactionsComponent implements OnInit {
     }
   }
 
-  downloadEligibilityAsJson(eligibilitySearchModel){ 
+  downloadEligibilityAsJson(){ 
     if (this.detailTopActionIcon === 'ic-check-circle.svg') { return; }
     this.eligibilitySearchModel={};
     
@@ -310,12 +308,13 @@ export class EligibilityTransactionsComponent implements OnInit {
         this.eligibilitySearchModel.status = this.FormEligibilityTransaction.controls.status.value;
       }
 
-    this.nphiesDownloadApprovalEligibilityService.downloadEligibilityAsJson(eligibilitySearchModel).subscribe((event) => {
-      
+    this.nphiesDownloadApprovalEligibilityService.downloadEligibilityAsJson(this.eligibilitySearchModel).subscribe((event) => {
+        this.sharedServices.loadingChanged.next(true);
       if (event instanceof HttpResponse) {
         this.downloadData = event.body; 
-        if (Array.isArray(this.downloadData) && this.downloadData.length > 0){
-        const formattedData =  this.downloadData.map(item => {
+        const  downloadArray = JSON.parse(this.downloadData);
+            if (downloadArray && downloadArray.length > 0){
+        const formattedData =  downloadArray.map(item => {
              const rowData: any = {
             FULL_NAME: item.fullName,
             DOCUMENTID: item.documentId,
@@ -333,14 +332,13 @@ export class EligibilityTransactionsComponent implements OnInit {
            
         };
           return rowData;
-          });
-    
-    const ws: XLSX.WorkSheet = XLSX.utils.sheet_to_json(formattedData);
+          }); 
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(formattedData);
+  const wb: XLSX.WorkBook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-
-    XLSX.writeFile(wb, eligibilitySearchModel.document.Id +'.xlsx');
+    XLSX.writeFile(wb, "Nphies_Eligibility_Report" +'.xlsx');
+    this.sharedServices.loadingChanged.next(false);
       }else
       {
         const headers = [
@@ -365,7 +363,7 @@ export class EligibilityTransactionsComponent implements OnInit {
         const wb: XLSX.WorkBook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
-        XLSX.writeFile(wb, eligibilitySearchModel.documentId + '.xlsx');
+        XLSX.writeFile(wb, "Nphies_Eligibility_Report" + '.xlsx');
       }
       }
     }, errorEvent => {

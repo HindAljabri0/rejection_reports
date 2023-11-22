@@ -171,6 +171,11 @@ export class SharedDataService {
   ];
 
   encounterCnhiClassList = [
+    { value: 'AMB', name: 'Ambulatory' },
+    { value: 'EMER', name: 'Emergency' },
+    { value: 'HH', name: 'Home Health' },
+    { value: 'IMP', name: 'Inpatient Encounter' },
+    { value: 'SS', name: 'Short Stay' },
     { value: 'ALTC', name: 'ALTC' },
   ];
 
@@ -363,6 +368,21 @@ export class SharedDataService {
     { value: 'moh-category', name: 'MOH Billing Codes' },
   ];
 
+  itemsTypeList = [
+    { value: 'medical-devices', name: 'Medical Devices' },
+    { value: 'medication-codes', name: 'Medication Codes' },
+    { value: 'transportation-srca', name: 'Transportation SRCA' },
+    { value: 'imaging', name: 'Imaging' },
+    { value: 'procedures', name: 'Procedures' },
+    { value: 'services', name: 'Services' },
+    { value: 'laboratory', name: 'Laboratory' },
+    { value: 'oral-health-ip', name: 'Oral Health IP' },
+    { value: 'oral-health-op', name: 'Oral Health OP' },
+  ];
+
+  itemcnhiTypeList = [
+    { value: 'moh-category', name: 'MOH Billing Codes' },
+  ];
   itemMedicationReasonList = [
     { value: 'patient-request', name: '	Requested by patient' },
     { value: 'generic', name: 'Generic' },
