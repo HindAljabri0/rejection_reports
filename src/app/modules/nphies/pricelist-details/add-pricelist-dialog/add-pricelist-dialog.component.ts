@@ -59,7 +59,7 @@ export class AddPricelistDialogComponent implements OnInit {
     if (this.data && this.data.priceDetail) {
       this.FormPriceDetail.patchValue({
         // tslint:disable-next-line:max-line-length
-        serviceType: this.sharedDataService.itemTypeList.filter(x => x.value === this.data.priceDetail.itemType)[0] ? this.sharedDataService.itemTypeList.filter(x => x.value === this.data.priceDetail.itemType)[0] : '',
+        serviceType: this.nphiesId === '0000000163' ? this.sharedDataService.itemcnhiTypeList.filter(x => x.value === this.data.priceDetail.itemType)[0] ? this.sharedDataService.itemcnhiTypeList.filter(x => x.value === this.data.priceDetail.itemType)[0] : '' : this.sharedDataService.itemsTypeList.filter(x => x.value === this.data.priceDetail.itemType)[0] ? this.sharedDataService.itemsTypeList.filter(x => x.value === this.data.priceDetail.itemType)[0] : '',
         serviceCode: this.data.priceDetail.code,
         nonStandardCode: this.data.priceDetail.nonStandardCode,
         nonStandardDesc: this.data.priceDetail.nonStandardDescription,
