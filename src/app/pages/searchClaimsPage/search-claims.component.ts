@@ -132,6 +132,8 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     status: any = 1;
     isAllCards = false;
 
+    currencyCode="SAR";
+    
     length = 0;
     pageSize = 100;
     pageIndex = 0;
@@ -181,6 +183,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     }
 
     ngOnInit() {
+        this.currencyCode = localStorage.getItem('currencyCode') !=null && localStorage.getItem('currencyCode')!= undefined?localStorage.getItem('currencyCode') : "SAR";
         this.pageSize = localStorage.getItem('pagesize') != null ? Number.parseInt(localStorage.getItem('pagesize'), 10) : 10;
         this.fetchData();
         this.routerSubscription = this.router.events.pipe(
