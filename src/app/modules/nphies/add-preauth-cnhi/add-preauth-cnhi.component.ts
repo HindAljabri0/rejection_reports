@@ -375,7 +375,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
         }
   
         if (this.data.encounter.encounterClass != null) {
-          this.FormPreAuthorization.controls.encounterClass.setValue(this.sharedDataService.encounterCnhiClassList[5]);
+          this.FormPreAuthorization.controls.encounterClass.setValue(this.sharedDataService.encounterCnhiClassList[5].value);
          }
   
         if (this.data.encounter.serviceType != null) {
@@ -504,6 +504,10 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
             documentId: res.beneficiary.documentId,
             documentType: res.beneficiary.documentType,
             fullName: res.beneficiary.fullName,
+            firstName:res.beneficiary.firstName,
+            familyName:res.beneficiary.familyName,
+            nationality:res.beneficiary.nationality,
+            contactNumber:res.beneficiary.contactNumber,
             gender: res.beneficiary.gender,
             insurancePlanMemberCardId: res.beneficiary.insurancePlan.memberCardId,
             insurancePlanPolicyNumber: res.beneficiary.insurancePlan.policyNumber,
