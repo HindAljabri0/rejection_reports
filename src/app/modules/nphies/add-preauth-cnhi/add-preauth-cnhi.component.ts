@@ -327,11 +327,10 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
      if (this.data.preAuthorizationInfo.type != null) {
        this.FormPreAuthorization.controls.type.setValue(this.sharedDataService.cnhiTypeList[0]);
     }
-       if (this.data.preAuthorizationInfo.subType != null) {
-        console.log(this.data.detailsModel.preAuthorizationInfo.subTypeName,"slklks")
-      // tslint:disable-next-line:max-line-length
-      this.FormPreAuthorization.controls.subType.setValue(this.data.preAuthorizationInfo.subType);
-    }
+    if (this.data.preAuthorizationInfo.subType != null) {
+        this.FormPreAuthorization.controls.subType.setValue(this.cnhiSubType.filter(x => x.value === this.data.preAuthorizationInfo.subType)[0] ? this.cnhiSubType.filter(x => x.value === this.data.preAuthorizationInfo.subType)[0] : '');
+            }
+      
     if (this.data.preAuthorizationInfo.eligibilityOfflineId != null) {
       // tslint:disable-next-line:max-line-length
       this.FormPreAuthorization.controls.eligibilityOfflineId.setValue(this.data.preAuthorizationInfo.eligibilityOfflineId);
