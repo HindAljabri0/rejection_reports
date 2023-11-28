@@ -325,9 +325,10 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
       this.FormPreAuthorization.controls.payee.setValue(this.payeeList.filter(x => x.nphiesId === this.data.preAuthorizationInfo.payeeId)[0] ? this.payeeList.filter(x => x.nphiesId === this.data.preAuthorizationInfo.payeeId)[0].nphiesId : '');
     }
      if (this.data.preAuthorizationInfo.type != null) {
-       this.FormPreAuthorization.controls.type.setValue(this.data.preAuthorizationInfo.type);
+       this.FormPreAuthorization.controls.type.setValue(this.sharedDataService.cnhiTypeList[0]);
     }
        if (this.data.preAuthorizationInfo.subType != null) {
+        console.log(this.data.detailsModel.preAuthorizationInfo.subTypeName,"slklks")
       // tslint:disable-next-line:max-line-length
       this.FormPreAuthorization.controls.subType.setValue(this.data.preAuthorizationInfo.subType);
     }
@@ -375,7 +376,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
         }
   
         if (this.data.encounter.encounterClass != null) {
-          this.FormPreAuthorization.controls.encounterClass.setValue(this.data.encounter.encounterClass);
+          this.FormPreAuthorization.controls.encounterClass.setValue(this.sharedDataService.encounterCnhiClassList[5]);
          }
   
         if (this.data.encounter.serviceType != null) {
