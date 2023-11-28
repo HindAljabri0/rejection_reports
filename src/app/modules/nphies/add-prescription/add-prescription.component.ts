@@ -175,7 +175,7 @@ export class AddPrescriptionComponent implements OnInit {
     postalCode: ['']
   });
 
-  typeList = this.sharedDataService.claimTypeList;
+  typeList = this.sharedDataService.claimPrescriberType;
   payeeTypeList = this.sharedDataService.payeeTypeList;
   payeeList = [];
   providerList = [];
@@ -212,7 +212,6 @@ export class AddPrescriptionComponent implements OnInit {
   defualtPageMode = "";
   selectedDefaultPlan = null;
   providerType = "";
-  isPBMValidationVisible =false;
   Pbm_result:any;
   constructor(
     private sharedDataService: SharedDataService,
@@ -237,7 +236,6 @@ export class AddPrescriptionComponent implements OnInit {
    
     this.getPayees();
     this.getTPA();
-    this.getPBMValidation();
     this.FormPreAuthorization.controls.dateOrdered.setValue(this.removeSecondsFromDate(new Date()));
     this.filteredNations.next(this.nationalities.slice());
     if (this.claimReuseId) {
@@ -251,17 +249,7 @@ export class AddPrescriptionComponent implements OnInit {
     this.getProviderTypeConfiguration();
    
   }
-  getPBMValidation() {
-    this.adminService.checkIfNphiesApprovalPBMValidationIsEnabled(this.sharedServices.providerId, '101').subscribe((event: any) => {
-      if (event instanceof HttpResponse) {
-        const body = event['body'];
-        this.isPBMValidationVisible = body.value === '1' ? true : false;
-      }
-    }, err => {
-      console.log(err);
-    });
 
-  }
   selectedDefualtPrescriberChange($event) {
     this.PrescriberDefault = $event;
     console.log("$event = " + $event);
@@ -304,17 +292,9 @@ export class AddPrescriptionComponent implements OnInit {
     }
     this.claimType = this.data.preAuthorizationInfo.type;
     // tslint:disable-next-line:max-line-length
-    this.FormPreAuthorization.controls.type.setValue(this.sharedDataService.claimTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] ? this.sharedDataService.claimTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] : '');
+    this.FormPreAuthorization.controls.type.setValue(this.sharedDataService.claimPrescriberType.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] ? this.sharedDataService.claimPrescriberType.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] : '');
     switch (this.data.preAuthorizationInfo.type) {
-      case 'institutional':
-        this.subTypeList = this.sharedDataService.subTypeList.filter(x => x.value === 'ip' || x.value === 'emr');
-        break;
-      case 'professional':
-      case 'vision':
-      case 'pharmacy':
-      case 'oral':
-        this.subTypeList = this.sharedDataService.subTypeList.filter(x => x.value === 'op');
-        break;
+          case 'professional':
     }
     if (this.data.preAuthorizationInfo.subType != null) {
       // tslint:disable-next-line:max-line-length
@@ -674,20 +654,8 @@ export class AddPrescriptionComponent implements OnInit {
       this.FormPreAuthorization.controls.subType.setValue('');
 
       switch ($event.value.value) {
-        case 'institutional':
-          this.subTypeList = [
-            { value: 'ip', name: 'InPatient' },
-            { value: 'emr', name: 'Emergency' },
-          ];
-          break;
         case 'professional':
-        case 'vision':
-        case 'pharmacy':
-        case 'oral':
-          this.subTypeList = [
-            { value: 'op', name: 'OutPatient' },
-          ];
-          break;
+         break;
       }
 
       this.VisionSpecifications = [];
@@ -1649,10 +1617,10 @@ export class AddPrescriptionComponent implements OnInit {
 
   checkNewBornValidation() {
     // tslint:disable-next-line:max-line-length
-    if (this.FormPreAuthorization.controls.isNewBorn.value && (this.FormPreAuthorization.controls.type.value.value === 'institutional' || this.FormPreAuthorization.controls.type.value.value === 'professional')) {
+    if (this.FormPreAuthorization.controls.isNewBorn.value && (this.FormPreAuthorization.controls.type.value.value === 'professional')) {
       if (this.SupportingInfo.filter(x => x.category === 'birth-weight').length === 0) {
         // tslint:disable-next-line:max-line-length
-        this.dialogService.showMessage('Error', 'Birth-Weight is required as Supporting Info for a newborn patient in a professional or institutional preauthorization request', 'alert', true, 'OK', null, true);
+        this.dialogService.showMessage('Error', 'Birth-Weight is required as Supporting Info for a newborn patient in a professional prescription request', 'alert', true, 'OK', null, true);
         return false;
       } else {
         return true;
@@ -1676,12 +1644,12 @@ export class AddPrescriptionComponent implements OnInit {
     }
   }
 
-  onSubmit(isPbmvalidation=false) {
+  onSubmit() {
     this.providerType = this.providerType == null || this.providerType == "" ? 'any' : this.providerType;
     if (this.providerType.toLowerCase() !== 'any' && this.FormPreAuthorization.controls.type.value.value !== this.providerType) {
-      const filteredClaimType = this.sharedDataService.claimTypeList.filter(x => x.value === this.providerType)[0];
+      const filteredClaimType = this.sharedDataService.claimPrescriberType.filter(x => x.value === this.providerType)[0];
       const providerTypeName = filteredClaimType != null ? filteredClaimType.name : null;
-      const claimTypeName = this.sharedDataService.claimTypeList.filter(x => x.value === this.FormPreAuthorization.controls.type.value.value)[0].name;
+      const claimTypeName = this.sharedDataService.claimPrescriberType.filter(x => x.value === this.FormPreAuthorization.controls.type.value.value)[0].name;
       this.dialogService.showMessage('Error', 'Claim type ' + claimTypeName + ' is not supported for Provider type ' + providerTypeName, 'alert', true, 'OK');
       return;
     }
@@ -1710,50 +1678,7 @@ export class AddPrescriptionComponent implements OnInit {
       this.FormPreAuthorization.controls.date.updateValueAndValidity();
       this.IsDateRequired = false;
     }
-    if (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value === 'vision') {
-      if (this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length === 0) {
-        this.FormPreAuthorization.controls.prescriber.setValidators([Validators.required]);
-        this.FormPreAuthorization.controls.prescriber.updateValueAndValidity();
-        this.IsLensSpecificationRequired = true;
-        hasError = true;
-      } else {
-        this.FormPreAuthorization.controls.prescriber.clearValidators();
-        this.FormPreAuthorization.controls.prescriber.updateValueAndValidity();
-        this.IsLensSpecificationRequired = false;
-      }
-
-      if (!this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length > 0) {
-        this.FormPreAuthorization.controls.dateWritten.setValidators([Validators.required]);
-        this.FormPreAuthorization.controls.dateWritten.updateValueAndValidity();
-        this.IsDateWrittenRequired = true;
-        hasError = true;
-      } else {
-        this.FormPreAuthorization.controls.dateWritten.clearValidators();
-        this.FormPreAuthorization.controls.dateWritten.updateValueAndValidity();
-        this.IsDateWrittenRequired = false;
-      }
-
-      // tslint:disable-next-line:max-line-length
-      if ((this.FormPreAuthorization.controls.dateWritten.value && !this.FormPreAuthorization.controls.prescriber.value) ||
-        (this.VisionSpecifications.length > 0 && !this.FormPreAuthorization.controls.prescriber.value)) {
-        this.FormPreAuthorization.controls.prescriber.setValidators([Validators.required]);
-        this.FormPreAuthorization.controls.prescriber.updateValueAndValidity();
-        this.IsPrescriberRequired = true;
-        hasError = true;
-      } else {
-        this.FormPreAuthorization.controls.prescriber.clearValidators();
-        this.FormPreAuthorization.controls.prescriber.updateValueAndValidity();
-        this.IsPrescriberRequired = false;
-      }
-    }
-
-    if (isPbmvalidation) {
-      let weightValidtation = this.SupportingInfo.filter(f=>f.category == 'vital-sign-weight').length;
-      if (weightValidtation == 0) {
-        this.dialogService.showMessage('Error', 'please add vital sign weight to complete PBM request', 'alert', true, 'OK');
-        return;
-      }
-    }
+ 
     if (this.FormPreAuthorization.valid) {
 
       if (this.Diagnosises.length === 0 || this.Items.length === 0) {
@@ -1999,62 +1924,7 @@ export class AddPrescriptionComponent implements OnInit {
         return model;
       });
 
-      if (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value === 'vision') {
-        if (this.FormPreAuthorization.controls.prescriber.value) {
-          this.model.visionPrescription = {};
-          // tslint:disable-next-line:max-line-length
-          this.model.visionPrescription.dateWritten = moment(this.removeSecondsFromDate(this.FormPreAuthorization.controls.dateWritten.value)).utc();
-          this.model.visionPrescription.prescriber = this.FormPreAuthorization.controls.prescriber.value;
-          let sequence = 1; let index = 0;
-          let lens_model: any = [];
-          this.VisionSpecifications.forEach(x => {
-            lens_model[index] = {};
-            lens_model[index].sequence = sequence;
-            lens_model[index].product = x.product;
-            lens_model[index].lensColor = x.lensColor;
-            lens_model[index].lensBrand = x.lensBrand;
-            lens_model[index].lensNote = x.lensNote;
-            lens_model[index].eye = 'right';
-            lens_model[index].sphere = x.sphere;
-            lens_model[index].cylinder = x.cylinder;
-            lens_model[index].axis = x.axis;
-            lens_model[index].prismAmount = x.prismAmount;
-            lens_model[index].prismBase = x.prismBase;
-            lens_model[index].multifocalPower = x.multifocalPower;
-            lens_model[index].lensPower = x.lensPower;
-            lens_model[index].lensBackCurve = x.lensBackCurve;
-            lens_model[index].lensDiameter = x.lensDiameter;
-            lens_model[index].lensDuration = x.lensDuration;
-            lens_model[index].lensDurationUnit = x.lensDurationUnit;
-            //new Fieldindex      
-            ++sequence;
-            ++index;
-            lens_model[index] = {};
-            lens_model[index].sequence = sequence;
-            lens_model[index].product = x.product;
-            lens_model[index].lensColor = x.lensColor;
-            lens_model[index].lensBrand = x.lensBrand;
-            lens_model[index].lensNote = x.lensNote;
-            lens_model[index].eye = 'left';
-            lens_model[index].sphere = x.left_sphere;
-            lens_model[index].cylinder = x.left_cylinder;
-            lens_model[index].axis = x.left_axis;
-            lens_model[index].prismAmount = x.left_prismAmount;
-            lens_model[index].prismBase = x.left_prismBase;
-            lens_model[index].multifocalPower = x.left_multifocalPower;
-            lens_model[index].lensPower = x.left_lensPower;
-            lens_model[index].lensBackCurve = x.left_lensBackCurve;
-            lens_model[index].lensDiameter = x.left_lensDiameter;
-            lens_model[index].lensDuration = x.left_lensDuration;
-            lens_model[index].lensDurationUnit = x.left_lensDurationUnit;
-            ++sequence;
-            ++index;
-          });
-          this.model.visionPrescription.lensSpecifications = lens_model;
-          console.log("on save - > " + JSON.stringify(lens_model));
-        }
-      }
-
+   
       this.model.items = this.Items.map(x => {
         // tslint:disable-next-line:max-line-length
         if ((this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy') && x.careTeamSequence && x.careTeamSequence.length > 0) {
@@ -2153,13 +2023,10 @@ export class AddPrescriptionComponent implements OnInit {
 
       console.log('Model', this.model);
       this.sharedServices.loadingChanged.next(true);
-      let requestOb = this.providerNphiesApprovalService.sendApprovalRequest(this.sharedServices.providerId, this.model);
-      if(isPbmvalidation){
-        requestOb = this.providerNphiesApprovalService.sendApprovalPBMRequest(this.sharedServices.providerId, this.model);
-      }
-      requestOb.subscribe(event => {
+      let requestOb = this.providerNphiesApprovalService.sendPrescriberApprovalRequest(this.sharedServices.providerId, this.model);
+         requestOb.subscribe(event => {
         if (event instanceof HttpResponse) {
-          if (event.status === 200 && !isPbmvalidation) {
+          if (event.status === 200) {
             const body: any = event.body;
             if (body.status === 'OK' ) {
               if (body.outcome.toString().toLowerCase() === 'error') {
@@ -2192,12 +2059,6 @@ export class AddPrescriptionComponent implements OnInit {
                 }
               }
             }
-          }else if(event.status === 200 && isPbmvalidation){
-            const body: any = event.body;
-
-            this.sharedServices.loadingChanged.next(false);
-            this.Pbm_result=body;
-            this.openPbmValidationResponseSummaryDialog(body);
           }
         }
       }, error => {
@@ -2476,13 +2337,6 @@ export class AddPrescriptionComponent implements OnInit {
       this.sharedServices.loadingChanged.next(false);
     });
   }
-  openPbmValidationResponseSummaryDialog(body) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.panelClass = ['primary-dialog', 'dialog-lg'];
-    dialogConfig.data = {
-      PBM_result:body
-    };
-    const dialogRef = this.dialog.open(PbmValidationResponseSummaryDialogComponent, dialogConfig);
-  }
+
   
 }

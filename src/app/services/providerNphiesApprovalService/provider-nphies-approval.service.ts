@@ -16,6 +16,15 @@ export class ProviderNphiesApprovalService {
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
     return this.http.request(request);
   }
+
+  sendPrescriberApprovalRequest(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/prescriber/request`;
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
+    return this.http.request(request);
+
+    
+  }
+
   sendCnhiApprovalRequest(providerId: string, body: any) {
     const requestUrl = `/providers/${providerId}/approval/cnhi/request`;
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
