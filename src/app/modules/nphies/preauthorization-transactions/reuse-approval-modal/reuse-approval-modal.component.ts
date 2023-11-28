@@ -78,12 +78,9 @@ export class ReuseApprovalModalComponent implements OnInit {
                     ? this.sharedDataService.encounterStatusList.filter(x => x.value === this.data.detailsModel.encounter.status)[0].value
                     : '';
             }
-            if (this.data.detailsModel.encounter.encounterClass != null) {
-                this.data.detailsModel.encounter.encounterClass = this.sharedDataService.encounterCnhiClassList.filter(
-                    x => x.value === this.data.detailsModel.encounter.encounterClass)[0]
-                    ? this.sharedDataService.encounterCnhiClassList.filter(x => x.value === this.data.detailsModel.encounter.encounterClass)[0].value
-                    : '';
-            }
+            // if (this.data.detailsModel.encounter.encounterClass != null) {
+            //     this.data.detailsModel.encounter.encounterClass = this.sharedDataService.encounterCnhiClassList[5];
+            // }
             if (this.data.detailsModel.encounter.serviceType != null) {
                 this.data.detailsModel.encounter.serviceType = this.sharedDataService.encounterServiceTypeList.filter(
                     x => x.value === this.data.detailsModel.encounter.serviceType)[0]
