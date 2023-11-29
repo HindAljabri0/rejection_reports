@@ -829,7 +829,13 @@ export class AddPreauthorizationComponent implements OnInit {
     const plan: any = {};
     plan.value = planObj.payerNphiesId;
     plan.memberCardId = planObj.memberCardId;
+    if (planObj.payerNphiesId === '0000000163') {
+    
+        this.dialogService.showMessage('Error', 'Selected Payer is not valid for Pre-Auth Request Transaction ', 'alert', true, 'OK');
+        return;
+   }
     this.selectPlan(plan);
+
   }
 
   selectPlan(plan) {
