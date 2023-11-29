@@ -87,17 +87,11 @@
                 <mat-option value="All Waseel providers" (click)='selectProvider("Waseel")'>
                     All Waseel providers
                 </mat-option>
-                <mat-option value="All NPHIES PBM providers" (click)='selectProvider("NPHIES PBM")'>
-                    All NPHIES PBM providers
-                </mat-option>
-                <mat-option value="All NPHIES MRE providers" (click)='selectProvider("NPHIES MRE")'>
-                    All NPHIES MRE providers
-                </mat-option>
-                <mat-option value="All WASEEL PBM providers" (click)='selectProvider("Waseel PBM")'>
-                    All WASEEL PBM providers
-                </mat-option>
-                <mat-option value="All WASEEL MRE providers" (click)='selectProvider("Waseel MRE")'>
-                    All WASEEL MRE providers
+                <mat-option value="All PBM providers" (click)='selectProvider("PBM")'>
+                    All PBM providers
+                </mat-option>     
+                <mat-option value="All MRE providers" (click)='selectProvider("MRE")'>
+                    All MRE providers
                 </mat-option>
                 <mat-option *ngFor="let provider of filteredProviders"
                     [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name + ' | '+provider.cchiId"
@@ -123,18 +117,12 @@
             <mat-checkbox color="primary" *ngIf="allNphiesProviders" [checked]="allNphiesProviders"
                 (change)="cancelSelectedProviders('NPHIES')">All
                 NPHIES Provider</mat-checkbox>
-                <mat-checkbox color="primary" *ngIf="allWaseelPBMProviders" [checked]="allWaseelPBMProviders"
-                (change)="cancelSelectedProviders('Waseel PBM')">All
-                Waseel PBM Provider</mat-checkbox>
-                <mat-checkbox color="primary" *ngIf="allWaseelMREProviders" [checked]="allWaseelMREProviders"
-                (change)="cancelSelectedProviders('Waseel PBM')">All
-                Waseel MRE Provider</mat-checkbox>
-                <mat-checkbox color="primary" *ngIf="allNphiesPBMProviders" [checked]="allNphiesPBMProviders"
-                (change)="cancelSelectedProviders('NPHIES PBM')">All
-                NPHIES PBM Provider</mat-checkbox>
-                <mat-checkbox color="primary" *ngIf="allNphiesMREProviders" [checked]="allNphiesMREProviders"
-                (change)="cancelSelectedProviders('NPHIES MRE')">All
-                NPHIES MRE Provider</mat-checkbox>
+                <mat-checkbox color="primary" *ngIf="allPBMProviders" [checked]="allPBMProviders"
+                (change)="cancelSelectedProviders('PBM')">
+                All PBM providers</mat-checkbox>
+                <mat-checkbox color="primary" *ngIf="allMREProviders" [checked]="allMREProviders"
+                (change)="cancelSelectedProviders('MRE')">All
+                MRE Provider</mat-checkbox>
 
             <div *ngFor="let provider of selectedProviders">
                 <mat-checkbox (change)="cancelSelectedProviders(provider.switchAccountId)" checked="true"
