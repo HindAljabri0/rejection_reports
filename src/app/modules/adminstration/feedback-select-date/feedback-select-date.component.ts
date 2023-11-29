@@ -49,6 +49,10 @@ export class AddFeedbackDateDialogComponent implements OnInit {
   allProviders = false;
   allNphiesProviders = false;
   allWaseelProviders = false;
+  allWaseelPBMProviders = false;
+  allWaseelMREProviders = false;
+  allNphiesPBMProviders = false;
+  allNphiesMREProviders = false;
   feedback = new FeedbackDate();
   providerIds: string[] = [];
   providers: any[];
@@ -87,8 +91,6 @@ export class AddFeedbackDateDialogComponent implements OnInit {
 
    
 
- 
-
   ngOnInit() {
     this.providers = this.data.providersInfo;
     this.surveyId = this.data.surveyId;
@@ -118,6 +120,7 @@ export class AddFeedbackDateDialogComponent implements OnInit {
         this.announcementForm.get('providersControl').disable();
   
       }
+
     }    
   }
 
@@ -133,6 +136,10 @@ export class AddFeedbackDateDialogComponent implements OnInit {
         this.allProviders = true;
         this.allNphiesProviders = false;
         this.allWaseelProviders = false;
+        this.allWaseelPBMProviders = false;
+        this.allWaseelMREProviders = false;
+        this.allNphiesPBMProviders = false;
+        this.allNphiesMREProviders = false;
         this.selectedProviders = [];
         this.announcementForm.controls.providersControl.setValue('');
         this.SelectedPrividerType = 'All';
@@ -141,6 +148,10 @@ export class AddFeedbackDateDialogComponent implements OnInit {
         this.allProviders = false;
         this.allNphiesProviders = true;
         this.allWaseelProviders = false;
+        this.allWaseelPBMProviders = false;
+        this.allWaseelMREProviders = false;
+        this.allNphiesPBMProviders = false;
+        this.allNphiesMREProviders = false;
         this.announcementForm.controls.providersControl.setValue('');
         this.selectedProviders = [];
         this.SelectedPrividerType = 'NPHIES';
@@ -150,14 +161,77 @@ export class AddFeedbackDateDialogComponent implements OnInit {
         this.allProviders = false;
         this.allNphiesProviders = false;
         this.allWaseelProviders = true;
+        this.allWaseelPBMProviders = false;
+        this.allWaseelMREProviders = false;
+        this.allNphiesPBMProviders = false;
+        this.allNphiesMREProviders = false;
         this.announcementForm.controls.providersControl.setValue('');
         this.selectedProviders = [];
         this.SelectedPrividerType = 'Waseel';
         return;
+        
+      case 'Waseel PBM':
+        this.allProviders = false;
+        this.allNphiesProviders = false;
+        this.allWaseelPBMProviders = true;
+        this.allWaseelMREProviders = false;
+        this.allNphiesPBMProviders = false;
+        this.allNphiesMREProviders = false;
+        this.allWaseelProviders = false;
+        this.announcementForm.controls.providersControl.setValue('');
+        this.selectedProviders = [];
+        this.SelectedPrividerType = 'Waseel PBM';
+        return;
+
+        case 'Waseel MRE':
+        this.allProviders = false;
+        this.allNphiesProviders = false;
+        this.allWaseelMREProviders = true;
+        this.allWaseelPBMProviders = false;
+        this.allNphiesPBMProviders = false;
+        this.allNphiesMREProviders = false; 
+        this.allWaseelProviders = false;
+        this.announcementForm.controls.providersControl.setValue('');
+        this.selectedProviders = [];
+        this.SelectedPrividerType = 'Waseel MRE';
+        return;
+
+        case 'NPHIES PBM':
+        this.allProviders = false;
+        this.allNphiesProviders = false;
+        this.allNphiesPBMProviders = true;
+        this.allWaseelPBMProviders = false;
+        this.allWaseelMREProviders = false;
+        this.allNphiesMREProviders = false;
+        this.allWaseelProviders = false;
+        this.announcementForm.controls.providersControl.setValue('');
+        this.selectedProviders = [];
+        this.SelectedPrividerType = 'NPHIES PBM';
+        return;
+
+        case 'NPHIES MRE':
+        this.allProviders = false;
+        this.allNphiesProviders = false;
+        this.allNphiesMREProviders = true;
+        this.allWaseelPBMProviders = false;
+        this.allWaseelMREProviders = false;
+        this.allNphiesPBMProviders = false;
+        this.allWaseelProviders = false;
+        this.announcementForm.controls.providersControl.setValue('');
+        this.selectedProviders = [];
+        this.SelectedPrividerType = 'NPHIES MRE';
+        return;
+
+       
+        
       default:
         this.allProviders = false;
         this.allNphiesProviders = false;
         this.allWaseelProviders = false;
+        this.allWaseelPBMProviders = false;
+        this.allWaseelMREProviders = false;
+        this.allNphiesPBMProviders = false;
+        this.allNphiesMREProviders = false;
         this.SelectedPrividerType = null;
         this.announcementForm.controls.providersControl.setValue('');
         if (!this.isProviderSelected(provider.switchAccountId)) {
@@ -166,7 +240,6 @@ export class AddFeedbackDateDialogComponent implements OnInit {
         return;
     }
 
-
   }
 
 
@@ -174,6 +247,10 @@ export class AddFeedbackDateDialogComponent implements OnInit {
     this.allProviders = false;
     this.allNphiesProviders = false;
     this.allWaseelProviders = false;
+    this.allWaseelPBMProviders = false;
+    this.allWaseelMREProviders = false;
+    this.allNphiesPBMProviders = false;
+    this.allNphiesMREProviders = false;
     this.selectedProviders.forEach((provider, index) => {
       if (provider.switchAccountId === providerId) { this.selectedProviders.splice(index, 1); }
     });
@@ -201,7 +278,7 @@ export class AddFeedbackDateDialogComponent implements OnInit {
     switch (controlsName) {
       case 'providersControl':
         return this.selectedProviders.length === 0 && this.submit && !this.allProviders &&
-          !this.allNphiesProviders && !this.allWaseelProviders ? 'It Should At least Add One Provider.' : null;
+          !this.allNphiesProviders && !this.allWaseelProviders && !this.allWaseelPBMProviders && !this.allWaseelMREProviders && !this.allNphiesPBMProviders && !this.allNphiesMREProviders ? 'It Should At least Add One Provider.' : null;
       case 'startDateControl':
         return this.announcementForm.controls.startDateControl.invalid && this.submit ? 'Please Select Start Date' : null;
       case 'closeDateControl':
