@@ -49,10 +49,10 @@ export class AddFeedbackDateDialogComponent implements OnInit {
     allProviders = false;
     allNphiesProviders = false;
     allWaseelProviders = false;
-    allPBMProviders = false;
-    allMREProviders = false;
-    //allNphiesPBMProviders = false;
-    //allNphiesMREProviders = false;
+    allWaseelPBMProviders = false;
+    allWaseelMREProviders = false;
+    allNphiesPBMProviders = false;
+    allNphiesMREProviders = false;
     feedback = new FeedbackDate();
     providerIds: string[] = [];
     providers: any[];
@@ -136,8 +136,10 @@ export class AddFeedbackDateDialogComponent implements OnInit {
                 this.allProviders = true;
                 this.allNphiesProviders = false;
                 this.allWaseelProviders = false;
-                this.allPBMProviders = false;
-                this.allMREProviders = false;
+                this.allNphiesPBMProviders = false;
+                this.allNphiesMREProviders = false;
+                this.allWaseelMREProviders = false;
+                this.allWaseelPBMProviders = false;
                 this.selectedProviders = [];
                 this.announcementForm.controls.providersControl.setValue('');
                 this.SelectedPrividerType = 'All';
@@ -146,8 +148,10 @@ export class AddFeedbackDateDialogComponent implements OnInit {
                 this.allProviders = false;
                 this.allNphiesProviders = true;
                 this.allWaseelProviders = false;
-                this.allPBMProviders = false;
-                this.allMREProviders = false;
+                this.allNphiesPBMProviders = false;
+                this.allNphiesMREProviders = false;
+                this.allWaseelMREProviders = false;
+                this.allWaseelPBMProviders = false;
                 this.announcementForm.controls.providersControl.setValue('');
                 this.selectedProviders = [];
                 this.SelectedPrividerType = 'NPHIES';
@@ -157,45 +161,73 @@ export class AddFeedbackDateDialogComponent implements OnInit {
                 this.allProviders = false;
                 this.allNphiesProviders = false;
                 this.allWaseelProviders = true;
-                this.allPBMProviders = false;
-                this.allMREProviders = false;
+                this.allNphiesPBMProviders = false;
+                this.allNphiesMREProviders = false;
+                this.allWaseelMREProviders = false;
+                this.allWaseelPBMProviders = false;
                 this.announcementForm.controls.providersControl.setValue('');
                 this.selectedProviders = [];
                 this.SelectedPrividerType = 'Waseel';
                 return;
 
-
-
-            case 'PBM':
+            case 'NPHIES_PBM':
                 this.allProviders = false;
                 this.allNphiesProviders = false;
-                this.allPBMProviders = true;
-                this.allMREProviders = false;
+                this.allNphiesPBMProviders = true;
+                this.allNphiesMREProviders = false;
+                this.allWaseelMREProviders = false;
+                this.allWaseelPBMProviders = false;
                 this.allWaseelProviders = false;
                 this.announcementForm.controls.providersControl.setValue('');
                 this.selectedProviders = [];
-                this.SelectedPrividerType = 'PBM';
+                this.SelectedPrividerType = 'NPHIES_PBM';
                 return;
 
-            case 'MRE':
+            case 'NPHIES_MRE':
                 this.allProviders = false;
                 this.allNphiesProviders = false;
-                this.allMREProviders = true;
-                this.allPBMProviders = false;
+                this.allNphiesMREProviders = true;
+                this.allNphiesPBMProviders = false;
+                this.allWaseelMREProviders = false;
+                this.allWaseelPBMProviders = false;
                 this.allWaseelProviders = false;
                 this.announcementForm.controls.providersControl.setValue('');
                 this.selectedProviders = [];
-                this.SelectedPrividerType = 'MRE';
+                this.SelectedPrividerType = 'NPHIES_MRE';
+                return;
+            case 'WASEEL_PBM':
+                this.allProviders = false;
+                this.allNphiesProviders = false;
+                this.allNphiesPBMProviders = false;
+                this.allNphiesMREProviders = false;
+                this.allWaseelMREProviders = false;
+                this.allWaseelPBMProviders = true;
+                this.allWaseelProviders = false;
+                this.announcementForm.controls.providersControl.setValue('');
+                this.selectedProviders = [];
+                this.SelectedPrividerType = 'WASEEL_PBM';
                 return;
 
-
-
+            case 'WASEEL_MRE':
+                this.allProviders = false;
+                this.allNphiesProviders = false;
+                this.allNphiesMREProviders = false;
+                this.allNphiesPBMProviders = false;
+                this.allWaseelMREProviders = true;
+                this.allWaseelPBMProviders = false;
+                this.allWaseelProviders = false;
+                this.announcementForm.controls.providersControl.setValue('');
+                this.selectedProviders = [];
+                this.SelectedPrividerType = 'WASEEL_MRE';
+                return;
             default:
                 this.allProviders = false;
                 this.allNphiesProviders = false;
                 this.allWaseelProviders = false;
-                this.allPBMProviders = false;
-                this.allMREProviders = false;
+                this.allNphiesPBMProviders = false;
+                this.allNphiesMREProviders = false;
+                this.allWaseelMREProviders = false;
+                this.allWaseelPBMProviders = false;
                 this.SelectedPrividerType = null;
                 this.announcementForm.controls.providersControl.setValue('');
                 if (!this.isProviderSelected(provider.switchAccountId)) {
@@ -211,8 +243,10 @@ export class AddFeedbackDateDialogComponent implements OnInit {
         this.allProviders = false;
         this.allNphiesProviders = false;
         this.allWaseelProviders = false;
-        this.allPBMProviders = false;
-        this.allMREProviders = false;
+        this.allNphiesPBMProviders = false;
+        this.allNphiesMREProviders = false;
+        this.allWaseelPBMProviders = false;
+        this.allWaseelMREProviders = false;
         this.selectedProviders.forEach((provider, index) => {
             if (provider.switchAccountId === providerId) { this.selectedProviders.splice(index, 1); }
         });
@@ -240,7 +274,7 @@ export class AddFeedbackDateDialogComponent implements OnInit {
         switch (controlsName) {
             case 'providersControl':
                 return this.selectedProviders.length === 0 && this.submit && !this.allProviders &&
-                    !this.allNphiesProviders && !this.allWaseelProviders && !this.allPBMProviders && !this.allMREProviders ? 'It Should At least Add One Provider.' : null;
+                    !this.allNphiesProviders && !this.allWaseelProviders && !this.allNphiesPBMProviders && !this.allNphiesMREProviders && !this.allWaseelPBMProviders && !this.allWaseelMREProviders ? 'It Should At least Add One Provider.' : null;
             case 'startDateControl':
                 return this.announcementForm.controls.startDateControl.invalid && this.submit ? 'Please Select Start Date' : null;
             case 'closeDateControl':
