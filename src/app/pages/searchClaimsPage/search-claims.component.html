@@ -41,10 +41,10 @@
                                 </tr>
                                 <tr>
                                     <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                                        <span class="dashboard-numbers">{{summary.value.totalNetAmount}}</span><span class="currency"> {{currencyCode}}</span>
+                                        <span class="dashboard-numbers">{{summary.value.totalNetAmount}}</span><span class="currency"> SR</span>
                                     </td>
                                     <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                                        <span class="dashboard-numbers">{{summary.value.totalVatNetAmount}}</span><span class="currency"> {{currencyCode}}</span>
+                                        <span class="dashboard-numbers">{{summary.value.totalVatNetAmount}}</span><span class="currency"> SR</span>
                                     </td>
                                 </tr>
                                 <ng-container *ngIf="summary.value.statuses[0] == 'partially_paid'">
@@ -54,10 +54,10 @@
                                     </tr>
                                     <tr>
                                         <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                                            <span class="dashboard-numbers">{{summary.value.actualDeducted}}</span><span class="currency"> {{currencyCode}}</span>
+                                            <span class="dashboard-numbers">{{summary.value.actualDeducted}}</span><span class="currency"> SR</span>
                                         </td>
                                         <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                                            <span class="dashboard-numbers">{{summary.value.actualPaid}}</span><span class="currency"> {{currencyCode}}</span>
+                                            <span class="dashboard-numbers">{{summary.value.actualPaid}}</span><span class="currency"> SR</span>
                                         </td>
                                     </tr>
                                 </ng-container>
@@ -384,11 +384,11 @@
                                             {{claim.claimDate}}
                                         </td>
                                         <td (click)="showClaim(claim.status, claim.claimId)" class="row-click text-nowrap">
-                                            {{claim.netAmount}}<span class="currency"> {{currencyCode !=null ? currencyCode : claim.unitOfNetAmount}}</span>
+                                            {{claim.netAmount}}<span class="currency"> {{claim.unitOfNetAmount}}</span>
                                         </td>
                                         <td (click)="showClaim(claim.status, claim.claimId)" class="row-click text-nowrap">
                                             {{claim.netVatAmount}}<span class="currency">
-                                                {{currencyCode !=null ? currencyCode : claim.unitOfNetVatAmount}}</span>
+                                                {{claim.unitOfNetVatAmount}}</span>
                                         </td>
                                         <td (click)="showClaim(claim.status, claim.claimId)" class="row-click text-nowrap">
                                             <span class="text-monospace">{{claim.batchNumber}}</span>

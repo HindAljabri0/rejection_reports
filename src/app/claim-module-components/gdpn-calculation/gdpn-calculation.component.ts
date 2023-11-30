@@ -16,7 +16,7 @@ export class GdpnCalculationComponent implements OnInit {
   claim: Claim;
   claimProp: RetrievedClaimProps;
   selectedInvoice: number;
-  currencyCode="SAR";
+
   constructor(private store: Store, private sharedServices: SharedServices) {
     store.select(getClaim).subscribe(claim => this.claim = claim);
     store.select(getRetrievedClaimProps).subscribe(props => this.claimProp = props);
@@ -94,7 +94,6 @@ export class GdpnCalculationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.currencyCode = localStorage.getItem('currencyCode') !=null && localStorage.getItem('currencyCode')!= undefined?localStorage.getItem('currencyCode') : "SAR";
   }
 
   getStatusColorOfClaim() {

@@ -14,7 +14,7 @@ import { Label } from 'ng2-charts';
   styles: []
 })
 export class SubmittedClaimsComponent implements OnInit {
-  currencyCode ="SAR";
+
   public doughnutChartLabels: Label[] = ['Under Processing', 'Paid', 'Partially Paid', 'Rejected by Payer'];
   public claimsChartData: ChartDataSets[] = [
     {
@@ -98,7 +98,6 @@ export class SubmittedClaimsComponent implements OnInit {
   constructor(public sharedServices: SharedServices, private store: Store) { }
 
   ngOnInit() {
-    this.currencyCode = localStorage.getItem('currencyCode') != null && localStorage.getItem('currencyCode') != undefined ? localStorage.getItem('currencyCode') : "SAR";
     this.store.select(getSubmittedClaims).subscribe(summaries => {
       this.summaries = summaries;
 

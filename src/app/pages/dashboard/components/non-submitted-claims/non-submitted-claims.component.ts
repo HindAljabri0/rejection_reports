@@ -13,13 +13,12 @@ import { NON_BINDABLE_ATTR } from '@angular/compiler/src/render3/view/util';
   styles: []
 })
 export class NonSubmittedClaimsComponent implements OnInit {
-  currencyCode="SAR";
+
   summaries: DashboardCardData;
 
   constructor(public sharedServices: SharedServices, private store: Store) { }
 
   ngOnInit() {
-    this.currencyCode = localStorage.getItem('currencyCode') != null && localStorage.getItem('currencyCode') != undefined ? localStorage.getItem('currencyCode') : "SAR";
     this.store.select(getNonSubmittedClaims).subscribe(data => this.summaries = { ...data, title: 'All Claims Before Submission' });
   }
 

@@ -332,7 +332,7 @@
                                                                         <input class="form-control" placeholder="Enter unit price" type="number"
                                                                             (change)="service.net = null; service.gross = null; controllers[i+(currentInvoicesPage*currentInvoicesSize)].needsRecalculation = true"
                                                                             [formControl]="service.unitPrice">
-                                                                        <span class="input-group-append"><span class="input-group-text medium">{{currencyCode}}</span></span>
+                                                                        <span class="input-group-append"><span class="input-group-text medium">SAR</span></span>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -354,7 +354,7 @@
                                                                         <input class="form-control" placeholder="Enter patient share" type="number"
                                                                             [formControl]="service.patientShare"
                                                                             (change)="service.net = null; controllers[i+(currentInvoicesPage*currentInvoicesSize)].needsRecalculation = true">
-                                                                        <span class="input-group-append"><span class="input-group-text medium">{{currencyCode}}</span></span>
+                                                                        <span class="input-group-append"><span class="input-group-text medium">SAR</span></span>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -368,8 +368,8 @@
                                                                             (change)="service.net = null; controllers[i+(currentInvoicesPage*currentInvoicesSize)].needsRecalculation = true">
                                                                         <span class="input-group-append">
                                                                             <span class="input-group-text clickable medium"
-                                                                                (click)="service.serviceDiscount.disabled? null :  (service.serviceDiscountUnit = (service.serviceDiscountUnit ==currencyCode? 'PERCENT':currencyCode)); service.net = null; controllers[i+(currentInvoicesPage*currentInvoicesSize)].needsRecalculation = true">{{service.serviceDiscountUnit
-                                                                                == currencyCode? currencyCode:'%'}}</span>
+                                                                                (click)="service.serviceDiscount.disabled? null :  (service.serviceDiscountUnit = (service.serviceDiscountUnit == 'SAR'? 'PERCENT':'SAR')); service.net = null; controllers[i+(currentInvoicesPage*currentInvoicesSize)].needsRecalculation = true">{{service.serviceDiscountUnit
+                                                                                == 'SAR'? 'SAR':'%'}}</span>
                                                                         </span>
                                                                     </div>
                                                                 </div>

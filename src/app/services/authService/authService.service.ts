@@ -227,7 +227,7 @@ export class AuthService {
           
           localStorage.setItem('cchi_id', event.body['cchiId']);      
           
-          localStorage.setItem('currencyCode', event.body['currencyCode'] !=null ? event.body['currencyCode'] : "SAR"); 
+    
 
           localStorage.setItem('parentProviderId', parentProviderId!=null?parentProviderId:event.body['parentProviderId']);
           localStorage.setItem('provider_id', event.body['providerId']);
