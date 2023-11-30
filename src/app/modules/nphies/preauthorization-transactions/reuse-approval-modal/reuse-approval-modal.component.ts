@@ -40,29 +40,25 @@ export class ReuseApprovalModalComponent implements OnInit {
         if (this.data.detailsModel.visionPrescription && this.data.detailsModel.visionPrescription.dateWritten) {
             // tslint:disable-next-line:max-line-length
         }
-        if( this.data.detailsModel.preAuthorizationInfo.typeName){
-        if (this.data.detailsModel.beneficiary.insurancePlan.payerId === '0000000163') {
-            this.data.detailsModel.preAuthorizationInfo.typeName = this.sharedDataService.cnhiTypeList.filter(
-                x => x.value === this.data.detailsModel.preAuthorizationInfo.type)[0]
-                ? this.sharedDataService.cnhiTypeList.filter(x => x.value === this.data.detailsModel.preAuthorizationInfo.type)[0].value
-                : '';
-                
-        this.data.detailsModel.preAuthorizationInfo.subTypeName = this.sharedDataService.subTypeList.filter(
-            x => x.value === this.data.detailsModel.preAuthorizationInfo.subType)[0]
-            ? this.sharedDataService.subTypeList.filter(x => x.value === this.data.detailsModel.preAuthorizationInfo.subType)[0].value
-            : '';
-        } else {
+        if( this.data.detailsModel.preAuthorizationInfo.type){
+            if (this.data.detailsModel.beneficiary.insurancePlan.payerId === '0000000163') {
+            this.data.detailsModel.preAuthorizationInfo.typeName = this.sharedDataService.cnhiTypeList[0];
+           
+              } else {
             this.data.detailsModel.preAuthorizationInfo.typeName = this.sharedDataService.claimTypeList.filter(
                 x => x.value === this.data.detailsModel.preAuthorizationInfo.type)[0]
                 ? this.sharedDataService.claimTypeList.filter(x => x.value === this.data.detailsModel.preAuthorizationInfo.type)[0].name
                 : '';
             
-        this.data.detailsModel.preAuthorizationInfo.subTypeName = this.sharedDataService.subTypeList.filter(
-            x => x.value === this.data.detailsModel.preAuthorizationInfo.subType)[0]
-            ? this.sharedDataService.subTypeList.filter(x => x.value === this.data.detailsModel.preAuthorizationInfo.subType)[0].name
-            : '';
+     
         }
     }
+    if( this.data.detailsModel.preAuthorizationInfo.subType){
+                      this.data.detailsModel.preAuthorizationInfo.subTypeName = this.sharedDataService.subTypeList.filter(
+                    x => x.value === this.data.detailsModel.preAuthorizationInfo.subType)[0]
+                    ? this.sharedDataService.subTypeList.filter(x => x.value === this.data.detailsModel.preAuthorizationInfo.subType)[0].name
+                    : '';
+          }
         if (this.data.detailsModel.accident) {
             this.data.detailsModel.accident.accidentTypeName = this.sharedDataService.accidentTypeList.filter(
                 x => x.value === this.data.detailsModel.accident.accidentType)[0]
@@ -82,12 +78,9 @@ export class ReuseApprovalModalComponent implements OnInit {
                     ? this.sharedDataService.encounterStatusList.filter(x => x.value === this.data.detailsModel.encounter.status)[0].value
                     : '';
             }
-            if (this.data.detailsModel.encounter.encounterClass != null) {
-                this.data.detailsModel.encounter.encounterClass = this.sharedDataService.encounterCnhiClassList.filter(
-                    x => x.value === this.data.detailsModel.encounter.encounterClass)[0]
-                    ? this.sharedDataService.encounterCnhiClassList.filter(x => x.value === this.data.detailsModel.encounter.encounterClass)[0].value
-                    : '';
-            }
+            // if (this.data.detailsModel.encounter.encounterClass != null) {
+            //     this.data.detailsModel.encounter.encounterClass = this.sharedDataService.encounterCnhiClassList[5];
+            // }
             if (this.data.detailsModel.encounter.serviceType != null) {
                 this.data.detailsModel.encounter.serviceType = this.sharedDataService.encounterServiceTypeList.filter(
                     x => x.value === this.data.detailsModel.encounter.serviceType)[0]

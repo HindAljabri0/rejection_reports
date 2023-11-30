@@ -1,10 +1,10 @@
 <div class="animate__animated animate__faster animate__fadeIn block-card">
     <div class="block-header">
-        <p>Switch Providers</p>
+        <p>Switch Group Providers</p>
     </div>
     <div class="block-body">
         <div class="form-group mb-0">
-            <label class="control-label">Select Provider</label>
+            <label class="control-label">Select Group Provider</label>
             <input [matAutocomplete]="auto" class="form-control search-box" placeholder="Search provider here..." [formControl]="providerController" (input)="updateFilter()"
                 (keyup.enter)="selectProvider()" [readonly]="isLoading">
             <mat-autocomplete autoActiveFirstOption #auto>

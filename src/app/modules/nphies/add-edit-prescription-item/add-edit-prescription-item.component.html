@@ -4,37 +4,16 @@
         <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
     </div>
     <div class="primary-dialog-body pb-0">
-        <div class="form-group flex-grow-1">
-
-            <input type="text" class="form-control search-box" placeholder="Search for item by standard code, standard description, internal code or internal description"
-                [matAutocomplete]="auto">
-            <mat-autocomplete #auto="matAutocomplete" class="nphies-items">
-                <mat-option>
-                    <span>Option 1</span>
-                    <span class="strength text-medium-grey">Option 1 strength</span>
-                    <span class="text-primary non-standard-code">non standard code (non standard description)</span>
-                </mat-option>
-    
-                <mat-option>
-                    <div class="mat-option-loader">
-                        <mat-spinner diameter="24"></mat-spinner>
-                        <span>Searching</span>
-                    </div>
-                </mat-option>
-            </mat-autocomplete>
-    
-        </div>
-        <hr class="hr mb-3">
+         <hr class="hr mb-3">
         <div class="row small-gutter">
             <div class="col-4 col-lg-3">
                 <div class="form-group">
                     <label class="control-label">Prescribed Medication</label>
-                    <mat-form-field class="form-control custom-select-control">
-                      <mat-select [(ngModel)]="selectedOption">
-                        <mat-option value="">Select Prescribed Medication</mat-option>
-                        <mat-option value="GTIN Code">GTIN Code</mat-option>
-                        <mat-option value="Scientific Code">Scientific Code</mat-option>
-                      </mat-select>
+                    <mat-form-field class="form-control custom-select-control">        
+                        <mat-select formControlName="type" (selectionChange)="typeChange()" [(ngModel)]="selectedOption">
+                            <mat-option value="">Select Type</mat-option>
+                       <mat-option *ngFor="let type of prescribedCode"  [value]="type">  {{ type.name }}</mat-option>
+                           </mat-select>
                     </mat-form-field>
                   </div>
               </div>
@@ -45,14 +24,22 @@
                   <mat-form-field class="form-control custom-select-control">
                     <mat-select value="">
                       <ng-container *ngIf="selectedOption === 'Scientific Code'; else gtincode">
-                        <mat-option value="">Select Scientific Code</mat-option>
-                        <mat-option value="Option 1">Option 1</mat-option>
-                        <!-- Add more GTIN Code options as needed -->
-                      </ng-container>
+                        <mat-option *ngFor="let type of filteredPescribedMedicationItem  | async" [value]="type">
+                            <span>{{type.descriptionCode}} ( {{type.tradeName}} )</span><br/>
+                          <span class="text-primary non-standard-code" >{{type.gtinNumber}} </span>
+                          </mat-option>
+                          </ng-container>
                       <ng-template #gtincode>
-                        <mat-option value="">Select GTIN Code</mat-option>
-                        <mat-option value="Option 1">Option 1</mat-option>
-                        <!-- Add more Scientific Code options as needed -->
+                        <mat-select panelClass="custom-dropdown" formControlName="item" [disabled]="IsItemLoading" #itemSelect placeholder="Select Code-Description">
+                            <mat-option>
+                                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="itemFilter" noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
+                            </mat-option>
+                            <cdk-virtual-scroll-viewport itemSize="10" minBufferPx="{{itemList.length}}" maxBufferPx="{{itemList.length * 10}}" class="viewport">  
+                              <mat-option *cdkVirtualFor="let item of filteredItem | async" [value]="item" >
+                                  {{item.code}} - {{item.description}}
+                              </mat-option>
+                          </cdk-virtual-scroll-viewport>
+                        </mat-select>
                       </ng-template>
                     </mat-select>
                   </mat-form-field>
@@ -221,7 +208,8 @@
         <div class="btn-list text-right">
             <button type="button" mat-button (click)="closeDialog()">Close</button>
             <button type="submit" mat-flat-button color="primary">
-                <span>Add</span>
+                <span *ngIf="!data.item" id="addItemButton">Add</span>
+                <span *ngIf="data.item" id="saveItemButton">Save</span>
             </button>
         </div>
     </div>
@@ -232,27 +220,7 @@
         <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
     </div>
     <div class="primary-dialog-body pb-0">
-    <div class="form-group flex-grow-1">
-
-        <input type="text" class="form-control search-box" placeholder="Search for item by standard code, standard description, internal code or internal description"
-            [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete" class="nphies-items">
-            <mat-option>
-                <span>Option 1</span>
-                <span class="strength text-medium-grey">Option 1 strength</span>
-                <span class="text-primary non-standard-code">non standard code (non standard description)</span>
-            </mat-option>
-
-            <mat-option>
-                <div class="mat-option-loader">
-                    <mat-spinner diameter="24"></mat-spinner>
-                    <span>Searching</span>
-                </div>
-            </mat-option>
-        </mat-autocomplete>
-
-    </div>
-    <hr class="hr mb-3">
+      <hr class="hr mb-3">
     <div class="row small-gutter">
     <div class="col-4 col-lg-3">
         <div class="form-group">
@@ -379,8 +347,8 @@
           <div class="form-group">
             <label class="control-label">Route</label>
             <mat-form-field class="form-control custom-select-control">
-              <mat-select placeholder="Select route" [formControl]="selectedRoute">
-                <mat-option *ngFor="let route of filteredRoutes" [value]="route">{{ route }}</mat-option>
+              <mat-select placeholder="Select route" [formControl]="routes">
+                <mat-option *ngFor="let route of routes" [value]="route">{{ route.name }}</mat-option>
               </mat-select>
             </mat-form-field>
           </div>

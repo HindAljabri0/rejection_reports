@@ -6,7 +6,7 @@
 
 <form [formGroup]="FormItem" (ngSubmit)="onSubmit()">
   <div class="primary-dialog-body pb-0">
-    <div class="form-group flex-grow-1"  [hidden]="data.source === 'CNHI'">
+    <div class="form-group flex-grow-1" >
 
       <input type="text" class="form-control search-box" placeholder="Search for item by standard code, standard description, internal code or internal description" formControlName="searchQuery" [matAutocomplete]="auto" (keyup)="searchItems()">
       <mat-autocomplete #auto="matAutocomplete" class="nphies-items">

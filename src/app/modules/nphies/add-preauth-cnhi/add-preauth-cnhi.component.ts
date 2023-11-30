@@ -325,12 +325,12 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
       this.FormPreAuthorization.controls.payee.setValue(this.payeeList.filter(x => x.nphiesId === this.data.preAuthorizationInfo.payeeId)[0] ? this.payeeList.filter(x => x.nphiesId === this.data.preAuthorizationInfo.payeeId)[0].nphiesId : '');
     }
      if (this.data.preAuthorizationInfo.type != null) {
-       this.FormPreAuthorization.controls.type.setValue(this.data.preAuthorizationInfo.type);
+       this.FormPreAuthorization.controls.type.setValue(this.sharedDataService.cnhiTypeList[0]);
     }
-       if (this.data.preAuthorizationInfo.subType != null) {
-      // tslint:disable-next-line:max-line-length
-      this.FormPreAuthorization.controls.subType.setValue(this.data.preAuthorizationInfo.subType);
-    }
+    if (this.data.preAuthorizationInfo.subType != null) {
+        this.FormPreAuthorization.controls.subType.setValue(this.cnhiSubType.filter(x => x.value === this.data.preAuthorizationInfo.subType)[0] ? this.cnhiSubType.filter(x => x.value === this.data.preAuthorizationInfo.subType)[0] : '');
+            }
+      
     if (this.data.preAuthorizationInfo.eligibilityOfflineId != null) {
       // tslint:disable-next-line:max-line-length
       this.FormPreAuthorization.controls.eligibilityOfflineId.setValue(this.data.preAuthorizationInfo.eligibilityOfflineId);
@@ -375,7 +375,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
         }
   
         if (this.data.encounter.encounterClass != null) {
-          this.FormPreAuthorization.controls.encounterClass.setValue(this.data.encounter.encounterClass);
+          this.FormPreAuthorization.controls.encounterClass.setValue(this.sharedDataService.encounterCnhiClassList[5].value);
          }
   
         if (this.data.encounter.serviceType != null) {
@@ -504,6 +504,10 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
             documentId: res.beneficiary.documentId,
             documentType: res.beneficiary.documentType,
             fullName: res.beneficiary.fullName,
+            firstName:res.beneficiary.firstName,
+            familyName:res.beneficiary.familyName,
+            nationality:res.beneficiary.nationality,
+            contactNumber:res.beneficiary.contactNumber,
             gender: res.beneficiary.gender,
             insurancePlanMemberCardId: res.beneficiary.insurancePlan.memberCardId,
             insurancePlanPolicyNumber: res.beneficiary.insurancePlan.policyNumber,
