@@ -41,19 +41,19 @@ export class AddEditPrescriptionItemComponent implements OnInit {
         item: ['', Validators.required],
         itemFilter: [''],
         prescribedMedicationItemFilter: [''],
-        // itemCode: ['', Validators.required],
-        // itemDescription: ['', Validators.required],
+        itemCode: ['', Validators.required],
+        itemDescription: ['', Validators.required],
         nonStandardCode: [''],
         display: [''],
+        absence:[],
+        strength:[],
+        authoredOn:[],
         isPackage: [false],
         isDentalBodySite: [true],
         bodySite: [''],
         subSite: [''],
         quantity: ['', Validators.required],
-        quantityCode: [''],
-      
-      
-    
+        quantityCode: [''],    
         supportingInfoSequence: [''],
         supportingInfoFilter: [''],
         careTeamSequence: [''],
@@ -67,7 +67,20 @@ export class AddEditPrescriptionItemComponent implements OnInit {
         drugSelectionReason: [''],
         prescribedDrugCode: ['']
     });
-    originalPrice = 0;
+    FormDetails: FormGroup = this.formBuilder.group({
+        type: ['', Validators.required],
+        item: ['', Validators.required],
+        itemFilter: [''],
+        prescribedMedicationItemFilter: [''],
+        itemCode: ['', Validators.required],
+        itemDescription: ['', Validators.required],
+        nonStandardCode: [''],
+        display: [''],
+        absence:[],
+        strength:[],
+        quantity: ['', Validators.required],
+        quantityCode: [''],    
+        });
     granularUnit = null;
     isSubmitted = false;
     typeListSearchResult = [];
@@ -78,7 +91,6 @@ export class AddEditPrescriptionItemComponent implements OnInit {
     bodySiteList = [];
     subSiteList = [];
     IscareTeamSequenceRequired = false;
-
     IsSupportingInfoSequenceRequired = false;
     supportingInfoError = '';
     prescribedCode: { value: string; name: string; }[];
@@ -100,6 +112,7 @@ export class AddEditPrescriptionItemComponent implements OnInit {
   selectedAbsenceOption: string = ''; 
   onOptionChange: string = '';
   @Output() dataEvent = new EventEmitter<string>();
+    filteredList: unknown;
 
   constructor(
     private sharedDataService: SharedDataService,
@@ -272,10 +285,36 @@ export class AddEditPrescriptionItemComponent implements OnInit {
 }
 typeChange(type = null) {
     if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
+        this.providerNphiesSearchService.getPrescribedMedicationList(this.sharedServices.providerId).subscribe(event => {
+            if (event instanceof HttpResponse) {
+                const body = event.body;
+                if (body) {
+                  console.log(body,"kjsk")
+                  this.filteredList = body;
+                  console.log(this.filteredList,"this.filteredList")
+                }
+            }
+        }, errorEvent => {
+            if (errorEvent instanceof HttpErrorResponse) {
+
+            }
+        });
         this.FormItem.controls.quantityCode.setValidators([Validators.required]);
         this.FormItem.controls.quantityCode.updateValueAndValidity();
    
          } else {
+            this.providerNphiesSearchService.getPrescribedMedicationList(this.sharedServices.providerId).subscribe(event => {
+                if (event instanceof HttpResponse) {
+                    const body = event.body;
+                    if (body) {
+                      console.log(body,"kjsk")
+                    }
+                }
+            }, errorEvent => {
+                if (errorEvent instanceof HttpErrorResponse) {
+    
+                }
+            });
         this.FormItem.controls.quantityCode.clearValidators();
         this.FormItem.controls.quantityCode.updateValueAndValidity();
         this.FormItem.controls.quantityCode.setValue('');
@@ -505,11 +544,25 @@ validateNewBornValues() {
         return true;
     }
 }
+get IsQuantityCodeRequired() {
+    if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
+        return true;
+    } else {
+        return false;
+    }
+}
+get IsInvalidQuantity() {
+    const pattern = /(^\d*\.?\d*[1-9]+\d*$)|(^[1-9]+\d*\.\d*$)/;
+    pattern.test(parseFloat(this.FormItem.controls.quantity.value).toString());
+    return !pattern.test(parseFloat(this.FormItem.controls.quantity.value).toString());
+}
+
 daysDiff(d1, d2) {
         const diffTime = Math.abs(d2 - d1);
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         return diffDays;
     }
+  
 onSubmit() {
     this.isSubmitted = true;
     if (!this.checkItemsCodeForSupportingInfo()) {
@@ -594,6 +647,8 @@ onSubmit() {
     this.isAddItemDetailsVisible = false;
     this.isAddDosageTimingVisible = true;
   }
+
+  
 
   closeDialog() {
     this.dialogRef.close();

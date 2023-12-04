@@ -1,18 +1,14 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogConfig, ErrorStateMatcher } from '@angular/material';
 import { AddEditPrescriptionItemComponent } from '../add-edit-prescription-item/add-edit-prescription-item.component';
-import { PrescriptionAddEditCareTeamModalComponent } from './prescription-add-edit-care-team-modal/prescription-add-edit-care-team-modal.component';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { SharedServices } from 'src/app/services/shared.services';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFullTextSearchResult';
 import { DatePipe } from '@angular/common';
-import { PrescriptionAddEditDiagnosisModalComponent } from './prescription-add-edit-diagnosis-modal/prescription-add-edit-diagnosis-modal.component'; 
-import { PrescriptionAddEditSupportingInfoModalComponent } from './prescription-add-edit-supporting-info-modal/prescription-add-edit-supporting-info-modal.component';
 import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
 import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
 // tslint:disable-next-line:max-line-length
-import { PrescriptionAddEditVisionLensSpecificationsComponent } from './prescription-add-edit-vision-lens-specifications/prescription-add-edit-vision-lens-specifications.component';
 import * as moment from 'moment';
 import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSearchService/provider-nphies-search.service';
 import { nationalities } from 'src/app/claim-module-components/store/claim.reducer';
@@ -30,7 +26,10 @@ import { DbMappingService } from 'src/app/services/administration/dbMappingServi
 import { PbmValidationResponseSummaryDialogComponent } from 'src/app/components/dialogs/pbm-validation-response-summary-dialog/pbm-validation-response-summary-dialog.component';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
-
+import { AddEditVisionLensSpecificationsComponent } from '../add-preauthorization/add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
+import { AddEditCareTeamModalComponent } from '../add-preauthorization/add-edit-care-team-modal/add-edit-care-team-modal.component';
+import { AddEditDiagnosisModalComponent } from '../add-preauthorization/add-edit-diagnosis-modal/add-edit-diagnosis-modal.component';
+import { AddEditSupportingInfoModalComponent } from '../add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
 
 @Component({
   selector: 'app-add-prescription',
@@ -844,7 +843,7 @@ export class AddPrescriptionComponent implements OnInit {
       item: visionSpecification
     };
 
-    const dialogRef = this.dialog.open(PrescriptionAddEditVisionLensSpecificationsComponent, dialogConfig);
+    const dialogRef = this.dialog.open(AddEditVisionLensSpecificationsComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -911,7 +910,7 @@ export class AddPrescriptionComponent implements OnInit {
       item: careTeam
     };
 
-    const dialogRef = this.dialog.open(PrescriptionAddEditCareTeamModalComponent, dialogConfig);
+    const dialogRef = this.dialog.open(AddEditCareTeamModalComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -981,7 +980,7 @@ export class AddPrescriptionComponent implements OnInit {
       type: this.FormPreAuthorization.controls.type.value ? this.FormPreAuthorization.controls.type.value.value : ''
     };
 
-    const dialogRef = this.dialog.open(PrescriptionAddEditDiagnosisModalComponent, dialogConfig);
+    const dialogRef = this.dialog.open(AddEditDiagnosisModalComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -1041,7 +1040,6 @@ export class AddPrescriptionComponent implements OnInit {
     dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
 
     dialogConfig.data = {
-      source: 'APPROVAL',
       // tslint:disable-next-line:max-line-length
       Sequence: (itemModel !== null) ? itemModel.sequence : (this.Items.length === 0 ? 1 : (this.Items[this.Items.length - 1].sequence + 1)),
       item: itemModel,
@@ -1084,29 +1082,11 @@ export class AddPrescriptionComponent implements OnInit {
               x.subSiteName = result.subSiteName;
               x.quantity = result.quantity;
               x.quantityCode = result.quantityCode;
-              x.unitPrice = result.unitPrice;
-              x.discount = result.discount;
-              x.discountPercent = result.discountPercent;
-              x.factor = result.factor;
-              x.taxPercent = result.taxPercent;
-              x.patientSharePercent = result.patientSharePercent;
-              x.tax = result.tax;
-              x.net = result.net;
-              x.patientShare = result.patientShare;
-              x.payerShare = result.payerShare;
-              x.startDate = result.startDate;
-              x.startDateStr = result.startDateStr;
-              x.endDate = result.endDate;
-              x.endDateStr = result.endDateStr;
-              x.endDate = result.endDate;
-              x.endDateStr = result.endDateStr;
+              x.authoredOn = result.authoredOn;
               x.supportingInfoSequence = result.supportingInfoSequence;
               x.careTeamSequence = result.careTeamSequence;
               x.diagnosisSequence = result.diagnosisSequence;
-              x.drugSelectionReason = result.drugSelectionReason;
-              x.prescribedDrugCode = result.prescribedDrugCode;
-
-              if (x.supportingInfoSequence) {
+             if (x.supportingInfoSequence) {
                 x.supportingInfoNames = '';
                 x.supportingInfoSequence.forEach(s => {
                   x.supportingInfoNames += ', [' + this.SupportingInfo.filter(y => y.sequence === s)[0].categoryName + ']';
@@ -1250,7 +1230,7 @@ export class AddPrescriptionComponent implements OnInit {
       item: supportInfoModel
     };
 
-    const dialogRef = this.dialog.open(PrescriptionAddEditSupportingInfoModalComponent, dialogConfig);
+    const dialogRef = this.dialog.open(AddEditSupportingInfoModalComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -1312,16 +1292,6 @@ export class AddPrescriptionComponent implements OnInit {
       this.SupportingInfo.splice(index, 1);
     }
   }
-
-  // checkCareTeamValidation() {
-  //   if (this.CareTeams.length === 0) {
-  //     this.IsCareTeamRequired = true;
-  //   } else {
-  //     this.IsCareTeamRequired = false;
-  //   }
-  // }
-
-
 
   checkDiagnosisValidation() {
     if (this.Diagnosises.length === 0) {
@@ -1498,98 +1468,7 @@ export class AddPrescriptionComponent implements OnInit {
     return hasError;
   }
 
-  // checkSupposrtingInfoValidation() {
-  //   let hasError = false;
-
-  //   this.SupportingInfo.forEach(x => {
-  //     switch (x.category) {
-
-  //       case 'info':
-
-  //         if (!x.value) {
-  //           hasError = true;
-  //         }
-
-  //         break;
-  //       case 'onset':
-
-  //         if (!x.code || !x.fromDate) {
-  //           hasError = true;
-  //         }
-
-  //         break;
-  //       case 'attachment':
-
-  //         if (!x.attachment) {
-  //           hasError = true;
-  //         }
-
-  //         break;
-  //       case 'missingtooth':
-
-  //         if (!x.code || !x.fromDate || !x.reason) {
-  //           hasError = true;
-  //         }
-
-  //         break;
-  //       case 'hospitalized':
-  //       case 'employmentImpacted':
-
-  //         if (!x.fromDate || !x.toDate) {
-  //           hasError = true;
-  //         }
-
-  //         break;
-
-  //       case 'lab-test':
-
-  //         if (!x.code || !x.value) {
-  //           hasError = true;
-  //         }
-
-  //         break;
-  //       case 'reason-for-visit':
-
-  //         if (!x.code) {
-  //           hasError = true;
-  //         }
-
-  //         break;
-  //       case 'days-supply':
-  //       case 'vital-sign-weight':
-  //       case 'vital-sign-systolic':
-  //       case 'vital-sign-diastolic':
-  //       case 'icu-hours':
-  //       case 'ventilation-hours':
-  //       case 'vital-sign-height':
-  //       case 'temperature':
-  //       case 'pulse':
-  //       case 'respiratory-rate':
-  //       case 'oxygen-saturation':
-  //       case 'birth-weight':
-
-  //         if (!x.value) {
-  //           hasError = true;
-  //         }
-
-  //         break;
-  //       case 'chief-complaint':
-
-  //         if (!x.code && !x.value) {
-  //           hasError = true;
-  //         }
-
-  //         break;
-
-  //       default:
-  //         break;
-  //     }
-  //   });
-
-  //   return hasError;
-  // }
-
-  checkDiagnosisErrorValidation() {
+   checkDiagnosisErrorValidation() {
     if (this.Diagnosises.filter(x => x.type === 'principal').length > 0) {
       return true;
     } else {
@@ -1938,17 +1817,6 @@ export class AddPrescriptionComponent implements OnInit {
           model.isPackage = x.isPackage;
           model.bodySite = x.bodySite;
           model.subSite = x.subSite;
-          model.quantity = x.quantity;
-          model.quantityCode = x.quantityCode;
-          model.unitPrice = x.unitPrice;
-          model.discount = x.discount;
-          model.factor = x.factor;
-          model.taxPercent = x.taxPercent;
-          model.patientSharePercent = x.patientSharePercent;
-          model.tax = x.tax;
-          model.net = x.net;
-          model.patientShare = x.patientShare;
-          model.payerShare = x.payerShare;
           model.startDate = x.startDate ? moment(this.removeSecondsFromDate(x.startDate)).utc() : null;
           model.endDate = moment(this.removeSecondsFromDate(x.endDate)).utc();
           model.supportingInfoSequence = x.supportingInfoSequence;
