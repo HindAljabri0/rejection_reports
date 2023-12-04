@@ -8,18 +8,18 @@
         <div class="row small-gutter">
             <div class="col-md-6">
                 <div class="form-group" [class.has-error]="hasError('startDateControl')!=null"
-                [matTooltip]="hasError('startDateControl')">
-                <mat-form-field>
-                    <mat-label>Start Date<span class="asterisk">*</span></mat-label>
-                    <input matInput [ngxMatDatetimePicker]="picker"  placeholder="Choose a date" formControlName="startDateControl"
-                      [min]="minDate" [max]="maxDate">
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <ngx-mat-datetime-picker #picker [showSpinners]="showSpinners" [showSeconds]="showSeconds"
-                      [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond" [touchUi]="touchUi"
-                       [enableMeridian]="enableMeridian">
-                    </ngx-mat-datetime-picker>
-                  </mat-form-field>
-                  </div>
+                    [matTooltip]="hasError('startDateControl')">
+                    <mat-form-field>
+                        <mat-label>Start Date<span class="asterisk">*</span></mat-label>
+                        <input matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date"
+                            formControlName="startDateControl" [min]="minDate" [max]="maxDate">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker #picker [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+                            [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+                            [touchUi]="touchUi" [enableMeridian]="enableMeridian">
+                        </ngx-mat-datetime-picker>
+                    </mat-form-field>
+                </div>
 
                 <!-- <div class="form-group" [class.has-error]="hasError('startDateControl')!=null"
                     [matTooltip]="hasError('startDateControl')">
@@ -34,23 +34,23 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group" [class.has-error]="hasError('closeDateControl')!=null"
-                [matTooltip]="hasError('closeDateControl')">
-                <mat-form-field>
-                    <mat-label>Close Date <span class="asterisk">*</span></mat-label>
-                    <input matInput [ngxMatDatetimePicker]="closeDate"  placeholder="Choose a date" formControlName="closeDateControl"
-                      [min]="minDate" [max]="maxDate">
-                    <mat-datepicker-toggle matSuffix [for]="closeDate"></mat-datepicker-toggle>
-                    <ngx-mat-datetime-picker #closeDate [showSpinners]="showSpinners" [showSeconds]="showSeconds"
-                      [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond" [touchUi]="touchUi"
-                       [enableMeridian]="enableMeridian">
-                    </ngx-mat-datetime-picker>
-                  </mat-form-field>
-                  </div>
-                  <div *ngIf="announcementForm.hasError('dateRange')">
+                    [matTooltip]="hasError('closeDateControl')">
+                    <mat-form-field>
+                        <mat-label>Close Date <span class="asterisk">*</span></mat-label>
+                        <input matInput [ngxMatDatetimePicker]="closeDate" placeholder="Choose a date"
+                            formControlName="closeDateControl" [min]="minDate" [max]="maxDate">
+                        <mat-datepicker-toggle matSuffix [for]="closeDate"></mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker #closeDate [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+                            [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+                            [touchUi]="touchUi" [enableMeridian]="enableMeridian">
+                        </ngx-mat-datetime-picker>
+                    </mat-form-field>
+                </div>
+                <div *ngIf="announcementForm.hasError('dateRange')">
                     <p class="error-text">Start date must be before or equal to Close date.</p>
-                  </div>
-             
-<!--                 
+                </div>
+
+                <!--                 
                 <div class="form-group" [class.has-error]="hasError('closeDateControl')!=null"
                     [matTooltip]="hasError('closeDateControl')">
                     <label class="control-label">End Date<span class="asterisk">*</span></label>
@@ -87,6 +87,18 @@
                 <mat-option value="All Waseel providers" (click)='selectProvider("Waseel")'>
                     All Waseel providers
                 </mat-option>
+                <mat-option value="All NPHIES PBM providers" (click)='selectProvider("NPHIES_PBM")'>
+                    All NPHIES PBM providers
+                </mat-option>
+                <mat-option value="All NPHIES MRE providers" (click)='selectProvider("NPHIES_MRE")'>
+                    All NPHIES MRE providers
+                </mat-option>
+                <mat-option value="All WASEEL PBM providers" (click)='selectProvider("WASEEL_PBM")'>
+                    All WASEEL PBM providers
+                </mat-option>
+                <mat-option value="All WASEEL MRE providers" (click)='selectProvider("WASEEL_MRE")'>
+                    All WASEEL MRE providers
+                </mat-option>
                 <mat-option *ngFor="let provider of filteredProviders"
                     [value]="provider.switchAccountId + ' | ' + provider.code + ' | ' + provider.name + ' | '+provider.cchiId"
                     (click)="selectProvider(provider)">
@@ -111,6 +123,19 @@
             <mat-checkbox color="primary" *ngIf="allNphiesProviders" [checked]="allNphiesProviders"
                 (change)="cancelSelectedProviders('NPHIES')">All
                 NPHIES Provider</mat-checkbox>
+            <mat-checkbox color="primary" *ngIf="allNphiesPBMProviders" [checked]="allNphiesPBMProviders"
+                (change)="cancelSelectedProviders('NPHIES_PBM')">
+                All NPHIES PBM providers</mat-checkbox>
+            <mat-checkbox color="primary" *ngIf="allNphiesMREProviders" [checked]="allNphiesMREProviders"
+                (change)="cancelSelectedProviders('NPHIES_MRE')">All NPHIES
+                MRE Provider</mat-checkbox>
+            <mat-checkbox color="primary" *ngIf="allWaseelPBMProviders" [checked]="allWaseelPBMProviders"
+                (change)="cancelSelectedProviders('WASEEL_PBM')">
+                All WASEEL PBM providers</mat-checkbox>
+            <mat-checkbox color="primary" *ngIf="allWaseelMREProviders" [checked]="allWaseelMREProviders"
+                (change)="cancelSelectedProviders('WASEEL_MRE')">All WASEEL
+                MRE Provider</mat-checkbox>
+
             <div *ngFor="let provider of selectedProviders">
                 <mat-checkbox (change)="cancelSelectedProviders(provider.switchAccountId)" checked="true"
                     color="primary">{{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}</mat-checkbox>

@@ -190,6 +190,7 @@ export class AuthService {
     localStorage.setItem('src', body['src']);
     this.getCurrentUserToken().subscribe(event => {
       if (event instanceof HttpResponse) {
+
         const authorities: Array<any> = event.body['authorities'];
 
         const hasClaimPrivileges = authorities.some(element => element['authority'].split('|')[1].startsWith('3')
@@ -226,8 +227,8 @@ export class AuthService {
           });
           
           localStorage.setItem('cchi_id', event.body['cchiId']);      
-          
           localStorage.setItem('currencyCode', event.body['currencyCode'] !=null ? event.body['currencyCode'] : "SAR"); 
+    
 
           localStorage.setItem('parentProviderId', parentProviderId!=null?parentProviderId:event.body['parentProviderId']);
           localStorage.setItem('provider_id', event.body['providerId']);

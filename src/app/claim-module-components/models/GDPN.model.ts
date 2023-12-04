@@ -11,6 +11,7 @@ export class GDPN {
     rejection?: Amount;
 
     constructor() {
+        
         this.net = new Amount(0, localStorage.getItem('currencyCode') != null && localStorage.getItem('currencyCode') != undefined ? localStorage.getItem('currencyCode') : "SAR");
         this.netVATrate = new Amount(0, 'PERCENT');
         this.netVATamount = new Amount(0, localStorage.getItem('currencyCode') != null && localStorage.getItem('currencyCode') != undefined ? localStorage.getItem('currencyCode') : "SAR");
@@ -27,7 +28,7 @@ export class GDPN {
 
 export class Amount {
     value: number;
-    type: string;
+    type: String;
 
     constructor(value, type) {
         this.value = value;

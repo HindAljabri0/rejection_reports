@@ -69,7 +69,7 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
             quantity: FormControl,
             patientShare: FormControl,
             serviceDiscount: FormControl,
-            serviceDiscountUnit: string;
+            serviceDiscountUnit: String;
             toothNumber: FormControl,
             netVatRate: FormControl,
             netVatAmount: number;
@@ -89,15 +89,13 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
     expandedInvoice = -1;
     expandedService = -1;
 
-    currencyCode = "SAR";
-
     priceListExist = true;
     servicesOptions: string[] = [];
     emptyOptions = false;
     serviceCodeSearchError;
     searchServicesController: FormControl = new FormControl();
     payerId: string;
-
+    currencyCode = "SAR";
     claimType: string;
     visitDate: Date;
     departments: any[] = [];
@@ -693,16 +691,17 @@ export class InvoicesServicesComponent implements OnInit, OnDestroy {
             daysOfSupply: service.daysOfSupply.value,
             serviceGDPN: {
                 patientShare: { value: this.getAsNumber(service.patientShare.value), type: this.currencyCode },
-                discount: { value: this.getAsNumber(service.serviceDiscount.value), type: service.serviceDiscountUnit },
+                discount: { value: this.getAsNumber(service.serviceDiscount.value), type: this.currencyCode },
                 netVATrate: { value: this.getAsNumber(service.netVatRate.value), type: 'PERCENT' },
                 patientShareVATrate: { value: this.getAsNumber(service.patientShareVatRate.value), type: 'PERCENT' },
                 gross: { value: this.getAsNumber(gross), type: this.currencyCode },
                 net: { value: this.getAsNumber(net), type: this.currencyCode },
-                netVATamount: { value: this.getAsNumber(netVat), type: this.currencyCode },
-                patientShareVATamount: { value: this.getAsNumber(patientShareVATamount), type: this.currencyCode },
+                netVATamount: { value: this.getAsNumber(netVat), type:this.currencyCode },
+                patientShareVATamount: { value: this.getAsNumber(patientShareVATamount), type:this.currencyCode },
 
             },
         };
+        console.log("Service Data"+JSON.stringify(newService));
         return newService;
     }
 

@@ -1015,16 +1015,16 @@
         </div>
       </form>
     </ng-container>
-  
+ 
     <ng-container *ngIf="IsJSONPosted && detailsModel && !claimReuseId">
       <div class="block-header">
         <h5 class="primary-dialog-title">Authorization -
           {{detailsModel.approvalRequestId}}<span *ngIf="detailsModel.transfer">[Referral]</span></h5>&nbsp;&nbsp;
         <h5 class="primary-dialog-title ml-auto">Transaction -
-          {{detailsModel.providertransactionlogId}}</h5>
+          {{detailsModel.transactionlogId}}</h5>
       </div>
       <div class="block-body">
-        <app-pre-authorization-details *ngIf="detailsModel.providertransactionlogId" [data]="detailsModel">
+        <app-pre-authorization-details *ngIf="detailsModel.transactionlogId" [data]="detailsModel">
         </app-pre-authorization-details>
       </div>
       <div class="text-right pt-14">

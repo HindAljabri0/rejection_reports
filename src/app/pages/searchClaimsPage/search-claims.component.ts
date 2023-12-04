@@ -131,9 +131,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
     isDeleteBtnVisible = true;
     status: any = 1;
     isAllCards = false;
-
-    currencyCode="SAR";
-    
+    currencyCode = "SAR";
     length = 0;
     pageSize = 100;
     pageIndex = 0;
@@ -235,12 +233,12 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                 patientFileNo: this.params.patientFileNo,
                 policyNo: this.params.policyNo,
                 payerId: this.params.payerId,
-                claimTypes:this.params.caseTypes,
+                claimTypes: this.params.caseTypes,
                 organizationId: this.params.organizationId,
                 provClaimNum: this.params.claimRefNo,
                 toDate: this.params.to,
                 uploadId: this.params.uploadId,
-                casetype:this.params.caseTypes,
+                casetype: this.params.caseTypes,
                 nationalId: this.params.nationalId,
                 statuses: ['All']
             }));
@@ -602,7 +600,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                 }
                 else if (errorEvent.status === 400 || errorEvent.status === 404) {
                     this.dialogService.openMessageDialog(new MessageDialogData(errorEvent.error['errors'][0].errorDescription, '', true));
-                  }
+                }
                 if (errorEvent.error['errors'] != null) {
                     for (const error of errorEvent.error['errors']) {
                         this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
@@ -652,7 +650,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                     }
                     else if (errorEvent.status === 400 || errorEvent.status === 404) {
                         this.dialogService.openMessageDialog(new MessageDialogData(errorEvent.error['errors'][0].errorDescription, '', true));
-                      }
+                    }
                     if (errorEvent.error['errors'] != null) {
                         for (const error of errorEvent.error['errors']) {
                             this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
@@ -850,7 +848,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                 discount: this.summaries[oldSummaryIndex].discount - claim.discount,
                 actualPaid: this.summaries[oldSummaryIndex].actualPaid,
                 actualDeducted: this.summaries[oldSummaryIndex].actualDeducted,
-                inActiveClaimCount:this.summaries[oldSummaryIndex].inActiveClaimCount
+                inActiveClaimCount: this.summaries[oldSummaryIndex].inActiveClaimCount
             };
             this.claims[index].status = claim.status;
             const newSummaryIndex = summaries.findIndex(summary => summary.statuses.includes(claim.status.toLowerCase()));
@@ -869,7 +867,7 @@ export class SearchClaimsComponent implements OnInit, AfterViewChecked, OnDestro
                     discount: this.summaries[oldSummaryIndex].discount + claim.discount,
                     actualPaid: this.summaries[newSummaryIndex].actualPaid,
                     actualDeducted: this.summaries[newSummaryIndex].actualDeducted,
-                    inActiveClaimCount:this.summaries[newSummaryIndex].inActiveClaimCount
+                    inActiveClaimCount: this.summaries[newSummaryIndex].inActiveClaimCount
                 };
                 window.setTimeout(() => {
                     this.summaries = summaries;

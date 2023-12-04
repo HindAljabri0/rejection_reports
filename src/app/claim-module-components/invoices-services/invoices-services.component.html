@@ -368,7 +368,7 @@
                                                                             (change)="service.net = null; controllers[i+(currentInvoicesPage*currentInvoicesSize)].needsRecalculation = true">
                                                                         <span class="input-group-append">
                                                                             <span class="input-group-text clickable medium"
-                                                                                (click)="service.serviceDiscount.disabled? null :  (service.serviceDiscountUnit = (service.serviceDiscountUnit ==currencyCode? 'PERCENT':currencyCode)); service.net = null; controllers[i+(currentInvoicesPage*currentInvoicesSize)].needsRecalculation = true">{{service.serviceDiscountUnit
+                                                                                (click)="service.serviceDiscount.disabled? null :  (service.serviceDiscountUnit = (service.serviceDiscountUnit == currencyCode? 'PERCENT':currencyCode)); service.net = null; controllers[i+(currentInvoicesPage*currentInvoicesSize)].needsRecalculation = true">{{service.serviceDiscountUnit
                                                                                 == currencyCode? currencyCode:'%'}}</span>
                                                                         </span>
                                                                     </div>

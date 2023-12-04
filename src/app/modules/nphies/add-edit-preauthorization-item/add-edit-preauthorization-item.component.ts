@@ -384,13 +384,13 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             }
 
             this.FormItem.patchValue({
-                type: this.typeList.filter(x => x.value === type.itemType)[0],
+                type:  this.data.source === 'CNHI' ? this.cnhiTypeList.filter(x => x.value === type.itemType)[0] : this.typeList.filter(x => x.value === type.itemType)[0],
                 nonStandardCode: type.nonStandardCode,
                 display: type.nonStandardDescription,
                 unitPrice: type.unitPrice,
                 factor: type.factor ? type.factor : 1,
                 tax: 0
-            });
+                });
             if (this.data.providerType === 'vision' && this.data.source === 'APPROVAL') {
                 this.FormItem.controls.factor.setValue(1);
                 this.FormItem.controls.factor.disable();
