@@ -307,7 +307,8 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
       // tslint:disable-next-line:max-line-length
       if (this.FormPreAuthTransaction.controls.beneficiaryName.value && this.FormPreAuthTransaction.controls.beneficiaryId.value && this.FormPreAuthTransaction.controls.documentId.value) {
-        model.documentId = parseInt(this.FormPreAuthTransaction.controls.documentId.value, 10);
+        model.documentId = this.FormPreAuthTransaction.controls.documentId.value;
+        //parseInt(this.FormPreAuthTransaction.controls.documentId.value, 10);
       }
 
       if (this.FormPreAuthTransaction.controls.status.value) {
