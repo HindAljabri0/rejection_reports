@@ -343,7 +343,9 @@ export class ProviderNphiesSearchService {
     if (isSearchByStatus!=null && isSearchByStatus) {
       requestURL += `&statuses=${claimSearchCriteriaModel.statuses.toString()}`;
     }
-
+    if (claimSearchCriteriaModel.bundleIds != null) {
+      requestURL += `&bundleIds=${claimSearchCriteriaModel.bundleIds}`;
+    }
 
     // tslint:disable-next-line:max-line-length
     requestURL += (claimSearchCriteriaModel.statuses != null && !claimSearchCriteriaModel.statuses.includes('All') &&  !isSearchByStatus? `&statuses=${claimSearchCriteriaModel.statuses.toString()}` : '')
@@ -425,6 +427,9 @@ export class ProviderNphiesSearchService {
     }
     if (claimSearchCriteriaModel.reissueReason != null) {
       requestURL += `&reissueReason=${claimSearchCriteriaModel.reissueReason}`;
+    }
+    if (claimSearchCriteriaModel.bundleIds != null) {
+      requestURL += `&bundleIds=${claimSearchCriteriaModel.bundleIds}`;
     }
 
 
@@ -586,6 +591,10 @@ export class ProviderNphiesSearchService {
 
     if (claimSearchCriteriaModel.toDate != null) {
       requestURL += `&toDate=${this.formatDate(claimSearchCriteriaModel.toDate)}`;
+    }
+
+    if (claimSearchCriteriaModel.bundleIds != null) {
+      requestURL += `&bundleIds=${claimSearchCriteriaModel.bundleIds.split(',')}`;
     }
 
     requestURL += (claimSearchCriteriaModel.statuses != null ? `&statuses=${claimSearchCriteriaModel.statuses.toString()}` : '');
