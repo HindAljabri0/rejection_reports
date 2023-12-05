@@ -239,6 +239,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   pageMode = '';
   currentOpenItem: number = null;
   otherDataModel: any = {};
+
   // EditBtn = 'Edit';
   communications = [];
 
@@ -249,6 +250,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   isPBMValidationVisible = false;
   providerType = '';
   submittionErrors: Map<string, string>;
+  claimData: any = {};
   //IsResubmitMode = false;
   constructor(
 
@@ -323,6 +325,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.getPayees();
     this.InitClaimPagenation();
     this.getSpecialityList();
+    this.getMreClaimDetails();
     // if (urlHasEditMode) {
     //   this.pageMode = 'EDIT';
     //   this.disableControls();
@@ -2329,6 +2332,38 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
     });
   }
+
+  getMreClaimDetails(){
+    this.sharedServices.loadingChanged.next(true);
+    let claimProviderId = localStorage.getItem(NPIHES_CLAIM_PROVIDER_ID);
+    this.providerNphiesApprovalService.getMreClaimDetails(this.sharedServices.providerId, this.uploadId ,this.claimId).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.status === 200) {
+          const body: any = event.body;
+          this.setMreData(body);
+
+        } else {
+          this.sharedServices.loadingChanged.next(false);
+        }
+      }
+    }, error => {
+      if (error instanceof HttpErrorResponse) {
+        console.log(error);
+        this.sharedServices.loadingChanged.next(false);
+      }
+    });
+  }
+
+  setMreData(response){
+    
+      console.log(response);
+      this.claimData = {};
+
+      this.claimData.mreClaimStatus = response.mreClaimStatus; 
+      this.claimData.mreClaimErrors = response.mreClaimErrors; 
+
+
+  }
   getSpecialityList() {
     this.providerNphiesSearchService.getSpecialityList(this.sharedService.providerId).subscribe(event => {
       if (event instanceof HttpResponse) {
@@ -2359,7 +2394,6 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.reset();
 
     this.otherDataModel = {};
-
     this.otherDataModel.reIssueReason = response.reIssueReason;   
     if (this.otherDataModel.reIssueReason) {
       // tslint:disable-next-line:max-line-length
@@ -2579,7 +2613,6 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     this.otherDataModel.errors = response.errors;
     this.otherDataModel.pbmComments = response.pbmComments;
-
     this.otherDataModel.processNotes = response.processNotes;
 
     this.FormNphiesClaim.controls.preAuthResponseId.setValue(response.preAuthorizationInfo.preAuthResponseId);

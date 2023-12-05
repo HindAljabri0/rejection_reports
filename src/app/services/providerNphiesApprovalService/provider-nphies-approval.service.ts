@@ -26,6 +26,12 @@ export class ProviderNphiesApprovalService {
     const request = new HttpRequest('POST', environment.nphiesApprovalPBM + requestUrl, body);
     return this.http.request(request);
   }
+
+  sendApprovalMRERequest(providerId: string, body: any) {
+    const requestUrl = `/provider/${providerId}/approval/mre-validation`;
+    const request = new HttpRequest('POST', environment.nphiesApprovalMRE + requestUrl, body);
+    return this.http.request(request);
+  }
   LinkAttachments(providerId: string,
     folderName: string,
     isReplace: boolean,
@@ -360,6 +366,17 @@ export class ProviderNphiesApprovalService {
 
     //http://localhost:8025/head-office/1649/claims/branch/claim/detail
 
+    return this.http.request(request);
+  }
+
+  getMreClaimDetails(
+    providerId: string,
+    uploadId?: number,
+    claimIds?: number
+    ) {
+    let requestUrl = `/providers/${providerId}/mre-decision?uploadId=${uploadId}&claimReq=${claimIds}`;
+    let request = new HttpRequest('GET', environment.mreClaimsSender + requestUrl);
+    //http://localhost:8078/providers/706/mre-decision?uploadId=4894&claimReq=1080938
     return this.http.request(request);
   }
 
@@ -957,6 +974,26 @@ export class ProviderNphiesApprovalService {
     return this.http.request(httpRequest);
   }
 
+  MREValidation(
+    providerId: string,
+    claimIds?: string[],
+    uploadId?: string
+    ) {
+    let requestURL = `/providers/${providerId}/criteria?`;
+
+    if (uploadId) {
+      requestURL += `uploadId=${uploadId}`;
+    }
+
+    if (claimIds && claimIds.length > 0) {
+      requestURL += `&requestIds=${claimIds.join(',')}`;
+    }
+
+    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
+    const httpRequest =
+    new HttpRequest('GET', environment.mreClaimsSender + requestURL, {}, { headers });
+    return this.http.request(httpRequest);
+  }
   moveToReadyState(
     providerId: string,
     claimIds?: string[],

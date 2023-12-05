@@ -435,6 +435,10 @@
                     class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                     PBM Status</th>
 
+                    <th *ngIf="selectedCardKey != 0 && isMREValidationVisible"
+                    class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
+                    MRE Status</th>
+
                   <th *ngIf="showInquireAll === true"
                     class="text-nowrap text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                     <span class="inline-text pr-1">Inquiry</span>
@@ -537,7 +541,18 @@
                       <mat-icon *ngIf="(claim.body.pbmClaimStatus | lowercase)==='rejected'" class="material-icons-outlined size-21 text-danger"
                         matTooltip="Rejected">dangerous</mat-icon>
                     </td>
-
+                    <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="text-center row-click"
+                    *ngIf="isMREValidationVisible && selectedCardKey != 0">
+                    <mat-icon *ngIf="(claim.body.mreClaimStatus | lowercase)==='approved'" class="material-icons-outlined size-21 text-success"
+                      matTooltip="Approved">check_circle</mat-icon>
+                    <mat-icon *ngIf="(claim.body.mreClaimStatus | lowercase)==='partially_approved'" class="material-icons-outlined size-21 text-warning"
+                      matTooltip="Partially Approved">report
+                    </mat-icon>
+                    <mat-icon *ngIf="(claim.body.mreClaimStatus | lowercase)==='invalid'" class="size-21 text-danger" matTooltip="Invalid">error_outline</mat-icon>
+                    <mat-icon *ngIf="(claim.body.mreClaimStatus | lowercase)==='unknown'" class="material-icons-outlined size-21 text-danger"
+                    matTooltip="Unknown">dangerous</mat-icon>
+                    <mat-icon *ngIf="(claim.body.mreClaimStatus | lowercase)==='rejected'" class="material-icons-outlined size-21 text-danger"
+                      matTooltip="Rejected">dangerous</mat-icon></td>
                     <td *ngIf="showInquireAll === true" class="actions text-center">
                       <span class="action-letter-btn"
                         [ngClass]="claim.inquiryStatus === 'not_done' ? 'theme-primary' : (claim.inquiryStatus === 'failed' ? 'theme-danger': (claim.inquiryStatus === 'passed' ? 'theme-success' : ''))"
@@ -706,8 +721,17 @@
                     || summaries[this.selectedCardKey].statuses[0].toLowerCase() === statusSelected.Downloadable.toLowerCase()) && (selectedCardKey != 0) && (isPBMValidationVisible)">
           <button (click)="applyPBMValidation()" mat-flat-button color="primary">PBM Validate
             {{selectedClaims.length==0?"
-            All":"Selection ("+this.selectedClaims.length+")"}}</button>
+            All":"Selection ("+this.selectedClaims.length+")"}}</button>         
         </ng-container>
+
+        <ng-container
+        *ngIf="(summaries[this.selectedCardKey].statuses[0].toLowerCase() === statusSelected.Accepted.toLowerCase()
+                  || summaries[this.selectedCardKey].statuses[0].toLowerCase() === statusSelected.Downloadable.toLowerCase()) && (selectedCardKey != 0)  && (isMREValidationVisible)">
+        <button (click)="applyMREValidation()" mat-flat-button color="primary">MRE Validate
+          {{selectedClaims.length==0?"
+          All":"Selection ("+this.selectedClaims.length+")"}}</button>         
+      </ng-container>
+
         <ng-container *ngIf="showMoveToReadyState === true && selectedCardKey != 0">
           <button mat-flat-button color="primary" (click)="moveToReadyState()">{{selectedClaims.length==0?"Move All to
             Ready State":"Move Selected ("+this.selectedClaims.length+") to Ready State"}}</button>

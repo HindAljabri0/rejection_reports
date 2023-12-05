@@ -30,6 +30,7 @@ import { DbMappingService } from 'src/app/services/administration/dbMappingServi
 import { PbmValidationResponseSummaryDialogComponent } from 'src/app/components/dialogs/pbm-validation-response-summary-dialog/pbm-validation-response-summary-dialog.component';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { MreValidationResponseSummaryDialogComponent } from 'src/app/components/dialogs/mre-validation-response-summary-dialog/mre-validation-response-summary-dialog.component';
 
 
 @Component({
@@ -212,6 +213,7 @@ export class AddPreauthorizationComponent implements OnInit {
   providerType = "";
   isPBMValidationVisible =false;
   Pbm_result:any;
+  Mre_result:any;
   constructor(
     private sharedDataService: SharedDataService,
     private dialogService: DialogService,
@@ -1405,6 +1407,30 @@ export class AddPreauthorizationComponent implements OnInit {
     }
   }
 
+//   checkMreItemsCodeForSupportingInfo() {
+//     // tslint:disable-next-line:max-line-length
+//     if (this.Items.length > 0 && this.Items.filter(x => x.type !== 'medication-codes').length > 0 && (this.SupportingInfo.filter(x => x.category === 'days-supply').length === 0)) {
+//       // tslint:disable-next-line:max-line-length
+//       this.dialogService.showMessage('Error', 'Days-Supply is required in Supporting Info if any services is used', 'alert', true, 'OK');
+//       return false;
+//       // tslint:disable-next-line:max-line-length
+//     } else if (this.Items.length > 0 && this.Items.filter(x => x.type !== 'medication-codes').length > 0 && (this.SupportingInfo.filter(x => x.category === 'days-supply').length > 0)) {
+//       let SupportingList = this.SupportingInfo.filter(x => x.category === 'days-supply').map(t => t.sequence);
+//       let ItemSeqList = this.Items.filter(x => x.type !== 'medication-codes').map(t => t.sequence);
+//       var SeqIsThere = ItemSeqList.filter(x => SupportingList.includes(x));
+
+//       if (this.Items.filter(x => x.type !== 'medication-codes' && (x.supportingInfoSequence.length === 0)).length > 0 || !SeqIsThere) {
+//         // tslint:disable-next-line:max-line-length
+//         this.dialogService.showMessage('Error', 'Supporting Info with Days-Supply must be linked with Item of any type type of service', 'alert', true, 'OK');
+//         return false;
+//       } else {
+//         return true;
+//       }
+//     } else {
+//       return true;
+//     }
+//   }
+
   updateSequenceNames() {
     this.Items.forEach(x => {
       if (x.supportingInfoSequence) {
@@ -1683,6 +1709,8 @@ export class AddPreauthorizationComponent implements OnInit {
 
     let hasError = false;
     // tslint:disable-next-line:max-line-length
+    // date and accidentType must be exist together 
+
     if (this.FormPreAuthorization.controls.date.value && !(this.FormPreAuthorization.controls.accidentType.value && this.FormPreAuthorization.controls.accidentType.value.value)) {
       this.FormPreAuthorization.controls.accidentType.setValidators([Validators.required]);
       this.FormPreAuthorization.controls.accidentType.updateValueAndValidity();
@@ -2232,6 +2260,574 @@ export class AddPreauthorizationComponent implements OnInit {
       });
     }
   }
+
+onMreSubmit(isMrevalidation=true){
+    // this.providerType = this.providerType == null || this.providerType == "" ? 'any' : this.providerType;
+    // if (this.providerType.toLowerCase() !== 'any' && this.FormPreAuthorization.controls.type.value.value !== this.providerType) {
+    //   const filteredClaimType = this.sharedDataService.claimTypeList.filter(x => x.value === this.providerType)[0];
+    //   const providerTypeName = filteredClaimType != null ? filteredClaimType.name : null;
+    //   const claimTypeName = this.sharedDataService.claimTypeList.filter(x => x.value === this.FormPreAuthorization.controls.type.value.value)[0].name;
+    //   this.dialogService.showMessage('Error', 'Claim type ' + claimTypeName + ' is not supported for Provider type ' + providerTypeName, 'alert', true, 'OK');
+    //   return;
+    // }//check
+    this.isSubmitted = true;
+    let hasError = false;
+
+    // this indecte that date and accidentType must be present together 
+    if (this.FormPreAuthorization.controls.date.value && !(this.FormPreAuthorization.controls.accidentType.value && this.FormPreAuthorization.controls.accidentType.value.value)) {
+        this.FormPreAuthorization.controls.accidentType.setValidators([Validators.required]);
+        this.FormPreAuthorization.controls.accidentType.updateValueAndValidity();
+        this.IsAccidentTypeRequired = true;
+        hasError = true;
+      } else {
+        this.FormPreAuthorization.controls.accidentType.clearValidators();
+        this.FormPreAuthorization.controls.accidentType.updateValueAndValidity();
+        this.IsAccidentTypeRequired = false;
+      }
+      // tslint:disable-next-line:max-line-length
+      if (this.FormPreAuthorization.controls.accidentType.value && this.FormPreAuthorization.controls.accidentType.value.value && !this.FormPreAuthorization.controls.date.value) {
+        this.FormPreAuthorization.controls.date.setValidators([Validators.required]);
+        this.FormPreAuthorization.controls.date.updateValueAndValidity();
+        this.IsDateRequired = true;
+        hasError = true;
+      } else {
+        this.FormPreAuthorization.controls.date.clearValidators();
+        this.FormPreAuthorization.controls.date.updateValueAndValidity();
+        this.IsDateRequired = false;
+      }
+      if (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value === 'vision') {
+        if (this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length === 0) {
+          this.FormPreAuthorization.controls.prescriber.setValidators([Validators.required]);
+          this.FormPreAuthorization.controls.prescriber.updateValueAndValidity();
+          this.IsLensSpecificationRequired = true;
+          hasError = true;
+        } else {
+          this.FormPreAuthorization.controls.prescriber.clearValidators();
+          this.FormPreAuthorization.controls.prescriber.updateValueAndValidity();
+          this.IsLensSpecificationRequired = false;
+        }
+  
+        if (!this.FormPreAuthorization.controls.dateWritten.value && this.VisionSpecifications.length > 0) {
+          this.FormPreAuthorization.controls.dateWritten.setValidators([Validators.required]);
+          this.FormPreAuthorization.controls.dateWritten.updateValueAndValidity();
+          this.IsDateWrittenRequired = true;
+          hasError = true;
+        } else {
+          this.FormPreAuthorization.controls.dateWritten.clearValidators();
+          this.FormPreAuthorization.controls.dateWritten.updateValueAndValidity();
+          this.IsDateWrittenRequired = false;
+        }
+  
+        // tslint:disable-next-line:max-line-length
+        if ((this.FormPreAuthorization.controls.dateWritten.value && !this.FormPreAuthorization.controls.prescriber.value) ||
+          (this.VisionSpecifications.length > 0 && !this.FormPreAuthorization.controls.prescriber.value)) {
+          this.FormPreAuthorization.controls.prescriber.setValidators([Validators.required]);
+          this.FormPreAuthorization.controls.prescriber.updateValueAndValidity();
+          this.IsPrescriberRequired = true;
+          hasError = true;
+        } else {
+          this.FormPreAuthorization.controls.prescriber.clearValidators();
+          this.FormPreAuthorization.controls.prescriber.updateValueAndValidity();
+          this.IsPrescriberRequired = false;
+        }
+      }
+
+
+     if (isMrevalidation) {
+      let daysSupplyValidtation = this.SupportingInfo.filter(f=>f.category == 'days-supply').length;
+      if (daysSupplyValidtation == 0) {
+        this.dialogService.showMessage('Error', 'please add days of supply to complete MRE request', 'alert', true, 'OK');
+        return;
+      }
+    }
+    if (this.FormPreAuthorization.valid) {
+
+        //must all be present 
+        if (this.Diagnosises.length === 0 || this.Items.length === 0) {
+          hasError = true;
+        }
+  
+        // this.checkCareTeamValidation();
+        this.checkDiagnosisValidation();
+        this.checkItemValidation();
+        if (this.checkCareTeamValidation()) {
+          hasError = true;
+        }
+  
+        if (!this.checkDiagnosisErrorValidation()) {
+          hasError = true;
+        }
+  
+        if (this.checkSupposrtingInfoValidation()) {
+          hasError = true;
+        }
+  
+        if (!this.checkItemCareTeams()) {
+          hasError = true;
+        }
+  
+        // if (!this.checkMreItemsCodeForSupportingInfo()) {
+        //   hasError = true;
+        // }
+  
+        if (!this.checkNewBornValidation()) {
+          hasError = true;
+        }
+  
+        if (!this.checkNewBornSupportingInfoCodes()) {
+          hasError = true;
+        }
+  
+        if (hasError) {
+            this.dialogService.showMessage('Error', 'Please complete all the required information for MRE Validation', 'alert', true, 'OK');
+           return;
+        }
+  
+        this.model = {};
+        if (this.claimReuseId) {
+          this.model.claimReuseId = this.claimReuseId;
+        }
+       
+          this.model.transfer = this.FormPreAuthorization.controls.transfer.value;
+        
+  
+        if (this.FormPreAuthorization.controls.otherReferral.value) {
+          this.model.referralName = this.FormPreAuthorization.controls.otherReferral.value;
+        } else {
+          this.model.referralName = this.FormPreAuthorization.controls.referral.value.name;
+        }
+  
+        this.model.isNewBorn = this.FormPreAuthorization.controls.isNewBorn.value;
+        this.model.beneficiary = {};
+        this.model.beneficiary.firstName = this.FormPreAuthorization.controls.firstName.value;
+        this.model.beneficiary.secondName = this.FormPreAuthorization.controls.middleName.value;
+        this.model.beneficiary.thirdName = this.FormPreAuthorization.controls.lastName.value;
+        this.model.beneficiary.familyName = this.FormPreAuthorization.controls.familyName.value;
+        this.model.beneficiary.fullName = this.FormPreAuthorization.controls.fullName.value;
+        this.model.beneficiary.fileId = this.FormPreAuthorization.controls.beneficiaryFileld.value;
+        this.model.beneficiary.dob = this.datePipe.transform(this.FormPreAuthorization.controls.dob.value, 'yyyy-MM-dd');
+        this.model.beneficiary.gender = this.FormPreAuthorization.controls.gender.value;
+        this.model.beneficiary.documentType = this.FormPreAuthorization.controls.documentType.value;
+        this.model.beneficiary.documentId = this.FormPreAuthorization.controls.documentId.value;
+        this.model.beneficiary.eHealthId = this.FormPreAuthorization.controls.eHealthId.value;
+        this.model.beneficiary.nationality = this.FormPreAuthorization.controls.nationality.value;
+        this.model.beneficiary.residencyType = this.FormPreAuthorization.controls.residencyType.value;
+        this.model.beneficiary.contactNumber = this.FormPreAuthorization.controls.contactNumber.value;
+        this.model.beneficiary.maritalStatus = this.FormPreAuthorization.controls.martialStatus.value;
+        this.model.beneficiary.bloodGroup = this.FormPreAuthorization.controls.bloodGroup.value;
+        this.model.beneficiary.preferredLanguage = this.FormPreAuthorization.controls.preferredLanguage.value;
+        this.model.beneficiary.emergencyPhoneNumber = this.FormPreAuthorization.controls.emergencyNumber.value;
+        this.model.beneficiary.email = this.FormPreAuthorization.controls.email.value;
+        this.model.beneficiary.addressLine = this.FormPreAuthorization.controls.addressLine.value;
+        this.model.beneficiary.streetLine = this.FormPreAuthorization.controls.streetLine.value;
+        this.model.beneficiary.city = this.FormPreAuthorization.controls.bcity.value;
+        this.model.beneficiary.state = this.FormPreAuthorization.controls.bstate.value;
+        this.model.beneficiary.country = this.FormPreAuthorization.controls.bcountry.value;
+        this.model.beneficiary.postalCode = this.FormPreAuthorization.controls.postalCode.value;
+  
+        if (this.FormPreAuthorization.controls.subscriberName.value) {
+          this.model.subscriber = {};
+  
+          this.model.subscriber.firstName = this.FormSubscriber.controls.firstName.value;
+          this.model.subscriber.secondName = this.FormSubscriber.controls.middleName.value;
+          this.model.subscriber.thirdName = this.FormSubscriber.controls.lastName.value;
+          this.model.subscriber.familyName = this.FormSubscriber.controls.familyName.value;
+          this.model.subscriber.fullName = this.FormSubscriber.controls.fullName.value;
+          this.model.subscriber.fileId = this.FormSubscriber.controls.beneficiaryFileld.value;
+          this.model.subscriber.dob = this.datePipe.transform(this.FormSubscriber.controls.dob.value, 'yyyy-MM-dd');
+          this.model.subscriber.gender = this.FormSubscriber.controls.gender.value;
+          this.model.subscriber.documentType = this.FormSubscriber.controls.documentType.value;
+          this.model.subscriber.documentId = this.FormSubscriber.controls.documentId.value;
+          this.model.subscriber.eHealthId = this.FormSubscriber.controls.eHealthId.value;
+          this.model.subscriber.nationality = this.FormSubscriber.controls.nationality.value;
+          this.model.subscriber.residencyType = this.FormSubscriber.controls.residencyType.value;
+          this.model.subscriber.contactNumber = this.FormSubscriber.controls.contactNumber.value;
+          this.model.subscriber.maritalStatus = this.FormSubscriber.controls.martialStatus.value;
+          this.model.subscriber.bloodGroup = this.FormSubscriber.controls.bloodGroup.value;
+          this.model.subscriber.preferredLanguage = this.FormSubscriber.controls.preferredLanguage.value;
+          this.model.subscriber.emergencyPhoneNumber = this.FormSubscriber.controls.emergencyNumber.value;
+          this.model.subscriber.email = this.FormSubscriber.controls.email.value;
+          this.model.subscriber.addressLine = this.FormSubscriber.controls.addressLine.value;
+          this.model.subscriber.streetLine = this.FormSubscriber.controls.streetLine.value;
+          this.model.subscriber.city = this.FormSubscriber.controls.bcity.value;
+          this.model.subscriber.state = this.FormSubscriber.controls.bstate.value;
+          this.model.subscriber.country = this.FormSubscriber.controls.bcountry.value;
+          this.model.subscriber.postalCode = this.FormSubscriber.controls.postalCode.value;
+        } else {
+          this.model.subscriber = null;
+        }
+  
+        this.model.destinationId = this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value;
+  
+        this.model.insurancePlan = {};
+        this.model.insurancePlan.payerId = this.FormPreAuthorization.controls.insurancePlanPayerId.value;
+        this.model.insurancePlan.memberCardId = this.FormPreAuthorization.controls.insurancePlanMemberCardId.value;
+        this.model.insurancePlan.policyNumber = this.FormPreAuthorization.controls.insurancePlanPolicyNumber.value;
+        this.model.insurancePlan.maxLimit = this.FormPreAuthorization.controls.insurancePlanMaxLimit.value;
+        this.model.insurancePlan.patientShare = this.FormPreAuthorization.controls.insurancePlanPatientShare.value;
+        this.model.insurancePlan.coverageType = this.FormPreAuthorization.controls.insurancePlanCoverageType.value;
+        this.model.insurancePlan.relationWithSubscriber = this.FormPreAuthorization.controls.insurancePlanRelationWithSubscriber.value;
+        if (this.FormPreAuthorization.controls.insurancePlanExpiryDate.value) {
+          // tslint:disable-next-line:max-line-length
+  
+          this.model.insurancePlan.expiryDate = this.datePipe.transform(this.FormPreAuthorization.controls.insurancePlanExpiryDate.value, 'yyyy-MM-dd');
+        }
+  
+        this.model.insurancePlan.payerName = this.FormPreAuthorization.controls.insurancePlanPayerName.value;
+        this.model.insurancePlan.payerNphiesId = this.FormPreAuthorization.controls.insurancePayerNphiesId.value;
+        // this.model.insurancePlan.planId = this.FormPreAuthorization.controls.insurancePlanId.value;
+        this.model.insurancePlan.primary = this.FormPreAuthorization.controls.insurancePlanPrimary.value;
+        this.model.insurancePlan.tpaNphiesId = this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value;
+        // this.model.beneficiaryId = this.FormPreAuthorization.controls.beneficiaryId.value;
+        // this.model.payerNphiesId = this.FormPreAuthorization.controls.insurancePlanId.value;
+  
+        // this.model.coverageType = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].coverageType;
+        // this.model.memberCardId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].memberCardId;
+        // this.model.payerNphiesId = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].payerNphiesId;
+        // // tslint:disable-next-line:max-line-length
+        // this.model.relationWithSubscriber = this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === this.model.payerNphiesId)[0].relationWithSubscriber;
+  
+        const preAuthorizationModel: any = {};
+        preAuthorizationModel.dateOrdered = moment(this.removeSecondsFromDate(this.FormPreAuthorization.controls.dateOrdered.value)).utc();
+        if (this.FormPreAuthorization.controls.payeeType.value && this.FormPreAuthorization.controls.payeeType.value.value === 'provider') {
+          // tslint:disable-next-line:max-line-length
+          preAuthorizationModel.payeeId = this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0] ? this.payeeList.filter(x => x.cchiid === this.sharedServices.cchiId)[0].nphiesId : '';
+        } else {
+          preAuthorizationModel.payeeId = this.FormPreAuthorization.controls.payee.value;
+        }
+  
+        preAuthorizationModel.payeeType = this.FormPreAuthorization.controls.payeeType.value.value;
+        preAuthorizationModel.type = this.FormPreAuthorization.controls.type.value.value;
+        preAuthorizationModel.subType = this.FormPreAuthorization.controls.subType.value.value;
+  
+        if (this.FormPreAuthorization.controls.preAuthRefNo.value) {
+          this.model.preAuthRefNo = this.FormPreAuthorization.controls.preAuthRefNo.value.map(x => {
+            return x.value;
+          });
+        }
+  
+        // tslint:disable-next-line:max-line-length
+        preAuthorizationModel.eligibilityOfflineDate = this.datePipe.transform(this.FormPreAuthorization.controls.eligibilityOfflineDate.value, 'yyyy-MM-dd');
+        preAuthorizationModel.eligibilityOfflineId = this.FormPreAuthorization.controls.eligibilityOfflineId.value;
+        preAuthorizationModel.eligibilityResponseId = this.FormPreAuthorization.controls.eligibilityResponseId.value;
+        preAuthorizationModel.eligibilityResponseUrl = this.FormPreAuthorization.controls.eligibilityResponseUrl.value;
+        preAuthorizationModel.episodeId = null;
+        this.model.preAuthorizationInfo = preAuthorizationModel;
+  
+        this.model.supportingInfo = this.SupportingInfo.map(x => {
+          // const model: any = {};
+          // model.sequence = x.sequence;
+          // model.category = x.category;
+          // model.code = x.code;
+          // model.fromDate = x.fromDate;
+          // model.toDate = x.toDate;
+          // model.value = x.value;
+          // model.reason = x.reason;
+          // model.attachment = x.byteArray;
+          // model.attachmentName = x.attachmentName;
+          // model.attachmentType = x.attachmentType;
+          // model.attachmentDate = x.attachmentDate;
+          // return model;
+          const model: any = {};
+          model.sequence = x.sequence;
+          model.category = x.category;
+          model.code = x.code;
+          if (x.fromDate) {
+            x.fromDate = this.datePipe.transform(x.fromDate, 'yyyy-MM-dd');
+          }
+          model.fromDate = x.fromDate;
+          if (x.toDate) {
+            x.toDate = this.datePipe.transform(x.toDate, 'yyyy-MM-dd');
+          }
+          model.toDate = x.toDate;
+          model.value = x.value;
+          model.reason = x.reason;
+          model.attachment = x.attachment;
+          model.attachmentName = x.attachmentName;
+          model.attachmentType = x.attachmentType;
+          if (x.attachmentDate) {
+            x.attachmentDate = this.datePipe.transform(x.attachmentDate, 'yyyy-MM-dd');
+          }
+          model.attachmentDate = x.attachmentDate;
+          return model;
+        });
+  
+        this.model.diagnosis = this.Diagnosises.map(x => {
+          const model: any = {};
+          model.sequence = x.sequence;
+          model.diagnosisDescription = x.diagnosisDescription.replace(x.diagnosisCode + ' - ', '').trim();
+          model.type = x.type;
+          model.onAdmission = x.onAdmission;
+          model.diagnosisCode = x.diagnosisCode;
+          return model;
+        });
+  
+        if (this.FormPreAuthorization.controls.accidentType.value.value) {
+          const accidentModel: any = {};
+          accidentModel.accidentType = this.FormPreAuthorization.controls.accidentType.value.value;
+          accidentModel.streetName = this.FormPreAuthorization.controls.streetName.value;
+          accidentModel.city = this.FormPreAuthorization.controls.city.value;
+          accidentModel.state = this.FormPreAuthorization.controls.state.value;
+          accidentModel.country = this.FormPreAuthorization.controls.country.value;
+          accidentModel.date = this.datePipe.transform(this.FormPreAuthorization.controls.date.value, 'yyyy-MM-dd');
+          this.model.accident = accidentModel;
+        }
+  
+        this.model.careTeam = this.CareTeams.map(x => {
+          const model: any = {};
+          model.sequence = x.sequence;
+          model.practitionerName = x.practitionerName;
+          model.physicianCode = x.physicianCode;
+          model.practitionerRole = x.practitionerRole;
+          model.careTeamRole = x.careTeamRole;
+          model.speciality = x.speciality;
+          model.specialityCode = x.specialityCode;
+          model.qualificationCode = x.qualificationCode;
+          return model;
+        });
+  
+        if (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value === 'vision') {
+          if (this.FormPreAuthorization.controls.prescriber.value) {
+            this.model.visionPrescription = {};
+            // tslint:disable-next-line:max-line-length
+            this.model.visionPrescription.dateWritten = moment(this.removeSecondsFromDate(this.FormPreAuthorization.controls.dateWritten.value)).utc();
+            this.model.visionPrescription.prescriber = this.FormPreAuthorization.controls.prescriber.value;
+            let sequence = 1; let index = 0;
+            let lens_model: any = [];
+            this.VisionSpecifications.forEach(x => {
+              lens_model[index] = {};
+              lens_model[index].sequence = sequence;
+              lens_model[index].product = x.product;
+              lens_model[index].lensColor = x.lensColor;
+              lens_model[index].lensBrand = x.lensBrand;
+              lens_model[index].lensNote = x.lensNote;
+              lens_model[index].eye = 'right';
+              lens_model[index].sphere = x.sphere;
+              lens_model[index].cylinder = x.cylinder;
+              lens_model[index].axis = x.axis;
+              lens_model[index].prismAmount = x.prismAmount;
+              lens_model[index].prismBase = x.prismBase;
+              lens_model[index].multifocalPower = x.multifocalPower;
+              lens_model[index].lensPower = x.lensPower;
+              lens_model[index].lensBackCurve = x.lensBackCurve;
+              lens_model[index].lensDiameter = x.lensDiameter;
+              lens_model[index].lensDuration = x.lensDuration;
+              lens_model[index].lensDurationUnit = x.lensDurationUnit;
+              //new Fieldindex      
+              ++sequence;
+              ++index;
+              lens_model[index] = {};
+              lens_model[index].sequence = sequence;
+              lens_model[index].product = x.product;
+              lens_model[index].lensColor = x.lensColor;
+              lens_model[index].lensBrand = x.lensBrand;
+              lens_model[index].lensNote = x.lensNote;
+              lens_model[index].eye = 'left';
+              lens_model[index].sphere = x.left_sphere;
+              lens_model[index].cylinder = x.left_cylinder;
+              lens_model[index].axis = x.left_axis;
+              lens_model[index].prismAmount = x.left_prismAmount;
+              lens_model[index].prismBase = x.left_prismBase;
+              lens_model[index].multifocalPower = x.left_multifocalPower;
+              lens_model[index].lensPower = x.left_lensPower;
+              lens_model[index].lensBackCurve = x.left_lensBackCurve;
+              lens_model[index].lensDiameter = x.left_lensDiameter;
+              lens_model[index].lensDuration = x.left_lensDuration;
+              lens_model[index].lensDurationUnit = x.left_lensDurationUnit;
+              ++sequence;
+              ++index;
+            });
+            this.model.visionPrescription.lensSpecifications = lens_model;
+            console.log("on save - > " + JSON.stringify(lens_model));
+          }
+        }
+  
+        this.model.items = this.Items.map(x => {
+          // tslint:disable-next-line:max-line-length
+          if ((this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy') && x.careTeamSequence && x.careTeamSequence.length > 0) {
+            const model: any = {};
+            model.sequence = x.sequence;
+            model.type = x.type;
+            model.itemCode = x.itemCode ? x.itemCode.toString() : x.itemCode;
+            model.itemDescription = x.itemDescription;
+            model.nonStandardCode = x.nonStandardCode;
+            model.nonStandardDesc = x.display;
+            model.isPackage = x.isPackage;
+            model.bodySite = x.bodySite;
+            model.subSite = x.subSite;
+            model.quantity = x.quantity;
+            model.quantityCode = x.quantityCode;
+            model.unitPrice = x.unitPrice;
+            model.discount = x.discount;
+            model.factor = x.factor;
+            model.taxPercent = x.taxPercent;
+            model.patientSharePercent = x.patientSharePercent;
+            model.tax = x.tax;
+            model.net = x.net;
+            model.patientShare = x.patientShare;
+            model.payerShare = x.payerShare;
+            model.startDate = x.startDate ? moment(this.removeSecondsFromDate(x.startDate)).utc() : null;
+            model.endDate = moment(this.removeSecondsFromDate(x.endDate)).utc();
+            model.supportingInfoSequence = x.supportingInfoSequence;
+            model.careTeamSequence = x.careTeamSequence;
+            model.diagnosisSequence = x.diagnosisSequence;
+            model.invoiceNo = null;
+  
+            model.itemDetails = x.itemDetails.map(y => {
+              const dmodel: any = {};
+              dmodel.sequence = y.sequence;
+              dmodel.type = y.type;
+              dmodel.code = y.itemCode ? y.itemCode.toString() : y.itemCode;
+              dmodel.description = y.itemDescription;
+              dmodel.nonStandardCode = y.nonStandardCode;
+              dmodel.nonStandardDesc = y.display;
+              dmodel.quantity = parseFloat(y.quantity);
+              return dmodel;
+            });
+  
+            return model;
+          } else if (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value === 'pharmacy') {
+            const model: any = {};
+            model.sequence = x.sequence;
+            model.type = x.type;
+            model.itemCode = x.itemCode ? x.itemCode.toString() : x.itemCode;
+            model.itemDescription = x.itemDescription;
+            model.nonStandardCode = x.nonStandardCode;
+            model.nonStandardDesc = x.display;
+            model.isPackage = x.isPackage;
+            model.bodySite = x.bodySite;
+            model.subSite = x.subSite;
+            model.quantity = x.quantity;
+            model.unitPrice = x.unitPrice;
+            model.discount = x.discount;
+            model.factor = x.factor;
+            model.taxPercent = x.taxPercent;
+            model.patientSharePercent = x.patientSharePercent;
+            model.tax = x.tax;
+            model.net = x.net;
+            model.patientShare = x.patientShare;
+            model.payerShare = x.payerShare;
+            model.startDate = x.startDate ? moment(this.removeSecondsFromDate(x.startDate)).utc() : null;
+            model.endDate = moment(this.removeSecondsFromDate(x.endDate)).utc();
+            model.supportingInfoSequence = x.supportingInfoSequence;
+            model.careTeamSequence = x.careTeamSequence;
+            model.diagnosisSequence = x.diagnosisSequence;
+            model.invoiceNo = null;
+            model.drugSelectionReason = x.drugSelectionReason;
+            model.prescribedDrugCode = x.prescribedDrugCode;
+  
+            model.itemDetails = x.itemDetails.map(y => {
+              const dmodel: any = {};
+              dmodel.sequence = y.sequence;
+              dmodel.type = y.type;
+              dmodel.code = y.itemCode ? y.itemCode.toString() : y.itemCode;
+              dmodel.description = y.itemDescription;
+              dmodel.nonStandardCode = y.nonStandardCode;
+              dmodel.nonStandardDesc = y.display;
+              dmodel.quantity = parseFloat(y.quantity);
+              dmodel.quantityCode = y.quantityCode;
+              return dmodel;
+            });
+  
+            return model;
+          }
+        }).filter(x => x !== undefined);
+  
+        this.model.totalNet = 0;
+        this.model.items.forEach((x) => {
+          this.model.totalNet += x.net;
+        });
+  
+        console.log('Model', this.model);
+        this.sharedServices.loadingChanged.next(true);
+        let requestOb = this.providerNphiesApprovalService.sendApprovalRequest(this.sharedServices.providerId, this.model);
+        if(isMrevalidation){
+          requestOb = this.providerNphiesApprovalService.sendApprovalMRERequest(this.sharedServices.providerId, this.model);
+        }
+        requestOb.subscribe(event => {
+          if (event instanceof HttpResponse) {
+            if (event.status === 200 && !isMrevalidation) {
+              const body: any = event.body;
+              if (body.status === 'OK' ) {
+                if (body.outcome.toString().toLowerCase() === 'error') {
+                  const errors: any[] = [];
+  
+                  if (body.disposition) {
+                    errors.push(body.disposition);
+                  }
+  
+                  if (body.errors && body.errors.length > 0) {
+                    body.errors.forEach(err => {
+                      err.coding.forEach(codex => {
+                        errors.push(codex.code + ' : ' + codex.display);
+                      });
+                    });
+                  }
+                  this.sharedServices.loadingChanged.next(false);
+                  if (body.transactionId) {
+                    this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors, null, null, body.transactionId);
+                  } else {
+                    this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors, null, null);
+                  }
+  
+                } else {
+                  this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
+                  if (this.claimReuseId) {
+                    this.closeEvent.emit({ IsReuse: true });
+                  } else {
+                    this.getTransactionDetails(body.approvalRequestId, body.approvalResponseId);
+                  }
+                }
+              }
+            }else if(event.status === 200 && isMrevalidation){
+              const body: any = event.body;
+              this.sharedServices.loadingChanged.next(false);
+              this.Mre_result=body;
+              console.log('Model', this.model);
+              this.openMreValidationResponseSummaryDialog(body);
+            }
+          }
+        }, error => {
+          this.sharedServices.loadingChanged.next(false);
+          if (error instanceof HttpErrorResponse) {
+            if (error.status === 400) {
+                console.log(error);
+              //this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);                 
+              this.dialogService.showMessageObservable(error.error.status, error.error.errors[0].description, 'alert', true, 'OK', error.error.errors[0].description, true).subscribe(res => {
+                if (this.claimReuseId) {
+                  this.reset();
+                }
+                this.getProviderTypeConfiguration();
+              });
+            } else if (error.status === 404) {
+              const errors: any[] = [];
+              if (error.error.errors) {
+                error.error.errors.forEach(x => {
+                  errors.push(x);
+                });
+                this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+              } else {
+                this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+              }
+            } else if (error.status === 500) {
+              this.dialogService.showMessage(error.error.message ? error.error.message : error.error.error, '', 'alert', true, 'OK', error.error.error);
+            } else if (error.status === 503) {
+              const errors: any[] = [];
+              if (error.error.errors) {
+                error.error.errors.forEach(x => {
+                  errors.push(x);
+                });
+                this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+              } else {
+                this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+              }
+            }
+          }
+        });
+      }
+      
+}
+  //ends here 
   SetToMax(data) {
     const ChosenDate = new Date(data);
     const OrderDate = new Date(this.FormPreAuthorization.controls.dateOrdered.value);
@@ -2477,6 +3073,15 @@ export class AddPreauthorizationComponent implements OnInit {
       PBM_result:body
     };
     const dialogRef = this.dialog.open(PbmValidationResponseSummaryDialogComponent, dialogConfig);
+  }
+
+  openMreValidationResponseSummaryDialog(body) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog', 'dialog-lg'];
+    dialogConfig.data = {
+        MRE_result:body
+    };
+    const dialogRef = this.dialog.open(MreValidationResponseSummaryDialogComponent, dialogConfig);
   }
   
 }

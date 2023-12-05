@@ -1481,6 +1481,31 @@
         </app-empty-state>
       </div>
     </mat-tab>
+
+    <mat-tab *ngIf=" otherDataModel.status === 'Accepted' && claimData.mreClaimStatus !=null "
+      [label]="'MRE Comments'">
+      <div class="table-responsive">
+        <div class="d-flex justify-content-end pb-2 align-items-center">
+          MRE Status: <span class="status ml-2"
+            [ngClass]="{'light-bg-danger text-danger': claimData.mreClaimStatus.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(claimData.mreClaimStatus)}}</span>
+        </div>
+        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0" *ngIf="claimData.mreClaimErrors?.length > 0">
+          <thead>
+            <tr>
+              <th class="light-bg-danger text-danger">Comments</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let comment of claimData.mreClaimErrors">
+              <td>{{comment}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <app-empty-state *ngIf="claimData.mreClaimErrors?.length === 0" message='No Comments found!'>
+        </app-empty-state>
+      </div>
+    </mat-tab>
+
   </mat-tab-group>
 
   <div class="block-footer sticky" *ngIf="!isLoading">
@@ -3223,7 +3248,30 @@
             </app-empty-state>
           </div>
         </mat-tab>
-
+        <!-- change the way we git the mre from pbm  -->
+        <mat-tab *ngIf="otherDataModel.status === 'Accepted' && otherDataModel.pbmComments && otherDataModel.pbmComments.pbmClaimStatus"
+          [label]="'MRE Comments'">
+          <div class="table-responsive">
+            <div class="d-flex justify-content-end pb-2 align-items-center">
+              MRE Status: <span class="status ml-2"
+                [ngClass]="{'light-bg-danger text-danger': otherDataModel.pbmComments.pbmClaimStatus.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(otherDataModel.pbmComments.pbmClaimStatus)}}</span>
+            </div>
+            <table class="primary-grid" cellpadding="0" cellspacing="0" border="0" *ngIf="otherDataModel.pbmComments.pbmClaimErrors?.length > 0">
+              <thead>
+                <tr>
+                  <th class="light-bg-danger text-danger">Comments</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let comment of otherDataModel.pbmComments.pbmClaimErrors">
+                  <td>{{comment}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <app-empty-state *ngIf="otherDataModel.pbmComments.pbmClaimErrors?.length === 0" message='No Comments found!'>
+            </app-empty-state>
+          </div>
+        </mat-tab>
       </mat-tab-group>
 
       <div class="block-footer sticky">

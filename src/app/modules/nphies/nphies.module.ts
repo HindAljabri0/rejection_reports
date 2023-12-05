@@ -102,6 +102,7 @@ import { PrescriptionAddEditSupportingInfoModalComponent } from './add-prescript
 import { PrescriptionAddEditVisionLensSpecificationsComponent } from './add-prescription/prescription-add-edit-vision-lens-specifications/prescription-add-edit-vision-lens-specifications.component';
 import { PrescriptionManageSupportingInfoComponent } from './add-prescription/prescription-manage-supporting-info/prescription-manage-supporting-info.component';
 import { PrescriptionDetailsComponent } from './prescription-details/prescription-details.component';
+import { MreValidationResponseSummaryDialogComponent } from 'src/app/components/dialogs/mre-validation-response-summary-dialog/mre-validation-response-summary-dialog.component';
 
 import { ApaProcessedTransactionsComponent } from './advance-preauth-transactions/apa-processed-transactions/apa-processed-transactions.component';
 import { ExtractClaimsComponent } from './extract-claims/extract-claims.component';
@@ -192,7 +193,9 @@ import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth
         ExtractClaimsComponent,
         UploadBeneficiaryInquireCchiComponent,
         BeneficiaryUploadsSummaryComponent,
-        UploadBeneficiaryCchiErrorsDialogComponent
+        UploadBeneficiaryCchiErrorsDialogComponent,
+        MreValidationResponseSummaryDialogComponent,
+
     ],
     imports: [
         CommonModule,
@@ -236,6 +239,7 @@ import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth
         AddMedicationSupplyDialogComponent,
         ViewPrintPreviewDialogComponent,
         PbmValidationResponseSummaryDialogComponent,
+        MreValidationResponseSummaryDialogComponent,
         AddEditPrescriptionItemComponent,
         ViewPrescriptionDetailsDialogComponent,
         PrescriptionCancelReasonModalComponent,

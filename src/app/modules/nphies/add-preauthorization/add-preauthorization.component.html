@@ -830,10 +830,21 @@
           <button type="button" mat-button color="primary" *ngIf="isPBMValidationVisible" [disabled]="!Pbm_result" (click)="openPbmValidationResponseSummaryDialog(Pbm_result)" id="PbmResponse">
             <span>PBM Response</span>
           </button>
-          <button type="button" mat-flat-button color="primary" *ngIf="isPBMValidationVisible" (click)="onSubmit(true)" id="pbmRequestButton">
+          <button
+           type="button"
+           mat-flat-button color="primary" 
+           (click)="onMreSubmit(true)" 
+           id="mreRequestButton">
+           <span>Request MRE</span>
+          </button>
+          <button type="button" mat-flat-button color="primary"
+           *ngIf="isPBMValidationVisible" 
+           (click)="onSubmit(true)" 
+           id="pbmRequestButton">
             <span>Request PBM</span>
           </button>
-          <button type="submit" mat-flat-button color="primary"  id="requestAuthorizationButton">
+          <button type="submit" mat-flat-button color="primary" 
+           id="requestAuthorizationButton">
             <span>Request Authorization</span>
           </button>
         </div>

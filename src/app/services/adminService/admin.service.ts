@@ -51,6 +51,7 @@ export class AdminService {
     const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
     return this.http.request(request);
   }
+  
   checkIfPriceListExist(providerId: string, payerId: string) {
     const requestURL = `/price-list/providers/${providerId}/check-payer/${payerId}`;
     const request = new HttpRequest('GET', environment.adminServiceHost + requestURL);

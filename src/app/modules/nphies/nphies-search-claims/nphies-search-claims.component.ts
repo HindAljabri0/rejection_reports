@@ -160,6 +160,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   appliedFilters: any = [];
 
   isPBMValidationVisible = false;
+  isMREValidationVisible = false;
   apiPBMValidationEnabled: any;
   claimList: ClaimListModel = new ClaimListModel();
 
@@ -496,6 +497,7 @@ console.log(this.isSearchByStatus)
       || this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.REJECTED.toLowerCase()) ? false : true;
     this.isPBMValidationVisible = this.apiPBMValidationEnabled
       && this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.Accepted.toLowerCase() ? true : false;
+      this.isMREValidationVisible =  this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.Accepted.toLowerCase() ? true : false;
 
     this.claims = new Array();
     this.store.dispatch(storeClaims({
@@ -513,6 +515,7 @@ console.log(this.isSearchByStatus)
     const status = this.routeActive.snapshot.queryParamMap.get('status');
     this.status = status === null ? this.status : status;
     this.getPBMValidation();
+    this.getMREValidation();
   }
 
   getClaimTransactions(key?: number, page?: number) {
@@ -1393,6 +1396,11 @@ this.params.filter_claimResponseDate = ClaimListFilterSelection.CLAIMRESPONSEDAT
 
   }
 
+  getMREValidation(){
+    this.isMREValidationVisible = (this.summaries[this.selectedCardKey].statuses[0].toLowerCase() === ClaimStatus.Accepted.toLowerCase()
+      || this.summaries[this.selectedCardKey].statuses[0].toLowerCase() === ClaimStatus.Downloadable.toLowerCase()) ? true : false;
+  }
+
   get statusSelected() {
     return ClaimStatus;
   }
@@ -2150,7 +2158,6 @@ this.params.filter_claimResponseDate = ClaimListFilterSelection.CLAIMRESPONSEDAT
     }, eventError => {
     });
   }
-
   applyPBMValidation() {
     this.setFilterData();
     this.commen.loadingChanged.next(true);
@@ -2204,6 +2211,53 @@ this.params.filter_claimResponseDate = ClaimListFilterSelection.CLAIMRESPONSEDAT
       });
     // }
     // });
+  }
+
+  applyMREValidation(){
+
+    this.setFilterData();
+    this.commen.loadingChanged.next(true);
+
+    this.providerNphiesApprovalService.MREValidation(
+        this.providerId,
+        this.selectedClaims,
+        this.params.uploadId
+        ).subscribe(event => {
+        if (event instanceof HttpResponse) {
+          this.commen.loadingChanged.next(false);
+          if (event.body['status'] === true) {
+            this.dialogService.openMessageDialog(
+              new MessageDialogData('',
+                event.body['message'],
+                false))
+              .subscribe(afterColse => {
+                location.reload();
+              });
+          } else {
+            this.dialogService.openMessageDialog(
+              new MessageDialogData('',
+                event.body['message'],
+                true))
+              .subscribe(afterColse => {
+                location.reload();
+              });
+          }
+          this.commen.loadingChanged.next(false);
+        }
+      }, errorEvent => {
+        if (errorEvent instanceof HttpErrorResponse) {
+          if (errorEvent.status === 404) {
+            this.dialogService.openMessageDialog(new MessageDialogData('Error', errorEvent.error.message, true));
+          } else if (errorEvent.status === 400) {
+            this.dialogService.openMessageDialog(new MessageDialogData('Error', errorEvent.error.message, true));
+          } else if (errorEvent.status === 500) {
+            this.dialogService.openMessageDialog(new MessageDialogData('Error', errorEvent.error.message, true));
+          } else {
+            this.dialogService.openMessageDialog(new MessageDialogData('Error', errorEvent.message, true));
+          }
+        }
+        this.commen.loadingChanged.next(false);
+      });
   }
 
   moveToReadyState() {
