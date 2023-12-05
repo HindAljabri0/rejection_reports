@@ -286,7 +286,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
   }
   selectedDefualtPrescriberChange($event) {
     this.PrescriberDefault = $event;
-    console.log("$event = " + $event);
+   // console.log("$event = " + $event);
   }
   setReuseValues() {
 
@@ -1775,7 +1775,7 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
     let hasError = false;
     if (this.CareTeams.length !== 0) {
       this.CareTeams.forEach(element => {
-        console.log("physicianCode = " + element.physicianCode + " practitionerName = " + element.practitionerName);
+        //console.log("physicianCode = " + element.physicianCode + " practitionerName = " + element.practitionerName);
         if (element.physicianCode == null || element.physicianCode == '' || element.practitionerName == null || element.practitionerName == '') {
           element.error = "Please Select Valid Practitioner";
           hasError = true;
@@ -1888,15 +1888,7 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
       }
     }
   
-    if (isPbmvalidation) {
-      let weightValidtation = this.SupportingInfo.filter(f=>f.category == 'vital-sign-weight').length;
-      if (weightValidtation == 0) {
-        this.dialogService.showMessage('Error', 'please add vital sign weight to complete PBM request', 'alert', true, 'OK');
-        return;
-      }
-    
-    }
-    if (this.FormPreAuthorization.valid) {
+   if (this.FormPreAuthorization.valid) {
       
       if (this.Diagnosises.length === 0 || this.Items.length === 0) {
         hasError = true;
@@ -2213,7 +2205,7 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
             ++index;
           });
           this.model.visionPrescription.lensSpecifications = lens_model;
-          console.log("on save - > " + JSON.stringify(lens_model));
+          //console.log("on save - > " + JSON.stringify(lens_model));
         }
       }
 
@@ -2317,14 +2309,11 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
 
            this.sharedServices.loadingChanged.next(true);
       let requestOb = this.providerNphiesApprovalService.sendCnhiApprovalRequest(this.sharedServices.providerId, this.model);
-      if(isPbmvalidation){
-        requestOb = this.providerNphiesApprovalService.sendApprovalPBMRequest(this.sharedServices.providerId, this.model);
-      }
       requestOb.subscribe(event => {
         if (event instanceof HttpResponse) {
-          if (event.status === 200 && !isPbmvalidation) {
+           if (event.status === 200) {
             const body: any = event.body;
-            if (body.status === 'OK' ) {
+            if (body.status === 'OK' ) {             
               if (body.outcome.toString().toLowerCase() === 'error') {
                 const errors: any[] = [];
 
@@ -2355,14 +2344,25 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
                 }
               }
             }
-          }else if(event.status === 200 && isPbmvalidation){
-            const body: any = event.body;
+            if (body.status === 'Service Unavailable'){
+                 if (body.outcome === 'FailedNphies') {
+                  const errors: any[] = [];                   
+                    if (body.errors && body.errors.length > 0) {
 
-            this.sharedServices.loadingChanged.next(false);
-            this.Pbm_result=body;
-            this.openPbmValidationResponseSummaryDialog(body);
-          }
-        }
+                        body.errors.forEach(x => {
+                            errors.push(x);
+                          });
+                       
+                      }
+                      this.sharedServices.loadingChanged.next(false);
+                      if (body.transactionId) {
+                        this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors, null, null, body.transactionId);
+                      } else {
+                        this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors, null, null);
+                      }
+                }
+            }
+                  }        }
       }, error => {
         this.sharedServices.loadingChanged.next(false);
         if (error instanceof HttpErrorResponse) {
