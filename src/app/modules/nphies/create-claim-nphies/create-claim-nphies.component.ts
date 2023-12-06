@@ -2355,9 +2355,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   }
 
   setMreData(response){
-    
-      console.log(response);
-      this.claimData = {};
+          this.claimData = {};
 
       this.claimData.mreClaimStatus = response.mreClaimStatus; 
       this.claimData.mreClaimErrors = response.mreClaimErrors; 
