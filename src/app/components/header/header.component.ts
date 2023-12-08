@@ -27,9 +27,11 @@ export class HeaderComponent implements OnInit {
     providerName: string;
     providerId: string;
     globalNotificationVisible = true;
-    alertMessage = null;
+    englishMessage = null;
+    arabicMessage = null;
     startDateAlert = null;
     endDateAlert = null;
+
 
 
     @Input() activeLanguageLabel: string;
@@ -92,7 +94,7 @@ export class HeaderComponent implements OnInit {
         console.log(this.sharedServices.providerId)
         if (this.sharedServices.providerId != '101' && localStorage.getItem('hasDisplayedAnnouncementDialogue') != "true") {
             this.getAnnouncements();
-           
+
         }
         this.getAlertMessage();
         if (environment.showFreshChat) {
@@ -193,7 +195,7 @@ export class HeaderComponent implements OnInit {
     }
 
     logout() {
-        
+
         this.authService.loginOut().subscribe(response => {
 
             if (response instanceof HttpResponse) {
@@ -287,8 +289,19 @@ export class HeaderComponent implements OnInit {
 
     getAlertMessage() {
         this.settingsService.getAlert().subscribe(event => {
+
             if (event instanceof HttpResponse) {
-                this.alertMessage = event.body['message'] as String;
+                this.englishMessage = event.body['englishMessage'] as String;
+                this.arabicMessage = event.body['arabicMessage'] as String;
+                let alrtUrl = this.englishMessage.match(/(https:)[a-zA-Z\/0-9\.\-/%]*(.(xlsx|pdf|))/);
+                if (alrtUrl != null) {
+                    this.englishMessage = this.englishMessage.replace(alrtUrl[0], `<a href='${alrtUrl[0]}'
+                style="color:blue;text-decoration: underline;"> Click Here </a>`)
+                    if (this.arabicMessage != null) {
+                        this.arabicMessage = this.arabicMessage + `<a href='${alrtUrl[0]}'
+                      style="color:blue;text-decoration: underline;"> اضغط هنا</a>`;
+                    }
+                }
                 this.startDateAlert = new Date(event.body['startDate']).getTime();
                 this.endDateAlert = new Date(event.body['endDate']).getTime();
             }
