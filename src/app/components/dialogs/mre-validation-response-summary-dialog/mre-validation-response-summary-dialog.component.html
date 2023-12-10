@@ -44,9 +44,9 @@
                 <td class="semibold text-success" *ngIf="row.status =='APPROVED'">{{ row.status }}</td>
                 <td class="semibold text-danger" *ngIf="row.status !='APPROVED'">{{ row.status }}</td>
                 <td  *ngIf="row.status !='APPROVED' && row.status !='UNKNOWN'">
-                    <ng-container *ngFor="let error of row.errors;let i=index">
-                        <span class="abbr" matTooltip="{{error.description}}">{{ error.code }}</span>
-                        <ng-container *ngIf="i!=row.errors.length-1">, </ng-container>
+                    <ng-container *ngFor="let err of row.error;let i=index">
+                        <span class="abbr" matTooltip="{{err.description}}">{{ err.code }}</span>
+                        <ng-container *ngIf="i!=row.err.length-1">, </ng-container>
                       </ng-container>
                 </td>
                 <td *ngIf="row.status =='APPROVED' || row.status =='UNKNOWN' ">-</td>

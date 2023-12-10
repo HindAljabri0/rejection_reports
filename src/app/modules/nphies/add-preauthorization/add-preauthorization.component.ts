@@ -1409,17 +1409,17 @@ export class AddPreauthorizationComponent implements OnInit {
 
 //   checkMreItemsCodeForSupportingInfo() {
 //     // tslint:disable-next-line:max-line-length
-//     if (this.Items.length > 0 && this.Items.filter(x => x.type !== 'medication-codes').length > 0 && (this.SupportingInfo.filter(x => x.category === 'days-supply').length === 0)) {
+//     if (this.Items.length > 0 && this.Items.filter(x => (x.type === 'medication-codes' || x.type !== 'medical-devices')).length > 0 && (this.SupportingInfo.filter(x => x.category === 'days-supply').length === 0)) {
 //       // tslint:disable-next-line:max-line-length
 //       this.dialogService.showMessage('Error', 'Days-Supply is required in Supporting Info if any services is used', 'alert', true, 'OK');
 //       return false;
 //       // tslint:disable-next-line:max-line-length
-//     } else if (this.Items.length > 0 && this.Items.filter(x => x.type !== 'medication-codes').length > 0 && (this.SupportingInfo.filter(x => x.category === 'days-supply').length > 0)) {
+//     } else if (this.Items.length > 0 && this.Items.filter(x => (x.type !== 'medication-codes' || x.type !== 'medical-devices')).length > 0 && (this.SupportingInfo.filter(x => x.category === 'days-supply').length > 0)) {
 //       let SupportingList = this.SupportingInfo.filter(x => x.category === 'days-supply').map(t => t.sequence);
-//       let ItemSeqList = this.Items.filter(x => x.type !== 'medication-codes').map(t => t.sequence);
+//       let ItemSeqList = this.Items.filter(x => (x.type !== 'medication-codes' || x.type !== 'medical-devices')).map(t => t.sequence);
 //       var SeqIsThere = ItemSeqList.filter(x => SupportingList.includes(x));
 
-//       if (this.Items.filter(x => x.type !== 'medication-codes' && (x.supportingInfoSequence.length === 0)).length > 0 || !SeqIsThere) {
+//       if (this.Items.filter(x =>(x.type !== 'medication-codes' || x.type !== 'medical-devices') && (x.supportingInfoSequence.length === 0)).length > 0 || !SeqIsThere) {
 //         // tslint:disable-next-line:max-line-length
 //         this.dialogService.showMessage('Error', 'Supporting Info with Days-Supply must be linked with Item of any type type of service', 'alert', true, 'OK');
 //         return false;
@@ -1429,7 +1429,7 @@ export class AddPreauthorizationComponent implements OnInit {
 //     } else {
 //       return true;
 //     }
-//   }
+//}
 
   updateSequenceNames() {
     this.Items.forEach(x => {
@@ -2262,14 +2262,15 @@ export class AddPreauthorizationComponent implements OnInit {
   }
 
 onMreSubmit(isMrevalidation=true){
-    // this.providerType = this.providerType == null || this.providerType == "" ? 'any' : this.providerType;
-    // if (this.providerType.toLowerCase() !== 'any' && this.FormPreAuthorization.controls.type.value.value !== this.providerType) {
-    //   const filteredClaimType = this.sharedDataService.claimTypeList.filter(x => x.value === this.providerType)[0];
-    //   const providerTypeName = filteredClaimType != null ? filteredClaimType.name : null;
-    //   const claimTypeName = this.sharedDataService.claimTypeList.filter(x => x.value === this.FormPreAuthorization.controls.type.value.value)[0].name;
-    //   this.dialogService.showMessage('Error', 'Claim type ' + claimTypeName + ' is not supported for Provider type ' + providerTypeName, 'alert', true, 'OK');
-    //   return;
-    // }//check
+    this.providerType = this.providerType == null || this.providerType == "" ? 'any' : this.providerType;
+    if (this.providerType.toLowerCase() !== 'any' && this.FormPreAuthorization.controls.type.value.value !== this.providerType) {
+      const filteredClaimType = this.sharedDataService.claimTypeList.filter(x => x.value === this.providerType)[0];
+      const providerTypeName = filteredClaimType != null ? filteredClaimType.name : null;
+      const claimTypeName = this.sharedDataService.claimTypeList.filter(x => x.value === this.FormPreAuthorization.controls.type.value.value)[0].name;
+      this.dialogService.showMessage('Error', 'Claim type ' + claimTypeName + ' is not supported for Provider type ' + providerTypeName, 'alert', true, 'OK');
+      return;
+    }
+    //check
     this.isSubmitted = true;
     let hasError = false;
 
@@ -2336,7 +2337,7 @@ onMreSubmit(isMrevalidation=true){
      if (isMrevalidation) {
       let daysSupplyValidtation = this.SupportingInfo.filter(f=>f.category == 'days-supply').length;
       if (daysSupplyValidtation == 0) {
-        this.dialogService.showMessage('Error', 'please add days of supply to complete MRE request', 'alert', true, 'OK');
+        this.dialogService.showMessage('Error', 'please add Days of supply to complete MRE request', 'alert', true, 'OK');
         return;
       }
     }
@@ -2746,44 +2747,10 @@ onMreSubmit(isMrevalidation=true){
         }
         requestOb.subscribe(event => {
           if (event instanceof HttpResponse) {
-            if (event.status === 200 && !isMrevalidation) {
-              const body: any = event.body;
-              if (body.status === 'OK' ) {
-                if (body.outcome.toString().toLowerCase() === 'error') {
-                  const errors: any[] = [];
-  
-                  if (body.disposition) {
-                    errors.push(body.disposition);
-                  }
-  
-                  if (body.errors && body.errors.length > 0) {
-                    body.errors.forEach(err => {
-                      err.coding.forEach(codex => {
-                        errors.push(codex.code + ' : ' + codex.display);
-                      });
-                    });
-                  }
-                  this.sharedServices.loadingChanged.next(false);
-                  if (body.transactionId) {
-                    this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors, null, null, body.transactionId);
-                  } else {
-                    this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors, null, null);
-                  }
-  
-                } else {
-                  this.dialogService.showMessage('Success', body.message, 'success', true, 'OK');
-                  if (this.claimReuseId) {
-                    this.closeEvent.emit({ IsReuse: true });
-                  } else {
-                    this.getTransactionDetails(body.approvalRequestId, body.approvalResponseId);
-                  }
-                }
-              }
-            }else if(event.status === 200 && isMrevalidation){
+            if(event.status === 200 ){
               const body: any = event.body;
               this.sharedServices.loadingChanged.next(false);
               this.Mre_result=body;
-              console.log('Model', this.model);
               this.openMreValidationResponseSummaryDialog(body);
             }
           }
