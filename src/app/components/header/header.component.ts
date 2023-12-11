@@ -296,10 +296,10 @@ export class HeaderComponent implements OnInit {
                 let alrtUrl = this.englishMessage.match(/(https:)[a-zA-Z\/0-9\.\-/%_]*(.(xlsx|pdf|))/);
                 if (alrtUrl != null) {
                     this.englishMessage = this.englishMessage.replace(alrtUrl[0], `<a href='${alrtUrl[0]}'
-                style="color:blue;text-decoration: underline;"> Click Here </a>`)
+                    target="_blank" style="color:blue;text-decoration: underline;"> Click Here </a>`)
                     if (this.arabicMessage != null) {
                         this.arabicMessage = this.arabicMessage + `<a href='${alrtUrl[0]}'
-                      style="color:blue;text-decoration: underline;"> اضغط هنا</a>`;
+                        target="_blank" style="color:blue;text-decoration: underline;"> اضغط هنا</a>`;
                     }
                 }
                 this.startDateAlert = new Date(event.body['startDate']).getTime();
