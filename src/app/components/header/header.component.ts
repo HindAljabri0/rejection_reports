@@ -293,7 +293,7 @@ export class HeaderComponent implements OnInit {
             if (event instanceof HttpResponse) {
                 this.englishMessage = event.body['englishMessage'] as String;
                 this.arabicMessage = event.body['arabicMessage'] as String;
-                let alrtUrl = this.englishMessage.match(/(https:)[a-zA-Z\/0-9\.\-/%]*(.(xlsx|pdf|))/);
+                let alrtUrl = this.englishMessage.match(/(https:)[a-zA-Z\/0-9\.\-/%_]*(.(xlsx|pdf|))/);
                 if (alrtUrl != null) {
                     this.englishMessage = this.englishMessage.replace(alrtUrl[0], `<a href='${alrtUrl[0]}'
                 style="color:blue;text-decoration: underline;"> Click Here </a>`)
