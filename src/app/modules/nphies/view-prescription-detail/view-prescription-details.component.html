@@ -352,9 +352,9 @@
     <button mat-flat-button color="primary" (click)="openPreviewDialog()" *ngIf="data.detailsModel.outcome !== 'Error'">
       {{getType()}}
     </button>
-    <button
+    <!-- <button
       *ngIf="data.detailsModel.status === 'approved' || data.detailsModel.status === 'rejected' || data.detailsModel.status === 'partial'  || data.detailsModel.status === 'not-required'"
-      mat-flat-button color="primary" (click)="OpenReuseModal()">Follow Up/Add Related</button>
+      mat-flat-button color="primary" (click)="OpenReuseModal()">Follow Up/Add Related</button> -->
     <button mat-flat-button color="primary" (click)="closeDialog()">Close</button>
   </div>
 </div>

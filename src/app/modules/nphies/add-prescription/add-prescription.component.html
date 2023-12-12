@@ -3,8 +3,8 @@
     <ng-container *ngIf="!IsJSONPosted">
       <form [formGroup]="FormPreAuthorization" (ngSubmit)="onSubmit()">
         <div class="block-header">
-          <p>Prescription Request</p>
-          <mat-slide-toggle  formControlName="transfer" color="primary" [disabled]="detailsModel && detailsModel.approvalRequestId" class="ml-auto">Referral
+         <p>Prescription Request</p>
+          <mat-slide-toggle  formControlName="transfer" color="primary" id="referral" [disabled]="detailsModel && detailsModel.approvalRequestId" class="ml-auto">Referral
           </mat-slide-toggle>
   
         </div>
@@ -14,14 +14,14 @@
           </div>
           <div class="form-group">
             <div class="checkbox-group inline">
-              <mat-checkbox color="primary" formControlName="isNewBorn" (change)="onNewBornChangeState($event)">New
+              <mat-checkbox color="primary" id="newbornChkBox" formControlName="isNewBorn" (change)="onNewBornChangeState($event)">New
                 born?</mat-checkbox>
             </div>
           </div>
           <div class="d-flex">
             <div class="form-group flex-grow-1"
               [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('beneficiaryName').touched) && FormPreAuthorization.get('beneficiaryName').hasError('required')}">
-              <label class="control-label" matTooltip="Minimum 3 Character(s)/Number(s)">Select a Beneficiary<span class="asterisk">*</span></label>
+              <label class="control-label" matTooltip="Minimum 3 Character(s)/Number(s)" id="selectBeneficiary">Select a Beneficiary<span class="asterisk">*</span></label>
               <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName"
                 [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
               <mat-autocomplete #auto="matAutocomplete">
@@ -39,7 +39,7 @@
             </div>
             <div class="form-group">
               <label class="control-label">&nbsp;</label>
-              <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" [disabled]="claimReuseId" color="primary">Create New
+              <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" [disabled]="claimReuseId" color="primary" id="createNewBeneficiary">Create New
                 Beneficiary</button>
             </div>
           </div>
@@ -47,7 +47,7 @@
           <div *ngIf="FormPreAuthorization.controls.isNewBorn.value" class="d-flex">
             <div class="form-group flex-grow-1"
               [ngClass]="{'has-error' : IsSubscriberRequired && ((isSubmitted || FormPreAuthorization.get('subscriberName').touched) && FormPreAuthorization.get('subscriberName').hasError('required'))}">
-              <label class="control-label">Select a Subscriber<span class="asterisk">*</span></label>
+              <label class="control-label" id="selectSubscriber">Select a Subscriber<span class="asterisk">*</span></label>
               <input type="text" class="form-control search-box" placeholder="Search for subscriber by name or document ID..." formControlName="subscriberName"
                 [matAutocomplete]="auto" (keyup)="searchBeneficiaries(true)">
               <mat-autocomplete #auto="matAutocomplete">
@@ -66,7 +66,7 @@
             </div>
             <div class="form-group">
               <label class="control-label">&nbsp;</label>
-              <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" [disabled]="claimReuseId" color="primary">Create New
+              <button routerLink="/nphies/beneficiary" type="button" mat-flat-button class="text-nowrap" [disabled]="claimReuseId" color="primary" id="createNewSubscriber">Create New
                 Subscriber</button>
             </div>
           </div>
@@ -95,7 +95,7 @@
   
           </div>
   
-          <h5 class="form-title">Pre scription Info</h5>
+          <h5 class="form-title">Prescription Info</h5>
           <div class="row small-gutter">
             <div class="col-4 col-xxl-3">
               <div class="form-group"
@@ -212,13 +212,13 @@
             <div class="col-4 col-xxl-3">
               <div class="form-group">
                 <label class="control-label">Related Prescription Reference No(s).
-                  <mat-icon class="material-icons-outlined size-20" matTooltip="Useful for extending a transferred prescription">
+                  <mat-icon class="material-icons-outlined size-20" matTooltip="Useful for extending a transferred Prescription">
                     info</mat-icon>
                 </label>
                 <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Related Prescription Reference No(s)'" [addOnBlur]="true">
                 </tag-input>
-                <!-- <div *ngIf="IsPrescriptionRefRequired && ((isSubmitted || FormNphiesClaim.get('preAuthRefNo').touched) && FormNphiesClaim.get('preAuthRefNo').hasError('required'))">
-                  <span class="error-text">Please enter Related Prescription Reference No(s).</span>
+                <!-- <div *ngIf="IsPreAuthRefRequired && ((isSubmitted || FormNphiesClaim.get('preAuthRefNo').touched) && FormNphiesClaim.get('preAuthRefNo').hasError('required'))">
+                  <span class="error-text">Please enter Related Preauthorization Reference No(s).</span>
                   <mat-icon class="material-icons-outlined size-20" matTooltip="Payer share Tax only">info</mat-icon>
                 </div> -->
               </div>
@@ -226,7 +226,7 @@
             <div class="col-4 col-xxl-3">
               <div class="form-group">
                 <label class="control-label">Referring Provider</label>
-                <mat-form-field class="form-control custom-select-control">
+                <mat-form-field class="form-control custom-select-control" id="referringProvider">
                   <mat-select formControlName="referral" [disabled]="IsRefferalProviderLoading" #itemSelect (selectionChange)="referralChange($event)">
                     <mat-option>
                       <ngx-mat-select-search placeholderLabel="Search Item" formControlName="referralFilter" noEntriesFoundLabel="No Referring Provider found" name='searchedItem'>
@@ -266,14 +266,14 @@
           </app-manage-diagnosis>
   
           <ng-container *ngIf="FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value === 'vision'">
-            <h5 class="form-title">
+            <h5 class="form-title" id="visionPrescriptionTitle">
               Vision Prescription
             </h5>
             <div class="row small-gutter">
               <div class="col-4 col-xxl-3">
                 <div class="form-group"
                   [ngClass]="{'has-error' : IsDateWrittenRequired && ((isSubmitted || FormPreAuthorization.get('dateWritten').touched) && FormPreAuthorization.get('dateWritten').hasError('required'))}">
-                  <label class="control-label">Date Written <span *ngIf="IsDateWrittenRequired" class="asterisk">*</span></label>
+                  <label class="control-label"  id="dateWritten">Date Written <span *ngIf="IsDateWrittenRequired" class="asterisk">*</span></label>
                   <div class="date-picker">
                     <input [owlDateTime]="visionWrittenDate" class="form-control" placeholder="Select date written" (ngModelChange)="SetToMax($event)" formControlName="dateWritten"
                       [max]="FormPreAuthorization.controls.dateOrdered.value">
@@ -290,7 +290,7 @@
                 <div class="form-group"
                   [ngClass]="{'has-error' : IsPrescriberRequired && ((isSubmitted || FormPreAuthorization.get('prescriber').touched) && FormPreAuthorization.get('prescriber').hasError('required'))}">
                   <label class="control-label">Prescriber<span *ngIf="IsPrescriberRequired" class="asterisk">*</span></label>
-                  <mat-form-field class="form-control custom-select-control">
+                  <mat-form-field class="form-control custom-select-control" id="prescriber">
                     <mat-select formControlName="prescriber" [(ngModel)]="PrescriberDefault">
                       <mat-option [value]='0'>Select Prescriber</mat-option>
                       <mat-option *ngFor="let pre of CareTeams" [value]="pre.sequence">{{pre.physicianCode}} -
@@ -309,7 +309,7 @@
               <h5 class="d-flex align-items-center mb-3">
                 <strong class="medium">Lens Specifications</strong>
                 <button *ngIf="!claimReuseId" type="button" (click)="openAddEditVisionLensDialog()" class="btn-icon btn-primary ml-auto">
-                  <mat-icon>add</mat-icon>
+                  <mat-icon id="addIcon">add</mat-icon>
                 </button>
               </h5>
               <div *ngIf="VisionSpecifications" class="table-responsive">
@@ -380,16 +380,16 @@
                         <mat-menu #lensSpecificationActionsMenu xPosition="before">
                           <ng-template matMenuContent>
                             <button mat-menu-item type="button" (click)="openAddEditVisionLensDialog(visionSpecification)">
-                              <mat-icon class="material-icons-outlined">edit</mat-icon>
+                              <mat-icon class="material-icons-outlined" id="editIcon">edit</mat-icon>
                               <span>Edit</span>
                             </button>
                             <button mat-menu-item type="button" (click)="deleteVisionLens(i)">
-                              <mat-icon class="material-icons-outlined">delete</mat-icon>
+                              <mat-icon class="material-icons-outlined" id="deleteIcon">delete</mat-icon>
                               <span>Delete</span>
                             </button>
                           </ng-template>
                         </mat-menu>
-                        <button type="button" mat-icon-button [matMenuTriggerFor]="lensSpecificationActionsMenu">
+                        <button type="button" mat-icon-button [matMenuTriggerFor]="lensSpecificationActionsMenu" id="lenSpecMenuButton">
                           <mat-icon>more_vert</mat-icon>
                         </button>
                       </td>
@@ -478,7 +478,7 @@
   
           <h5 class="form-title">
             Accident
-            <mat-slide-toggle class="ml-2" [(ngModel)]="IsAccident" [ngModelOptions]="{standalone: true}" color="primary">
+            <mat-slide-toggle class="ml-2" [(ngModel)]="IsAccident" [ngModelOptions]="{standalone: true}" color="primary" id="accident">
             </mat-slide-toggle>
           </h5>
           <div *ngIf="IsAccident" class="row small-gutter">
@@ -548,370 +548,19 @@
             </div>
           </div>
   
-  
           <h5 class="form-title" [ngClass]="{'text-danger': IsItemRequired}">
             <span>Items<span class="asterisk">*</span></span>
             <div class="ml-auto" [matTooltip]="ItemsAddButtonToolTip()" [matTooltipDisabled]="!disableItemsButton()">
-              <button type="button" (click)="openAddEditItemDialog('addItem')" class="btn-icon btn-primary" [disabled]="disableItemsButton()">
+              <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary" [disabled]="disableItemsButton()">
                 <mat-icon>add</mat-icon>
               </button>
             </div>
           </h5>
-          <div *ngIf="itemDetails" class="table-responsive">
+          <div *ngIf="Items.length > 0" class="table-responsive">
             <table class="primary-grid claim-view-table">
               <thead>
                 <tr>
-                  <th width="2"></th>
-                  <th>Type</th>
-                  <th>Standard Code - Description</th>
-                  <th>Authored On</th>
-                  <th>Quantity</th>
-              </tr>
-              </thead>
-              <tbody>
-                <ng-container  *ngFor="let item of Items; let i = index">
-                  <tr>
-                    <td class="text-primary text-center row-click" width="10" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                        <mat-icon *ngIf="currentOpenItem!=i" class="size-21">add_circle_outline</mat-icon>
-                        <mat-icon *ngIf="currentOpenItem==i" class="size-21">remove_circle_outline</mat-icon>
-                      </td>
-                      <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.typeName}}
-                      </td>
-                      <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.itemCode}}
-                        - {{item.itemDescription}}</td>
-                        <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                            <span *ngIf="item.authoredOn">{{item.authoredOn}}</span>
-                            <span *ngIf="!item.authoredOn">-</span>
-                          </td>
-                          <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                            <span *ngIf="item.quantity">{{item.quantity}}</span>
-                            <span *ngIf="!item.quantity">-</span>
-                          </td>
-                     <td class="actions">
-                      <mat-menu #itemsActionsMenu1 xPosition="before">
-                        <ng-template matMenuContent>
-                          <button mat-menu-item type="button" (click)="openAddEditItemDialog('addDetails')">
-                            <mat-icon class="material-icons-outlined">Add</mat-icon>
-                            <span>Add Details</span>
-                          </button>
-                          <button mat-menu-item type="button" (click)="openAddEditItemDialog('addDosageTiming')">
-                            <mat-icon class="material-icons-outlined">Add</mat-icon>
-                            <span>Add Dosage Details</span>
-                          </button>
-                          <button mat-menu-item type="button" (click)="openAddEditItemDialog('addItem')">
-                            <mat-icon class="material-icons-outlined">edit</mat-icon>
-                            <span>Edit</span>
-                          </button>
-                          <button mat-menu-item type="button">
-                            <mat-icon class="material-icons-outlined">delete</mat-icon>
-                            <span>Delete</span>
-                          </button>
-                        </ng-template>
-                      </mat-menu>
-                      <button type="button" mat-icon-button [matMenuTriggerFor]="itemsActionsMenu1">
-                        <mat-icon>more_vert</mat-icon>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr *ngIf="currentOpenItem==i">
-                    <td colspan="9">
-                      <div class="box mb-2">
-                        <h5 class="align-self-center medium pb-2">Item Info</h5>
-                        <div class="row">
-                          <div class="col-3">
-                            <table class="inline-label-table">
-                              <tbody>
-  
-                                <tr>
-                                  <td class="label">Non Standard Code</td>
-                                  <td>{{item.nonStandardCode}}</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Non Standard Desc.</td>
-                                  <td>{{item.display}}</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Authored On</td>
-                                  <td><span *ngIf="item.startDateStr">{{item.authoredOn }}</span>
-                                      </td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Is Package?</td>
-                                  <td>
-                                    <span *ngIf="item.isPackage">Yes</span>
-                                    <span *ngIf="!item.isPackage">No</span>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Body Site</td>
-                                  <td>{{item.bodySiteName}}</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Sub Site</td>
-                                  <td>{{item.subSiteName}}</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                         <div class="col-3">
-                            <table class="inline-label-table">
-                              <tbody>
-                                <tr>
-                                    <td class="label">Quantity</td>
-                                    <td>{{item.quantity}} {{item.quantityCode}}</td>
-                                  </tr>
-                                <tr>
-                                  <td class="label">Supporting Info</td>
-                                  <td>{{item.supportingInfoNames}}</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Diagnosis</td>
-                                  <td>{{item.diagnosisNames}}</td>
-                                </tr>
-                                <tr>
-                                  <td class="label">Care Teams</td>
-                                  <td>{{item.careTeamNames}}</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      </div>
-  
-                      <div class="box" *ngIf="item.itemDetails && item.itemDetails.length > 0">
-                        <h5 class="align-self-center medium pb-2">Item Detail</h5>
-                        <table class="primary-grid claim-view-table">
-                          <thead>
-                            <tr>
-                              <th>Seq.</th>
-                              <th>Type</th>
-                              <th>Code - Description</th>
-                              <th>Non Standard Code</th>
-                              <th>Display</th>
-                              <th>Quantity</th>
-                              <th width="10"></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr *ngFor="let d of item.itemDetails; let di = index">
-                              <td class="row-click">{{d.sequence}}</td>
-                              <td class="row-click">{{d.typeName}}</td>
-                              <td class="row-click">{{d.itemCode}} - {{d.itemDescription}}</td>
-                              <td class="row-click">{{d.nonStandardCode ? d.nonStandardCode : '-'}}</td>
-                              <td class="row-click">{{d.display ? d.display : '-'}}</td>
-                              <td class="row-click">{{d.quantity ? d.quantity +" "+ d.quantityCode : '-'}}</td>
-                              <td class="actions">
-                                <mat-menu #itemsDetailsActionsMenu xPosition="before">
-                                  <ng-template matMenuContent>
-                                    <button mat-menu-item type="button" (click)="openAddEditItemDetailsDialog(item.sequence, d)">
-                                      <mat-icon class="material-icons-outlined">edit</mat-icon>
-                                      <span>Edit</span>
-                                    </button>
-                                    <button mat-menu-item type="button" (click)="deleteItemDetails(item.sequence, di)">
-                                      <mat-icon class="material-icons-outlined">delete</mat-icon>
-                                      <span>Delete</span>
-                                    </button>
-                                  </ng-template>
-                                </mat-menu>
-                                <button type="button" mat-icon-button [matMenuTriggerFor]="itemsDetailsActionsMenu">
-                                  <mat-icon>more_vert</mat-icon>
-                                </button>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </td>
-                  </tr>
-                    <tr>
-                      <td colspan="9">
-                        <div class="box mb-2">
-                          <h5 class="align-self-center medium pb-2">Item Detail Info</h5>
-                          <div class="row">
-                            <div class="col-4">
-                              <table class="inline-label-table">
-                                <tbody>
-                                  <tr>
-                                    <td class="label">Prescribed Medication</td>
-                                    <td>-</td>
-                                  </tr>
-                                  <tr>
-                                    <td class="label">GTIN Code</td>
-                                    <td>-</td>
-                                  </tr>
-                                  <tr>
-                                    <td class="label">Non Standard Code</td>
-                                    <td>-</td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                            <div class="col-4">
-                              <table class="inline-label-table">
-                                <tbody>
-                                  <tr>
-                                    <td class="label">Non Standard Desc.</td>
-                                    <td>-</td>
-                                  </tr>
-                                  <tr>
-                                    <td class="label">Absence of Scientific Code</td>
-                                    <td>-</td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                            <div class="col-4">
-                              <table class="inline-label-table">
-                                <tbody>
-                                  <tr>
-                                    <td class="label">Strength</td>
-                                    <td>-</td>
-                                  </tr>
-                                  <tr>
-                                    <td class="label">Quantity</td>
-                                    <td>-</td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-          
-                        <div class="box mb-2">
-                          <div class="d-flex justify-content-between">
-                            <h5 class="align-self-center medium pb-2">Dosage Details #1</h5>
-                            <div>
-                              <button mat-icon-button [matMenuTriggerFor]="itemsActionsMenu2">
-                                <mat-icon>more_vert</mat-icon>
-                              </button>
-                              <mat-menu #itemsActionsMenu2="matMenu" xPosition="before">
-                                <ng-template matMenuContent>
-                                   <button mat-menu-item type="button">
-                                    <mat-icon class="material-icons-outlined">edit</mat-icon>
-                                    <span>Edit</span>
-                                  </button>
-                                  <button mat-menu-item type="button">
-                                    <mat-icon class="material-icons-outlined">delete</mat-icon>
-                                    <span>Delete</span>
-                                  </button>
-                                </ng-template>
-                              </mat-menu>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-4">
-                              <table class="inline-label-table">
-                                <tbody>
-                                  <tr>
-                                    <td class="label">Note</td>
-                                    <td>-</td>
-                                  </tr>
-                                  <tr>
-                                    <td class="label">Patient Instruction</td>
-                                    <td>-</td>
-                                  </tr>
-                                  <tr>
-                                    <td class="label">Route</td>
-                                    <td>-</td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                            <div class="col-4">
-                              <table class="inline-label-table">
-                                <tbody>
-                                  <tr>
-                                    <td class="label">Dose Type</td>
-                                    <td>-</td>
-                                  </tr>
-                                  <tr>
-                                    <td class="label">Dose Range</td>
-                                    <td>-</td>
-                                  </tr>
-                                  <tr>
-                                    <td class="label">Dose Unit</td>
-                                    <td>-</td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                            <div class="col-4">
-                              <table class="inline-label-table">
-                                <tbody>
-                                  <tr>
-                                    <td class="label">Rate Type</td>
-                                    <td>-</td>
-                                  </tr>
-                                  <tr>
-                                    <td class="label">Rate Ratio</td>
-                                    <td>-</td>
-                                  </tr>
-                                  <tr>
-                                    <td class="label">Rate Unit</td>
-                                    <td>-</td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                          <h5 class="align-self-center medium pb-2">Dosage Timing</h5>
-                          <div class="row">
-                            <div class="col-4">
-                              <table class="inline-label-table">
-                                <tbody>
-                                  <tr>
-                                    <td class="label">Start Date</td>
-                                    <td>-</td>
-                                  </tr>
-                                  <tr>
-                                    <td class="label">End Date</td>
-                                    <td>-</td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                            <div class="col-4">
-                              <table class="inline-label-table">
-                                <tbody>
-                                  <tr>
-                                    <td class="label">Refill</td>
-                                    <td>-</td>
-                                  </tr>
-                                  <tr>
-                                    <td class="label">Duration</td>
-                                    <td>-</td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                            <div class="col-4">
-                              <table class="inline-label-table">
-                                <tbody>
-                                  <tr>
-                                    <td class="label">Frequency</td>
-                                    <td>-</td>
-                                  </tr>
-                                  <tr>
-                                    <td class="label">Period</td>
-                                    <td>-</td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                        
-          
-                       
-                      </td>
-                    </tr>                             
-                   </ng-container>
-              </tbody>
-            </table>
-            <table class="primary-grid claim-view-table">
-              <thead>
-                <tr>
-                  <th width="2"></th>
+                  <th width="10"></th>
                   <th>Type</th>
                   <th>Standard Code - Description</th>
                   <th>
@@ -929,48 +578,271 @@
                   <th>Adjudication Reason Code</th>
                   <th>Note No.</th>
                   <!-- <th>Quantity</th>
-                  <th>Quantity</th>
                   <th>Unit Price</th>
                   <th>Non Standard Code</th> -->
                   <th width="10"></th>
                 </tr>
               </thead>
               <tbody>
-                <ng-container>
+                <ng-container *ngFor="let item of Items; let i = index">
                   <tr>
-                    <td class="text-primary text-center row-click" width="10">
-                      <mat-icon class="size-21">add_circle_outline</mat-icon>
+                    <td class="text-primary text-center row-click" width="10" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                      <mat-icon *ngIf="currentOpenItem!=i" class="size-21">add_circle_outline</mat-icon>
+                      <mat-icon *ngIf="currentOpenItem==i" class="size-21">remove_circle_outline</mat-icon>
                     </td>
-                    <td class="row-click">Type Name</td>
-                    <td class="row-click">Item Code - Item Description</td>
-                    <td class="text-nowrap row-click">Net SR / Tax SR</td>
-                    <td class="text-nowrap row-click">Benefit SR</td>
-                    <td class="text-nowrap row-click">Status</td>
-                    <td class="text-nowrap row-click">Reason Codes</td>
-                    <td class="text-nowrap row-click">Note No</td>
+                    <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.typeName}}
+                    </td>
+                    <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.itemCode}}
+                      - {{item.itemDescription}}</td>
+  
+                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                      {{item.net}} <span class="currency">SR</span> / {{item.tax}} <span class="currency">SR</span></td>
+  
+                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                      <ng-container *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
+                        <ng-container *ngFor="let x of item.itemDecision.claimItemDecisionCategories">
+                          <span *ngIf="x.category === 'benefit'">{{x.categoryValue}} <span class="currency">SR</span></span>
+                        </ng-container>
+                      </ng-container>
+                    </td>
+                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                      <span *ngIf="item.itemDecision">{{item.itemDecision.status}}</span>
+                      <span *ngIf="!item.itemDecision"></span>
+                    </td>
+                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                      <span *ngIf="item.reasonCodes">{{item.reasonCodes}}</span>
+                      <span *ngIf="!item.reasonCodes">-</span>
+                    </td>
+                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                      <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo : '-'}}</span>
+                      <span *ngIf="!item.itemDecision"></span>
+                    </td>
+                    <!-- <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">{{item.quantity}}
+                    </td>
+                    <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                      {{item.unitPrice}} <span class="currency">SR</span></td>
+                    <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                      {{item.nonStandardCode}}</td> -->
                     <td class="actions">
-                      <mat-menu #itemsActionsMenu3 xPosition="before">
+                      <mat-menu #itemsActionsMenu xPosition="before">
                         <ng-template matMenuContent>
-                           <button mat-menu-item type="button" (click)="openAddEditItemDialog('addDosageTiming')">
+                          <button mat-menu-item type="button" *ngIf="item.isPackage === true" (click)="openAddEditItemDetailsDialog(item.sequence)">
+                            <mat-icon class="material-icons-outlined">Add</mat-icon>
+                            <span>Add Details</span>
+                          </button>
+                          <button mat-menu-item type="button" (click)="openDosageDetailsDialog(item.sequence)">
                             <mat-icon class="material-icons-outlined">Add</mat-icon>
                             <span>Add Dosage Details</span>
                           </button>
-                          <button mat-menu-item type="button" (click)="openAddEditItemDialog('addItem')">
+                          <button mat-menu-item type="button" (click)="openAddEditItemDialog(item)">
                             <mat-icon class="material-icons-outlined">edit</mat-icon>
                             <span>Edit</span>
                           </button>
-                          <button mat-menu-item type="button">
+                          <button mat-menu-item type="button" (click)="deleteItem(i)">
                             <mat-icon class="material-icons-outlined">delete</mat-icon>
                             <span>Delete</span>
                           </button>
                         </ng-template>
                       </mat-menu>
-                      <button type="button" mat-icon-button [matMenuTriggerFor]="itemsActionsMenu3">
+                      <button type="button" mat-icon-button [matMenuTriggerFor]="itemsActionsMenu">
                         <mat-icon>more_vert</mat-icon>
                       </button>
                     </td>
                   </tr>
-                   </ng-container>
+                  <tr *ngIf="currentOpenItem==i">
+                    <td colspan="9">
+                      <div class="box mb-2">
+                        <h5 class="align-self-center medium pb-2">Item Info</h5>
+                        <div class="row">
+                          <div class="col-4">
+                            <table class="inline-label-table">
+                              <tbody>
+  
+                                <tr>
+                                  <td class="label">Non Standard Code</td>
+                                  <td>{{item.nonStandardCode}}</td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Non Standard Desc.</td>
+                                  <td>{{item.display}}</td>
+                                </tr>
+                             
+                                <tr>
+                                  <td class="label">Is Package?</td>
+                                  <td>
+                                    <span *ngIf="item.isPackage">Yes</span>
+                                    <span *ngIf="!item.isPackage">No</span>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Body Site</td>
+                                  <td>{{item.bodySiteName}}</td>
+                                </tr>
+                            
+                              </tbody>
+                            </table>
+                          </div>
+                          <div class="col-4">
+                            <table class="inline-label-table">
+                              <tbody>
+                                    <tr>
+                                  <td class="label">Sub Site</td>
+                                  <td>{{item.subSiteName}}</td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Quantity</td>
+                                  <td>{{item.quantity}} {{item.quantityCode}}</td>
+                                </tr>
+                                  <tr>
+                                  <td class="label">Strength</td>
+                                  <td>{{item.strength}}</td>
+                                </tr>
+                                   <tr>
+                                  <td class="label">Authored Date</td>
+                                  <td><span *ngIf="item.AuthoredOnStr">{{item.AuthoredOnStr }}</span>
+                                    </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                         </div>
+                      </div>
+  
+                      <div class="box" *ngIf="item.itemDetails && item.itemDetails.length > 0">
+                        <tr>
+                            <td colspan="27"  *ngFor="let d of item.itemDetails; let di = index">
+                              <div class="box mb-2">
+                                <h5 class="align-self-center medium pb-2">Item Detail</h5>
+                                <div class="row">
+                                  <div class="col-4">
+                                    <table class="inline-label-table">
+                                      <tbody>
+          
+                                        <tr>
+                                          <td class="label">Non Standard Code</td>
+                                          <td>{{d.sequence}}</td>
+                                        </tr>
+                                        <tr>
+                                          <td class="label">Non Standard Desc.</td>
+                                          <td>{{d.typeName}}</td>
+                                        </tr>
+                                  
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                  <div class="col-4">
+                                    <table class="inline-label-table">
+                                      <tbody>
+                                        <tr>
+                                          <td class="label">Quantity</td>
+                                          <td>{{item.quantity}} {{item.quantityCode}}</td>
+                                        </tr>
+                                        <tr>
+                                          <td class="label">Strength</td>
+                                          <td>{{item.strength}}</td>
+                                        </tr>
+                                     
+          
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                 </div>
+                              </div>
+        
+                              <div class="box" *ngIf="item.itemDetails && item.itemDetails.length > 0">
+                                <h5 class="align-self-center medium pb-2">Item Detail</h5>
+                                <table class="primary-grid claim-view-table">
+                                  <thead>
+                                    <tr>
+                                      <th>Seq.</th>
+                                      <th>Type</th>
+                                      <th>Code - Description</th>
+                                      <th>Non Standard Code</th>
+                                      <th>Display</th>
+                                      <th>Quantity</th>
+                                      <th width="10"></th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr *ngFor="let d of item.itemDetails; let di = index">
+                                      <td class="row-click">{{d.sequence}}</td>
+                                      <td class="row-click">{{d.typeName}}</td>
+                                      <td class="row-click">{{d.itemCode}} - {{d.itemDescription}}</td>
+                                      <td class="row-click">{{d.nonStandardCode ? d.nonStandardCode : '-'}}</td>
+                                      <td class="row-click">{{d.display ? d.display : '-'}}</td>
+                                      <td class="row-click">{{d.quantity ? d.quantity +" "+ d.quantityCode : '-'}}</td>
+                                      <td class="actions">
+                                        <mat-menu #itemsDetailsActionsMenu xPosition="before">
+                                          <ng-template matMenuContent>
+                                            <button mat-menu-item type="button" (click)="openAddEditItemDetailsDialog(item.sequence, d)">
+                                              <mat-icon class="material-icons-outlined">edit</mat-icon>
+                                              <span>Edit</span>
+                                            </button>
+                                            <button mat-menu-item type="button" (click)="deleteItemDetails(item.sequence, di)">
+                                              <mat-icon class="material-icons-outlined">delete</mat-icon>
+                                              <span>Delete</span>
+                                            </button>
+                                          </ng-template>
+                                        </mat-menu>
+                                        <button type="button" mat-icon-button [matMenuTriggerFor]="itemsDetailsActionsMenu">
+                                          <mat-icon>more_vert</mat-icon>
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div> 
+                            </td>
+                          </tr>
+                     </div>
+                     <div class="box" *ngIf="item.claimItemDosageModel && item.claimItemDosageModel.length > 0">
+                        <tr>
+                            <td colspan="27"  *ngFor="let d of item.claimItemDosageModel; let di = index">
+                              <div class="box mb-2">
+                                <h5 class="align-self-center medium pb-2">Item Detail</h5>
+                                <div class="row">
+                                  <div class="col-4">
+                                    <table class="inline-label-table">
+                                      <tbody>
+          
+                                        <tr>
+                                          <td class="label">Note</td>
+                                          <td>{{d.note}}</td>
+                                        </tr>
+                                        <tr>
+                                          <td class="label">Patient Instruction</td>
+                                          <td>{{d.patientInstruction}}</td>
+                                        </tr>
+                                  
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                  <div class="col-4">
+                                    <table class="inline-label-table">
+                                      <tbody>
+                                        <tr>
+                                          <td class="label">Duration</td>
+                                          <td>{{d.duration}}</td>
+                                        </tr>
+                                        <tr>
+                                          <td class="label">Period</td>
+                                          <td>{{d.period}}</td>
+                                        </tr>
+                                     
+          
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                 </div>
+                              </div>
+        
+                            </td>
+                          </tr>
+                     </div>
+                    </td>
+                  </tr>
+                  
+                </ng-container>
               </tbody>
             </table>
           </div>
@@ -982,7 +854,7 @@
           <hr class="hr spaced" />
   
           <div class="form-group text-right btn-list">
-            <button type="submit" mat-flat-button color="primary" >
+           <button type="submit" mat-flat-button color="primary"  id="requestAuthorizationButton">
               <span>Request Prescription</span>
             </button>
           </div>
@@ -1005,7 +877,7 @@
       </div>
       <div class="text-right pt-14">
         <button type="button" mat-flat-button color="primary" (click)="reset()">Request New
-          Prescription</button>
+            Prescription</button>
       </div>
     </ng-container>
   

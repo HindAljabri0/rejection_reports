@@ -501,6 +501,13 @@ export class SharedDataService {
     { value: 'Irreplaceable-drug', name: 'SFDA Irreplaceable drug' }
   ];
 
+  itemAbsenceReasonList = [
+    { value: "Unresponsive", name: 'Unresponsive' },
+    { value: "Adverse Effect", name: 'Adverse Effect' },
+    { value: "Irreplaceable", name: 'Irreplaceable' },
+    { value: "Allergy" , name: 'Allergy' },
+    { value: "Others", name: 'Others' },
+  ];
 
   cancelReasonList = [
     { value: 'WI', name: 'Wrong information' },

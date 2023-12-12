@@ -39,6 +39,7 @@ import { NphiesUploadsComponent } from './nphies-uploads/nphies-uploads.componen
 import { NphiesUploadCardComponent } from './nphies-uploads/nphies-upload-card/nphies-upload-card.component';
 import { CancelReasonModalComponent } from './preauthorization-transactions/cancel-reason-modal/cancel-reason-modal.component';
 import { AddEditItemDetailsModalComponent } from './add-edit-item-details-modal/add-edit-item-details-modal.component';
+import { AddEditItemDetailsPrescriptionComponent } from './add-edit-item-details-prescription/add-edit-item-details-prescription.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { RecentReconciliationComponent } from './payment-reconciliation/recent-reconciliation/recent-reconciliation.component';
 import { ClaimTransactionsComponent } from './claim-transactions/claim-transactions.component';
@@ -89,6 +90,8 @@ import { PbmValidationResponseSummaryDialogComponent } from 'src/app/components/
 import { AddPrescriptionComponent } from './add-prescription/add-prescription.component';
 import { PrescriptionTransactionsComponent } from './prescription-transactions/prescription-transactions.component';
 import { AddEditPrescriptionItemComponent } from './add-edit-prescription-item/add-edit-prescription-item.component';
+import { AddEditPrescriptionsItemComponent } from './add-edit-prescriptions-item/add-edit-prescriptions-item.component';
+import { DosageDetailsComponent } from './add-edit-prescription-item/dosage-details/dosage-details.component';
 import { ViewPrescriptionDetailsDialogComponent } from './view-prescription-details-dialog/view-prescription-details-dialog.component';
 import { ApaCommunicationRequestsComponent } from './advance-preauth-transactions/apa-communication-requests/apa-communication-requests.component';
 import { PrescriptionCancelReasonModalComponent } from './prescription-transactions/prescription-cancel-reason-modal/prescription-cancel-reason-modal.component';
@@ -135,6 +138,7 @@ import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth
         NphiesUploadCardComponent,
         CancelReasonModalComponent,
         AddEditItemDetailsModalComponent,
+        AddEditItemDetailsPrescriptionComponent,
         RecentReconciliationComponent,
         ClaimTransactionsComponent,
         ClaimProcessedTransactionsComponent,
@@ -170,6 +174,8 @@ import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth
         AddPrescriptionComponent,
         PrescriptionTransactionsComponent,
         AddEditPrescriptionItemComponent,
+        AddEditPrescriptionsItemComponent,
+        DosageDetailsComponent,
         ViewPrescriptionDetailsDialogComponent,
         ApaCommunicationRequestsComponent,
         PrescriptionCancelReasonModalComponent,
@@ -216,6 +222,7 @@ import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth
         AddCommunicationDialogComponent,
         CancelReasonModalComponent,
         AddEditItemDetailsModalComponent,
+        AddEditItemDetailsPrescriptionComponent,
         ReuseApprovalModalComponent,
         UploadPhysiciansDialogComponent,
         AddPhysicianDialogComponent,
@@ -228,6 +235,8 @@ import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth
         ViewPrintPreviewDialogComponent,
         PbmValidationResponseSummaryDialogComponent,
         AddEditPrescriptionItemComponent,
+        AddEditPrescriptionsItemComponent,
+        DosageDetailsComponent,
         ViewPrescriptionDetailsDialogComponent,
         PrescriptionCancelReasonModalComponent,
         PrescriptionReuseApprovalModalComponent,

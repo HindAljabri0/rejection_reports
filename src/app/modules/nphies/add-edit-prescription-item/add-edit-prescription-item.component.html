@@ -31,16 +31,16 @@
                             </mat-option>
                           </ng-container>
                       <ng-template #gtincode>
-                        <mat-select panelClass="custom-dropdown" formControlName="item" [disabled]="IsItemLoading" placeholder="Select Code-Description">
-                            <mat-option>
-                                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="itemFilter" noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
-                            </mat-option>
-                            <cdk-virtual-scroll-viewport itemSize="10" minBufferPx="{{itemList.length}}" maxBufferPx="{{itemList.length * 10}}" class="viewport">  
-                              <mat-option *cdkVirtualFor="let item of filteredItem | async" [value]="item" >
-                                  {{item.code}} - {{item.description}}
+                      <mat-select panelClass="custom-dropdown" formControlName="item" [disabled]="IsItemLoading" placeholder="Select Code-Description">
+                              <mat-option>
+                                  <ngx-mat-select-search placeholderLabel="Search Item" formControlName="itemFilter" noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
                               </mat-option>
-                          </cdk-virtual-scroll-viewport>
-                        </mat-select>
+                              <cdk-virtual-scroll-viewport itemSize="10" minBufferPx="{{itemList.length}}" maxBufferPx="{{itemList.length * 10}}" class="viewport">  
+                                <mat-option *cdkVirtualFor="let item of filteredItem | async" [value]="item" >
+                                    {{item.code}} - {{item.description}}
+                                </mat-option>
+                            </cdk-virtual-scroll-viewport>
+                          </mat-select>
                       </ng-template>
                     </mat-select>
                   </mat-form-field>
@@ -60,17 +60,13 @@
                     <input class="form-control" placeholder="Enter non standard description" formControlName="display">
                 </div>
             </div>
-            <div class="col-4 col-lg-3">
+            <div class="col-4 col-lg-3" *ngIf="FormItem.get('type').value.name === 'GTIN Code'">
                 <div class="form-group" >
-                  <label class="control-label">Absence of Scientific Code<span *ngIf="FormItem.get('type').value.name === 'GTIN Code'" class="asterisk">*</span></label>
-                  <mat-form-field class="form-control custom-select-control" formControlName="absence">
-                    <mat-select [(ngModel)]="selectedAbsenceOption" name="absenceOption" required>
-                      <mat-option value="">Select</mat-option>
-                      <mat-option value="Unresponsive">Unresponsive</mat-option>
-                      <mat-option value="Adverse Effect">Adverse Effect</mat-option>
-                      <mat-option value="Irreplaceable">Irreplaceable</mat-option>
-                      <mat-option value="Allergy">Allergy</mat-option>
-                      <mat-option value="Others">Others</mat-option>
+                  <label class="control-label">Absence of Scientific Code<span class="asterisk">*</span></label>
+                  <mat-form-field class="form-control custom-select-control">
+                    <mat-select formControlName="absenceScientificCode">
+                        <mat-option value="">Select the reason</mat-option>
+                        <mat-option *ngFor="let medication of absenceReasonList" [value]="medication">{{medication.name}}</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
@@ -114,8 +110,7 @@
             </div>
     
             <div class="col-4 col-lg-3">
-                <div class="form-group"
-                  [ngClass]="{'has-error' :IsSupportingInfoSequenceRequired || ((isSubmitted || FormItem.get('supportingInfoSequence').touched) && FormItem.get('supportingInfoSequence').hasError('required'))}">
+                <div class="form-group">
                   <label class="control-label">Supporting Info</label>
                   <mat-form-field class="form-control custom-select-control">
                     <mat-select formControlName="supportingInfoSequence" multiple placeholder="Select Supporting Info">
@@ -160,8 +155,7 @@
                 </div>
               </div>
             <div class="col-4 col-lg-3">
-                <div class="form-group"
-                  [ngClass]="{'has-error' :IscareTeamSequenceRequired && ((isSubmitted || FormItem.get('careTeamSequence').touched) && FormItem.get('careTeamSequence').hasError('required'))}">
+                <div class="form-group">
                   <label class="control-label">Care Teams<span *ngIf="IscareTeamSequenceRequired" class="asterisk">*</span></label>
         
                   <mat-form-field class="form-control custom-select-control">
@@ -232,29 +226,30 @@
               </div>
             </div>
         </div>
-    </div>
-    </form>
-    <div class="primary-dialog-footer has-border">
-        <div class="btn-list text-right">
-            <button type="button" mat-button (click)="closeDialog()">Close</button>
-            <button type="submit" mat-flat-button color="primary">
-                <span *ngIf="!data.item" id="addItemButton">Add</span>
-                <span *ngIf="data.item" id="saveItemButton">Save</span>
-            </button>
+        <div class="primary-dialog-footer has-border">
+            <div class="btn-list text-right">
+                <button type="button" mat-button (click)="closeDialog()">Close</button>
+                <button type="submit" mat-flat-button color="primary">
+                    <span *ngIf="!data.item" id="addItemButton">Add</span>
+                    <span *ngIf="data.item" id="saveItemButton">Save</span>
+                  </button>
+            </div>
         </div>
     </div>
+    </form>
+    
 </div>
 <div *ngIf="isAddItemDetailsVisible" class="popup">
     <div class="primary-dialog-header has-border">
         <h5 class="primary-dialog-title">Add Item Details</h5>
         <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
     </div>
-    <form [formGroup]="FormDetails" (ngSubmit)="onSubmit()">
+    <form [formGroup]="FormDetails" (ngSubmit)="onDetailSubmit()">
     <div class="primary-dialog-body pb-0">
       <hr class="hr mb-3">
     <div class="row small-gutter">
         <div class="col-4 col-lg-3">
-            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('type').touched) && FormItem.get('type').hasError('required')}">
+            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormDetails.get('type').touched) && FormDetails.get('type').hasError('required')}">
                 <label class="control-label">Prescribed Medication<span class="asterisk">*</span></label>
                 <mat-form-field class="form-control custom-select-control">        
                     <mat-select formControlName="type" (selectionChange)="typeChange()">
@@ -266,27 +261,27 @@
           </div>
           
           <div class="col-4 col-lg-3">
-            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')}">
-              <label class="control-label">{{ FormItem.get('type').value.name === 'Scientific Code' ? 'Scientific Code' : 'GTIN Code' }}<span class="asterisk">*</span></label>
+            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormDetails.get('item').touched) && FormDetails.get('item').hasError('required')}">
+              <label class="control-label">{{ FormDetails.get('type').value.name === 'Scientific Code' ? 'Scientific Code' : 'GTIN Code' }}<span class="asterisk">*</span></label>
               <mat-form-field class="form-control custom-select-control">
                 <mat-select value="" formControlName="item" placeholder="Select Code-Description">
-                  <ng-container *ngIf="FormItem.get('type').value.name === 'Scientific Code'; else gtincode">
-                    <mat-option *ngFor="let type of filteredPescribedMedicationItem  | async" [value]="type">
-                        <span>{{type.descriptionCode}} ( {{type.tradeName}} )</span><br/>
-                      <span class="text-primary non-standard-code" >{{type.gtinNumber}} </span>
-                      </mat-option>
+                    <ng-container *ngIf="FormDetails.get('type').value.name === 'Scientific Code'; else gtincode">
+                        <mat-option *ngFor="let type of filteredPescribedMedicationItem | async" [value]="type">
+                          <span>{{type.descriptionCode}} ( {{type.tradeName}} )</span><br/>
+                          <span class="text-primary non-standard-code">{{type.gtinNumber}}</span>
+                        </mat-option>
                       </ng-container>
                   <ng-template #gtincode>
-                    <mat-select panelClass="custom-dropdown" formControlName="item" [disabled]="IsItemLoading" #itemSelect placeholder="Select Code-Description">
-                        <mat-option>
-                            <ngx-mat-select-search placeholderLabel="Search Item" formControlName="itemFilter" noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
-                        </mat-option>
-                        <cdk-virtual-scroll-viewport itemSize="10" minBufferPx="{{itemList.length}}" maxBufferPx="{{itemList.length * 10}}" class="viewport">  
-                          <mat-option *cdkVirtualFor="let item of filteredItem | async" [value]="item" >
-                              {{item.code}} - {{item.description}}
+                  <mat-select panelClass="custom-dropdown" formControlName="item" [disabled]="IsItemLoading" placeholder="Select Code-Description">
+                          <mat-option>
+                              <ngx-mat-select-search placeholderLabel="Search Item" formControlName="itemFilter" noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
                           </mat-option>
-                      </cdk-virtual-scroll-viewport>
-                    </mat-select>
+                          <cdk-virtual-scroll-viewport itemSize="10" minBufferPx="{{itemList.length}}" maxBufferPx="{{itemList.length * 10}}" class="viewport">  
+                            <mat-option *cdkVirtualFor="let item of filteredItem | async" [value]="item" >
+                                {{item.code}} - {{item.description}}
+                            </mat-option>
+                        </cdk-virtual-scroll-viewport>
+                      </mat-select>
                   </ng-template>
                 </mat-select>
               </mat-form-field>
@@ -306,17 +301,13 @@
                 <input class="form-control" placeholder="Enter non standard description" formControlName="display">
             </div>
         </div>
-        <div class="col-4 col-lg-3">
+        <div class="col-4 col-lg-3" *ngIf="FormDetails.get('type').value.name === 'GTIN Code'">
             <div class="form-group" >
-              <label class="control-label">Absence of Scientific Code<span *ngIf="FormItem.get('type').value.name === 'GTIN Code'" class="asterisk">*</span></label>
-              <mat-form-field class="form-control custom-select-control" formControlName="absence">
-                <mat-select [(ngModel)]="selectedAbsenceOption" name="absenceOption" required>
-                  <mat-option value="">Select</mat-option>
-                  <mat-option value="Unresponsive">Unresponsive</mat-option>
-                  <mat-option value="Adverse Effect">Adverse Effect</mat-option>
-                  <mat-option value="Irreplaceable">Irreplaceable</mat-option>
-                  <mat-option value="Allergy">Allergy</mat-option>
-                  <mat-option value="Others">Others</mat-option>
+              <label class="control-label">Absence of Scientific Code<span class="asterisk">*</span></label>
+              <mat-form-field class="form-control custom-select-control">
+                <mat-select formControlName="absenceScientificCode">
+                    <mat-option value="">Select the reason</mat-option>
+                    <mat-option *ngFor="let medication of absenceReasonList" [value]="medication">{{medication.name}}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -330,7 +321,7 @@
 
         <div class="col-4 col-lg-3">
             <div class="form-group"
-            [ngClass]="{'has-error' : ((isSubmitted || FormItem.get('quantity').touched) && (FormItem.get('quantity').hasError('required')))|| (IsQuantityCodeRequired && ((isSubmitted || FormItem.get('quantityCode').touched) && FormItem.get('quantityCode').hasError('required')))}">
+            [ngClass]="{'has-error' : ((isSubmitted || FormDetails.get('quantity').touched) && (FormDetails.get('quantity').hasError('required')))|| (IsQuantityCodeRequired && ((isSubmitted || FormDetails.get('quantityCode').touched) && FormDetails.get('quantityCode').hasError('required')))}">
             <label class="control-label">Quantity <span class="asterisk">*</span></label>
             <div class="row extra-small-gutter">
               <div class="col">
@@ -346,13 +337,13 @@
                 </mat-form-field>
               </div>
             </div>
-            <div *ngIf="(isSubmitted || FormItem.get('quantity').touched) && FormItem.get('quantity').hasError('required')">
+            <div *ngIf="(isSubmitted || FormDetails.get('quantity').touched) && FormDetails.get('quantity').hasError('required')">
               <span class="error-text">Please enter Quantity</span>
             </div>
-            <div *ngIf="IsInvalidQuantity && (isSubmitted || FormItem.get('quantity').touched)">
+            <div *ngIf="IsInvalidQuantity && (isSubmitted || FormDetails.get('quantity').touched)">
               <span class="error-text">Quantity must be greater than 0</span>
             </div>
-            <div *ngIf="IsQuantityCodeRequired && ((isSubmitted || FormItem.get('quantityCode').touched) && FormItem.get('quantityCode').hasError('required'))">
+            <div *ngIf="IsQuantityCodeRequired && ((isSubmitted || FormDetails.get('quantityCode').touched) && FormDetails.get('quantityCode').hasError('required'))">
               <span class="error-text">Please enter Quantity Code</span>
             </div>
           </div>
@@ -361,7 +352,7 @@
     <div class="primary-dialog-footer has-border">
         <div class="btn-list text-right">
             <button type="button" mat-button (click)="closeDialog()">Close</button>
-            <button type="submit" mat-flat-button color="primary">
+            <button type="detailSubmit" mat-flat-button color="primary">
                 <span>Add</span>
             </button>
         </div>
@@ -377,6 +368,10 @@
       <h5 class="primary-dialog-title">Add Dosage Details</h5>
       <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
     </div>
+
+    
+    <form [formGroup]="FormDosage" (ngSubmit)="onDosageDetailSubmit()">
+        <div>
     <div class="primary-dialog-body pb-0">
       <div class="row small-gutter">
         <div class="col-4">
@@ -388,14 +383,14 @@
         <div class="col-4">
           <div class="form-group">
             <label class="control-label">Patient Instruction</label>
-            <input class="form-control" formControlName = "instruction" placeholder="Enter Patient Instruction">
+            <input class="form-control" formControlName = "patientInstruction" placeholder="Enter Patient Instruction">
           </div>
         </div>
         <div class="col-4">
-          <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('route').touched) && FormItem.get('route').hasError('required')}">
+          <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormDosage.get('route').touched) && FormDosage.get('route').hasError('required')}">
             <label class="control-label">Route<span class="asterisk">*</span></label>
             <mat-form-field class="form-control custom-select-control" formControlName="route">
-              <mat-select placeholder="Select route" [formControl]="routes">
+              <mat-select placeholder="Select route">
                 <mat-option *ngFor="let route of routes" [value]="route">{{ route.name }}</mat-option>
               </mat-select>
             </mat-form-field>
@@ -403,7 +398,7 @@
         </div>
         
         <div class="col-4">
-            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('doseType').touched) && FormItem.get('doseType').hasError('required')}">
+            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormDosage.get('doseType').touched) && FormDosage.get('doseType').hasError('required')}">
               <label class="control-label">Dose Type<span class="asterisk">*</span></label>
               <mat-form-field class="form-control custom-select-control" formControlName="doseType">
                 <mat-select placeholder="Select dose type" [(ngModel)]="selectedDoseType">
@@ -483,10 +478,10 @@
               <label class="control-label">Rate Range</label>
               <div class="row small-gutter">
                 <div class="col-6">
-                  <input class="form-control" placeholder="Min" formControlName = "min">
+                  <input class="form-control" placeholder="Min" formControlName = "ratemin">
                 </div>
                 <div class="col-6">
-                  <input class="form-control" placeholder="Max" formControlName = "max">
+                  <input class="form-control" placeholder="Max" formControlName = "ratemax">
                 </div>
               </div>
             </div>
@@ -527,7 +522,7 @@
     <div class="primary-dialog-body pb-0">
       <div class="row small-gutter">
         <div class="col-4">
-          <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('startDate').touched) && FormItem.get('startDate').hasError('required')}">
+          <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormDosage.get('startDate').touched) && FormDosage.get('startDate').hasError('required')}">
             <label class="control-label">Start Date<span class="asterisk">*</span></label>
                  <div class="date-picker" formControlName = "startDate">
                     <input [owlDateTime]="dosageTimingStartDate" class="form-control" placeholder="Select date">
@@ -538,7 +533,7 @@
         </div>
 
         <div class="col-4">
-            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('endDate').touched) && FormItem.get('endDate').hasError('required')}">
+            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormDosage.get('endDate').touched) && FormDosage.get('endDate').hasError('required')}">
                 <label class="control-label">End Date<span class="asterisk">*</span></label>
                 <div class="date-picker" formControlName ="endDate">
                     <input [owlDateTime]="dosageTimingEndDate" class="form-control" placeholder="Select date">
@@ -556,14 +551,14 @@
         </div>
 
         <div class="col-4">
-            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('duration').touched) && FormItem.get('duration').hasError('required')}">
+            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormDosage.get('duration').touched) && FormDosage.get('duration').hasError('required')}">
                 <label class="control-label">Duration<span class="asterisk">*</span></label>
                 <div class="row extra-small-gutter" formControlName = "duration">
                     <div class="col">
                         <input type="text" class="form-control" placeholder="Enter duration">
                     </div>
                     <div class="col-auto">
-                        <mat-form-field class="form-control custom-select-control">
+                        <mat-form-field class="form-control custom-select-control" formControlName = "durationUnit">
                             <mat-select value="UCUM">
                                 <mat-option value="seconds">s</mat-option>
                                 <mat-option value="minutes">min</mat-option>
@@ -610,7 +605,7 @@
                         <input type="text" class="form-control" placeholder="Enter period" formControlName = "period">
                     </div>
                     <div class="col-auto">
-                        <mat-form-field class="form-control custom-select-control">
+                        <mat-form-field class="form-control custom-select-control" formControlName = "periodUnit">
                             <mat-select value="days">
                               <mat-option value="seconds">seconds</mat-option>
                               <mat-option value="minutes">minutes</mat-option>
@@ -635,4 +630,6 @@
         </button>
     </div>
 </div>
+</div>
+    </form>
 </div>
