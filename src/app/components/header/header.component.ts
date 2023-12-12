@@ -89,6 +89,12 @@ export class HeaderComponent implements OnInit {
     get loading(): boolean {
         return this.sharedServices.loading;
     }
+    
+  get hasAnyNphiesPrivilege() {
+    const keys = Object.keys(this.userPrivileges.ProviderPrivileges.NPHIES);
+    return keys.some(key => this.userPrivileges.ProviderPrivileges.NPHIES[key]);
+  }
+
 
     ngOnInit() {
         console.log(this.sharedServices.providerId)
@@ -296,10 +302,10 @@ export class HeaderComponent implements OnInit {
                 let alrtUrl = this.englishMessage.match(/(https:)[a-zA-Z\/0-9\.\-/%_]*(.(xlsx|pdf|))/);
                 if (alrtUrl != null) {
                     this.englishMessage = this.englishMessage.replace(alrtUrl[0], `<a href='${alrtUrl[0]}'
-                    target="_blank" style="color:blue;text-decoration: underline;"> Click Here </a>`)
+                    target="_blank" > <span style='color:#87ceeb; text-decoration: underline'>Click Here</span> </a>`)
                     if (this.arabicMessage != null) {
                         this.arabicMessage = this.arabicMessage + `<a href='${alrtUrl[0]}'
-                        target="_blank" style="color:blue;text-decoration: underline;"> اضغط هنا</a>`;
+                        target="_blank" > <span style='color:#87ceeb; text-decoration: underline'>اضغط هنا</span></a>`;
                     }
                 }
                 this.startDateAlert = new Date(event.body['startDate']).getTime();
