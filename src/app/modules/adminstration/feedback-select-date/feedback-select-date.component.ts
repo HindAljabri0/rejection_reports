@@ -79,12 +79,13 @@ export class AddFeedbackDateDialogComponent implements OnInit {
             {
                 startDateControl: ['', Validators.required],
                 closeDateControl: ['', Validators.required],
+                productControl: [''],
                 providersControl: [''],
                 status: ['']
 
             },
             {
-                validator: this.dateRangeValidator, // Attach the custom validator
+                validator: this.dateRangeValidator, 
             }
         );
     }

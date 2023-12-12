@@ -1,12 +1,12 @@
 <form [formGroup]="announcementForm">
     <div class="primary-dialog-header has-border">
-        <h5 class="primary-dialog-title">Select Provider</h5>
+        <h5 class="primary-dialog-title">Survey Settings</h5>
         <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
     </div>
     <div class="primary-dialog-body pb-0">
 
         <div class="row small-gutter">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group" [class.has-error]="hasError('startDateControl')!=null"
                     [matTooltip]="hasError('startDateControl')">
                     <mat-form-field>
@@ -32,7 +32,7 @@
                     </div>
                 </div> -->
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group" [class.has-error]="hasError('closeDateControl')!=null"
                     [matTooltip]="hasError('closeDateControl')">
                     <mat-form-field>
@@ -62,11 +62,24 @@
                     </div>
                 </div> -->
             </div>
+            <div class="col-md-4">
+                <label class="control-label">Active</label>
+                <mat-slide-toggle formControlName="status" color="primary"></mat-slide-toggle>
+            </div>
         </div>
-        <div class="col-md-6">
-            <label class="control-label">Active</label>
-            <mat-slide-toggle formControlName="status" color="primary"></mat-slide-toggle>
-        </div>
+        <div class="col-md-14">
+            <div class="form-group">
+              <label class="control-label">Select Product<span class="asterisk">*</span></label>
+              <mat-radio-group class="radio-group small">
+                <mat-radio-button color="primary" [value]="1" style="font-size: 18px;">Eclaims</mat-radio-button>
+                <mat-radio-button color="primary" [value]="2" style="font-size: 18px;">RCM</mat-radio-button>
+                <mat-radio-button color="primary" [value]="3" style="font-size: 18px;">PBM</mat-radio-button>
+                <mat-radio-button color="primary" [value]="4" style="font-size: 18px;">MRE</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+          
+     
 
     </div>
     <hr class="hr mb-14">

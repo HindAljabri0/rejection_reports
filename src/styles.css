@@ -1194,7 +1194,8 @@ bs-datepicker-container .bs-datepicker-body table td span.is-other-month, .bs-da
 .form-group>.radio-group{padding-top: 9px;display: block;}
 .radio-group .mat-radio-button{display: block;margin-bottom: 8px;}
 .radio-group.inline .mat-radio-button{margin-right: 24px;display: inline-block;vertical-align: top;}
-
+.radio-group.small .mat-radio-button {margin-right: 10px;display: inline-block;vertical-align: top;transform: scale(0.8); 
+  }
 /* general info
 --------------------------------------------------------------------------------------------------------*/
 .general-info-wrapper>div{flex-basis:16.666667%;max-width:16.666667%;flex-grow:0;flex-shrink:0;}

@@ -17,7 +17,7 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 @Component({
   selector: 'app-add-edit-prescription-item',
   templateUrl: './add-edit-prescription-item.component.html',
-styles: []
+  styleUrls: ['./add-edit-prescription-item.component.css'],
 })
 export class AddEditPrescriptionItemComponent implements OnInit {
     @ViewChild('itemSelect', { static: true }) itemSelect: MatSelect;
@@ -45,7 +45,7 @@ export class AddEditPrescriptionItemComponent implements OnInit {
         itemDescription: ['', Validators.required],
         nonStandardCode: [''],
         display: [''],
-        absence:[],
+        absenceScientificCode:[],
         strength:[],
         authoredOn:[],
         isPackage: [false],
@@ -76,17 +76,42 @@ export class AddEditPrescriptionItemComponent implements OnInit {
         itemDescription: ['', Validators.required],
         nonStandardCode: [''],
         display: [''],
-        absence:[],
+        absenceScientificCode:[],
         strength:[],
         quantity: ['', Validators.required],
         quantityCode: [''],    
+        });
+
+    FormDosage: FormGroup = this.formBuilder.group({
+        note: [''],
+        patientInstruction: [''],
+        route: [''],
+        doseType: [''],
+        min: [''],
+        max: [''],
+        doseQuantity: [''],
+        doseUnit: [''],
+        rateType: [''],
+        numerator: [''],
+        denominator: [''],
+        ratemin: [''],
+        ratemax: [''],
+        rateQuantity: [''],
+        rateUnit: [''],
+        startDate: [''],
+        endDate: [''],
+        refill: [''],
+        duration: [''],
+        frequency: [''],
+        period: [''],
+            
         });
     granularUnit = null;
     isSubmitted = false;
     typeListSearchResult = [];
     SearchRequest;
     typeList = this.sharedDataService.itemTypeList;
-    medicationReasonList = this.sharedDataService.itemMedicationReasonList;
+    absenceReasonList = this.sharedDataService.itemAbsenceReasonList;
     prescribedMedicationList: any;
     bodySiteList = [];
     subSiteList = [];
@@ -132,37 +157,7 @@ export class AddEditPrescriptionItemComponent implements OnInit {
         this.bodySiteList = this.sharedDataService.getBodySite(this.data.type);
         this.subSiteList = this.sharedDataService.getSubSite(this.data.type);          
         }
-        if (this.FormItem.controls.type.value.value == 'scientific-code') {
-            this.providerNphiesSearchService.getPrescribedMedicationList(this.sharedServices.providerId).subscribe(event => {
-                if (event instanceof HttpResponse) {
-                    const body = event.body;
-                    if (body) {
-                        this.prescribedMedicationList = body;
-                        this.filteredPescribedMedicationItem.next(body);
-                        if (this.data.item) {
-                            const res = this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.prescribedDrugCode)[0] ? this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.prescribedDrugCode)[0] : '';
-                            if (res) {
-                                this.FormItem.patchValue({
-                                    prescribedDrugCode: res
-                                });
-                            }
-                            this.filteredPescribedMedicationItem.next(this.prescribedMedicationList.slice());
-                            this.filterPrescribedMedicationItem();
-                        }
-                    }
-                }
-            }, errorEvent => {
-                if (errorEvent instanceof HttpErrorResponse) {
-
-                }
-            });
-            this.FormItem.controls.prescribedMedicationItemFilter.valueChanges
-                .pipe(takeUntil(this.onDestroy))
-                .subscribe(() => {
-                    this.filterPrescribedMedicationItem();
-                });
-        }
-        if (this.data.item) {
+      if (this.data.item) {
             this.FormItem.patchValue({
                 type: this.typeList.filter(x => x.value === this.data.item.type)[0],
                 itemDescription: this.itemList.filter(x => x.code === this.data.item.itemDescription)[0],
@@ -190,7 +185,7 @@ export class AddEditPrescriptionItemComponent implements OnInit {
                 startDate: this.data.item.startDate ? new Date(this.data.item.startDate) : null,
                 endDate: this.data.item.endDate ? new Date(this.data.item.endDate) : null,
                 invoiceNo: this.data.item.invoiceNo,
-                drugSelectionReason: this.medicationReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0] ? this.medicationReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0] : ''
+                absenceScientificCode: this.absenceReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0] ? this.absenceReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0] : ''
 
             });
             if (this.data.careTeams) {
@@ -284,49 +279,42 @@ export class AddEditPrescriptionItemComponent implements OnInit {
     });
 }
 typeChange(type = null) {
-    if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
+    if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'scientific-codes') {
+        this.sharedServices.loadingChanged.next(true);
         this.providerNphiesSearchService.getPrescribedMedicationList(this.sharedServices.providerId).subscribe(event => {
             if (event instanceof HttpResponse) {
                 const body = event.body;
                 if (body) {
-                  console.log(body,"kjsk")
-                  this.filteredList = body;
-                  console.log(this.filteredList,"this.filteredList")
+                    this.prescribedMedicationList = body;
+                    this.filteredPescribedMedicationItem.next(body);
+                    if (this.data.item) {
+                        const res = this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.prescribedDrugCode)[0] ? this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.prescribedDrugCode)[0] : '';
+                        if (res) {
+                            this.FormItem.patchValue({
+                                prescribedDrugCode: res
+                            });
+                          }
+                        this.filteredPescribedMedicationItem.next(this.prescribedMedicationList.slice());
+                        this.filterPrescribedMedicationItem();
+                    }
                 }
             }
-        }, errorEvent => {
+           }, errorEvent => {
             if (errorEvent instanceof HttpErrorResponse) {
 
             }
         });
+        this.sharedServices.loadingChanged.next(false);
         this.FormItem.controls.quantityCode.setValidators([Validators.required]);
         this.FormItem.controls.quantityCode.updateValueAndValidity();
    
-         } else {
-            this.providerNphiesSearchService.getPrescribedMedicationList(this.sharedServices.providerId).subscribe(event => {
-                if (event instanceof HttpResponse) {
-                    const body = event.body;
-                    if (body) {
-                      console.log(body,"kjsk")
-                    }
-                }
-            }, errorEvent => {
-                if (errorEvent instanceof HttpErrorResponse) {
-    
-                }
-            });
-        this.FormItem.controls.quantityCode.clearValidators();
-        this.FormItem.controls.quantityCode.updateValueAndValidity();
-        this.FormItem.controls.quantityCode.setValue('');
-        this.FormItem.controls.quantityCode.disable();
-        this.showQuantityCode = false;
+         } 
+         if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes'){
+            
+            this.getItemList(type);
     }
     this.FormItem.controls.item.setValue('');
-    if (type) {
-        this.getItemList(type);
-    } else {
-        this.getItemList();
-    }
+ 
 }
 getItemList(type = null) {
 
@@ -519,31 +507,6 @@ checkItemsCodeForSupportingInfo() {
     }
 }
 
-validateNewBornValues() {
-    // if (this.data.IsNewBorn && this.data.beneficiaryDob && (this.data.type === 'institutional' || this.data.type === 'professional')) {
-    if (this.data.IsNewBorn && this.data.beneficiaryDob) {
-        const serviceDate = new Date(this.FormItem.controls.endDate.value);
-        const dob = new Date(this.data.beneficiaryDob);
-        if (serviceDate < dob) {
-            // tslint:disable-next-line:max-line-length
-            this.serviceDataError = 'End Date cannot be less than New Born Date of Birth (dob: ' + this.datePipe.transform(dob, 'dd-MM-yyyy') + ' )';
-            return false;
-        } else {
-            const diff = this.daysDiff(dob, serviceDate);
-            if (diff > 90) {
-                // tslint:disable-next-line:max-line-length
-                this.serviceDataError = 'Difference between End Date and New Born Date of Birth cannot be greater than 90 days (Newborn DOB: ' + this.datePipe.transform(dob, 'dd-MM-yyyy') + ' )';
-                return false;
-            } else {
-                this.serviceDataError = '';
-                return true;
-            }
-        }
-
-    } else {
-        return true;
-    }
-}
 get IsQuantityCodeRequired() {
     if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
         return true;
@@ -565,17 +528,14 @@ daysDiff(d1, d2) {
   
 onSubmit() {
     this.isSubmitted = true;
-    if (!this.checkItemsCodeForSupportingInfo()) {
-        return;
-    }
+    // if (!this.checkItemsCodeForSupportingInfo()) {
+    //     return;
+    // }
+    console.log(this.FormItem,"ssksjsi")
 
-    if (this.FormItem.valid) {
+    if (this.FormItem) {
 
         const pattern = /(^\d*\.?\d*[1-9]+\d*$)|(^[1-9]+\d*\.\d*$)/;
-
-        if (!this.validateNewBornValues()) {
-            return;
-        }
 
         const model: any = {};
         model.sequence = this.data.Sequence;
@@ -604,6 +564,66 @@ onSubmit() {
             model.diagnosisSequence = this.FormItem.controls.diagnosisSequence.value.map((x) => { return x.sequence });
         }
         model.itemDetails = [];
+        console.log(model,"model")
+        this.dialogRef.close(model);
+    }
+}
+
+onDetailSubmit() {
+    this.isSubmitted = true;
+   if (this.FormDetails) {
+
+        const pattern = /(^\d*\.?\d*[1-9]+\d*$)|(^[1-9]+\d*\.\d*$)/;
+
+        const model: any = {};
+     
+        model.itemDetails = {
+            sequence: this.data.Sequence,
+            type: this.FormDetails.controls.type.value.value,
+            typeName: this.FormDetails.controls.type.value.name,
+            itemCode: this.FormDetails.controls.item.value.code,
+            itemDescription: this.FormDetails.controls.item.value.description,
+            nonStandardCode: this.FormDetails.controls.nonStandardCode.value,
+            display: this.FormDetails.controls.display.value,
+            strength: this.FormDetails.controls.strength.value,
+            quantity: parseFloat(this.FormDetails.controls.quantity.value),
+            quantityCode: this.FormDetails.controls.quantityCode.value
+        };
+        this.dialogRef.close(model);
+    }
+}
+
+onDosageDetailSubmit() {
+    this.isSubmitted = true;
+   if (this.FormDosage) {
+
+        const pattern = /(^\d*\.?\d*[1-9]+\d*$)|(^[1-9]+\d*\.\d*$)/;
+
+        const model: any = {};
+ 
+        model.sequence = this.data.Sequence;
+        model.note = this.FormDosage.controls.note.value.value;
+        model.patientInstruction = this.FormDosage.controls.patientInstruction.value.name;
+        model.route = this.FormDosage.controls.route.value.code;
+        model.doseType = this.FormDosage.controls.doseType.value;
+        model.doseUnitOrRangeMin = this.FormDosage.controls.min.value || this.FormDosage.controls.doseUnit.value.name;
+        model.doseRangeMax = this.FormDosage.controls.max.value || this.FormDosage.controls.doseQuantity.value;
+        model.rateType = this.FormDosage.controls.rateType.value.code;
+        model.rateRatioNumeratorMin = this.FormDosage.controls.numerator.value.description || this.FormDosage.controls.ratemin.value ||this.FormDosage.controls.rateQuantity.value;
+        model.rateRatioDenominatorMax = this.FormDosage.controls.denominator.value ||  this.FormDosage.controls.ratemax.value;
+        model.rateUnit = this.FormDosage.controls.rateUnit.value;
+        model.startDate = this.FormItem.controls.startDate.value; 
+        model.startDateStr = this.datePipe.transform(this.FormItem.controls.startDate.value, 'dd-MM-yyyy hh:mm aa');
+
+        model.endDate = this.FormItem.controls.endDate.value; 
+        model.endDateStr = this.datePipe.transform(this.FormItem.controls.endDate.value, 'dd-MM-yyyy hh:mm aa');
+        model.refill = this.FormDosage.controls.refill.value;
+        model.duration = this.FormDosage.controls.duration.value;
+        model.frequency = this.FormDosage.controls.frequency.value;
+        model.period = this.FormDosage.controls.period.value;
+        model.durationUnit = this.FormDosage.controls.durationUnit.value;
+        model.periodUnit = this.FormDosage.controls.periodUnit.value;
+        model.itemDosageData = [];
         this.dialogRef.close(model);
     }
 }

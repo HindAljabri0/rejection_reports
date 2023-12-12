@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogConfig, ErrorStateMatcher } from '@angular/material';
 import { AddEditPrescriptionItemComponent } from '../add-edit-prescription-item/add-edit-prescription-item.component';
+import { AddEditPrescriptionsItemComponent } from '../add-edit-prescriptions-item/add-edit-prescriptions-item.component';
+import { DosageDetailsComponent } from '../add-edit-prescription-item/dosage-details/dosage-details.component';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { SharedServices } from 'src/app/services/shared.services';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
@@ -30,6 +32,7 @@ import { AddEditVisionLensSpecificationsComponent } from '../add-preauthorizatio
 import { AddEditCareTeamModalComponent } from '../add-preauthorization/add-edit-care-team-modal/add-edit-care-team-modal.component';
 import { AddEditDiagnosisModalComponent } from '../add-preauthorization/add-edit-diagnosis-modal/add-edit-diagnosis-modal.component';
 import { AddEditSupportingInfoModalComponent } from '../add-preauthorization/add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
+import { AddEditItemDetailsPrescriptionComponent } from '../add-edit-item-details-prescription/add-edit-item-details-prescription.component';
 
 @Component({
   selector: 'app-add-prescription',
@@ -212,6 +215,8 @@ export class AddPrescriptionComponent implements OnInit {
   selectedDefaultPlan = null;
   providerType = "";
   Pbm_result:any;
+    itemDetailsData: false;
+    itemDosageData: false;
   constructor(
     private sharedDataService: SharedDataService,
     private dialogService: DialogService,
@@ -248,7 +253,6 @@ export class AddPrescriptionComponent implements OnInit {
     this.getProviderTypeConfiguration();
    
   }
-
   selectedDefualtPrescriberChange($event) {
     this.PrescriberDefault = $event;
     console.log("$event = " + $event);
@@ -293,7 +297,15 @@ export class AddPrescriptionComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     this.FormPreAuthorization.controls.type.setValue(this.sharedDataService.claimPrescriberType.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] ? this.sharedDataService.claimPrescriberType.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] : '');
     switch (this.data.preAuthorizationInfo.type) {
-          case 'professional':
+      case 'institutional':
+        this.subTypeList = this.sharedDataService.subTypeList.filter(x => x.value === 'ip' || x.value === 'emr');
+        break;
+      case 'professional':
+      case 'vision':
+      case 'pharmacy':
+      case 'oral':
+        this.subTypeList = this.sharedDataService.subTypeList.filter(x => x.value === 'op');
+        break;
     }
     if (this.data.preAuthorizationInfo.subType != null) {
       // tslint:disable-next-line:max-line-length
@@ -653,8 +665,20 @@ export class AddPrescriptionComponent implements OnInit {
       this.FormPreAuthorization.controls.subType.setValue('');
 
       switch ($event.value.value) {
+        case 'institutional':
+          this.subTypeList = [
+            { value: 'ip', name: 'InPatient' },
+            { value: 'emr', name: 'Emergency' },
+          ];
+          break;
         case 'professional':
-         break;
+        case 'vision':
+        case 'pharmacy':
+        case 'oral':
+          this.subTypeList = [
+            { value: 'op', name: 'OutPatient' },
+          ];
+          break;
       }
 
       this.VisionSpecifications = [];
@@ -730,6 +754,12 @@ export class AddPrescriptionComponent implements OnInit {
       postalCode: beneficiary.postalCode ? beneficiary.postalCode : '',
     });
 
+    if (beneficiary.plans.filter(x => x.primary)[0].payerNphiesId === '0000000163') {
+            
+        this.dialogService.showMessage('Error', 'Selected Payer is not valid for Pre-Auth Request Transaction ', 'alert', true, 'OK');
+        return;
+   }
+
     if (beneficiary.plans.length > 0 && beneficiary.plans.filter(x => x.primary)[0]) {
       this.FormPreAuthorization.controls.insurancePlanId.setValue(beneficiary.plans.filter(x => x.primary)[0].payerNphiesId);
       const plan: any = {};
@@ -792,7 +822,13 @@ export class AddPrescriptionComponent implements OnInit {
     const plan: any = {};
     plan.value = planObj.payerNphiesId;
     plan.memberCardId = planObj.memberCardId;
+    if (planObj.payerNphiesId === '0000000163') {
+    
+        this.dialogService.showMessage('Error', 'Selected Payer is not valid for Pre-Auth Request Transaction ', 'alert', true, 'OK');
+        return;
+   }
     this.selectPlan(plan);
+
   }
 
   selectPlan(plan) {
@@ -1034,8 +1070,7 @@ export class AddPrescriptionComponent implements OnInit {
     }
   }
 
-  openAddEditItemDialog(popupType: string, itemModel: any = null) {
-    this.itemDetails = true
+  openAddEditItemDialog(itemModel: any = null) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
 
@@ -1059,10 +1094,7 @@ export class AddPrescriptionComponent implements OnInit {
       providerType: this.providerType,
     };
 
-    const dialogRef = this.dialog.open(AddEditPrescriptionItemComponent, {
-        ...dialogConfig,
-        data: { popupType }
-      });
+    const dialogRef = this.dialog.open(AddEditPrescriptionsItemComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -1082,11 +1114,29 @@ export class AddPrescriptionComponent implements OnInit {
               x.subSiteName = result.subSiteName;
               x.quantity = result.quantity;
               x.quantityCode = result.quantityCode;
-              x.authoredOn = result.authoredOn;
+              x.unitPrice = result.unitPrice;
+              x.discount = result.discount;
+              x.discountPercent = result.discountPercent;
+              x.factor = result.factor;
+              x.taxPercent = result.taxPercent;
+              x.patientSharePercent = result.patientSharePercent;
+              x.tax = result.tax;
+              x.net = result.net;
+              x.patientShare = result.patientShare;
+              x.payerShare = result.payerShare;
+              x.startDate = result.startDate;
+              x.startDateStr = result.startDateStr;
+              x.endDate = result.endDate;
+              x.endDateStr = result.endDateStr;
+              x.endDate = result.endDate;
+              x.endDateStr = result.endDateStr;
               x.supportingInfoSequence = result.supportingInfoSequence;
               x.careTeamSequence = result.careTeamSequence;
               x.diagnosisSequence = result.diagnosisSequence;
-             if (x.supportingInfoSequence) {
+              x.drugSelectionReason = result.drugSelectionReason;
+              x.prescribedDrugCode = result.prescribedDrugCode;
+
+              if (x.supportingInfoSequence) {
                 x.supportingInfoNames = '';
                 x.supportingInfoSequence.forEach(s => {
                   x.supportingInfoNames += ', [' + this.SupportingInfo.filter(y => y.sequence === s)[0].categoryName + ']';
@@ -1118,6 +1168,7 @@ export class AddPrescriptionComponent implements OnInit {
 
               if (!x.isPackage) {
                 x.itemDetails = [];
+               
               }
 
             }
@@ -1179,7 +1230,7 @@ export class AddPrescriptionComponent implements OnInit {
       tpaNphiesId: this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value
     };
 
-    const dialogRef = this.dialog.open(AddEditItemDetailsModalComponent, dialogConfig);
+    const dialogRef = this.dialog.open(AddEditItemDetailsPrescriptionComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -1216,6 +1267,77 @@ export class AddPrescriptionComponent implements OnInit {
       this.Items.map(x => {
         if (x.sequence === itemSequence) {
           x.itemDetails.splice(index, 1);
+        }
+      });
+    }
+  }
+
+  openDosageDetailsDialog(itemSequence: number, itemModel: any = null) {
+
+    const item = this.Items.filter(x => x.sequence === itemSequence)[0];
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
+    dialogConfig.data = {
+      // tslint:disable-next-line:max-line-length
+      Sequence: (itemModel !== null) ? itemModel.sequence : (item.itemDetails.length === 0 ? 1 : (item.itemDetails[item.itemDetails.length - 1].sequence + 1)),
+      item: itemModel,
+      type: this.FormPreAuthorization.controls.type.value.value,
+      dateOrdered: this.FormPreAuthorization.controls.dateOrdered.value,
+      payerNphiesId: this.FormPreAuthorization.controls.insurancePayerNphiesId.value,
+      tpaNphiesId: this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value
+    };
+
+    const dialogRef = this.dialog.open(DosageDetailsComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log(result,"result")
+        if (this.Items.find(x => x.sequence === itemSequence)) {
+          this.Items.map(x => {
+            x.claimItemDosageModel = [];
+            if (x.sequence === itemSequence) {
+                console.log(x,"skss111111111111")
+              if (x.claimItemDosageModel.find(y => y.sequence === result.sequence)) {
+                x.claimItemDosageModel.map(y => {
+                  if (y.sequence === result.sequence) {
+                    y.note = result.note;
+                    y.patientInstruction = result.patientInstruction;
+                    y.route = result.route;
+                    y.doseType = result.doseType;
+                    y.doseUnitOrRangeMin =  result.doseUnitOrRangeMin;
+                    y.doseRangeMax = result.doseRangeMax;
+                    y.rateType = result.rateType;
+                    y.rateRatioNumeratorMin = result.rateRatioNumeratorMin;
+                    y.rateRatioDenominatorMax = result.rateRatioDenominatorMax;
+                    y.rateUnit = result.rateUnit;
+                    y.startDate = result.startDate; 
+                    y.endDate = result.endDate; 
+                    y.refill = result.refill;
+                    y.duration = result.duration;
+                    y.frequency = result.frequency;
+                    y.period = result.period;
+                    y.durationUnit = result.durationUnit;
+                    y.periodUnit = result.periodUnit;
+
+                  }
+                });
+              } else {
+                x.claimItemDosageModel.push(result);
+              }
+            }
+          });
+
+        }
+      }
+    });
+  }
+
+  deleteDosageDetails(itemSequence: number, index: number) {
+    if (this.Items.find(x => x.sequence === itemSequence)) {
+      this.Items.map(x => {
+        if (x.sequence === itemSequence) {
+          x.claimItemDosageModel.splice(index, 1);
         }
       });
     }
@@ -1497,10 +1619,10 @@ export class AddPrescriptionComponent implements OnInit {
   checkNewBornValidation() {
     // tslint:disable-next-line:max-line-length
     if (this.FormPreAuthorization.controls.isNewBorn.value && (this.FormPreAuthorization.controls.type.value.value === 'professional')) {
-      if (this.SupportingInfo.filter(x => x.category === 'birth-weight').length === 0) {
-        // tslint:disable-next-line:max-line-length
-        this.dialogService.showMessage('Error', 'Birth-Weight is required as Supporting Info for a newborn patient in a professional prescription request', 'alert', true, 'OK', null, true);
-        return false;
+        if (this.SupportingInfo.filter(x => x.category === 'birth-weight').length === 0) {
+          // tslint:disable-next-line:max-line-length
+          this.dialogService.showMessage('Error', 'Birth-Weight is required as Supporting Info for a newborn patient in a professional prescription request', 'alert', true, 'OK', null, true);
+          return false;
       } else {
         return true;
       }
@@ -1528,9 +1650,9 @@ export class AddPrescriptionComponent implements OnInit {
     if (this.providerType.toLowerCase() !== 'any' && this.FormPreAuthorization.controls.type.value.value !== this.providerType) {
       const filteredClaimType = this.sharedDataService.claimPrescriberType.filter(x => x.value === this.providerType)[0];
       const providerTypeName = filteredClaimType != null ? filteredClaimType.name : null;
-      const claimTypeName = this.sharedDataService.claimPrescriberType.filter(x => x.value === this.FormPreAuthorization.controls.type.value.value)[0].name;
-      this.dialogService.showMessage('Error', 'Claim type ' + claimTypeName + ' is not supported for Provider type ' + providerTypeName, 'alert', true, 'OK');
-      return;
+       const claimTypeName = this.sharedDataService.claimPrescriberType.filter(x => x.value === this.FormPreAuthorization.controls.type.value.value)[0].name;
+         this.dialogService.showMessage('Error', 'Claim type ' + claimTypeName + ' is not supported for Provider type ' + providerTypeName, 'alert', true, 'OK');
+        return;
     }
     this.isSubmitted = true;
 
@@ -1557,7 +1679,6 @@ export class AddPrescriptionComponent implements OnInit {
       this.FormPreAuthorization.controls.date.updateValueAndValidity();
       this.IsDateRequired = false;
     }
- 
     if (this.FormPreAuthorization.valid) {
 
       if (this.Diagnosises.length === 0 || this.Items.length === 0) {
@@ -1567,37 +1688,37 @@ export class AddPrescriptionComponent implements OnInit {
       // this.checkCareTeamValidation();
       this.checkDiagnosisValidation();
       this.checkItemValidation();
-      if (this.checkCareTeamValidation()) {
-        hasError = true;
-      }
+    //   if (this.checkCareTeamValidation()) {
+    //     hasError = true;
+    //   }
 
-      if (!this.checkDiagnosisErrorValidation()) {
-        hasError = true;
-      }
+    //   if (!this.checkDiagnosisErrorValidation()) {
+    //     hasError = true;
+    //   }
 
-      if (this.checkSupposrtingInfoValidation()) {
-        hasError = true;
-      }
+    //   if (this.checkSupposrtingInfoValidation()) {
+    //     hasError = true;
+    //   }
 
-      if (!this.checkItemCareTeams()) {
-        hasError = true;
-      }
+    //   if (!this.checkItemCareTeams()) {
+    //     hasError = true;
+    //   }
 
-      if (!this.checkItemsCodeForSupportingInfo()) {
-        hasError = true;
-      }
+    // //   if (!this.checkItemsCodeForSupportingInfo()) {
+    // //     hasError = true;
+    // //   }
 
-      if (!this.checkNewBornValidation()) {
-        hasError = true;
-      }
+    //   if (!this.checkNewBornValidation()) {
+    //     hasError = true;
+    //   }
 
-      if (!this.checkNewBornSupportingInfoCodes()) {
-        hasError = true;
-      }
+    //   if (!this.checkNewBornSupportingInfoCodes()) {
+    //     hasError = true;
+    //   }
 
-      if (hasError) {
-        return;
-      }
+    //   if (hasError) {
+    //     return;
+    //   }
 
       this.model = {};
       if (this.claimReuseId) {
@@ -1802,92 +1923,14 @@ export class AddPrescriptionComponent implements OnInit {
         model.qualificationCode = x.qualificationCode;
         return model;
       });
+      console.log(this.Items,"asjskjs")
 
-   
-      this.model.items = this.Items.map(x => {
-        // tslint:disable-next-line:max-line-length
-        if ((this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value !== 'pharmacy') && x.careTeamSequence && x.careTeamSequence.length > 0) {
-          const model: any = {};
-          model.sequence = x.sequence;
-          model.type = x.type;
-          model.itemCode = x.itemCode ? x.itemCode.toString() : x.itemCode;
-          model.itemDescription = x.itemDescription;
-          model.nonStandardCode = x.nonStandardCode;
-          model.nonStandardDesc = x.display;
-          model.isPackage = x.isPackage;
-          model.bodySite = x.bodySite;
-          model.subSite = x.subSite;
-          model.startDate = x.startDate ? moment(this.removeSecondsFromDate(x.startDate)).utc() : null;
-          model.endDate = moment(this.removeSecondsFromDate(x.endDate)).utc();
-          model.supportingInfoSequence = x.supportingInfoSequence;
-          model.careTeamSequence = x.careTeamSequence;
-          model.diagnosisSequence = x.diagnosisSequence;
-          model.invoiceNo = null;
+      this.model.items = this.Items[0];
 
-          model.itemDetails = x.itemDetails.map(y => {
-            const dmodel: any = {};
-            dmodel.sequence = y.sequence;
-            dmodel.type = y.type;
-            dmodel.code = y.itemCode ? y.itemCode.toString() : y.itemCode;
-            dmodel.description = y.itemDescription;
-            dmodel.nonStandardCode = y.nonStandardCode;
-            dmodel.nonStandardDesc = y.display;
-            dmodel.quantity = parseFloat(y.quantity);
-            return dmodel;
-          });
-
-          return model;
-        } else if (this.FormPreAuthorization.controls.type.value && this.FormPreAuthorization.controls.type.value.value === 'pharmacy') {
-          const model: any = {};
-          model.sequence = x.sequence;
-          model.type = x.type;
-          model.itemCode = x.itemCode ? x.itemCode.toString() : x.itemCode;
-          model.itemDescription = x.itemDescription;
-          model.nonStandardCode = x.nonStandardCode;
-          model.nonStandardDesc = x.display;
-          model.isPackage = x.isPackage;
-          model.bodySite = x.bodySite;
-          model.subSite = x.subSite;
-          model.quantity = x.quantity;
-          model.unitPrice = x.unitPrice;
-          model.discount = x.discount;
-          model.factor = x.factor;
-          model.taxPercent = x.taxPercent;
-          model.patientSharePercent = x.patientSharePercent;
-          model.tax = x.tax;
-          model.net = x.net;
-          model.patientShare = x.patientShare;
-          model.payerShare = x.payerShare;
-          model.startDate = x.startDate ? moment(this.removeSecondsFromDate(x.startDate)).utc() : null;
-          model.endDate = moment(this.removeSecondsFromDate(x.endDate)).utc();
-          model.supportingInfoSequence = x.supportingInfoSequence;
-          model.careTeamSequence = x.careTeamSequence;
-          model.diagnosisSequence = x.diagnosisSequence;
-          model.invoiceNo = null;
-          model.drugSelectionReason = x.drugSelectionReason;
-          model.prescribedDrugCode = x.prescribedDrugCode;
-
-          model.itemDetails = x.itemDetails.map(y => {
-            const dmodel: any = {};
-            dmodel.sequence = y.sequence;
-            dmodel.type = y.type;
-            dmodel.code = y.itemCode ? y.itemCode.toString() : y.itemCode;
-            dmodel.description = y.itemDescription;
-            dmodel.nonStandardCode = y.nonStandardCode;
-            dmodel.nonStandardDesc = y.display;
-            dmodel.quantity = parseFloat(y.quantity);
-            dmodel.quantityCode = y.quantityCode;
-            return dmodel;
-          });
-
-          return model;
-        }
-      }).filter(x => x !== undefined);
-
-      this.model.totalNet = 0;
-      this.model.items.forEach((x) => {
-        this.model.totalNet += x.net;
-      });
+    //   this.model.totalNet = 0;
+    //   this.model.items.forEach((x) => {
+    //     this.model.totalNet += x.net;
+    //   });
 
       console.log('Model', this.model);
       this.sharedServices.loadingChanged.next(true);
@@ -2205,6 +2248,4 @@ export class AddPrescriptionComponent implements OnInit {
       this.sharedServices.loadingChanged.next(false);
     });
   }
-
-  
 }
