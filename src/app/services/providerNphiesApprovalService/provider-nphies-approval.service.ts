@@ -370,6 +370,22 @@ export class ProviderNphiesApprovalService {
     }
   }
 
+  cancelPrescriberRequest(providerId: string, body: any, isApproval = false) {
+    if (isApproval) {
+      let requestURL = `/providers/${providerId}/prescriber/cancel/request`;
+      const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, body);
+      return this.http.request(request);
+    } else {
+      const isHeadOffice = AuthService.isProviderHeadOffice();
+      let requestURL = `/providers/${providerId}/claims/cancel/request`;
+      if (isHeadOffice) {
+        requestURL = `/head-office/${providerId}/claims/cancel/request`;
+      }
+      const request = new HttpRequest('POST', environment.providerNphiesClaim + requestURL, body);
+      return this.http.request(request);
+    }
+  }
+
   nullifyApprovalRequest(providerId: string, body: any) {
     const requestUrl = `/providers/${providerId}/approval/nullify/request`;
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
@@ -411,6 +427,12 @@ export class ProviderNphiesApprovalService {
 
   statusCheck(providerId: string, body: any, isApproval = false) {
     let requestURL = `/providers/${providerId}/approval/checkstatus`;
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, body);
+    return this.http.request(request);
+  }
+
+  prescriberStatusCheck(providerId: string, body: any, isPrescriber = false) {
+    let requestURL = `/providers/${providerId}/prescriber/checkstatus`;
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, body);
     return this.http.request(request);
   }
@@ -794,6 +816,15 @@ export class ProviderNphiesApprovalService {
 
   inquireApprovalRequest(providerId: string, requestId: number) {
     let requestUrl = `/providers/${providerId}/approval/inquiry?`;
+    if (requestId) {
+      requestUrl += `approvalRequestId=${requestId}`;
+    }
+    const request = new HttpRequest('POST', environment.nphiesApprovalInquiry + requestUrl, {});
+    return this.http.request(request);
+  }
+
+  inquirePrescriberRequest(providerId: string, requestId: number) {
+    let requestUrl = `/providers/${providerId}/prescriber/inquiry?`;
     if (requestId) {
       requestUrl += `approvalRequestId=${requestId}`;
     }

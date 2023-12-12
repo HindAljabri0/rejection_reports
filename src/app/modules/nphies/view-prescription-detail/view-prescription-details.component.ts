@@ -31,7 +31,7 @@ export class ViewPrescriptionDetailsComponent implements OnInit {
     if (this.data.detailsModel.communicationId) {
       this.selectedTab = 1;
     }
-    this.data.detailsModel.isApproval=true;
+    this.data.detailsModel.isPrescriber=true;
     this.getCommunications();
   }
 
@@ -44,7 +44,7 @@ export class ViewPrescriptionDetailsComponent implements OnInit {
       // tslint:disable-next-line:radix
       communicationRequestId: commRequestId ? parseInt(commRequestId) : '',
       items: this.data.detailsModel.items,
-      isApproval:true
+      isPrescriber:true
     };
 
     const dialogRef = this.dialog.open(AddCommunicationDialogComponent, dialogConfig);
