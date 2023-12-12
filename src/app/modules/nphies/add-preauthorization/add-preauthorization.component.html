@@ -827,12 +827,14 @@
         <hr class="hr spaced" />
 
         <div class="form-group text-right btn-list">
-          <button type="button" mat-button color="primary" *ngIf="isPBMValidationVisible" [disabled]="!Pbm_result" (click)="openPbmValidationResponseSummaryDialog(Pbm_result)" id="PbmResponse">
+          <button type="button" mat-button color="primary"
+           *ngIf="isPBMValidationVisible" [disabled]="!Pbm_result" (click)="openPbmValidationResponseSummaryDialog(Pbm_result)" id="PbmResponse">
             <span>PBM Response</span>
           </button>
           <button
            type="button"
            mat-flat-button color="primary" 
+           *ngIf="isMREValidationVisible"
            (click)="onMreSubmit()" 
            id="mreRequestButton">
            <span>Request MRE</span>

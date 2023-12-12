@@ -1482,7 +1482,7 @@
       </div>
     </mat-tab>
 
-    <mat-tab *ngIf=" otherDataModel.status === 'Accepted' && claimData.mreClaimStatus !=null "
+    <mat-tab *ngIf="isMREValidationVisible && otherDataModel.status === 'Accepted' && claimData.mreClaimStatus !=null "
       [label]="'MRE Comments'">
       <div class="table-responsive">
         <div class="d-flex justify-content-end pb-2 align-items-center">
@@ -3249,7 +3249,7 @@
           </div>
         </mat-tab>
         <!-- change the way we git the mre from pbm  -->
-        <mat-tab *ngIf="otherDataModel.status === 'Accepted' && otherDataModel.pbmComments && otherDataModel.pbmComments.pbmClaimStatus"
+        <mat-tab *ngIf="isMREValidationVisible && otherDataModel.status === 'Accepted' && otherDataModel.pbmComments && otherDataModel.pbmComments.pbmClaimStatus"
           [label]="'MRE Comments'">
           <div class="table-responsive">
             <div class="d-flex justify-content-end pb-2 align-items-center">

@@ -40,8 +40,6 @@ export interface ClaimState {
     paginationControl: { currentIndex: number, size: number, searchTabCurrentResults: number[]; };
     pbmClaimError: [];
     pbmClaimStatus: string;
-    mreClaimError: [];
-    mreClaimStatus: string;
 }
 
 const initState: ClaimState = {
@@ -73,8 +71,6 @@ const initState: ClaimState = {
     paginationControl: { searchTabCurrentResults: [], currentIndex: -1, size: 0 },
     pbmClaimError: [],
     pbmClaimStatus: '',
-    mreClaimError: [],
-    mreClaimStatus: ''
 };
 
 const _claimReducer = createReducer(
@@ -745,9 +741,6 @@ export const getRetrievedClaimId = createSelector(claimSelector, (state) => stat
 export const getRetrievedClaimProps = createSelector(claimSelector, (state) => state.retrievedClaimProps);
 export const getPBMClaimError = createSelector(claimSelector, (state) => state.pbmClaimError);
 export const getPBMClaimStatus = createSelector(claimSelector, (state) => state.pbmClaimStatus);
-export const getMREClaimError = createSelector(claimSelector, (state) => state.mreClaimError);
-export const getMREClaimStatus = createSelector(claimSelector, (state) => state.mreClaimStatus);
-
 
 
 

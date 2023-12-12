@@ -30,7 +30,8 @@ export const environment = {
 
     nphiesPollManagement: `${host}/poll-management`,
     contractManagementService: `${host}/contract-billing`,
-
+    mreClaimsSender:`${host}/mre-claims-sender`,
+    nphiesApprovalMRE: `${host}/nphies-approval-mre-validation`,
     claimsDownloadsService: `${host}/downloads`,
     claimReviewService: `${host}/review`,
     nphiesConfigurationService: `${host}/nphies-configurations`,

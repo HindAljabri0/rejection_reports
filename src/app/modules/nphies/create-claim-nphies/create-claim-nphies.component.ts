@@ -248,6 +248,8 @@ export class CreateClaimNphiesComponent implements OnInit {
   PrescriberDefault = 0;
   claimType: string;
   isPBMValidationVisible = false;
+  isMREValidationVisible = false;
+
   providerType = '';
   submittionErrors: Map<string, string>;
   claimData: any = {};
@@ -349,6 +351,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.selectedTab = (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') ? 9 : 8;
     }
     this.getPBMValidation();
+    this.getMREValidation();
     this.getProviderTypeConfiguration()
 
   }
@@ -3475,6 +3478,18 @@ export class CreateClaimNphiesComponent implements OnInit {
       if (event instanceof HttpResponse) {
         const body = event['body'];
         this.isPBMValidationVisible = body.value === '1' ? true : false;
+      }
+    }, err => {
+      console.log(err);
+    });
+
+  }
+
+  getMREValidation() {
+    this.adminService.checkIfNphiesMREValidationIsEnabled(this.sharedServices.providerId, '101').subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        const body = event['body'];
+        this.isMREValidationVisible = body.value === '1' ? true : false;
       }
     }, err => {
       console.log(err);

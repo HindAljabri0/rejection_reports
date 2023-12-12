@@ -212,6 +212,7 @@ export class AddPreauthorizationComponent implements OnInit {
   selectedDefaultPlan = null;
   providerType = "";
   isPBMValidationVisible =false;
+  isMREValidationVisible = false;
   Pbm_result:any;
   Mre_result:any;
   constructor(
@@ -238,6 +239,7 @@ export class AddPreauthorizationComponent implements OnInit {
     this.getPayees();
     this.getTPA();
     this.getPBMValidation();
+    this.getMREValidation();
     this.FormPreAuthorization.controls.dateOrdered.setValue(this.removeSecondsFromDate(new Date()));
     this.filteredNations.next(this.nationalities.slice());
     if (this.claimReuseId) {
@@ -259,6 +261,19 @@ export class AddPreauthorizationComponent implements OnInit {
       }
     }, err => {
       console.log(err);
+    });
+
+  }
+
+  getMREValidation() {
+    this.adminService.checkIfNphiesApprovalMREValidationIsEnabled(this.sharedServices.providerId, '101').subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        const body = event['body'];
+        this.isMREValidationVisible = body.value === '1' ? true : false;
+      }
+    }, err => {
+        console.log(err);
+
     });
 
   }

@@ -162,6 +162,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
   isPBMValidationVisible = false;
   isMREValidationVisible = false;
   apiPBMValidationEnabled: any;
+  apiMREValidationEnabled: any;
   claimList: ClaimListModel = new ClaimListModel();
 
   claimDialogRef: MatDialogRef<any, any>;
@@ -497,7 +498,8 @@ console.log(this.isSearchByStatus)
       || this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.REJECTED.toLowerCase()) ? false : true;
     this.isPBMValidationVisible = this.apiPBMValidationEnabled
       && this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.Accepted.toLowerCase() ? true : false;
-      this.isMREValidationVisible =  this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.Accepted.toLowerCase() ? true : false;
+      this.isMREValidationVisible = this.apiMREValidationEnabled
+      && this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.Accepted.toLowerCase() ? true : false;
 
     this.claims = new Array();
     this.store.dispatch(storeClaims({
@@ -1397,8 +1399,18 @@ this.params.filter_claimResponseDate = ClaimListFilterSelection.CLAIMRESPONSEDAT
   }
 
   getMREValidation(){
-    this.isMREValidationVisible = (this.summaries[this.selectedCardKey].statuses[0].toLowerCase() === ClaimStatus.Accepted.toLowerCase()
-      || this.summaries[this.selectedCardKey].statuses[0].toLowerCase() === ClaimStatus.Downloadable.toLowerCase()) ? true : false;
+      this.adminService.checkIfNphiesMREValidationIsEnabled(this.commen.providerId, '101').subscribe((event: any) => {
+        if (event instanceof HttpResponse) {
+          const body = event['body'];
+          this.apiMREValidationEnabled = body.value === '1' ? true : false;
+          this.isMREValidationVisible =  this.apiMREValidationEnabled
+          && (this.summaries[this.selectedCardKey].statuses[0].toLowerCase() === ClaimStatus.Accepted.toLowerCase()
+            || this.summaries[this.selectedCardKey].statuses[0].toLowerCase() === ClaimStatus.Downloadable.toLowerCase()) ? true : false;      
+        }
+      }, err => {
+        console.log(err);
+      });
+  
   }
 
   get statusSelected() {
@@ -2217,7 +2229,11 @@ this.params.filter_claimResponseDate = ClaimListFilterSelection.CLAIMRESPONSEDAT
 
     this.setFilterData();
     this.commen.loadingChanged.next(true);
-
+    const payerIds: string[] = [];
+    if (this.params.payerId) {
+      payerIds.push(this.params.payerId);
+    }
+    const status = this.isMREValidationVisible ? this.summaries[this.selectedCardKey].statuses : null;
     this.providerNphiesApprovalService.MREValidation(
         this.providerId,
         this.selectedClaims,

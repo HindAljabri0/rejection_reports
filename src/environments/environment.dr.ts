@@ -21,6 +21,8 @@ export const environment = {
     creditReportService: `${host}/reports`,
     tawuniyaCreditReportService: `${host}/credit-report`,
     pbmValidationService: `${host}/pbm`,
+    mreClaimsSender:`${host}/mre-claims-sender`,
+    nphiesApprovalMRE: `${host}/nphies-approval-mre-validation`,
     payerPaymentContractService: `${host}/payer-payment-contract`,
     approvalDetailInquiryService: `${host}/approval-detail-inquiry`,
     providersBeneficiariesService: `${host}/beneficiaries`,
