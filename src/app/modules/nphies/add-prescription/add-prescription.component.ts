@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogConfig, ErrorStateMatcher } from '@angular/material';
-import { AddEditPrescriptionItemComponent } from '../add-edit-prescription-item/add-edit-prescription-item.component';
 import { AddEditPrescriptionsItemComponent } from '../add-edit-prescriptions-item/add-edit-prescriptions-item.component';
 import { DosageDetailsComponent } from '../add-edit-prescription-item/dosage-details/dosage-details.component';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';

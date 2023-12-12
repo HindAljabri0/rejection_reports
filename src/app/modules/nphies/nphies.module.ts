@@ -89,7 +89,6 @@ import { ChooseAttachmentUploadDialogComponent } from './choose-attachment-uploa
 import { PbmValidationResponseSummaryDialogComponent } from 'src/app/components/dialogs/pbm-validation-response-summary-dialog/pbm-validation-response-summary-dialog.component';
 import { AddPrescriptionComponent } from './add-prescription/add-prescription.component';
 import { PrescriptionTransactionsComponent } from './prescription-transactions/prescription-transactions.component';
-import { AddEditPrescriptionItemComponent } from './add-edit-prescription-item/add-edit-prescription-item.component';
 import { AddEditPrescriptionsItemComponent } from './add-edit-prescriptions-item/add-edit-prescriptions-item.component';
 import { DosageDetailsComponent } from './add-edit-prescription-item/dosage-details/dosage-details.component';
 import { ViewPrescriptionDetailsDialogComponent } from './view-prescription-details-dialog/view-prescription-details-dialog.component';
@@ -173,7 +172,6 @@ import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth
         PbmValidationResponseSummaryDialogComponent,
         AddPrescriptionComponent,
         PrescriptionTransactionsComponent,
-        AddEditPrescriptionItemComponent,
         AddEditPrescriptionsItemComponent,
         DosageDetailsComponent,
         ViewPrescriptionDetailsDialogComponent,
@@ -234,7 +232,6 @@ import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth
         AddMedicationSupplyDialogComponent,
         ViewPrintPreviewDialogComponent,
         PbmValidationResponseSummaryDialogComponent,
-        AddEditPrescriptionItemComponent,
         AddEditPrescriptionsItemComponent,
         DosageDetailsComponent,
         ViewPrescriptionDetailsDialogComponent,
