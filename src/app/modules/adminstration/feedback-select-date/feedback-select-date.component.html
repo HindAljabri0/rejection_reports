@@ -69,18 +69,19 @@
         </div>
         <div class="col-md-14">
             <div class="form-group" [class.has-error]="hasError('productName')!=null"
-            [matTooltip]="hasError('productName')">
-              <label class="control-label">Select Product<span class="asterisk">*</span></label>
-              <mat-radio-group class="radio-group small" formControlName="productName">
-                <mat-radio-button color="primary" value="ECLAIMS" style="font-size: 18px;">Eclaims</mat-radio-button>
-                <mat-radio-button color="primary" value="RCM" style="font-size: 18px;">RCM</mat-radio-button>
-                <mat-radio-button color="primary" value="PBM" style="font-size: 18px;">PBM</mat-radio-button>
-                <mat-radio-button color="primary" value="MRE" style="font-size: 18px;">MRE</mat-radio-button>
-              </mat-radio-group>
+                [matTooltip]="hasError('productName')">
+                <label class="control-label">Select Product<span class="asterisk">*</span></label>
+                <mat-radio-group class="radio-group small" formControlName="productName">
+                    <mat-radio-button color="primary" value="WCS" style="font-size: 18px;">WCS</mat-radio-button>
+                    <mat-radio-button color="primary" value="RCM" style="font-size: 18px;">RCM</mat-radio-button>
+                    <mat-radio-button color="primary" value="PBM" style="font-size: 18px;">PBM</mat-radio-button>
+                    <mat-radio-button color="primary" value="MRE" style="font-size: 18px;">MRE</mat-radio-button>
+                    <mat-radio-button color="primary" value="DAWY" style="font-size: 18px;">DAWY</mat-radio-button>
+                </mat-radio-group>
             </div>
-          </div>
-          
-     
+        </div>
+
+
 
     </div>
     <hr class="hr mb-14">

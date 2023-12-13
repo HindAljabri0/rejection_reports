@@ -73,6 +73,7 @@ import { ConvertPreAuthToClaimComponent } from './convert-pre-auth-to-claim/conv
 import { EligiblityJsonResponseComponent } from './view-eligibility-details/eligiblity-json-response/eligiblity-json-response.component';
 import { MatTabsModule } from '@angular/material';
 import { ApprovalJsonResponseComponent } from './view-preauthorization-details/approval-json-response/approval-json-response.component';
+import { PrescriberJsonResponseComponent } from './view-prescription-detail/prescriber-json-response/prescriber-json-response.component';
 import { DaysOfSupplyUploadComponent } from './days-of-supply-upload/days-of-supply-upload.component';
 import { MedicationDaysUploadComponent } from './medication-days-upload/medication-days-upload.component';
 import { AddMedicationSupplyDialogComponent } from './add-medication-supply-dialog/add-medication-supply-dialog.component';
@@ -158,6 +159,7 @@ import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth
         ConvertPreAuthToClaimComponent,
         EligiblityJsonResponseComponent,
         ApprovalJsonResponseComponent,
+        PrescriberJsonResponseComponent,
         DaysOfSupplyUploadComponent,
         MedicationDaysUploadComponent,
         AddMedicationSupplyDialogComponent,
