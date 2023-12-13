@@ -57,7 +57,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
         diagnosisSequence: [''],
         diagnosisFilter: [''],
         absenceScientificCode: [''],
-        authoredOn: [''],
+        endDate: [''],
         prescribedDrugCode: ['']
     });
     originalPrice = 0;
@@ -600,8 +600,9 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
             model.quantity = parseFloat(this.FormItem.controls.quantity.value);
             model.quantityCode = this.FormItem.controls.quantityCode.value;
             model.strength = this.FormItem.controls.strength.value;
-            model.authoredOn = this.FormItem.controls.authoredOn.value; 
-            model.authoredOnStr = this.datePipe.transform(this.FormItem.controls.authoredOn.value, 'dd-MM-yyyy hh:mm aa');
+            model.endDate = this.FormItem.controls.endDate.value; 
+            model.absenceScientificCode = this.FormItem.controls.absenceScientificCode.value.value;
+         //   model.authoredOnStr = this.datePipe.transform(this.FormItem.controls.authoredOn.value, 'dd-MM-yyyy hh:mm aa');
 
             if (this.FormItem.controls.supportingInfoSequence.value && this.FormItem.controls.supportingInfoSequence.value.length > 0) {
                 model.supportingInfoSequence = this.FormItem.controls.supportingInfoSequence.value.map((x) => { return x.sequence });
