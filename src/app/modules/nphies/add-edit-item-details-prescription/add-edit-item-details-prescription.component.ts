@@ -67,9 +67,16 @@ export class AddEditItemDetailsPrescriptionComponent implements OnInit {
 
     if (this.data.item && this.data.item.itemCode) {
       this.FormItem.patchValue({
-        type: this.typeList.filter(x => x.value === this.data.item.type)[0],
-        nonStandardCode: this.data.item.nonStandardCode,
-        display: this.data.item.display,
+        type: this.prescribedCode.filter(x => x.value === this.data.item.type)[0],
+                itemDescription: this.itemList.filter(x => x.code === this.data.item.itemDescription)[0],
+                itemCode: this.itemList.filter(x => x.code === this.data.item.itemCode)[0],
+                nonStandardCode: this.data.item.nonStandardCode,
+                display: this.data.item.display,
+                quantity: this.data.item.quantity,
+                quantityCode: this.data.item.quantityCode != null ? this.data.item.quantityCode : "",
+                strength: this.data.item.strength,
+                absenceScientificCode: this.absenceReasonList.filter(x => x.value === this.data.item.absenceScientificCode)[0] ? this.absenceReasonList.filter(x => x.value === this.data.item.absenceScientificCode)[0] : ''
+    
       });
 
 
@@ -284,13 +291,13 @@ filterPrescribedMedicationItem() {
 
   onSubmit() {
     this.isSubmitted = true;
-    if (this.FormItem) {
+    if (this.FormItem.valid) {
 
       const pattern = /(^\d*\.?\d*[1-9]+\d*$)|(^[1-9]+\d*\.\d*$)/;
 
-    //   if (!pattern.test(parseFloat(this.FormItem.controls.quantity.value).toString())) {
-    //     return;
-    //   }
+      if (!pattern.test(parseFloat(this.FormItem.controls.quantity.value).toString())) {
+        return;
+      }
 
       const model: any = {};
       model.sequence = this.data.Sequence;
