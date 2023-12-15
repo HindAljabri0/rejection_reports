@@ -1114,26 +1114,11 @@ export class AddPrescriptionComponent implements OnInit {
                             x.subSiteName = result.subSiteName;
                             x.quantity = result.quantity;
                             x.quantityCode = result.quantityCode;
-                            x.unitPrice = result.unitPrice;
-                            x.discount = result.discount;
-                            x.discountPercent = result.discountPercent;
-                            x.factor = result.factor;
-                            x.taxPercent = result.taxPercent;
-                            x.patientSharePercent = result.patientSharePercent;
-                            x.tax = result.tax;
-                            x.net = result.net;
-                            x.patientShare = result.patientShare;
-                            x.payerShare = result.payerShare;
-                            x.startDate = result.startDate;
-                            x.startDateStr = result.startDateStr;
-                            x.endDate = result.endDate;
-                            x.endDateStr = result.endDateStr;
                             x.endDate = result.endDate;
                             x.endDateStr = result.endDateStr;
                             x.supportingInfoSequence = result.supportingInfoSequence;
                             x.careTeamSequence = result.careTeamSequence;
                             x.diagnosisSequence = result.diagnosisSequence;
-                            x.drugSelectionReason = result.drugSelectionReason;
                             x.prescribedDrugCode = result.prescribedDrugCode;
 
                             if (x.supportingInfoSequence) {
@@ -1688,37 +1673,33 @@ export class AddPrescriptionComponent implements OnInit {
             // this.checkCareTeamValidation();
             this.checkDiagnosisValidation();
             this.checkItemValidation();
-            //   if (this.checkCareTeamValidation()) {
-            //     hasError = true;
-            //   }
+             if (this.checkCareTeamValidation()) {
+                hasError = true;
+              }
 
-            //   if (!this.checkDiagnosisErrorValidation()) {
-            //     hasError = true;
-            //   }
+              if (!this.checkDiagnosisErrorValidation()) {
+                hasError = true;
+              }
 
-            //   if (this.checkSupposrtingInfoValidation()) {
-            //     hasError = true;
-            //   }
+              if (this.checkSupposrtingInfoValidation()) {
+                hasError = true;
+              }
 
-            //   if (!this.checkItemCareTeams()) {
-            //     hasError = true;
-            //   }
+              if (!this.checkItemCareTeams()) {
+                hasError = true;
+              }
 
-            // //   if (!this.checkItemsCodeForSupportingInfo()) {
-            // //     hasError = true;
-            // //   }
+                if (!this.checkNewBornValidation()) {
+                hasError = true;
+              }
 
-            //   if (!this.checkNewBornValidation()) {
-            //     hasError = true;
-            //   }
+              if (!this.checkNewBornSupportingInfoCodes()) {
+                hasError = true;
+              }
 
-            //   if (!this.checkNewBornSupportingInfoCodes()) {
-            //     hasError = true;
-            //   }
-
-            //   if (hasError) {
-            //     return;
-            //   }
+              if (hasError) {
+                return;
+              }
 
             this.model = {};
             if (this.claimReuseId) {

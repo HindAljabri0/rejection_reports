@@ -207,6 +207,7 @@ export class DashboardComponent implements OnInit {
             dialogConfig.data = {
                 providerId: ProviderId,
                 username: userName,
+                product: 'WCS',
             }
             const dialogRef = this.dialog.open(FeedbackDialogComponent, dialogConfig);
 

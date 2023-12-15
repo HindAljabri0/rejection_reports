@@ -34,16 +34,18 @@
                         </mat-option>
                       </ng-container>
                   <ng-template #gtincode>
-                  <mat-select panelClass="custom-dropdown" formControlName="item" [disabled]="IsItemLoading" placeholder="Select Code-Description">
-                          <mat-option>
-                              <ngx-mat-select-search placeholderLabel="Search Item" formControlName="itemFilter" noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
+                    <mat-form-field class="form-control custom-select-control">
+                    <mat-select panelClass="custom-dropdown" formControlName="item" [disabled]="IsItemLoading" placeholder="Select Code-Description">
+                        <mat-option>
+                            <ngx-mat-select-search placeholderLabel="Search Item" formControlName="itemFilter" noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
+                        </mat-option>
+                        <cdk-virtual-scroll-viewport itemSize="10" minBufferPx="{{itemList.length}}" maxBufferPx="{{itemList.length * 10}}" class="viewport">  
+                          <mat-option *cdkVirtualFor="let item of filteredItem | async" [value]="item" >
+                              {{item.code}} - {{item.description}}
                           </mat-option>
-                          <cdk-virtual-scroll-viewport itemSize="10" minBufferPx="{{itemList.length}}" maxBufferPx="{{itemList.length * 10}}" class="viewport">  
-                            <mat-option *cdkVirtualFor="let item of filteredItem | async" [value]="item" >
-                                {{item.code}} - {{item.description}}
-                            </mat-option>
-                        </cdk-virtual-scroll-viewport>
-                      </mat-select>
+                      </cdk-virtual-scroll-viewport>
+                    </mat-select>
+                    </mat-form-field>
                   </ng-template>
                 </mat-select>
               </mat-form-field>
@@ -113,7 +115,8 @@
         </div>
 
         <div class="col-4 col-lg-3">
-            <div class="form-group">
+            <div class="form-group"
+              [ngClass]="{'has-error' :IsSupportingInfoSequenceRequired || ((isSubmitted || FormItem.get('supportingInfoSequence').touched) && FormItem.get('supportingInfoSequence').hasError('required'))}">
               <label class="control-label">Supporting Info</label>
               <mat-form-field class="form-control custom-select-control">
                 <mat-select formControlName="supportingInfoSequence" multiple placeholder="Select Supporting Info">
@@ -123,8 +126,7 @@
                     </ngx-mat-select-search>
                   </mat-option>
                   <ng-container>
-                    <!-- <mat-option value="">Select Care Team</mat-option> -->
-                    <mat-option *ngFor="let item of filteredSupportingInfo  | async" [value]="item">
+                         <mat-option *ngFor="let item of filteredSupportingInfo  | async" [value]="item">
                       {{item.sequence}} - {{item.categoryName}} {{item.categoryName=="Days Supply"?' ( '+item.value+' d)':""}} <span *ngIf="item.code">- {{item.code}}</span>
                     </mat-option>
                   </ng-container>
@@ -147,8 +149,7 @@
                     </ngx-mat-select-search>
                   </mat-option>
                   <ng-container>
-                    <!-- <mat-option value="">Select Care Team</mat-option> -->
-                    <mat-option *ngFor="let item of filteredDiagnosis  | async" [value]="item">
+                         <mat-option *ngFor="let item of filteredDiagnosis  | async" [value]="item">
                       {{item.diagnosisCode}} - {{item.diagnosisDescription}}
                     </mat-option>
                   </ng-container>
@@ -157,8 +158,9 @@
               </mat-form-field>
             </div>
           </div>
-        <div class="col-4 col-lg-3">
-            <div class="form-group">
+          <div class="col-4 col-lg-3">
+            <div class="form-group"
+              [ngClass]="{'has-error' :IscareTeamSequenceRequired && ((isSubmitted || FormItem.get('careTeamSequence').touched) && FormItem.get('careTeamSequence').hasError('required'))}">
               <label class="control-label">Care Teams<span *ngIf="IscareTeamSequenceRequired" class="asterisk">*</span></label>
     
               <mat-form-field class="form-control custom-select-control">
@@ -169,8 +171,7 @@
                     </ngx-mat-select-search>
                   </mat-option>
                   <ng-container>
-                    <!-- <mat-option value="">Select Care Team</mat-option> -->
-                    <mat-option *ngFor="let item of filteredCareTeam  | async" [value]="item">
+                        <mat-option *ngFor="let item of filteredCareTeam  | async" [value]="item">
                       {{item.practitionerName}} - {{item.practitionerRole}} - {{item.careTeamRole}} - {{item.speciality}}
                     </mat-option>
                   </ng-container>

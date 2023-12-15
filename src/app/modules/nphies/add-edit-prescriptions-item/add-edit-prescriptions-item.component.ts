@@ -139,6 +139,33 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
 
             this.getItemList();
         } else {
+
+            if (this.data.supportingInfos) {
+                this.filteredSupportingInfo.next(this.data.supportingInfos.slice());
+                this.FormItem.controls.supportingInfoFilter.valueChanges
+                    .pipe(takeUntil(this.onDestroy))
+                    .subscribe(() => {
+                        this.filterSupportingInfo();
+                    });
+            }
+    
+            if (this.data.careTeams) {
+                this.filteredCareTeam.next(this.data.careTeams.slice());
+                this.FormItem.controls.careTeamFilter.valueChanges
+                    .pipe(takeUntil(this.onDestroy))
+                    .subscribe(() => {
+                        this.filterCareTeam();
+                    });
+            }
+    
+            if (this.data.diagnosises) {
+                this.filteredDiagnosis.next(this.data.diagnosises.slice());
+                this.FormItem.controls.diagnosisFilter.valueChanges
+                    .pipe(takeUntil(this.onDestroy))
+                    .subscribe(() => {
+                        this.filterDiagnosis();
+                    });
+            }
          
           if (this.data.subType === 'op') {
                 this.FormItem.controls.quantityCode.setValue('{package}');
@@ -147,32 +174,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
             this.FormItem.controls.factor.setValue(1);
         }
 
-        if (this.data.supportingInfos) {
-            this.filteredSupportingInfo.next(this.data.supportingInfos.slice());
-            this.FormItem.controls.supportingInfoFilter.valueChanges
-                .pipe(takeUntil(this.onDestroy))
-                .subscribe(() => {
-                    this.filterSupportingInfo();
-                });
-        }
-
-        if (this.data.careTeams) {
-            this.filteredCareTeam.next(this.data.careTeams.slice());
-            this.FormItem.controls.careTeamFilter.valueChanges
-                .pipe(takeUntil(this.onDestroy))
-                .subscribe(() => {
-                    this.filterCareTeam();
-                });
-        }
-
-        if (this.data.diagnosises) {
-            this.filteredDiagnosis.next(this.data.diagnosises.slice());
-            this.FormItem.controls.diagnosisFilter.valueChanges
-                .pipe(takeUntil(this.onDestroy))
-                .subscribe(() => {
-                    this.filterDiagnosis();
-                });
-        }
+  
 
         if (this.data.providerType === 'vision' && this.data.source === 'APPROVAL') {
             this.FormItem.controls.factor.setValue(1);
@@ -210,7 +212,44 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
             }
         }
     }
-
+    typeChange(type = null) {
+        if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'scientific-codes') {
+            this.sharedServices.loadingChanged.next(true);
+            this.providerNphiesSearchService.getPrescribedMedicationList(this.sharedServices.providerId).subscribe(event => {
+                if (event instanceof HttpResponse) {
+                    const body = event.body;
+                    if (body) {
+                        this.prescribedMedicationList = body;
+                        this.filteredPescribedMedicationItem.next(body);
+                        if (this.data.item) {
+                            const res = this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.prescribedDrugCode)[0] ? this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.prescribedDrugCode)[0] : '';
+                            if (res) {
+                                this.FormItem.patchValue({
+                                    prescribedDrugCode: res
+                                });
+                              }
+                            this.filteredPescribedMedicationItem.next(this.prescribedMedicationList.slice());
+                            this.filterPrescribedMedicationItem();
+                        }
+                    }
+                }
+               }, errorEvent => {
+                if (errorEvent instanceof HttpErrorResponse) {
+    
+                }
+            });
+            this.sharedServices.loadingChanged.next(false);
+            this.FormItem.controls.quantityCode.setValidators([Validators.required]);
+            this.FormItem.controls.quantityCode.updateValueAndValidity();
+       
+             } 
+             if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes'){
+                
+                this.getItemList(type);
+        }
+        this.FormItem.controls.item.setValue('');
+     
+    }
     setPrescribedMedication(gtinNumber: any) {
         const filteredData = this.itemList.filter((item) => item.code === gtinNumber);
         this.FormItem.patchValue({
@@ -272,28 +311,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
             }
         });
     }
-    typeChange(type = null) {
-        if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
-            this.FormItem.controls.quantityCode.setValidators([Validators.required]);
-            this.FormItem.controls.quantityCode.updateValueAndValidity();
-            this.FormItem.controls.quantityCode.setValue('{package}');
-            this.subSiteList = (this.data.source === 'CNHI' && !this.FormItem.controls.isDentalBodySite.value)
-            ? this.sharedDataService.getSubSite('oral')
-            : this.sharedDataService.getSubSite(this.data.type);
-             } else {
-            this.FormItem.controls.quantityCode.clearValidators();
-            this.FormItem.controls.quantityCode.updateValueAndValidity();
-            this.FormItem.controls.quantityCode.setValue('');
-            this.FormItem.controls.quantityCode.disable();
-            this.showQuantityCode = false;
-        }
-        this.FormItem.controls.item.setValue('');
-        if (type) {
-            this.getItemList(type);
-        } else {
-            this.getItemList();
-        }
-    }
+ 
     onRadioChange(event: any) {
         if (!this.FormItem.controls.isDentalBodySite.value) {
             this.subSiteList = this.sharedDataService.getSubSite('oral');
@@ -568,11 +586,12 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
     }
     onSubmit() {
         this.isSubmitted = true;
-        // if (!this.checkItemsCodeForSupportingInfo()) {
-        //     return;
-        // }
+        if (!this.checkItemsCodeForSupportingInfo()) {
+            return;
+        }
 
         if (this.FormItem) {
+           
 
             const pattern = /(^\d*\.?\d*[1-9]+\d*$)|(^[1-9]+\d*\.\d*$)/;
 
