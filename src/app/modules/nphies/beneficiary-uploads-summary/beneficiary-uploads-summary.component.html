@@ -8,7 +8,7 @@
                 <div class="col-xl-4 col-md-6" *ngFor="let row of uploadSummaryList">
                     <div class="uploaded-card">
                         <p class="medium text-primary">{{row.uploadName}}</p>
-                        <span class="text-medium-grey">{{row.uploadDate}}</span>
+                        <span class="text-medium-grey">{{row.uploadDate | date : 'yyyy/MM/dd hh:mm:ss aa'}}</span>
                         <hr class="hr separator">
                         <p class="small-label">Total No. of Beneficiary</p>
                         <p class="dashboard-numbers text-primary">{{row.totalBeneficiaries}}</p>
