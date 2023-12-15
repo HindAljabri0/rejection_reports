@@ -1290,8 +1290,9 @@ export class AddPrescriptionComponent implements OnInit {
                                         y.patientInstruction = result.patientInstruction;
                                         y.route = result.route;
                                         y.doseType = result.doseType;
-                                        y.doseUnitOrRangeMin = result.doseUnitOrRangeMin;
+                                        y.doseQuantityOrRangeMin = result.doseQuantityOrRangeMin;
                                         y.doseRangeMax = result.doseRangeMax;
+                                        y.doseUnit = result.doseUnit;
                                         y.rateType = result.rateType;
                                         y.rateRatioNumeratorMin = result.rateRatioNumeratorMin;
                                         y.rateRatioDenominatorMax = result.rateRatioDenominatorMax;
