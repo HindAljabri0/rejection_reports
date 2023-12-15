@@ -44,15 +44,23 @@
     <mat-spinner diameter="64"></mat-spinner>
   </div> -->
     <mat-progress-bar *ngIf="!loading" mode="determinate" value="100"></mat-progress-bar>
-    <div class="notification" [class.visible]="isShowAlert">
-        <!-- <marquee behavior="scroll" direction="up" scrollamount="1">Slow Scrolling</marquee> -->
-        <marquee direction="left" scrollamount="5" >
+  <div class="notification" [class.visible]="!isClaimsEnabledSubmit" >
+     <!-- <marquee behavior="scroll" direction="up" scrollamount="3">Notification</marquee> -->
+    <marquee direction="left" scrollamount="4" >
+        <div style="color: red;"> {{deactivateReason}}</div>
+    </marquee>
+    
+</div>
+    <div *ngIf="hasAnyNphiesPrivilege && isClaimsEnabledSubmit" >
+    <div class="notification" [class.visible]="isShowAlert" >
+        <marquee direction="left" scrollamount="4" >
             <div  [innerHTML]="englishMessage"></div>
         </marquee>
-        <marquee *ngIf="arabicMessage!null" behavior="scroll" direction="right" scrollamount="5">
-            <div [innerHTML]="arabicMessage"></div>
+        <marquee *ngIf="arabicMessage!null" behavior="scroll" direction="right" scrollamount="4">
+            <div dir="rtl" lang="ar" [innerHTML]="arabicMessage"></div>
         </marquee>
     </div>
+</div>
 </header>
 
 <mat-menu #downloadMenu="matMenu" xPosition="before" class="download-progress-view-panel">
