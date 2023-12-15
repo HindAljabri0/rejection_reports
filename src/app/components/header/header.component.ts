@@ -13,6 +13,8 @@ import { Store } from '@ngrx/store';
 import { getUserPrivileges, initState, UserPrivileges } from 'src/app/store/mainStore.reducer';
 import { SettingsService } from 'src/app/services/settingsService/settings.service';
 import { AnnountmentDialogComponent } from '../annountment-dialog/annountment-dialog.component';
+import { AdminService } from 'src/app/services/adminService/admin.service';
+import { error } from 'console';
 
 
 @Component({
@@ -31,6 +33,8 @@ export class HeaderComponent implements OnInit {
     arabicMessage = null;
     startDateAlert = null;
     endDateAlert = null;
+    isClaimsEnabled = true;
+    deactivateReason = null;
 
 
 
@@ -61,7 +65,8 @@ export class HeaderComponent implements OnInit {
         private reportsService: ReportsService,
         private store: Store,
         private dialog: MatDialog,
-        private notificationsService: NotificationsService
+        private notificationsService: NotificationsService,
+        private adminService: AdminService
     ) {
         this.sharedServices.unReadNotificationsCountChange.subscribe(count => {
             this.setNewNotificationIndecater(count > 0);
@@ -89,15 +94,17 @@ export class HeaderComponent implements OnInit {
     get loading(): boolean {
         return this.sharedServices.loading;
     }
-    
-  get hasAnyNphiesPrivilege() {
-    const keys = Object.keys(this.userPrivileges.ProviderPrivileges.NPHIES);
-    return keys.some(key => this.userPrivileges.ProviderPrivileges.NPHIES[key]);
-  }
+
+    get hasAnyNphiesPrivilege() {
+        const keys = Object.keys(this.userPrivileges.ProviderPrivileges.NPHIES);
+        return keys.some(key => this.userPrivileges.ProviderPrivileges.NPHIES[key]);
+    }
+
 
 
     ngOnInit() {
         console.log(this.sharedServices.providerId)
+        this.checkClaimsEnabled();
         if (this.sharedServices.providerId != '101' && localStorage.getItem('hasDisplayedAnnouncementDialogue') != "true") {
             this.getAnnouncements();
 
@@ -321,10 +328,6 @@ export class HeaderComponent implements OnInit {
 
     get isShowAlert() {
         var dateToday = new Date().getTime();
-        // console.log(new Date());
-        //    console.log(this.alertMessage);
-        //  console.log(this.startDateAlert);
-        //console.log(this.endDateAlert);
         let alert = this.startDateAlert <= dateToday && this.endDateAlert >= dateToday;
         if (alert) {
             this.showGlobalNotificationVisible();
@@ -359,6 +362,30 @@ export class HeaderComponent implements OnInit {
         })
     }
 
+    get isClaimsEnabledSubmit(){
+        this.isClaimsEnabled = localStorage.getItem("isClaimsEnabled") == "0" ? false : true;
+        if (!this.isClaimsEnabled) {
+            this.showGlobalNotificationVisible();
+        }
+        return this.isClaimsEnabled;
+    }
+checkClaimsEnabled(){
 
+    if (!this.isClaimsEnabledSubmit) {
+        
+        this.adminService.getDeactivateReason(this.sharedServices.providerId).subscribe(event => {
+            if (event instanceof HttpResponse) {
+                this.deactivateReason = event.body as string;
+                if (this.deactivateReason == null || this.deactivateReason == "") {
+                    this.deactivateReason = 'Disconnected due to nonpayment. Please connect to waseel system administrative for further process.';
+                }
+
+             
+            }
+        }, error => {
+            console.log(error)
+        })
+    }
+}
 }
 
