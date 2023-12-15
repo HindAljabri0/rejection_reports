@@ -85,7 +85,7 @@ export class AddFeedbackDateDialogComponent implements OnInit {
                 startDateControl: ['', Validators.required],
                 closeDateControl: ['', Validators.required],
                 productName: [''],
-                providersControl: [''],
+                providersControl: ['', Validators.required],
                 status: [''],
 
 
@@ -104,6 +104,12 @@ export class AddFeedbackDateDialogComponent implements OnInit {
         this.isActive = this.data.status;
         this.filteredProviders = this.providers;
         this.announcementForm.controls.status.setValue(this.data.details.isActive);
+        const productNameControl = this.announcementForm.get('productName');
+    if (productNameControl) {
+      productNameControl.valueChanges.subscribe((newProductName) => {
+            this.resetSelectedProviders();
+      });
+    }
         if (this.data.details.startDate === null) {
             this.announcementForm.controls.startDateControl.setValue(new Date());
         }
@@ -127,11 +133,26 @@ export class AddFeedbackDateDialogComponent implements OnInit {
                 this.announcementForm.get('closeDateControl').disable();
                 this.announcementForm.get('startDateControl').disable();
                 this.announcementForm.get('providersControl').disable();
+                this.announcementForm.get('productName').disable();
 
             }
 
         }
     }
+    resetSelectedProviders(): void {
+        this.selectedProviders = [];
+        this.allProviders = false;
+        this.allRCMProviders = false;
+        this.allDAWYProviders = false;
+        this.allPBMProviders = false;
+        this.allMREProviders = false;
+        this.allWaseelProviders = false;
+        this.allNphiesProviders = false;
+        this.allNphiesPBMProviders = false;
+        this.allNphiesMREProviders = false;
+        this.allWaseelPBMProviders = false;
+        this.allWaseelMREProviders = false;
+      }
 
     closeDialog() {
         this.dialogRef.close(
