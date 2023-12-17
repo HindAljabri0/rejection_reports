@@ -549,8 +549,8 @@
                       matTooltip="Partially Approved">report
                     </mat-icon>
                     <mat-icon *ngIf="(claim.body.mreClaimStatus | lowercase)==='invalid'" class="size-21 text-danger" matTooltip="Invalid">error_outline</mat-icon>
-                    <mat-icon *ngIf="(claim.body.mreClaimStatus | lowercase)==='unknown'" class="material-icons-outlined size-21 text-danger"
-                    matTooltip="Unknown">dangerous</mat-icon>
+                    <mat-icon *ngIf="(claim.body.mreClaimStatus | lowercase)==='unknown'" class="material-icons-outlined size-21 text-warning"
+                    matTooltip="Unknown">report</mat-icon>
                     <mat-icon *ngIf="(claim.body.mreClaimStatus | lowercase)==='rejected'" class="material-icons-outlined size-21 text-danger"
                       matTooltip="Rejected">dangerous</mat-icon></td>
                     <td *ngIf="showInquireAll === true" class="actions text-center">

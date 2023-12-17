@@ -238,6 +238,7 @@ export class CreateClaimNphiesComponent implements OnInit {
   responseId: number;
   pageMode = '';
   currentOpenItem: number = null;
+  currentOpenDiagnosis: number = null;
   otherDataModel: any = {};
 
   // EditBtn = 'Edit';
@@ -252,7 +253,6 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   providerType = '';
   submittionErrors: Map<string, string>;
-  claimData: any = {};
   //IsResubmitMode = false;
   constructor(
 
@@ -327,7 +327,6 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.getPayees();
     this.InitClaimPagenation();
     this.getSpecialityList();
-    this.getMreClaimDetails();
     // if (urlHasEditMode) {
     //   this.pageMode = 'EDIT';
     //   this.disableControls();
@@ -2335,36 +2334,6 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
     });
   }
-
-  getMreClaimDetails(){
-    this.sharedServices.loadingChanged.next(true);
-    let claimProviderId = localStorage.getItem(NPIHES_CLAIM_PROVIDER_ID);
-    this.providerNphiesApprovalService.getMreClaimDetails(this.sharedServices.providerId, this.uploadId ,this.claimId).subscribe(event => {
-      if (event instanceof HttpResponse) {
-        if (event.status === 200) {
-          const body: any = event.body;
-          this.setMreData(body);
-
-        } else {
-          this.sharedServices.loadingChanged.next(false);
-        }
-      }
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        console.log(error);
-        this.sharedServices.loadingChanged.next(false);
-      }
-    });
-  }
-
-  setMreData(response){
-          this.claimData = {};
-
-      this.claimData.mreClaimStatus = response.mreClaimStatus; 
-      this.claimData.mreClaimErrors = response.mreClaimErrors; 
-
-
-  }
   getSpecialityList() {
     this.providerNphiesSearchService.getSpecialityList(this.sharedService.providerId).subscribe(event => {
       if (event instanceof HttpResponse) {
@@ -2614,6 +2583,8 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     this.otherDataModel.errors = response.errors;
     this.otherDataModel.pbmComments = response.pbmComments;
+    this.otherDataModel.mreComments = response.mreComments;
+    
     this.otherDataModel.processNotes = response.processNotes;
 
     this.FormNphiesClaim.controls.preAuthResponseId.setValue(response.preAuthorizationInfo.preAuthResponseId);
@@ -2795,6 +2766,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.diagnosisDescription = x.diagnosisDescription;
       model.type = x.type;
       model.onAdmission = x.onAdmission;
+      model.mreStatus = x.mreStatus;
       // tslint:disable-next-line:max-line-length
       model.typeName = this.sharedDataService.diagnosisTypeList.filter(y => y.value === x.type)[0] ? this.sharedDataService.diagnosisTypeList.filter(y => y.value === x.type)[0].name : '';
       // tslint:disable-next-line:max-line-length
@@ -3036,6 +3008,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.itemId = x.itemId;
       model.bodySite = x.bodySite;
       model.pbmStatus = x.pbmStatus;
+      model.mreStatus = x.mreStatus;
       // tslint:disable-next-line:max-line-length
       model.bodySiteName = this.sharedDataService.getBodySite(response.preAuthorizationInfo.type).filter(y => y.value == x.bodySite)[0] ? this.sharedDataService.getBodySite(response.preAuthorizationInfo.type).filter(y => y.value == x.bodySite)[0].name : '';
 

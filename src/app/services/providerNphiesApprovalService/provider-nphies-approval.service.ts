@@ -28,8 +28,9 @@ export class ProviderNphiesApprovalService {
   }
 
   sendApprovalMRERequest(providerId: string, body: any) {
-    const requestUrl = `/provider/${providerId}/approval/mre-validation`;
-    const request = new HttpRequest('POST', environment.nphiesApprovalMRE + requestUrl, body);
+    const requestUrl = `/providers/${providerId}/approval/mre-validation`;
+    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
+    const request = new HttpRequest( 'POST', environment.nphiesApprovalMRE + requestUrl, body , {headers});
     return this.http.request(request);
   }
   LinkAttachments(providerId: string,
@@ -369,16 +370,6 @@ export class ProviderNphiesApprovalService {
     return this.http.request(request);
   }
 
-  getMreClaimDetails(
-    providerId: string,
-    uploadId?: number,
-    claimIds?: number
-    ) {
-    let requestUrl = `/providers/${providerId}/mre-decision?uploadId=${uploadId}&claimReq=${claimIds}`;
-    let request = new HttpRequest('GET', environment.mreClaimsSender + requestUrl);
-    //http://localhost:8078/providers/706/mre-decision?uploadId=4894&claimReq=1080938
-    return this.http.request(request);
-  }
 
   statusCheck(providerId: string, body: any, isApproval = false) {
     let requestURL = `/providers/${providerId}/approval/checkstatus`;

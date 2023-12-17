@@ -47,5 +47,5 @@ export enum ClaimStatus {
     CREATINGATTACHMENT = 'creatingAttachment',
     UNDER_PBM_VALIDATION = 'under_pbm_validation',
     Under_Attachment_Linking='Under Attachment Linking',
-    UNDER_MRE_VALIDATION = 'under_mre_validation',
+    UNDER_MRE_VALIDATION = 'under mre validation',
 }

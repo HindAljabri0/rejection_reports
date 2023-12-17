@@ -43,13 +43,13 @@
                 <td>{{row.serviceDescription}}</td>
                 <td class="semibold text-success" *ngIf="row.status =='APPROVED'">{{ row.status }}</td>
                 <td class="semibold text-danger" *ngIf="row.status !='APPROVED'">{{ row.status }}</td>
-                <td  *ngIf="row.status !='APPROVED' && row.status !='UNKNOWN'">
+                <td  *ngIf="row.error">
                     <ng-container *ngFor="let err of row.error;let i=index">
                         <span class="abbr" matTooltip="{{err.description}}">{{ err.code }}</span>
                         <ng-container *ngIf="i!=row.err.length-1">, </ng-container>
                       </ng-container>
                 </td>
-                <td *ngIf="row.status =='APPROVED' || row.status =='UNKNOWN' ">-</td>
+                <td *ngIf="!row.error">-</td>
 
             </tr>
            

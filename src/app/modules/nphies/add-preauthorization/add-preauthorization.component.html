@@ -835,13 +835,13 @@
            type="button"
            mat-flat-button color="primary" 
            *ngIf="isMREValidationVisible"
-           (click)="onMreSubmit()" 
+           (click)="onSubmit(false,true)" 
            id="mreRequestButton">
            <span>Request MRE</span>
           </button>
           <button type="button" mat-flat-button color="primary"
            *ngIf="isPBMValidationVisible" 
-           (click)="onSubmit(true)" 
+           (click)="onSubmit(true,false)" 
            id="pbmRequestButton">
             <span>Request PBM</span>
           </button>
