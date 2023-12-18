@@ -86,4 +86,11 @@ export class AdminService {
     const request = new HttpRequest('GET', environment.adminServiceHost + requestURL);
     return this.http.request(request);
   }
-}
+
+  getDeactivateReason(providerId: string){
+    const requestURL = '/providers/'+providerId+'/deactivate/reason';
+    const request = new HttpRequest('GET', environment.adminServiceHost + requestURL, { responseType: 'text' });
+    return this.http.request(request);
+  }
+ }
+
