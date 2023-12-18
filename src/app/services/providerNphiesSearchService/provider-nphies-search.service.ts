@@ -273,6 +273,12 @@ export class ProviderNphiesSearchService {
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
     return this.http.request(request);
   }
+
+  getPrescriberCommunications(providerId: string, responseId: number) {
+    const requestUrl = `/providers/${providerId}/prescriber?responseId=${responseId}`;
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+    return this.http.request(request);
+  }
   getClaimCommunications(providerId: string, responseId: number) {
     const isHeadOffice = AuthService.isProviderHeadOffice();
     let requestURL = `/providers/${providerId}/claims/communications?responseId=${responseId}`;

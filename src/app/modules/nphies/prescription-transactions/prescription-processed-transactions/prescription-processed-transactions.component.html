@@ -30,10 +30,10 @@
           </td>
           <td class="actions">
             <mat-menu #moreMenu="matMenu" xPosition="before">
-              <button mat-menu-item *ngIf="transaction.status === 'approved' || transaction.status === 'rejected' || transaction.status === 'partial' || transaction.status === 'pended'">
+              <!-- <button mat-menu-item *ngIf="transaction.status === 'approved' || transaction.status === 'rejected' || transaction.status === 'partial' || transaction.status === 'pended'">
                 <mat-icon class="material-icons-outlined">replay</mat-icon>
                 <span>Follow Up/Add Related</span>
-              </button>
+              </button> -->
               <!-- <button mat-menu-item><span>Add New Related Claim</span></button> -->
             </mat-menu>
             <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu">

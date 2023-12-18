@@ -16,6 +16,7 @@
                     <tr>
                         <th>survey Id</th>
                         <th>Survey Name</th>
+                        <th>Product</th>
                         <th>Duration</th>
                         <th class="text-center">Active</th>
                         <th width="10"></th>
@@ -26,6 +27,7 @@
                     <tr *ngFor="let survey of content.content">
                         <td (click)="openPreviewDialog(survey)" class="editSurveyClass">{{survey.surveyId}}</td>
                         <td (click)="openPreviewDialog(survey)" class="editSurveyClass">{{survey.name}}</td>
+                        <td (click)="openPreviewDialog(survey)" class="editSurveyClass">{{survey.productName}}</td>
                         <td (click)="openPreviewDialog(survey)" class="editSurveyClass">{{survey.startDate | date:
                             'dd/MM/yyyy'}}-{{survey.closeDate | date: 'dd/MM/yyyy'}}</td>
                         <td class="text-center">

@@ -220,7 +220,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
   nationalities = nationalities;
   selectedCountry = '';
   encounterStatusList = this.sharedDataService.encounterStatusList;
-  encounterClassList = this.sharedDataService.encounterCnhiClassList;
+  encounterClassList = this.sharedDataService.encounterClassList;
   encounterServiceTypeList = this.sharedDataService.encounterServiceTypeList;
   encounterPriorityList = this.sharedDataService.encounterPriorityList;
   encounterAdminSourceList = this.sharedDataService.encounterAdminsSourceList;
