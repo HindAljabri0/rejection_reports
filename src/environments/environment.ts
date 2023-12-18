@@ -7,6 +7,7 @@ let host = 'http://localhost';
 host = 'http://localhost';
 const hostFeedback = 'http://localhost';
 const hostjisr = 'https://qa-jisr.waseel.com/signIn'
+const hostlegacy = 'http://legacy.dr-eclaims.waseel.com/'
 
 export const environment = {
     name: `dev`,
@@ -54,6 +55,7 @@ export const environment = {
     chronicDiseaseManagement: `${host}:8199`,    
     feedbacksurveyUrl: `${hostFeedback}:5000/en`,
     communicationportalUrl: `${hostjisr}`,
+    legacyUrl:`${hostlegacy}`,
 };
 
 /*
