@@ -100,6 +100,7 @@ import { PrescriptionProcessedTransactionsComponent } from './prescription-trans
 import { PrescriptionReuseApprovalModalComponent } from './prescription-transactions/prescription-reuse-approval-modal/prescription-reuse-approval-modal.component';
 import { ViewPrescriptionDetailsComponent } from './view-prescription-detail/view-prescription-details.component';
 import { PrescriptionDetailsComponent } from './prescription-details/prescription-details.component';
+import { MreValidationResponseSummaryDialogComponent } from 'src/app/components/dialogs/mre-validation-response-summary-dialog/mre-validation-response-summary-dialog.component';
 
 import { ApaProcessedTransactionsComponent } from './advance-preauth-transactions/apa-processed-transactions/apa-processed-transactions.component';
 import { ExtractClaimsComponent } from './extract-claims/extract-claims.component';
@@ -188,7 +189,9 @@ import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth
         ExtractClaimsComponent,
         UploadBeneficiaryInquireCchiComponent,
         BeneficiaryUploadsSummaryComponent,
-        UploadBeneficiaryCchiErrorsDialogComponent
+        UploadBeneficiaryCchiErrorsDialogComponent,
+        MreValidationResponseSummaryDialogComponent,
+
     ],
     imports: [
         CommonModule,
@@ -234,6 +237,7 @@ import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth
         AddMedicationSupplyDialogComponent,
         ViewPrintPreviewDialogComponent,
         PbmValidationResponseSummaryDialogComponent,
+        MreValidationResponseSummaryDialogComponent,
         AddEditPrescriptionsItemComponent,
         DosageDetailsComponent,
         ViewPrescriptionDetailsDialogComponent,
