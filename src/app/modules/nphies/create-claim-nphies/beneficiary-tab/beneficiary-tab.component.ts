@@ -273,7 +273,8 @@ export class BeneficiaryTabComponent implements OnInit, OnChanges {
     if (this.otherDataModel.beneficiary.insurancePlan) {
 
       if (this.otherDataModel.beneficiary.insurancePlan.payerId) {
-        this.otherDataModel.beneficiary.insurancePlan.payerName = this.payersList.filter(x => x.nphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0] ? (this.payersList.filter(x => x.nphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].englistName + ' (' + this.payersList.filter(x => x.nphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].arabicName + ')') : '-';
+        this.otherDataModel.beneficiary.insurancePlan.payerName = this.getPayerName(this.otherDataModel.beneficiary.insurancePlan.payerId)
+       // this.payersList.filter(x => x.nphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0] ? (this.payersList.filter(x => x.nphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].englistName + ' (' + this.payersList.filter(x => x.nphiesId === this.otherDataModel.beneficiary.insurancePlan.payerId)[0].arabicName + ')') : '-';
       }
 
       if (this.otherDataModel.beneficiary.insurancePlan.relationWithSubscriber) {
@@ -511,7 +512,7 @@ export class BeneficiaryTabComponent implements OnInit, OnChanges {
 
   getPayerName(PayerId: string) {
     for (const payer of this.payersList) {
-      if (payer.payerId == PayerId) {
+      if (payer.nphiesId == PayerId) {
         return payer.englistName;
       }
     }
@@ -520,7 +521,7 @@ export class BeneficiaryTabComponent implements OnInit, OnChanges {
 
   selectedPayer(payerId: string) {
     for (const payer of this.payersList) {
-      if (payer.payerId == payerId) {
+      if (payer.nphiesId == payerId) {
         return payer.englistName + '(' + payer.arabicName + ')';
       }
     }
@@ -529,8 +530,8 @@ export class BeneficiaryTabComponent implements OnInit, OnChanges {
   selectPayer(event) {
     if (event.value) {
       this.FormNphiesClaim.patchValue({
-        insurancePlanPayerId: event.value.payerNphiesId,
-        destinationId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
+        insurancePlanPayerId: event.value.organizationNphiesId+':'+event.value.payerNphiesId,
+        destinationId: event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : event.value.payerNphiesId
       });
     } else {
       this.FormNphiesClaim.controls.insurancePlanPayerId.setValue('');
