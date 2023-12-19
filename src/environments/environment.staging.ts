@@ -11,6 +11,8 @@ export const environment = {
     uploaderHost: `${host}/upload`,
     claimSearchHost: `${host}/search`,
     claimServiceHost: `${host}/claims`,
+    mreClaimsSender:`${host}/mre-claims-sender`,
+    nphiesApprovalMRE: `${host}/nphies-approval-mre-validation`,
     NotificationServiceHost: `${host}/notifications`,
     authenticationHost: `${host}/oauth`,
     adminServiceHost: `${host}/admin`,
