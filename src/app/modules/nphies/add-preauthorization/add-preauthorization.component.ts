@@ -2217,6 +2217,7 @@ export class AddPreauthorizationComponent implements OnInit {
       if(isMrevalidation){
         let requestObMre = this.providerNphiesApprovalService.sendApprovalMRERequest(this.sharedServices.providerId, this.model);
         this.onMreSubmit(requestObMre);
+        return;
       }
       requestOb.subscribe(event => {
         if (event instanceof HttpResponse) {
