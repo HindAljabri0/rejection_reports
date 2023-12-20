@@ -279,12 +279,7 @@ export class SharedDataService {
   ];
 
   encounterCnhiClassList = [
-    { value: 'AMB', name: 'Ambulatory' },
-    { value: 'EMER', name: 'Emergency' },
-    { value: 'HH', name: 'Home Health' },
-    { value: 'IMP', name: 'Inpatient Encounter' },
-    { value: 'SS', name: 'Short Stay' },
-    { value: 'ALTC', name: 'ALTC' },
+      { value: 'ALTC', name: 'ALTC' },
   ];
 
   encounterServiceTypeList = [

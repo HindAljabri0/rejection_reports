@@ -42,6 +42,7 @@ export class AddEditItemDetailsModalComponent implements OnInit {
   typeListSearchResult = [];
 
   typeList = this.sharedDataService.itemTypeList;
+  cnhiTypeList: { value: string; name: string; }[];
 
   today: Date;
   constructor(
@@ -54,14 +55,16 @@ export class AddEditItemDetailsModalComponent implements OnInit {
 
   ngOnInit() {
 
+    this.cnhiTypeList = [{ value: 'moh-category', name: 'MOH Billing Codes' }];
+
     if (this.data.type) {
       this.setTypes(this.data.type);
     }
 
     if (this.data.item && this.data.item.itemCode) {
       this.FormItem.patchValue({
-        type: this.typeList.filter(x => x.value === this.data.item.type)[0],
-        nonStandardCode: this.data.item.nonStandardCode,
+        type: this.data.source === 'CNHI' ? this.cnhiTypeList.filter(x => x.value === this.data.item.type)[0] : this.typeList.filter(x => x.value === this.data.item.type)[0],
+            nonStandardCode: this.data.item.nonStandardCode,
         display: this.data.item.display,
       });
 
@@ -205,7 +208,7 @@ export class AddEditItemDetailsModalComponent implements OnInit {
   selectItem(type) {
     if (type) {
       this.FormItem.patchValue({
-        type: this.typeList.filter(x => x.value === type.itemType)[0],
+        type: this.data.source === 'CNHI' ? this.cnhiTypeList.filter(x => x.value === this.data.item.type)[0] : this.typeList.filter(x => x.value === this.data.item.type)[0],
         nonStandardCode: type.nonStandardCode,
         display: type.nonStandardDescription,
         unitPrice: type.unitPrice,

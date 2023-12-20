@@ -590,7 +590,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
             return;
         }
 
-        if (this.FormItem) {
+        if (this.FormItem.valid) {
            
 
             const pattern = /(^\d*\.?\d*[1-9]+\d*$)|(^[1-9]+\d*\.\d*$)/;
@@ -607,8 +607,8 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
             model.sequence = this.data.Sequence;
             model.type = this.FormItem.controls.type.value.value;
             model.typeName = this.FormItem.controls.type.value.name;
-            model.itemCode = this.FormItem.controls.item.value.code;
-            model.itemDescription = this.FormItem.controls.item.value.description;
+            model.itemCode = this.FormItem.controls.item.value.code || this.FormItem.controls.item.value.gtinNumber;
+            model.itemDescription = this.FormItem.controls.item.value.description || this.FormItem.controls.item.value.tradeName;
             model.nonStandardCode = this.FormItem.controls.nonStandardCode.value;
             model.display = this.FormItem.controls.display.value;
             model.isPackage = this.FormItem.controls.isPackage.value;
