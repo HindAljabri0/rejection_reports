@@ -221,6 +221,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
   selectedCountry = '';
   encounterStatusList = this.sharedDataService.encounterStatusList;
   encounterClassList = this.sharedDataService.encounterClassList;
+  encounterCNHIClassList = this.sharedDataService.encounterCnhiClassList;
   encounterServiceTypeList = this.sharedDataService.encounterServiceTypeList;
   encounterPriorityList = this.sharedDataService.encounterPriorityList;
   encounterAdminSourceList = this.sharedDataService.encounterAdminsSourceList;
@@ -254,7 +255,6 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
   }
 
   ngOnInit() {
-  
     this.cnhiSubType = [ { value: 'ip', name: 'InPatient' },
     { value: 'emr', name: 'Emergency' },];
     this.getPayees();
@@ -375,7 +375,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
         }
   
         if (this.data.encounter.encounterClass != null) {
-          this.FormPreAuthorization.controls.encounterClass.setValue(this.sharedDataService.encounterCnhiClassList[5].value);
+          this.FormPreAuthorization.controls.encounterClass.setValue(this.sharedDataService.encounterCnhiClassList[0].value);
          }
   
         if (this.data.encounter.serviceType != null) {
