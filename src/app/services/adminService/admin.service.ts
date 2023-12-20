@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
-import { SERVICE_CODE_RESTRICTION_KEY, PBM_RESTRICTION_KEY, NPHIES_PBM_RESTRICTION_KEY, NPHIES_PBM_APPROVAL_KEY } from '../administration/superAdminService/super-admin.service';
+import { SERVICE_CODE_RESTRICTION_KEY, PBM_RESTRICTION_KEY, NPHIES_PBM_RESTRICTION_KEY, NPHIES_PBM_APPROVAL_KEY , NPHIES_MRE_APPROVAL_KEY , NPHIES_MRE_RESTRICTION_KEY } from '../administration/superAdminService/super-admin.service';
 import { DatePipe } from '@angular/common';
 
 @Injectable({
@@ -46,11 +46,24 @@ export class AdminService {
     const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
     return this.http.request(request);
   }
+
+  checkIfNphiesMREValidationIsEnabled(providerId: string, payerId: string) {
+    const requestURL = `/providers/${providerId}/config/${NPHIES_MRE_RESTRICTION_KEY}/payers/${payerId}`;
+    const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
+    return this.http.request(request);
+  }
   checkIfNphiesApprovalPBMValidationIsEnabled(providerId: string, payerId: string) {
     const requestURL = `/providers/${providerId}/config/${NPHIES_PBM_APPROVAL_KEY}/payers/${payerId}`;
     const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
     return this.http.request(request);
   }
+
+  checkIfNphiesApprovalMREValidationIsEnabled(providerId: string, payerId: string) {
+    const requestURL = `/providers/${providerId}/config/${NPHIES_MRE_APPROVAL_KEY}/payers/${payerId}`;
+    const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
+    return this.http.request(request);
+  }
+  
   checkIfPriceListExist(providerId: string, payerId: string) {
     const requestURL = `/price-list/providers/${providerId}/check-payer/${payerId}`;
     const request = new HttpRequest('GET', environment.adminServiceHost + requestURL);

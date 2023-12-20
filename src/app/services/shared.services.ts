@@ -567,6 +567,8 @@ export class SharedServices {
         return 'Creating Attachment';
       case ClaimStatus.UNDER_PBM_VALIDATION.toLowerCase():
         return 'Under PBM Validation';
+      case ClaimStatus.UNDER_MRE_VALIDATION.toLowerCase():
+        return 'Under MRE Validation';
       case ClaimStatus.Under_Attachment_Linking.toLowerCase():
         return 'Linking Attachments';
       default:
