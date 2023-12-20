@@ -8,179 +8,179 @@ import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesAp
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 
 @Component({
-  selector: 'app-prescription-cancel-reason-modal',
-  templateUrl: './prescription-cancel-reason-modal.component.html',
-  styles: []
+    selector: 'app-prescription-cancel-reason-modal',
+    templateUrl: './prescription-cancel-reason-modal.component.html',
+    styles: []
 })
 export class PrescriptionCancelReasonModalComponent implements OnInit {
 
-  FormCancel: FormGroup = this.formBuilder.group({
-    approvalRequestId: ['', Validators.required],
-    cancelReason: ['', Validators.required]
-  });
+    FormCancel: FormGroup = this.formBuilder.group({
+        approvalRequestId: ['', Validators.required],
+        cancelReason: ['', Validators.required]
+    });
 
-  cancelReasonList = this.sharedDataService.cancelReasonList;
-  isSubmitted = false;
+    cancelReasonList = this.sharedDataService.cancelReasonList;
+    isSubmitted = false;
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data,
-    private dialogRef: MatDialogRef<PrescriptionCancelReasonModalComponent>,
-    private sharedServices: SharedServices,
-    private sharedDataService: SharedDataService,
-    private dialogService: DialogService,
-    private providerNphiesApprovalService: ProviderNphiesApprovalService,
-    private formBuilder: FormBuilder) { }
+    constructor(
+        @Inject(MAT_DIALOG_DATA) public data,
+        private dialogRef: MatDialogRef<PrescriptionCancelReasonModalComponent>,
+        private sharedServices: SharedServices,
+        private sharedDataService: SharedDataService,
+        private dialogService: DialogService,
+        private providerNphiesApprovalService: ProviderNphiesApprovalService,
+        private formBuilder: FormBuilder) { }
 
-  ngOnInit() {
-    if (this.data.approvalRequestId) {
-      this.FormCancel.patchValue({
-        approvalRequestId: this.data.approvalRequestId
-      });
-    } else if (this.data.cancelData) {
-      this.FormCancel.controls.approvalRequestId.clearValidators();
-      this.FormCancel.controls.approvalRequestId.updateValueAndValidity();
+    ngOnInit() {
+        if (this.data.approvalRequestId) {
+            this.FormCancel.patchValue({
+                approvalRequestId: this.data.approvalRequestId
+            });
+        } else if (this.data.cancelData) {
+            this.FormCancel.controls.approvalRequestId.clearValidators();
+            this.FormCancel.controls.approvalRequestId.updateValueAndValidity();
+        }
     }
-  }
 
-  onSubmit() {
-    if (this.data.approvalRequestId) {
-      this.cancelSingle();
-    } else if (this.data.cancelData) {
-      this.cancelMultiple();
+    onSubmit() {
+        if (this.data.approvalRequestId) {
+            this.cancelSingle();
+        } else if (this.data.cancelData) {
+            this.cancelMultiple();
+        }
     }
-  }
 
-  cancelSingle() {
-    this.isSubmitted = true;
-    if (this.FormCancel.valid) {
-      this.sharedServices.loadingChanged.next(true);
+    cancelSingle() {
+        this.isSubmitted = true;
+        if (this.FormCancel.valid) {
+            this.sharedServices.loadingChanged.next(true);
 
-      const model: any = {};
-      model.approvalRequestId = this.data.approvalRequestId;
-      // model.approvalResponseId  = this.data.approvalResponseId;
-      model.cancelReason = this.FormCancel.controls.cancelReason.value.value;
-      model.claimProviderId=this.data.claimProviderId;
-      
-      let action: any;
-      if (this.data.type === 'cancel') {
-        action = this.providerNphiesApprovalService.cancelApprovalRequest(this.sharedServices.providerId, model,this.data.isApproval);
-      } else if (this.data.type === 'nullify') {
-        action = this.providerNphiesApprovalService.nullifyApprovalRequest(this.sharedServices.providerId, model);
-      }
+            const model: any = {};
+            model.approvalRequestId = this.data.approvalRequestId;
+            // model.approvalResponseId  = this.data.approvalResponseId;
+            model.cancelReason = this.FormCancel.controls.cancelReason.value.value;
+            model.claimProviderId = this.data.claimProviderId;
 
-      action.subscribe((event: any) => {
-        if (event instanceof HttpResponse) {
-          if (event.status === 200) {
-            const body: any = event.body;
-            if (body.status === 'OK') {
-              if (body.outcome.toString().toLowerCase() === 'failed') {
-                const errors: any[] = [];
-
-                if (body.statusReason) {
-                  errors.push('Outcome Reason: ' + body.statusReason);
-                }
-
-                if (body.disposition) {
-                  errors.push(body.disposition);
-                }
-
-                if (body.errors && body.errors.length > 0) {
-                  body.errors.forEach(err => {
-                    err.coding.forEach(codex => {
-                      errors.push(codex.code + ' : ' + codex.display);
-                    });
-                  });
-                }
-
-                this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors);
-              } else {
-                const errors: any[] = [];
-                if (body.statusReason) {
-                  errors.push('Outcome Reason: ' + body.statusReason);
-                }
-                if (errors.length > 0) {
-                  this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', errors, null, true, null, true);
-                } else {
-                  this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, null, true, null, true);
-                }
-
-                // this.dialogRef.close(true);
-              }
-
+            let action: any;
+            if (this.data.type === 'cancel') {
+                action = this.providerNphiesApprovalService.cancelPrescriberRequest(this.sharedServices.providerId, model, this.data.isPrescriber);
+            } else if (this.data.type === 'nullify') {
+                action = this.providerNphiesApprovalService.nullifyApprovalRequest(this.sharedServices.providerId, model);
             }
-          }
-          this.sharedServices.loadingChanged.next(false);
+
+            action.subscribe((event: any) => {
+                if (event instanceof HttpResponse) {
+                    if (event.status === 200) {
+                        const body: any = event.body;
+                        if (body.status === 'OK') {
+                            if (body.outcome.toString().toLowerCase() === 'failed') {
+                                const errors: any[] = [];
+
+                                if (body.statusReason) {
+                                    errors.push('Outcome Reason: ' + body.statusReason);
+                                }
+
+                                if (body.disposition) {
+                                    errors.push(body.disposition);
+                                }
+
+                                if (body.errors && body.errors.length > 0) {
+                                    body.errors.forEach(err => {
+                                        err.coding.forEach(codex => {
+                                            errors.push(codex.code + ' : ' + codex.display);
+                                        });
+                                    });
+                                }
+
+                                this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors);
+                            } else {
+                                const errors: any[] = [];
+                                if (body.statusReason) {
+                                    errors.push('Outcome Reason: ' + body.statusReason);
+                                }
+                                if (errors.length > 0) {
+                                    this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', errors, null, true, null, true);
+                                } else {
+                                    this.dialogService.showMessage('Success', body.message, 'success', true, 'OK', null, null, true, null, true);
+                                }
+
+                                // this.dialogRef.close(true);
+                            }
+
+                        }
+                    }
+                    this.sharedServices.loadingChanged.next(false);
+                }
+            }, error => {
+                if (error instanceof HttpErrorResponse) {
+                    if (error.status === 400) {
+                        this.dialogService.showMessage(error.error['errors'][0], '', 'alert', true, 'OK', error.error.errors);
+                    } else if (error.status === 404) {
+                        this.dialogService.showMessage(error.error['errors'][0], '', 'alert', true, 'OK');
+                    } else if (error.status === 500) {
+                        this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+                    } else if (error.status === 503) {
+                        const errors: any[] = [];
+                        if (error.error.errors) {
+                            error.error.errors.forEach(x => {
+                                errors.push(x);
+                            });
+                            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+                        } else {
+                            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+                        }
+                    }
+                    this.sharedServices.loadingChanged.next(false);
+                }
+            });
         }
-      }, error => {
-        if (error instanceof HttpErrorResponse) {
-          if (error.status === 400) {
-            this.dialogService.showMessage(error.error['errors'][0], '', 'alert', true, 'OK', error.error.errors);
-          } else if (error.status === 404) {
-            this.dialogService.showMessage(error.error['errors'][0], '', 'alert', true, 'OK');
-          } else if (error.status === 500) {
-            this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
-          } else if (error.status === 503) {
-            const errors: any[] = [];
-            if (error.error.errors) {
-              error.error.errors.forEach(x => {
-                errors.push(x);
-              });
-              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
-            } else {
-              this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+    }
+
+    cancelMultiple() {
+        this.isSubmitted = true;
+        if (this.FormCancel.valid) {
+            this.sharedServices.loadingChanged.next(true);
+
+            const model: any = {};
+            model.cancelReason = this.FormCancel.controls.cancelReason.value.value;
+
+            let action: any;
+            if (this.data.cancelType === 'all') {
+                action = this.providerNphiesApprovalService.cancelClaims(this.data.cancelData.providerId, model.cancelReason,
+                    this.data.cancelData.selectedClaims, this.data.cancelData.uploadId, this.data.cancelData.claimRefNo, this.data.cancelData.to,
+                    this.data.cancelData.payerIds, this.data.cancelData.batchId, this.data.cancelData.memberId, this.data.cancelData.invoiceNo,
+                    this.data.cancelData.patientFileNo, this.data.cancelData.from, this.data.cancelData.claimTypes, this.data.cancelData.netAmount, this.data.cancelData.nationalId, this.data.cancelData.statuses,
+                    this.data.cancelData.organizationId, this.data.cancelData.requestBundleId, this.data.cancelData.isRelatedClaim);
+            } else if (this.data.cancelType === 'selected') {
+                action = this.providerNphiesApprovalService.cancelClaims(this.data.cancelData.providerId, model.cancelReason,
+                    this.data.cancelData.selectedClaims);
             }
-          }
-          this.sharedServices.loadingChanged.next(false);
+
+            action.subscribe((event: any) => {
+                if (event instanceof HttpResponse) {
+                    if (event.status === 202) {
+                        const body: any = event.body;
+                        const resModel: any = {};
+                        resModel.Success = true;
+                        resModel.queuedStatus = body.queuedStatus;
+                        resModel.Message = body.message;
+                        resModel.Errors = body.errors;
+                        this.dialogRef.close(resModel);
+                    }
+                    this.sharedServices.loadingChanged.next(false);
+                }
+            }, error => {
+                this.sharedServices.loadingChanged.next(false);
+                const resModel: any = {};
+                resModel.Success = false;
+                resModel.Error = error;
+                this.dialogRef.close(resModel);
+            });
         }
-      });
     }
-  }
 
-  cancelMultiple() {
-    this.isSubmitted = true;
-    if (this.FormCancel.valid) {
-      this.sharedServices.loadingChanged.next(true);
-
-      const model: any = {};
-      model.cancelReason = this.FormCancel.controls.cancelReason.value.value;
-
-      let action: any;
-      if (this.data.cancelType === 'all') {
-        action = this.providerNphiesApprovalService.cancelClaims(this.data.cancelData.providerId, model.cancelReason,
-          this.data.cancelData.selectedClaims, this.data.cancelData.uploadId, this.data.cancelData.claimRefNo, this.data.cancelData.to,
-          this.data.cancelData.payerIds, this.data.cancelData.batchId, this.data.cancelData.memberId, this.data.cancelData.invoiceNo,
-          this.data.cancelData.patientFileNo, this.data.cancelData.from,this.data.cancelData.claimTypes,this.data.cancelData.netAmount, this.data.cancelData.nationalId, this.data.cancelData.statuses,
-          this.data.cancelData.organizationId, this.data.cancelData.requestBundleId,this.data.cancelData.isRelatedClaim);
-      } else if (this.data.cancelType === 'selected') {
-        action = this.providerNphiesApprovalService.cancelClaims(this.data.cancelData.providerId, model.cancelReason,
-          this.data.cancelData.selectedClaims);
-      }
-
-      action.subscribe((event: any) => {
-        if (event instanceof HttpResponse) {
-          if (event.status === 202) {
-            const body: any = event.body;
-            const resModel: any = {};
-            resModel.Success = true;
-            resModel.queuedStatus = body.queuedStatus;
-            resModel.Message = body.message;
-            resModel.Errors = body.errors;
-            this.dialogRef.close(resModel);
-          }
-          this.sharedServices.loadingChanged.next(false);
-        }
-      }, error => {
-        this.sharedServices.loadingChanged.next(false);
-        const resModel: any = {};
-        resModel.Success = false;
-        resModel.Error = error;
-        this.dialogRef.close(resModel);
-      });
+    closeDialog() {
+        this.dialogRef.close();
     }
-  }
-
-  closeDialog() {
-    this.dialogRef.close();
-  }
 
 }

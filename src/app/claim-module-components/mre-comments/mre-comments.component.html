@@ -1,0 +1,17 @@
+<div class="d-flex justify-content-end pb-2 align-items-center">MRE Status: <span
+    class="status ml-2">{{mreClaimStatus!==null && mreClaimStatus!==undefined ? mreClaimStatus : '' }}</span></div>
+<div class="table-responsive">
+<table cellpadding="0" cellspacing="0" border="0" class="primary-grid">
+    <thead>
+        <tr>
+            <th>Comment</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of mreClaimError">
+            <td>{{item}}</td>
+        </tr>
+    </tbody>
+</table>
+</div>
+<app-empty-state *ngIf="mreClaimError.length===0" message='No comments found!'></app-empty-state>

@@ -1,0 +1,93 @@
+<div class="primary-dialog-header has-border">
+    <h5 class="primary-dialog-title">MRE Validation Response Summary</h5>
+    <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+
+
+
+<div class="primary-dialog-body pb-0">
+    <div class="row small-gutter">
+        <div class="col-md-5">
+            <div class="form-group form-group-static">
+                <div class="control-label">Request ID</div>
+                <p class="form-control-static text-primary">{{ mreResult.payerReferenceNumber }}</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group form-group-static">
+                <div class="control-label">Response Status</div>
+
+                <p class="form-control-static text-danger" *ngIf="mreResult.status !='APPROVED'">{{ mreResult.status }}</p>
+                <p class="form-control-static text-success" *ngIf="mreResult.status =='APPROVED'">{{ mreResult.status }}</p>
+                
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="primary-grid claim-view-table">
+        <thead>
+            <tr>
+                <th>Service Code</th>
+                <th>Service Description </th>
+                <th>Status</th>
+                <th>Rejection Reason</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr *ngFor="let row of mreResult.serviceResults">
+                <td>{{row.serviceCode}}</td>
+                <td>{{row.serviceDescription}}</td>
+                <td class="semibold text-success" *ngIf="row.status =='APPROVED'">{{ row.status }}</td>
+                <td class="semibold text-danger" *ngIf="row.status !='APPROVED'">{{ row.status }}</td>
+                <td  *ngIf="row.error">
+                    <ng-container *ngFor="let err of row.error;let i=index">
+                        <span class="abbr" matTooltip="{{err.description}}">{{ err.code }}</span>
+                        <ng-container *ngIf="i!=row.err.length-1">, </ng-container>
+                      </ng-container>
+                </td>
+                <td *ngIf="!row.error">-</td>
+
+            </tr>
+           
+
+        </tbody>
+
+        <thead>
+            <tr>
+                <th>Diagnosis Code</th>
+                <th>Diagnosis Description </th>
+                <th>Status</th>
+                <th>Rejection Reason</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+        
+            <tr *ngFor="let row of mreResult.diagnosisResults">
+                <td>{{row.code}}</td>
+                <td>{{row.description}}</td>
+                <td class="semibold text-success" *ngIf="row.status =='APPROVED'">{{ row.status }}</td>
+                <td class="semibold text-danger" *ngIf="row.status !='APPROVED'">{{ row.status }}</td>
+                <td *ngIf="row.status !='APPROVED'  && row.status !='UNKNOWN'">
+                    <ng-container *ngFor="let error of row.errors;let i=index">
+                        <span class="abbr" matTooltip="{{error.description}}">{{ error.code }}</span>
+                        <ng-container *ngIf="i!=row.errors.length-1">, </ng-container>
+                      </ng-container>
+                </td>
+                <td *ngIf="row.status =='APPROVED' || row.status =='UNKNOWN' ">-</td>
+            </tr>
+           
+        
+        </tbody>
+        
+    </table>
+</div>
+<div class="text-right p-14">
+    <button mat-button type="button" color="primary" (click)="closeDialog()">Close</button>
+</div> 
+
+

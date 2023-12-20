@@ -279,12 +279,7 @@ export class SharedDataService {
   ];
 
   encounterCnhiClassList = [
-    { value: 'AMB', name: 'Ambulatory' },
-    { value: 'EMER', name: 'Emergency' },
-    { value: 'HH', name: 'Home Health' },
-    { value: 'IMP', name: 'Inpatient Encounter' },
-    { value: 'SS', name: 'Short Stay' },
-    { value: 'ALTC', name: 'ALTC' },
+      { value: 'ALTC', name: 'ALTC' },
   ];
 
   encounterServiceTypeList = [
@@ -501,6 +496,13 @@ export class SharedDataService {
     { value: 'Irreplaceable-drug', name: 'SFDA Irreplaceable drug' }
   ];
 
+  itemAbsenceReasonList = [
+    { value: "Unresponsive", name: 'Unresponsive' },
+    { value: "Adverse Effect", name: 'Adverse Effect' },
+    { value: "Irreplaceable", name: 'Irreplaceable' },
+    { value: "Allergy" , name: 'Allergy' },
+    { value: "Others", name: 'Others' },
+  ];
 
   cancelReasonList = [
     { value: 'WI', name: 'Wrong information' },
