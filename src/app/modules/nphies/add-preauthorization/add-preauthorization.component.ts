@@ -63,6 +63,8 @@ export class AddPreauthorizationComponent implements OnInit {
   selectedPlanIdError: string;
   IsSubscriberRequired = false;
   IsAccident = false;
+  isOnline: boolean = false;
+  isOffline: boolean = false;
   AllTPA: any[] = [];
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
 
@@ -90,6 +92,7 @@ export class AddPreauthorizationComponent implements OnInit {
     date: [''],
     dateWritten: [''],
     prescriber: [''],
+    eligibilityType: [''],
     eligibilityOfflineDate: [''],
     eligibilityOfflineId: [''],
     eligibilityResponseId: [''],
@@ -215,6 +218,7 @@ export class AddPreauthorizationComponent implements OnInit {
   isMREValidationVisible = false;
   Pbm_result:any;
   Mre_result:any;
+  
   constructor(
     private sharedDataService: SharedDataService,
     private dialogService: DialogService,
@@ -230,12 +234,16 @@ export class AddPreauthorizationComponent implements OnInit {
     private providerNphiesApprovalService: ProviderNphiesApprovalService,
     private dbMapping: DbMappingService
   ) {
+    
     this.today = new Date();
   }
 
   ngOnInit() {
     
-   
+    this.FormPreAuthorization.get('eligibilityType').valueChanges.subscribe(value => {
+        this.isOnline = value === 'online';
+        this.isOffline = value === 'offline';
+      });
     this.getPayees();
     this.getTPA();
     this.getPBMValidation();
