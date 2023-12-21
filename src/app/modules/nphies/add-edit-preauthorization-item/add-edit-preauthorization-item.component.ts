@@ -21,6 +21,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
     @ViewChild('itemSelect', { static: true }) itemSelect: MatSelect;
     itemList: any = [];
+    itemListFiltered :any=[];
     // tslint:disable-next-line:max-line-length
     filteredItem: ReplaySubject<any> = new ReplaySubject<any[]>(1);
     filteredPescribedMedicationItem: ReplaySubject<any> = new ReplaySubject<any[]>(1);
@@ -407,8 +408,19 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         }
     }
 
+    itemListFilteredFun(StanderCode){
+        this.itemListFiltered=[];
+        this.itemList.forEach(x=>{
+            if(x.code===StanderCode){
+               
+              this.itemListFiltered.unshift(x);
+            }else{
+              this.itemListFiltered.push(x);
+            }
+          });
+    }
     setPrescribedMedication(gtinNumber: any) {
-        const filteredData = this.itemList.filter((item) => item.code === gtinNumber);
+        const filteredData = this.itemListFiltered.filter((item) => item.code === gtinNumber);
         this.FormItem.patchValue({
             unitPrice: filteredData[0].unitPrice,
         });
@@ -437,7 +449,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     }
 
 
-
+    
     SetSingleRecord(type = null) {
         if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
             this.FormItem.controls.quantityCode.setValidators([Validators.required]);
@@ -457,7 +469,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
                         item: this.itemList.filter(x => x.code === type.code)[0]
                     });
                 }
-                this.filteredItem.next(this.itemList.slice());
+                this.itemListFilteredFun(type.code);
+                this.filteredItem.next(this.itemListFiltered.slice());
+                //this.filteredItem.next(this.itemList.slice());
                 this.FormItem.controls.itemFilter.valueChanges
                     .pipe(takeUntil(this.onDestroy))
                     .subscribe(() => {
@@ -509,18 +523,22 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, this.FormItem.controls.type.value.value).subscribe(event => {
                 if (event instanceof HttpResponse) {
                     this.itemList = event.body;
+                    this.itemListFiltered=this.itemList;
                     if (this.data.item && this.data.item.itemCode) {
                         this.FormItem.patchValue({
                             item: this.itemList.filter(x => x.code === this.data.item.itemCode)[0]
                         });
+                        this.itemListFilteredFun(this.data.item.itemCode);
                     } else {
                         if (type) {
                             this.FormItem.patchValue({
                                 item: this.itemList.filter(x => x.code === type.code)[0]
                             });
+                            this.itemListFilteredFun(type.code);
                         }
                     }
-                    this.filteredItem.next(this.itemList.slice());
+                    this.filteredItem.next(this.itemListFiltered.slice());
+                   // this.filteredItem.next(this.itemList.slice());
                     this.IsItemLoading = false;
                     this.FormItem.controls.item.enable();
                     this.FormItem.controls.itemFilter.valueChanges
@@ -545,9 +563,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         // get the search keyword
         let search = this.FormItem.controls.itemFilter.value;
         if (!search) {
+        
             this.filteredItem.next(this.itemList.slice());
             return;
         } else {
+           console.log("test2")
             search = search.toLowerCase();
         }
         // filter the nations
