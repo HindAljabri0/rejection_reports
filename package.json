@@ -29,7 +29,7 @@
     "buildOciProdEn": "node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng build --configuration=oci_prod-en && npm run post-build -- en",
     "buildOciProdAr": "node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng build --configuration=oci_prod-ar && npm run post-build -- ar",
     "buildDR": "npm-run-all --parallel buildDREn buildDRAr",
-    "buildOciQA": "npm-run-all --parallel buildOciQAEn",
+    "buildOciQA": "npm-run-all --parallel buildOciQAEn buildOciQAAr",
     "buildOciStg": "npm-run-all buildOciStgEn",
     "buildOciProd": "npm-run-all buildOciProdEn",
     "post-build": "node ./build/post-build.js",
