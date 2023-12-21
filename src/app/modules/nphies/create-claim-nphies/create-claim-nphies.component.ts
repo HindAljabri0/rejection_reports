@@ -65,6 +65,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     payeeType: ['', Validators.required],
     type: ['', Validators.required],
     subType: [''],
+    eligibilityType: [''],
     eligibilityOfflineId: [''],
     eligibilityOfflineDate: [''],
     eligibilityResponseId: [''],
@@ -217,6 +218,8 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   IsDateRequired = false;
   IsAccidentTypeRequired = false;
+  isOnline: boolean = false;
+  isOffline: boolean = false;
 
   today: Date;
   pastDate: Date;
@@ -293,6 +296,11 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   }
   ngOnInit() {
+
+    this.FormNphiesClaim.get('eligibilityType').valueChanges.subscribe(value => {
+        this.isOnline = value === 'online';
+        this.isOffline = value === 'offline';
+      });
 
     const urlHasEditMode = +this.router.url.endsWith('edit');
     if (this.activatedRoute.snapshot.queryParams.claimId) {
