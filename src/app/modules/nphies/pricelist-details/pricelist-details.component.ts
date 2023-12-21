@@ -44,6 +44,7 @@ export class PricelistDetailsComponent implements OnInit {
   isHeadOffice;
   headOfficeProviderId;
   providerId;
+    nphiesId: any;
   constructor(
     private dialog: MatDialog,
     private activateRoute: ActivatedRoute,
@@ -107,6 +108,7 @@ export class PricelistDetailsComponent implements OnInit {
         const body = event.body;
         if (body instanceof Array) {
           // tslint:disable-next-line:max-line-length
+          this.nphiesId = body.filter(x => x.nphiesId === this.payerNphiesId)[0] ? body.filter(x => x.nphiesId === this.payerNphiesId)[0].nphiesId : '';
           this.payerName = body.filter(x => x.nphiesId === this.payerNphiesId)[0] ? body.filter(x => x.nphiesId === this.payerNphiesId)[0].englistName : '';
         }
       }
@@ -157,7 +159,8 @@ export class PricelistDetailsComponent implements OnInit {
       autoFocus: false,
       data: {
         priceListId: this.priceListId,
-        priceDetail: priceDetailData
+        priceDetail: priceDetailData,
+        nphiesId:  this.nphiesId,
       }
     });
 

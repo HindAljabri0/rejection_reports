@@ -11,29 +11,9 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>SHEET: [BeneficiaryDetails], ROW_NO: [2], COMMENT: [Missing or Invalid Gender]</td>
-                </tr>
-                <tr>
-                    <td>SHEET: [BeneficiaryDetails], ROW _NO: [2], COMMENT: [Missing or Invalid Full Name]</td>
-                </tr>
-                <tr>
-                    <td>SHEET: [BeneficiaryDetails], ROW_NO: [3], COMMENT: [Missing or Invalid Gender]</td>
-                </tr>
-                <tr>
-                    <td>SHEET: [BeneficiaryDetails], ROW_NO: [3], COMMENT: [Missing or Invalid Full Name]</td>
-                </tr>
-                <tr>
-                    <td>SHEET: [BeneficiaryDetails], ROW_NO: [4], COMMENT: [Missing or Invalid Gender]</td>
-                </tr>
-                <tr>
-                    <td>SHEET: [BeneficiaryDetails], ROW_NO: [4], COMMENT: [Missing or Invalid Full Name]</td>
-                </tr>
-                <tr>
-                    <td>SHEET: [BeneficiaryDetails], ROW_NO: [5], COMMENT: [Missing or Invalid Gender]</td>
-                </tr>
-                <tr>
-                    <td>SHEET: [BeneficiaryDetails]ROW_NO: [51 COMMENT: Missing or Invalid Full Name</td>
+                <tr *ngFor="let row of uploadErrorList">
+                    <td> [ {{row.status}} ] : Document Id: [{{row.documentId}}], COMMENT/ERROR:
+                        [{{row.errorMessage}}]</td>
                 </tr>
             </tbody>
         </table>

@@ -2,11 +2,11 @@
     <div class="inner">
         <div class="list-container">
             <ng-container *ngIf="userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin">
-                <div class="list-title primary">
+                <div class="list-title text-normal-color clickable" (click)="redirectToLegacy()">
                     Waseel
                 </div>
 
-                <mat-accordion displayMode="flat">
+                <!-- <mat-accordion displayMode="flat">
                     <mat-expansion-panel hideToggle
                         [expanded]="uploads.isActive || uploadClaim.isActive || createClaim.isActive || claimHistory.isActive || notification.isActive || announcement.isActive">
                         <mat-expansion-panel-header>
@@ -82,8 +82,8 @@
                                     <span class="text">Submission Report</span>
                                 </a>
                             </li>
-                            <!-- [queryParams]="{type: '3'}"  -->
-                            <li i18n="@@technicalrejectionreport">
+                             [queryParams]="{type: '3'}"  -->
+                            <!-- <li i18n="@@technicalrejectionreport">
                                 <a routerLink="/{{providerId}}/reports/technical-rejection-report" #rejectionReport="routerLinkActive" routerLinkActive="is-active">
                                     <span class="text">Technical Rejection Report</span>
                                 </a>
@@ -209,12 +209,12 @@
                                     <span class="text">Reconciliation Report</span>
                                 </a>
                             </li>
-                            <!-- <li>
+                            <li>
                             <a routerLink="/reports/revenue-report" routerLinkActive="is-active">
                                 <span class="text">Revenue Report</span>
                             </a>
                         </li> -->
-                        </ul>
+                        <!-- </ul>
                     </mat-expansion-panel>
 
                     <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.RCM.isAdmin || userPrivileges.ProviderPrivileges.RCM.canAccessRevenueReport">
@@ -239,9 +239,9 @@
                             </li>
                         </ul>
                     </mat-expansion-panel>
-                </mat-accordion>
+                </mat-accordion> --> 
             </ng-container>
-
+<!-- 
             <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.GSSReportForTawuniya.canAccessGSSReport">
                 <li>
                     <a routerLink="/tawuniya-gss" routerLinkActive="is-active">
@@ -256,7 +256,7 @@
                         <span class="text">Configurations</span>
                     </a>
                 </li>
-            </ul>
+            </ul> -->
 
 
 
@@ -289,7 +289,7 @@
                                 <span class="text">Upload by Inquire CCHI</span>
                             </a>
                         </li>
-                        <li *ngIf="!envProd && !envStaging">
+                        <li>
                             <a routerLink="/nphies/beneficiary/upload-summary" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="is-active">
                                 <span class="text">Uploads Summary</span>
                             </a>
@@ -494,7 +494,7 @@
       </ul> -->
             <mat-accordion>
                 <mat-expansion-panel hideToggle
-                    *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessConfigurations || userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim || userPrivileges.ProviderPrivileges.NPHIES.isAdmin ||userPrivileges.ProviderPrivileges.NPHIES.canAccessPreAuthorization">
+                    *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessConfigurations ||   userPrivileges.ProviderPrivileges.NPHIES.isAdmin ">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             <span class="d-flex align-items-center">
@@ -641,7 +641,7 @@
                                     <span class="text">Feedback Surveys</span>
                                 </a>
                             </li>
-                            <li i18n="@@announcement">
+                            <li>
                                 <a routerLink="/notification-management" routerLinkActive="is-active">
                                     <span class="text">Announcement</span>
                                 </a>

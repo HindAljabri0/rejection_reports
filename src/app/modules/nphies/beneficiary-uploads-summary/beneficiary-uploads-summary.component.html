@@ -3,72 +3,28 @@
         <div class="block-header">
             <p>Uploads Summary</p>
         </div>
-        <div class="block-body">
+        <div class="block-body" *ngIf="uploadSummaryList.length>0" scrollable (scrollPosition)="scrollHandler($event)">
             <div class="row small-gutter uploaded-card-all">
-                <div class="col-xl-4 col-md-6">
+                <div class="col-xl-4 col-md-6" *ngFor="let row of uploadSummaryList">
                     <div class="uploaded-card">
-                        <p class="medium text-primary">upload-20-12-2022.xlsx</p>
-                        <span class="text-medium-grey">2023/09/20 04:00:45 PM</span>
+                        <p class="medium text-primary">{{row.uploadName}}</p>
+                        <span class="text-medium-grey">{{row.uploadDate | date : 'yyyy/MM/dd hh:mm:ss aa'}}</span>
                         <hr class="hr separator">
                         <p class="small-label">Total No. of Beneficiary</p>
-                        <p class="dashboard-numbers text-primary">4</p>
+                        <p class="dashboard-numbers text-primary">{{row.totalBeneficiaries}}</p>
                         <hr class="hr separator">
                         <div class="row small-gutter">
                             <div class="col">
                                 <p class="small-label">Beneficiaries Saved</p>
-                                <p class="dashboard-numbers">0</p>
+                                <p class="dashboard-numbers">{{row.savedBeneficiaryNo}}</p>
                             </div>
                             <div class="col">
                                 <p class="small-label">Beneficiaries Not Saved</p>
-                                <p class="dashboard-numbers text-danger">4</p>
+                                <p class="dashboard-numbers text-danger">{{row.notSavedBeneficiaryNo}}</p>
                             </div>
                             <div class="col-auto">
-                                <button type="button" mat-stroked-button color="primary" (click)="openErrorsDialog()">Errors</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xl-4 col-md-6">
-                    <div class="uploaded-card">
-                        <p class="medium text-primary">SGHR_601_5.xlsx</p>
-                        <span class="text-medium-grey">2023/09/18 04:37:22 PM</span>
-                        <hr class="hr separator">
-                        <p class="small-label">Total No. of Beneficiary</p>
-                        <p class="dashboard-numbers text-primary">500</p>
-                        <hr class="hr separator">
-                        <div class="row small-gutter">
-                            <div class="col">
-                                <p class="small-label">Beneficiaries Saved</p>
-                                <p class="dashboard-numbers">456</p>
-                            </div>
-                            <div class="col">
-                                <p class="small-label">Beneficiaries Not Saved</p>
-                                <p class="dashboard-numbers text-danger">44</p>
-                            </div>
-                            <div class="col-auto">
-                                <button type="button" mat-stroked-button color="primary" (click)="openErrorsDialog()">Errors</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xl-4 col-md-6">
-                    <div class="uploaded-card">
-                        <p class="medium text-primary">Test_item_error.xlsx</p>
-                        <span class="text-medium-grey">2023/09/13 04:26:53 PM</span>
-                        <hr class="hr separator">
-                        <p class="small-label">Total No. of Beneficiary</p>
-                        <p class="dashboard-numbers text-primary">12</p>
-                        <hr class="hr separator">
-                        <div class="row small-gutter">
-                            <div class="col">
-                                <p class="small-label">Beneficiaries Saved</p>
-                                <p class="dashboard-numbers">12</p>
-                            </div>
-                            <div class="col">
-                                <p class="small-label">Beneficiaries Not Saved</p>
-                                <p class="dashboard-numbers text-danger">0</p>
+                                <button type="button" mat-stroked-button color="primary"
+                                    (click)="openErrorsDialog(row.uploadId)">Errors</button>
                             </div>
                         </div>
                     </div>

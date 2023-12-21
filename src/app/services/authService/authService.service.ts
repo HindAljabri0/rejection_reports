@@ -190,6 +190,7 @@ export class AuthService {
     localStorage.setItem('src', body['src']);
     this.getCurrentUserToken().subscribe(event => {
       if (event instanceof HttpResponse) {
+
         const authorities: Array<any> = event.body['authorities'];
 
         const hasClaimPrivileges = authorities.some(element => element['authority'].split('|')[1].startsWith('3')
@@ -226,7 +227,7 @@ export class AuthService {
           });
           
           localStorage.setItem('cchi_id', event.body['cchiId']);      
-          
+          localStorage.setItem('currencyCode', event.body['currencyCode'] !=null ? event.body['currencyCode'] : "SAR"); 
     
 
           localStorage.setItem('parentProviderId', parentProviderId!=null?parentProviderId:event.body['parentProviderId']);
@@ -236,6 +237,7 @@ export class AuthService {
           localStorage.setItem('provider_name', event.body['providerName']);
           localStorage.setItem('organizationId', event.body['organizationId']);
           localStorage.setItem('isHeadOffice',event.body['isHeadOffice']);
+          localStorage.setItem('isClaimsEnabled',event.body['isClaimsEnabled']);
           localStorage.setItem('hasDisplayedAnnouncementDialogue',"false");
           localStorage.setItem('headOfficeProviderId',event.body['headOfficeProviderId']!=null ? event.body['headOfficeProviderId']:'');
           const payers = event.body['payers'];

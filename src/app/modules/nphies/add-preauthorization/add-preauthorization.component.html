@@ -144,39 +144,7 @@
               </mat-form-field>
             </div>
           </div>
-
-          <div class="col-4 col-xxl-3">
-            <div class="form-group">
-              <label class="control-label">Eligibility Response Identifier (Value)</label>
-              <input class="form-control" placeholder="Enter Eligibility Response Identifier (Value)" formControlName="eligibilityResponseId">
-            </div>
-          </div>
-
-          <div class="col-4 col-xxl-3">
-            <div class="form-group">
-              <label class="control-label">Eligibility Response Identifier (URL)</label>
-              <input class="form-control" placeholder="Enter Eligibility Response Identifier (URL)" formControlName="eligibilityResponseUrl">
-            </div>
-          </div>
-
-          <div class="col-4 col-xxl-3">
-            <div class="form-group">
-              <label class="control-label">Offline Eligibility ID</label>
-              <input class="form-control" placeholder="Enter Offline Eligibility ID" formControlName="eligibilityOfflineId">
-            </div>
-          </div>
-          <div class="col-4 col-xxl-3">
-            <div class="form-group">
-              <label class="control-label">Offline Eligibility Date</label>
-              <div class="date-picker">
-                <input [matDatepicker]="eligibilityOfflineDateCtrl" class="form-control" placeholder="Select Offline Eligibility Date" [max]="today"
-                  formControlName="eligibilityOfflineDate">
-                <mat-datepicker-toggle [for]="eligibilityOfflineDateCtrl"></mat-datepicker-toggle>
-                <mat-datepicker #eligibilityOfflineDateCtrl></mat-datepicker>
-              </div>
-            </div>
-          </div>
-
+    
           <div class="col-4 col-xxl-3">
             <div class="form-group"
               [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('payeeType').touched) && FormPreAuthorization.get('payeeType').hasError('required')}">
@@ -252,6 +220,51 @@
             <div class="form-group">
               <label class="control-label">Other Referring Provider</label>
               <input class="form-control" placeholder="Enter Referring Provider Name" formControlName="otherReferral">
+            </div>
+          </div>
+
+          <div class="col-4 col-xxl-3">
+            <div class="form-group">
+              <label class="control-label">Eligibility Details</label>
+              <mat-form-field class="form-control custom-select-control">
+                <mat-select formControlName="eligibilityType">
+                  <mat-option value="">Select Eligibility Type</mat-option>
+                  <mat-option value="online">Online</mat-option>
+                  <mat-option value="offline">Offline</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          
+          <div class="col-4 col-xxl-3" *ngIf="isOnline">
+            <div class="form-group">
+              <label class="control-label">Eligibility Response Identifier (Value)</label>
+              <input class="form-control" placeholder="Enter Eligibility Response Identifier (Value)" formControlName="eligibilityResponseId">
+            </div>
+          </div>
+          
+          <div class="col-4 col-xxl-3" *ngIf="isOnline">
+            <div class="form-group">
+              <label class="control-label">Eligibility Response Identifier (URL)</label>
+              <input class="form-control" placeholder="Enter Eligibility Response Identifier (URL)" formControlName="eligibilityResponseUrl">
+            </div>
+          </div>
+
+          <div class="col-4 col-xxl-3" *ngIf="isOffline">
+            <div class="form-group">
+              <label class="control-label">Eligibility ID</label>
+              <input class="form-control" placeholder="Enter Eligibility ID" formControlName="eligibilityOfflineId">
+            </div>
+          </div>
+          <div class="col-4 col-xxl-3" *ngIf="isOffline">
+            <div class="form-group">
+              <label class="control-label">Eligibility Date</label>
+              <div class="date-picker">
+                <input [matDatepicker]="eligibilityOfflineDateCtrl" class="form-control" placeholder="Select Eligibility Date" [max]="today"
+                  formControlName="eligibilityOfflineDate">
+                <mat-datepicker-toggle [for]="eligibilityOfflineDateCtrl"></mat-datepicker-toggle>
+                <mat-datepicker #eligibilityOfflineDateCtrl></mat-datepicker>
+              </div>
             </div>
           </div>
 
@@ -827,13 +840,26 @@
         <hr class="hr spaced" />
 
         <div class="form-group text-right btn-list">
-          <button type="button" mat-button color="primary" *ngIf="isPBMValidationVisible" [disabled]="!Pbm_result" (click)="openPbmValidationResponseSummaryDialog(Pbm_result)" id="PbmResponse">
+          <button type="button" mat-button color="primary"
+           *ngIf="isPBMValidationVisible" [disabled]="!Pbm_result" (click)="openPbmValidationResponseSummaryDialog(Pbm_result)" id="PbmResponse">
             <span>PBM Response</span>
           </button>
-          <button type="button" mat-flat-button color="primary" *ngIf="isPBMValidationVisible" (click)="onSubmit(true)" id="pbmRequestButton">
+          <button
+           type="button"
+           mat-flat-button color="primary" 
+           *ngIf="isMREValidationVisible"
+           (click)="onSubmit(false,true)" 
+           id="mreRequestButton">
+           <span>Request MRE</span>
+          </button>
+          <button type="button" mat-flat-button color="primary"
+           *ngIf="isPBMValidationVisible" 
+           (click)="onSubmit(true,false)" 
+           id="pbmRequestButton">
             <span>Request PBM</span>
           </button>
-          <button type="submit" mat-flat-button color="primary"  id="requestAuthorizationButton">
+          <button type="submit" mat-flat-button color="primary" 
+           id="requestAuthorizationButton">
             <span>Request Authorization</span>
           </button>
         </div>

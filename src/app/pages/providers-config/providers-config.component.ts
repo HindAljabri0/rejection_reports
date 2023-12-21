@@ -9,7 +9,11 @@ import {
   NPHIES_PBM_RESTRICTION_KEY,
   NET_AMOUNT_RESTRICTION_KEY,
   PROVIDER_TYPE_CONFIGURATION_KEY,
-  NPHIES_PBM_APPROVAL_KEY
+  NPHIES_PBM_APPROVAL_KEY,
+  MRE_RESTRICTION_KEY,
+  NPHIES_MRE_RESTRICTION_KEY,
+  NPHIES_MRE_APPROVAL_KEY,
+  RADIOLOGY_REPORT_KEY,
 } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -56,10 +60,19 @@ export class ProvidersConfigComponent implements OnInit {
     providerMappingSaveError?: string,
     pbmConfigurationError?: string,
     pbmConfigurationSaveError?: string,
+    radiologyConfigurationSaveError?: string,
 
     nphiesPbmConfigurationError?: string,
     nphiesApprovalPbmConfigurationError?:string,
     nphiesPbmConfigurationSaveError?: string,
+
+    radiologyConfigurationError?: string,
+    mreConfigurationError?: string,
+    mreConfigurationSaveError?: string,
+
+    nphiesMreConfigurationError?: string,
+    nphiesApprovalMreConfigurationError?:string,
+    nphiesMreConfigurationSaveError?: string,
 
     netAmountConfigurationError?: string,
     netAmountConfigurationSaveError?: string,
@@ -80,6 +93,10 @@ export class ProvidersConfigComponent implements OnInit {
     pbmConfigurationSaveSuccess?: string,
     nphiesPbmConfigurationSaveSuccess?: string,
     nphiesApprovalPbmConfigurationSaveSuccess?:string,
+    mreConfigurationSaveSuccess?: string,
+    radiologyConfigurationSaveSuccess?: string,
+    nphiesMreConfigurationSaveSuccess?: string,
+    nphiesApprovalMreConfigurationSaveSuccess?:string,
     netAmountConfigurationSaveSuccess?: string,
     pollTypeConfigurationSaveSuccess?: string,
     providerTypeConfigurationSaveSuccess?: string,
@@ -93,6 +110,10 @@ export class ProvidersConfigComponent implements OnInit {
     pbmConfiguration: true,
     nphiesPbmConfiguration: true,
     nphiesApprovalPbmConfiguration: true,
+    mreConfiguration: true,
+    radiologyConfiguration: true,
+    nphiesMreConfiguration: true,
+    nphiesApprovalMreConfiguration: true,
     midtable: true,
     payerMapping: true,
     NphiesPayerMapping: true,
@@ -112,8 +133,11 @@ export class ProvidersConfigComponent implements OnInit {
   sfdaValidationSettings: any[] = [];
   pbmValidationSettings: any[] = [];
   nphiesApprovalPbmValidationSettings: any[] = [];
-
   nphiesPbmValidationSettings: any[] = [];
+  mreValidationSettings: any[] = [];
+  radiologyValidationSettings: any[] = [];
+  nphiesApprovalMreValidationSettings: any[] = [];
+  nphiesMreValidationSettings: any[] = [];
   providerTypeValidationSettings: any[] = [];
   newServiceValidationSettings: { [key: string]: boolean } = {};
   newPriceUnitSettings: { [key: string]: boolean } = {};
@@ -122,6 +146,11 @@ export class ProvidersConfigComponent implements OnInit {
   newPBMValidationSettings: { [key: string]: boolean } = {};
   newNphiesPBMValidationSettings: { [key: string]: boolean } = {};
   newNphiesApprovalPBMValidationSettings: { [key: string]: boolean } = {};
+  newMREValidationSettings: { [key: string]: boolean } = {};
+  newNphiesMREValidationSettings: { [key: string]: boolean } = {};
+  newRadiologyValidationSettings: { [key: string]: boolean } = {};
+  newNphiesApprovalMREValidationSettings: { [key: string]: boolean } = {};
+ 
   newProvideTypeValidationSettings: { [key: string]: boolean } = {};
 
   portalUserSettings: any;
@@ -150,8 +179,16 @@ export class ProvidersConfigComponent implements OnInit {
   PBMUserController: FormControl = new FormControl('');
   PBMPasswordController: FormControl = new FormControl('');
   PBMCheckValueController: FormControl = new FormControl('');
+  MREUserController: FormControl = new FormControl('');
+  MREPasswordController: FormControl = new FormControl('');
+  MRECheckValueController: FormControl = new FormControl('');
+  RadiologyUserController: FormControl = new FormControl('');
+  RadiologyPasswordController: FormControl = new FormControl('');
+  RadiologyCheckValueController: FormControl = new FormControl('');
   payerMappingValue: { [key: number]: string } = {};
   isPBMLoading = false;
+  isMRELoading = false;
+  isRadiologyLoading = false;
   exisingServiceAndPriceValidationData: any = [];
   netAmountController: FormControl = new FormControl('');
   netAmountValue: number;
@@ -282,6 +319,11 @@ export class ProvidersConfigComponent implements OnInit {
           this.newPBMValidationSettings['101'] = false;
           this.newNphiesPBMValidationSettings['101'] = false;
           this.newNphiesApprovalPBMValidationSettings['101'] = false;
+          this.newMREValidationSettings['101'] = false;
+          this.newNphiesMREValidationSettings['101'] = false;
+          this.newRadiologyValidationSettings['101'] = false;
+          this.newNphiesApprovalMREValidationSettings['101'] = false;
+
           this.associatedPayers = event.body;
           this.associatedPayers.forEach(payer => {
             // this.newServiceValidationSettings[payer.switchAccountId] = false;
@@ -414,6 +456,11 @@ export class ProvidersConfigComponent implements OnInit {
     this.getSetting(PBM_RESTRICTION_KEY, this.pbmValidationSettings, this.newPBMValidationSettings, false);
     this.getSetting(NPHIES_PBM_RESTRICTION_KEY, this.nphiesPbmValidationSettings, this.newNphiesPBMValidationSettings, false);
     this.getSetting(NPHIES_PBM_APPROVAL_KEY, this.nphiesApprovalPbmValidationSettings, this.newNphiesApprovalPBMValidationSettings, false);
+    this.getSetting(MRE_RESTRICTION_KEY, this.mreValidationSettings, this.newMREValidationSettings, false);
+    this.getSetting(RADIOLOGY_REPORT_KEY, this.radiologyValidationSettings, this.newRadiologyValidationSettings, false);
+    this.getSetting(NPHIES_MRE_RESTRICTION_KEY, this.nphiesMreValidationSettings, this.newNphiesMREValidationSettings, false);
+    this.getSetting(NPHIES_MRE_APPROVAL_KEY, this.nphiesApprovalMreValidationSettings, this.newNphiesApprovalMREValidationSettings, false);
+   
     this.getSetting(PROVIDER_TYPE_CONFIGURATION_KEY, this.providerTypeValidationSettings, this.newProvideTypeValidationSettings, false);
     this.getPortalUserSettings();
     // ####### Chages on 02-01-2021 start
@@ -441,6 +488,9 @@ export class ProvidersConfigComponent implements OnInit {
       this.componentLoading.sfda ||
       this.componentLoading.pbmConfiguration ||
       this.componentLoading.nphiesPbmConfiguration ||
+      this.componentLoading.mreConfiguration ||
+      this.componentLoading.nphiesMreConfiguration ||
+      this.componentLoading.radiologyConfiguration ||
       this.componentLoading.midtable ||
       this.componentLoading.payerMapping ||
       this.componentLoading.NphiesPayerMapping ||
@@ -459,6 +509,10 @@ export class ProvidersConfigComponent implements OnInit {
     const pbmFlag = this.saveSettings(PBM_RESTRICTION_KEY, this.newPBMValidationSettings, this.pbmValidationSettings);
     const nphiesPbmFlag = this.saveSettings(NPHIES_PBM_RESTRICTION_KEY, this.newNphiesPBMValidationSettings, this.nphiesPbmValidationSettings);
     const nphiesApprovalPbmFlag = this.saveSettings(NPHIES_PBM_APPROVAL_KEY, this.newNphiesApprovalPBMValidationSettings, this.nphiesApprovalPbmValidationSettings);
+    const mreFlag = this.saveSettings(MRE_RESTRICTION_KEY, this.newMREValidationSettings, this.mreValidationSettings);
+    const radiologyFlag = this.saveSettings(RADIOLOGY_REPORT_KEY, this.newRadiologyValidationSettings, this.radiologyValidationSettings);
+    const nphiesMreFlag = this.saveSettings(NPHIES_MRE_RESTRICTION_KEY, this.newNphiesMREValidationSettings, this.nphiesMreValidationSettings);
+    const nphiesApprovalMreFlag = this.saveSettings(NPHIES_MRE_APPROVAL_KEY, this.newNphiesApprovalMREValidationSettings, this.nphiesApprovalMreValidationSettings);
     // change on 02-01-2021 start
     const dbFlag = this.addDatabaseConfig();
     const payerFlag = this.savePayerMapping();
@@ -471,8 +525,9 @@ export class ProvidersConfigComponent implements OnInit {
 
     // change on 02-01-2021 end
     // && priceUnitFlag && serviceCodeFlag
+    //check again 
     if (portalUserFlag && icd10Flag && sfdaFlag && dbFlag
-      && payerFlag && nphiesPayerFlag && providerFlag && pbmFlag && nphiesPbmFlag && nphiesApprovalPbmFlag && priceListFlag && netAmountFlag && pollConfigFlag && providerTypeFlag) {
+      && payerFlag && nphiesPayerFlag && providerFlag && pbmFlag && nphiesPbmFlag && nphiesApprovalPbmFlag && mreFlag && nphiesMreFlag && nphiesApprovalMreFlag && radiologyFlag && priceListFlag && netAmountFlag && pollConfigFlag && providerTypeFlag) {
       this.dialogService.openMessageDialog({
         title: '',
         message: 'There is no changes to save!',
@@ -622,6 +677,30 @@ export class ProvidersConfigComponent implements OnInit {
           value: (newSettingValues[payerId]) ? '1' : '0'
         });
         break;
+        case MRE_RESTRICTION_KEY:
+            this.mreValidationSettings.push({
+              providerId: this.selectedProvider,
+              payerId,
+              key: URLKey,
+              value: (newSettingValues[payerId]) ? '1' : '0'
+            });
+            break;
+            case RADIOLOGY_REPORT_KEY:
+                this.radiologyValidationSettings.push({
+                  providerId: this.selectedProvider,
+                  payerId,
+                  key: URLKey,
+                  value: (newSettingValues[payerId]) ? '1' : '0'
+                });
+                break;
+          case NPHIES_MRE_RESTRICTION_KEY:
+            this.nphiesMreValidationSettings.push({
+              providerId: this.selectedProvider,
+              payerId,
+              key: URLKey,
+              value: (newSettingValues[payerId]) ? '1' : '0'
+            });
+            break;
       case PROVIDER_TYPE_CONFIGURATION_KEY:
         this.providerTypeValidationSettings.push({
           providerId: this.selectedProvider,
@@ -651,6 +730,15 @@ export class ProvidersConfigComponent implements OnInit {
         break;
       case NPHIES_PBM_RESTRICTION_KEY:
         this.nphiesPbmValidationSettings[index].value = value;
+        break;
+      case MRE_RESTRICTION_KEY:
+        this.mreValidationSettings[index].value = value;
+        break;
+    case RADIOLOGY_REPORT_KEY:
+        this.radiologyValidationSettings[index].value = value;
+        break;
+      case NPHIES_MRE_RESTRICTION_KEY:
+        this.nphiesMreValidationSettings[index].value = value;
         break;
       case PROVIDER_TYPE_CONFIGURATION_KEY:
         this.providerTypeValidationSettings[index],value = value;
@@ -706,6 +794,10 @@ export class ProvidersConfigComponent implements OnInit {
     this.resetSection(PBM_RESTRICTION_KEY, this.newPBMValidationSettings);
     this.resetSection(NPHIES_PBM_RESTRICTION_KEY, this.newNphiesPBMValidationSettings);
     this.resetSection(NPHIES_PBM_APPROVAL_KEY, this.newNphiesApprovalPBMValidationSettings);
+    this.resetSection(RADIOLOGY_REPORT_KEY, this.newRadiologyValidationSettings);
+        this.resetSection(MRE_RESTRICTION_KEY, this.newMREValidationSettings);
+    this.resetSection(NPHIES_MRE_RESTRICTION_KEY, this.newNphiesMREValidationSettings);
+    this.resetSection(NPHIES_MRE_APPROVAL_KEY, this.newNphiesApprovalMREValidationSettings);
     this.resetSection(PROVIDER_TYPE_CONFIGURATION_KEY, this.newProvideTypeValidationSettings);
     this.resetDbAndMapping();
     this.resetUserMessages();
@@ -743,6 +835,22 @@ export class ProvidersConfigComponent implements OnInit {
         case NPHIES_PBM_APPROVAL_KEY:
           setTimeout(() => this.componentLoading.nphiesApprovalPbmConfiguration = false, 100);
           this.newNphiesApprovalPBMValidationSettings = {};
+          break; 
+          case RADIOLOGY_REPORT_KEY:
+            setTimeout(() => this.componentLoading.radiologyConfiguration = false, 100);
+            this.newRadiologyValidationSettings = {};
+            break; 
+        case MRE_RESTRICTION_KEY:
+          setTimeout(() => this.componentLoading.mreConfiguration = false, 100);
+            this.newMREValidationSettings = {};
+          break;
+        case NPHIES_MRE_RESTRICTION_KEY:
+            setTimeout(() => this.componentLoading.nphiesMreConfiguration = false, 100);
+            this.newNphiesMREValidationSettings = {};
+          break;
+        case NPHIES_MRE_APPROVAL_KEY:
+            setTimeout(() => this.componentLoading.nphiesApprovalMreConfiguration = false, 100);
+            this.newNphiesApprovalMREValidationSettings = {};
           break;
         }
     }
@@ -820,6 +928,18 @@ export class ProvidersConfigComponent implements OnInit {
       case NPHIES_PBM_APPROVAL_KEY:
           this.errors.nphiesApprovalPbmConfigurationError = message;
           break;
+    case  RADIOLOGY_REPORT_KEY:
+            this.errors.radiologyConfigurationError = message;
+            break;
+      case MRE_RESTRICTION_KEY:
+          this.errors.mreConfigurationError = message;
+          break;
+      case NPHIES_MRE_RESTRICTION_KEY:
+          this.errors.nphiesMreConfigurationError = message;
+          break;
+      case NPHIES_MRE_APPROVAL_KEY:
+          this.errors.nphiesApprovalMreConfigurationError = message;
+          break;
       case NET_AMOUNT_RESTRICTION_KEY:
         this.errors.netAmountConfigurationError = message;
         break;
@@ -846,6 +966,15 @@ export class ProvidersConfigComponent implements OnInit {
       case NPHIES_PBM_RESTRICTION_KEY:
         this.componentLoading.nphiesPbmConfiguration = componentLoading;
         break;
+        case RADIOLOGY_REPORT_KEY:
+            this.componentLoading.radiologyConfiguration = componentLoading;
+            break;
+      case MRE_RESTRICTION_KEY:
+        this.componentLoading.mreConfiguration = componentLoading;
+        break;
+      case NPHIES_MRE_RESTRICTION_KEY:
+        this.componentLoading.nphiesMreConfiguration = componentLoading;
+        break;
     }
   }
 
@@ -864,8 +993,17 @@ export class ProvidersConfigComponent implements OnInit {
       case PBM_RESTRICTION_KEY:
         this.errors.pbmConfigurationSaveError = value;
         break;
+    case RADIOLOGY_REPORT_KEY:
+        this.errors.radiologyConfigurationSaveError = value;
+        break;
       case NPHIES_PBM_RESTRICTION_KEY:
         this.errors.nphiesPbmConfigurationSaveError = value;
+        break;
+      case MRE_RESTRICTION_KEY:
+        this.errors.mreConfigurationSaveError = value;
+        break;
+      case NPHIES_MRE_RESTRICTION_KEY:
+        this.errors.nphiesMreConfigurationSaveError = value;
         break;
       case NET_AMOUNT_RESTRICTION_KEY:
         this.errors.netAmountConfigurationSaveError = value;
@@ -900,6 +1038,18 @@ export class ProvidersConfigComponent implements OnInit {
         break;
       case NPHIES_PBM_APPROVAL_KEY:
         this.success.nphiesApprovalPbmConfigurationSaveSuccess = value;
+        break;
+    case RADIOLOGY_REPORT_KEY:
+        this.success.radiologyConfigurationSaveSuccess = value;
+        break;
+      case NPHIES_MRE_APPROVAL_KEY:
+        this.success.nphiesApprovalMreConfigurationSaveSuccess = value;    
+        break;
+      case MRE_RESTRICTION_KEY:
+        this.success.mreConfigurationSaveSuccess = value;
+        break;
+      case NPHIES_MRE_RESTRICTION_KEY:
+        this.success.nphiesMreConfigurationSaveSuccess = value;
         break;
       case PROVIDER_TYPE_CONFIGURATION_KEY:
         this.success.providerTypeConfigurationSaveSuccess = value;

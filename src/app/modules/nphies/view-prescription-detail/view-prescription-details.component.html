@@ -1,360 +1,410 @@
 <div class="primary-dialog-header has-border">
-  <h5 *ngIf="data && data.detailsModel" class="primary-dialog-title">Authorization :
-    {{data.detailsModel.claimResourceId}}</h5>&nbsp;&nbsp;
+    <h5 *ngIf="data && data.detailsModel" class="primary-dialog-title">Authorization :
+        {{data.detailsModel.claimResourceId}}</h5>&nbsp;&nbsp;
 
     <div class="ml-auto left-block">
-      <h5 *ngIf="data && data.detailsModel && data.detailsModel.providertransactionlogId"
-        class="primary-dialog-title ml-0">Transaction :
-        {{data.detailsModel.providertransactionlogId}}</h5>
+        <h5 *ngIf="data && data.detailsModel && data.detailsModel.providertransactionlogId"
+            class="primary-dialog-title ml-0">Transaction :
+            {{data.detailsModel.providertransactionlogId}}</h5>
     </div>
     <button type="button" (click)="closeDialog()" class="dialog-close ml-0" matRipple></button>
 </div>
 <div class="primary-dialog-body p-0">
-  <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding" [selectedIndex]="selectedTab">
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <span>Details</span>
-      </ng-template>
-      <div class="pre-auth-info-wrapper">
-        <app-pre-authorization-details *ngIf="data.detailsModel" [data]="data.detailsModel">
-        </app-pre-authorization-details>
-      </div>
-    </mat-tab>
-    <mat-tab *ngIf="data.detailsModel.outcome !== 'Error'">
-      <ng-template mat-tab-label>
-        <div class="d-flex align-items-center">
-          <span>Communication</span>
-        </div>
-      </ng-template>
-      <div class="communication-wrapper">
-        <h5 class="form-title px-14 py-0 mb-0">
-          <button mat-flat-button class="primary-text-btn ml-auto px-0" disableRipple="true"
-            (click)="openAddCommunicationDialog()">
-            <mat-icon>add_circle_outline</mat-icon>
-            <span class="pl-1">Add Communication</span>
-          </button>
-        </h5>
-        <ul class="communication">
-          <li *ngFor="let communication of communications">
-            <ng-container *ngIf="communication.communicationRequestId">
-              <div class="header-block">
-                <div class="message">
-                  <div class="table-responsive pb-2">
-                    <table cellspacing="0" cellpadding="0" border="0" class="primary-grid">
-                      <tbody>
-                        <ng-container *ngFor="let payload of communication.payloadList">
-                          <tr *ngIf="payload.payloadValue">
-                            <td class="px-0">
-                              {{payload.payloadValue}}
-                              <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
-                                <span><span class="medium">Item</span> - {{payload.payloadItemModel.itemSequence}} -
-                                  {{payload.payloadItemModel.itemType}} - {{payload.payloadItemModel.code}} -
-                                  {{payload.payloadItemModel.description}}</span>
-                                <span class="text-primary non-standard-code"
-                                  *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
-                                  <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
-                                    ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
-                                </span>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr
-                            *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
-                            <td class="px-0">
-                              <ul class="inline-attachments no-space">
-                                <li>
-                                  <button type="button"
-                                    (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
-                                    <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
-                                    <span>{{payload.attachmentName}}</span>
-                                  </button>
-                                </li>
-                              </ul>
-                              <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
-                                <span><span class="medium">Item</span> - {{payload.payloadItemModel.itemSequence}} -
-                                  {{payload.payloadItemModel.itemType}} - {{payload.payloadItemModel.code}} -
-                                  {{payload.payloadItemModel.description}}</span>
-                                <span class="text-primary non-standard-code"
-                                  *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
-                                  <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
-                                    ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
-                                </span>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr
-                            *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
-                            <td class="px-0">
-                              <ul class="inline-attachments no-space">
-                                <li>
-                                  <button type="button"
-                                    (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
-                                    <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
-                                    <span>{{payload.attachmentName}}</span>
-                                  </button>
-                                </li>
-                              </ul>
-                              <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
-                                <span><span class="medium">Item</span> - {{payload.payloadItemModel.itemSequence}} -
-                                  {{payload.payloadItemModel.itemType}} - {{payload.payloadItemModel.code}} -
-                                  {{payload.payloadItemModel.description}}</span>
-                                <span class="text-primary non-standard-code"
-                                  *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
-                                  <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
-                                    ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
-                                </span>
-                              </div>
-                            </td>
-                          </tr>
-                        </ng-container>
-                      </tbody>
-                    </table>
-                  </div>
-                  <span>Communication Request ID: {{communication.requestIdentifierId}} &nbsp;&nbsp;&nbsp;&nbsp;
-                    Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
+    <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding" [selectedIndex]="selectedTab">
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <span>Details</span>
+            </ng-template>
+            <div class="pre-auth-info-wrapper">
+                <app-prescription-details *ngIf="data.detailsModel" [data]="data.detailsModel">
+                </app-prescription-details>
+            </div>
+        </mat-tab>
+        <mat-tab *ngIf="data.detailsModel.outcome !== 'Error'">
+            <ng-template mat-tab-label>
+                <div class="d-flex align-items-center">
+                    <span>Communication</span>
                 </div>
-                <div class="ml-auto action-btns">
-                  <button *ngIf="communication.error" type="button" class="action-btn mr-1"
-                    matTooltip="{{communication.communicationErrors}}">
-                    <mat-icon class="text-danger">error_outline</mat-icon>
-                  </button>
-                  <button
-                    *ngIf="communication.communicationRequestNotesList && communication.communicationRequestNotesList.length > 0"
-                    type="button" class="action-btn mr-1" [matMenuTriggerFor]="notesMenu">
-                    <mat-icon class="text-primary">text_snippet</mat-icon>
-                    <span>Notes</span>
-                  </button>
-                  <button type="button" class="action-btn"
-                    (click)="openAddCommunicationDialog(communication.communicationRequestId)">
-                    <mat-icon class="text-primary">reply</mat-icon>
-                    <span>Reply</span>
-                  </button>
-                </div>
-                <mat-menu #notesMenu="matMenu" class="communication-notes">
-                  <ul *ngIf="communication.communicationRequestNotesList" class="notes">
-                    <li *ngFor="let n of communication.communicationRequestNotesList">
-                      <p>{{n.noteText}}</p>
-                      <div class="info">
-                        <span>{{n.noteAuthor}}</span>
-                        <span class="text-right ml-auto">{{n.createdDate | date: 'dd/MM/yyyy hh:mm aa'}}</span>
-                      </div>
-                    </li>
-                  </ul>
-                </mat-menu>
-              </div>
-              <ng-container *ngIf="communication.communicationDataList">
-                <div class="body-block sent" *ngFor="let reply of communication.communicationDataList">
-                  <div class="message size-sm">
-                    <div class="table-responsive pb-2">
-                      <table cellspacing="0" cellpadding="0" border="0" class="primary-grid">
-                        <tbody>
-                          <ng-container *ngFor="let payload of reply.payloadList">
-                            <tr *ngIf="payload.payloadValue">
-                              <td class="px-0">
-                                {{payload.payloadValue}}
-                                <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
-                                  <span><span class="medium">Item</span> - {{payload.payloadItemModel.itemSequence}} -
-                                    {{payload.payloadItemModel.itemType}} - {{payload.payloadItemModel.code}} -
-                                    {{payload.payloadItemModel.description}}</span>
-                                  <span class="text-primary non-standard-code"
-                                    *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
-                                    <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
-                                      ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
-                                  </span>
+            </ng-template>
+            <div class="communication-wrapper">
+                <h5 class="form-title px-14 py-0 mb-0">
+                    <button mat-flat-button class="primary-text-btn ml-auto px-0" disableRipple="true"
+                        (click)="openAddCommunicationDialog()">
+                        <mat-icon>add_circle_outline</mat-icon>
+                        <span class="pl-1">Add Communication</span>
+                    </button>
+                </h5>
+                <ul class="communication">
+                    <li *ngFor="let communication of communications">
+                        <ng-container *ngIf="communication.communicationRequestId">
+                            <div class="header-block">
+                                <div class="message">
+                                    <div class="table-responsive pb-2">
+                                        <table cellspacing="0" cellpadding="0" border="0" class="primary-grid">
+                                            <tbody>
+                                                <ng-container *ngFor="let payload of communication.payloadList">
+                                                    <tr *ngIf="payload.payloadValue">
+                                                        <td class="px-0">
+                                                            {{payload.payloadValue}}
+                                                            <div class="pt-2 nphies-items"
+                                                                *ngIf="payload.payloadItemModel">
+                                                                <span><span class="medium">Item</span> -
+                                                                    {{payload.payloadItemModel.itemSequence}} -
+                                                                    {{payload.payloadItemModel.itemType}} -
+                                                                    {{payload.payloadItemModel.code}} -
+                                                                    {{payload.payloadItemModel.description}}</span>
+                                                                <span class="text-primary non-standard-code"
+                                                                    *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                                                    <ng-container
+                                                                        *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                                                        ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                                                </span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr
+                                                        *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
+                                                        <td class="px-0">
+                                                            <ul class="inline-attachments no-space">
+                                                                <li>
+                                                                    <button type="button"
+                                                                        (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
+                                                                        <img src="./assets/file-types/ic-jpg.svg"
+                                                                            alt="JPG" />
+                                                                        <span>{{payload.attachmentName}}</span>
+                                                                    </button>
+                                                                </li>
+                                                            </ul>
+                                                            <div class="pt-2 nphies-items"
+                                                                *ngIf="payload.payloadItemModel">
+                                                                <span><span class="medium">Item</span> -
+                                                                    {{payload.payloadItemModel.itemSequence}} -
+                                                                    {{payload.payloadItemModel.itemType}} -
+                                                                    {{payload.payloadItemModel.code}} -
+                                                                    {{payload.payloadItemModel.description}}</span>
+                                                                <span class="text-primary non-standard-code"
+                                                                    *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                                                    <ng-container
+                                                                        *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                                                        ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                                                </span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr
+                                                        *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
+                                                        <td class="px-0">
+                                                            <ul class="inline-attachments no-space">
+                                                                <li>
+                                                                    <button type="button"
+                                                                        (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
+                                                                        <img src="./assets/file-types/ic-pdf.svg"
+                                                                            alt="PDF" />
+                                                                        <span>{{payload.attachmentName}}</span>
+                                                                    </button>
+                                                                </li>
+                                                            </ul>
+                                                            <div class="pt-2 nphies-items"
+                                                                *ngIf="payload.payloadItemModel">
+                                                                <span><span class="medium">Item</span> -
+                                                                    {{payload.payloadItemModel.itemSequence}} -
+                                                                    {{payload.payloadItemModel.itemType}} -
+                                                                    {{payload.payloadItemModel.code}} -
+                                                                    {{payload.payloadItemModel.description}}</span>
+                                                                <span class="text-primary non-standard-code"
+                                                                    *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                                                    <ng-container
+                                                                        *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                                                        ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                                                </span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </ng-container>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <span>Communication Request ID: {{communication.requestIdentifierId}}
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                        Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
                                 </div>
-                              </td>
-                              <td style="text-align: right;">
                                 <div class="ml-auto action-btns">
-                                  <button *ngIf="reply.error" type="button" class="action-btn mr-1"
-                                    matTooltip="{{reply.communicationErrors}}">
-                                    <mat-icon class="text-danger">error_outline</mat-icon>
-                                  </button>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr
-                              *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
-                              <td class="px-0">
-                                <ul class="inline-attachments no-space">
-                                  <li>
-                                    <button type="button"
-                                      (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
-                                      <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
-                                      <span>{{payload.attachmentName}}</span>
+                                    <button *ngIf="communication.error" type="button" class="action-btn mr-1"
+                                        matTooltip="{{communication.communicationErrors}}">
+                                        <mat-icon class="text-danger">error_outline</mat-icon>
                                     </button>
-                                  </li>
-                                </ul>
-                                <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
-                                  <span><span class="medium">Item</span> - {{payload.payloadItemModel.itemSequence}} -
-                                    {{payload.payloadItemModel.itemType}} - {{payload.payloadItemModel.code}} -
-                                    {{payload.payloadItemModel.description}}</span>
-                                  <span class="text-primary non-standard-code"
-                                    *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
-                                    <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
-                                      ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
-                                  </span>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr
-                              *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
-                              <td class="px-0">
-                                <ul class="inline-attachments no-space">
-                                  <li>
-                                    <button type="button"
-                                      (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
-                                      <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
-                                      <span>{{payload.attachmentName}}</span>
+                                    <button
+                                        *ngIf="communication.communicationRequestNotesList && communication.communicationRequestNotesList.length > 0"
+                                        type="button" class="action-btn mr-1" [matMenuTriggerFor]="notesMenu">
+                                        <mat-icon class="text-primary">text_snippet</mat-icon>
+                                        <span>Notes</span>
                                     </button>
-                                  </li>
-                                </ul>
-                                <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
-                                  <span><span class="medium">Item</span> - {{payload.payloadItemModel.itemSequence}} -
-                                    {{payload.payloadItemModel.itemType}} - {{payload.payloadItemModel.code}} -
-                                    {{payload.payloadItemModel.description}}</span>
-                                  <span class="text-primary non-standard-code"
-                                    *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
-                                    <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
-                                      ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
-                                  </span>
+                                    <button type="button" class="action-btn"
+                                        (click)="openAddCommunicationDialog(communication.communicationRequestId)">
+                                        <mat-icon class="text-primary">reply</mat-icon>
+                                        <span>Reply</span>
+                                    </button>
                                 </div>
-                              </td>
-                            </tr>
-                          </ng-container>
-                        </tbody>
-                      </table>
-                    </div>
-                    <span>Communication ID: {{reply.communicationResponseId}} &nbsp;&nbsp;&nbsp;&nbsp; Date:
-                      {{reply.createdDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
-                  </div>
-                </div>
-              </ng-container>
+                                <mat-menu #notesMenu="matMenu" class="communication-notes">
+                                    <ul *ngIf="communication.communicationRequestNotesList" class="notes">
+                                        <li *ngFor="let n of communication.communicationRequestNotesList">
+                                            <p>{{n.noteText}}</p>
+                                            <div class="info">
+                                                <span>{{n.noteAuthor}}</span>
+                                                <span class="text-right ml-auto">{{n.createdDate | date: 'dd/MM/yyyy
+                                                    hh:mm aa'}}</span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </mat-menu>
+                            </div>
+                            <ng-container *ngIf="communication.communicationDataList">
+                                <div class="body-block sent" *ngFor="let reply of communication.communicationDataList">
+                                    <div class="message size-sm">
+                                        <div class="table-responsive pb-2">
+                                            <table cellspacing="0" cellpadding="0" border="0" class="primary-grid">
+                                                <tbody>
+                                                    <ng-container *ngFor="let payload of reply.payloadList">
+                                                        <tr *ngIf="payload.payloadValue">
+                                                            <td class="px-0">
+                                                                {{payload.payloadValue}}
+                                                                <div class="pt-2 nphies-items"
+                                                                    *ngIf="payload.payloadItemModel">
+                                                                    <span><span class="medium">Item</span> -
+                                                                        {{payload.payloadItemModel.itemSequence}} -
+                                                                        {{payload.payloadItemModel.itemType}} -
+                                                                        {{payload.payloadItemModel.code}} -
+                                                                        {{payload.payloadItemModel.description}}</span>
+                                                                    <span class="text-primary non-standard-code"
+                                                                        *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                                                        <ng-container
+                                                                            *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                                                            ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                                                    </span>
+                                                                </div>
+                                                            </td>
+                                                            <td style="text-align: right;">
+                                                                <div class="ml-auto action-btns">
+                                                                    <button *ngIf="reply.error" type="button"
+                                                                        class="action-btn mr-1"
+                                                                        matTooltip="{{reply.communicationErrors}}">
+                                                                        <mat-icon
+                                                                            class="text-danger">error_outline</mat-icon>
+                                                                    </button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr
+                                                            *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
+                                                            <td class="px-0">
+                                                                <ul class="inline-attachments no-space">
+                                                                    <li>
+                                                                        <button type="button"
+                                                                            (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
+                                                                            <img src="./assets/file-types/ic-jpg.svg"
+                                                                                alt="JPG" />
+                                                                            <span>{{payload.attachmentName}}</span>
+                                                                        </button>
+                                                                    </li>
+                                                                </ul>
+                                                                <div class="pt-2 nphies-items"
+                                                                    *ngIf="payload.payloadItemModel">
+                                                                    <span><span class="medium">Item</span> -
+                                                                        {{payload.payloadItemModel.itemSequence}} -
+                                                                        {{payload.payloadItemModel.itemType}} -
+                                                                        {{payload.payloadItemModel.code}} -
+                                                                        {{payload.payloadItemModel.description}}</span>
+                                                                    <span class="text-primary non-standard-code"
+                                                                        *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                                                        <ng-container
+                                                                            *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                                                            ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                                                    </span>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr
+                                                            *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
+                                                            <td class="px-0">
+                                                                <ul class="inline-attachments no-space">
+                                                                    <li>
+                                                                        <button type="button"
+                                                                            (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
+                                                                            <img src="./assets/file-types/ic-pdf.svg"
+                                                                                alt="PDF" />
+                                                                            <span>{{payload.attachmentName}}</span>
+                                                                        </button>
+                                                                    </li>
+                                                                </ul>
+                                                                <div class="pt-2 nphies-items"
+                                                                    *ngIf="payload.payloadItemModel">
+                                                                    <span><span class="medium">Item</span> -
+                                                                        {{payload.payloadItemModel.itemSequence}} -
+                                                                        {{payload.payloadItemModel.itemType}} -
+                                                                        {{payload.payloadItemModel.code}} -
+                                                                        {{payload.payloadItemModel.description}}</span>
+                                                                    <span class="text-primary non-standard-code"
+                                                                        *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                                                        <ng-container
+                                                                            *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                                                            ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                                                    </span>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </ng-container>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <span>Communication ID: {{reply.communicationResponseId}}
+                                            &nbsp;&nbsp;&nbsp;&nbsp; Date:
+                                            {{reply.createdDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
+                                    </div>
+                                </div>
+                            </ng-container>
 
-            </ng-container>
-            <ng-container *ngIf="!communication.communicationRequestId">
-              <div class="header-block sent">
-                <div class="message">
-                  <div class="table-responsive pb-2">
-                    <table cellspacing="0" cellpadding="0" border="0" class="primary-grid">
-                      <tbody>
-                        <ng-container *ngFor="let payload of communication.payloadList">
-                          <tr *ngIf="payload.payloadValue">
-                            <td class="px-0">
-                              {{payload.payloadValue}}
-                              <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
-                                <span><span class="medium">Item</span> - {{payload.payloadItemModel.itemSequence}} -
-                                  {{payload.payloadItemModel.itemType}} - {{payload.payloadItemModel.code}} -
-                                  {{payload.payloadItemModel.description}}</span>
-                                <span class="text-primary non-standard-code"
-                                  *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
-                                  <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
-                                    ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
-                                </span>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr
-                            *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
-                            <td class="px-0">
-                              <ul class="inline-attachments no-space">
-                                <li>
-                                  <button type="button"
-                                    (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
-                                    <img src="./assets/file-types/ic-jpg.svg" alt="JPG" />
-                                    <span>{{payload.attachmentName}}</span>
-                                  </button>
-                                </li>
-                              </ul>
-                              <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
-                                <span><span class="medium">Item</span> - {{payload.payloadItemModel.itemSequence}} -
-                                  {{payload.payloadItemModel.itemType}} - {{payload.payloadItemModel.code}} -
-                                  {{payload.payloadItemModel.description}}</span>
-                                <span class="text-primary non-standard-code"
-                                  *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
-                                  <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
-                                    ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
-                                </span>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr
-                            *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
-                            <td class="px-0">
-                              <ul class="inline-attachments no-space">
-                                <li>
-                                  <button type="button"
-                                    (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
-                                    <img src="./assets/file-types/ic-pdf.svg" alt="PDF" />
-                                    <span>{{payload.attachmentName}}</span>
-                                  </button>
-                                </li>
-                              </ul>
-                              <div class="pt-2 nphies-items" *ngIf="payload.payloadItemModel">
-                                <span><span class="medium">Item</span> - {{payload.payloadItemModel.itemSequence}} -
-                                  {{payload.payloadItemModel.itemType}} - {{payload.payloadItemModel.code}} -
-                                  {{payload.payloadItemModel.description}}</span>
-                                <span class="text-primary non-standard-code"
-                                  *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
-                                  <ng-container *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
-                                    ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
-                                </span>
-                              </div>
-                            </td>
-                          </tr>
                         </ng-container>
-                      </tbody>
-                    </table>
-                  </div>
-                  <span>
-                    Communication ID: {{communication.communicationResponseId}} &nbsp;&nbsp;&nbsp;&nbsp; Date:
-                    {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}
-                  </span>
-                </div>
-                <div class="ml-auto action-btns">
-                  <button *ngIf="communication.error" type="button" class="action-btn mr-1"
-                    matTooltip="{{communication.communicationErrors}}">
-                    <mat-icon class="text-danger">error_outline</mat-icon>
-                  </button>
-                  <button
-                    *ngIf="communication.communicationRequestNotesList && communication.communicationRequestNotesList.length > 0"
-                    type="button" class="action-btn mr-1" [matMenuTriggerFor]="notesMenu">
-                    <mat-icon class="text-primary">text_snippet</mat-icon>
-                    <span>Notes</span>
-                  </button>
-                </div>
-                <mat-menu #notesMenu="matMenu" class="communication-notes">
-                  <ul *ngIf="communication.communicationRequestNotesList" class="notes">
-                    <li *ngFor="let n of communication.communicationRequestNotesList">
-                      <p>{{n.noteText}}</p>
-                      <div class="info">
-                        <span>{{n.noteAuthor}}</span>
-                        <span class="text-right ml-auto">{{n.createdDate | date: 'dd/MM/yyyy hh:mm aa'}}</span>
-                      </div>
+                        <ng-container *ngIf="!communication.communicationRequestId">
+                            <div class="header-block sent">
+                                <div class="message">
+                                    <div class="table-responsive pb-2">
+                                        <table cellspacing="0" cellpadding="0" border="0" class="primary-grid">
+                                            <tbody>
+                                                <ng-container *ngFor="let payload of communication.payloadList">
+                                                    <tr *ngIf="payload.payloadValue">
+                                                        <td class="px-0">
+                                                            {{payload.payloadValue}}
+                                                            <div class="pt-2 nphies-items"
+                                                                *ngIf="payload.payloadItemModel">
+                                                                <span><span class="medium">Item</span> -
+                                                                    {{payload.payloadItemModel.itemSequence}} -
+                                                                    {{payload.payloadItemModel.itemType}} -
+                                                                    {{payload.payloadItemModel.code}} -
+                                                                    {{payload.payloadItemModel.description}}</span>
+                                                                <span class="text-primary non-standard-code"
+                                                                    *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                                                    <ng-container
+                                                                        *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                                                        ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                                                </span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr
+                                                        *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
+                                                        <td class="px-0">
+                                                            <ul class="inline-attachments no-space">
+                                                                <li>
+                                                                    <button type="button"
+                                                                        (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
+                                                                        <img src="./assets/file-types/ic-jpg.svg"
+                                                                            alt="JPG" />
+                                                                        <span>{{payload.attachmentName}}</span>
+                                                                    </button>
+                                                                </li>
+                                                            </ul>
+                                                            <div class="pt-2 nphies-items"
+                                                                *ngIf="payload.payloadItemModel">
+                                                                <span><span class="medium">Item</span> -
+                                                                    {{payload.payloadItemModel.itemSequence}} -
+                                                                    {{payload.payloadItemModel.itemType}} -
+                                                                    {{payload.payloadItemModel.code}} -
+                                                                    {{payload.payloadItemModel.description}}</span>
+                                                                <span class="text-primary non-standard-code"
+                                                                    *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                                                    <ng-container
+                                                                        *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                                                        ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                                                </span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr
+                                                        *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'pdf'">
+                                                        <td class="px-0">
+                                                            <ul class="inline-attachments no-space">
+                                                                <li>
+                                                                    <button type="button"
+                                                                        (click)="viewCommunicationAttachment($event, payload.attachmentName, payload.payloadAttachment)">
+                                                                        <img src="./assets/file-types/ic-pdf.svg"
+                                                                            alt="PDF" />
+                                                                        <span>{{payload.attachmentName}}</span>
+                                                                    </button>
+                                                                </li>
+                                                            </ul>
+                                                            <div class="pt-2 nphies-items"
+                                                                *ngIf="payload.payloadItemModel">
+                                                                <span><span class="medium">Item</span> -
+                                                                    {{payload.payloadItemModel.itemSequence}} -
+                                                                    {{payload.payloadItemModel.itemType}} -
+                                                                    {{payload.payloadItemModel.code}} -
+                                                                    {{payload.payloadItemModel.description}}</span>
+                                                                <span class="text-primary non-standard-code"
+                                                                    *ngIf="payload.payloadItemModel.nonStandardCode || payload.payloadItemModel.nonStandardCodeDesc">{{payload.payloadItemModel.nonStandardCode}}
+                                                                    <ng-container
+                                                                        *ngIf="payload.payloadItemModel.nonStandardCodeDesc">
+                                                                        ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
+                                                                </span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </ng-container>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <span>
+                                        Communication ID: {{communication.communicationResponseId}}
+                                        &nbsp;&nbsp;&nbsp;&nbsp; Date:
+                                        {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}
+                                    </span>
+                                </div>
+                                <div class="ml-auto action-btns">
+                                    <button *ngIf="communication.error" type="button" class="action-btn mr-1"
+                                        matTooltip="{{communication.communicationErrors}}">
+                                        <mat-icon class="text-danger">error_outline</mat-icon>
+                                    </button>
+                                    <button
+                                        *ngIf="communication.communicationRequestNotesList && communication.communicationRequestNotesList.length > 0"
+                                        type="button" class="action-btn mr-1" [matMenuTriggerFor]="notesMenu">
+                                        <mat-icon class="text-primary">text_snippet</mat-icon>
+                                        <span>Notes</span>
+                                    </button>
+                                </div>
+                                <mat-menu #notesMenu="matMenu" class="communication-notes">
+                                    <ul *ngIf="communication.communicationRequestNotesList" class="notes">
+                                        <li *ngFor="let n of communication.communicationRequestNotesList">
+                                            <p>{{n.noteText}}</p>
+                                            <div class="info">
+                                                <span>{{n.noteAuthor}}</span>
+                                                <span class="text-right ml-auto">{{n.createdDate | date: 'dd/MM/yyyy
+                                                    hh:mm aa'}}</span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </mat-menu>
+                            </div>
+                        </ng-container>
                     </li>
-                  </ul>
-                </mat-menu>
-              </div>
-            </ng-container>
-          </li>
-        </ul>
-      </div>
-    </mat-tab>
-    <mat-tab *ngIf="data.detailsModel" [label]="'JSON'">
-      <ng-template matTabContent>
-        <app-approval-json-response [otherDataModel]="data.detailsModel"></app-approval-json-response>
-      </ng-template>
-    </mat-tab>
-  </mat-tab-group>
+                </ul>
+            </div>
+        </mat-tab>
+        <mat-tab *ngIf="data.detailsModel" [label]="'JSON'">
+            <ng-template matTabContent>
+                <app-prescriber-json-response [otherDataModel]="data.detailsModel"></app-prescriber-json-response>
+            </ng-template>
+        </mat-tab>
+    </mat-tab-group>
 </div>
 <div class="primary-dialog-footer has-border">
-  <div class="btn-list text-right">
-    <!-- <button mat-flat-button color="primary">Progress to Encounter</button> -->
-    <button mat-flat-button color="primary" (click)="openPreviewDialog()" *ngIf="data.detailsModel.outcome !== 'Error'">
-      {{getType()}}
-    </button>
-    <button
+    <div class="btn-list text-right">
+        <!-- <button mat-flat-button color="primary">Progress to Encounter</button> -->
+        <button mat-flat-button color="primary" (click)="openPreviewDialog()"
+            *ngIf="data.detailsModel.outcome !== 'Error'">
+            {{getType()}}
+        </button>
+        <!-- <button
       *ngIf="data.detailsModel.status === 'approved' || data.detailsModel.status === 'rejected' || data.detailsModel.status === 'partial'  || data.detailsModel.status === 'not-required'"
-      mat-flat-button color="primary" (click)="OpenReuseModal()">Follow Up/Add Related</button>
-    <button mat-flat-button color="primary" (click)="closeDialog()">Close</button>
-  </div>
+      mat-flat-button color="primary" (click)="OpenReuseModal()">Follow Up/Add Related</button> -->
+        <button mat-flat-button color="primary" (click)="closeDialog()">Close</button>
+    </div>
 </div>

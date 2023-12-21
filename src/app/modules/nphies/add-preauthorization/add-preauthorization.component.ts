@@ -30,6 +30,7 @@ import { DbMappingService } from 'src/app/services/administration/dbMappingServi
 import { PbmValidationResponseSummaryDialogComponent } from 'src/app/components/dialogs/pbm-validation-response-summary-dialog/pbm-validation-response-summary-dialog.component';
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
+import { MreValidationResponseSummaryDialogComponent } from 'src/app/components/dialogs/mre-validation-response-summary-dialog/mre-validation-response-summary-dialog.component';
 
 
 @Component({
@@ -62,6 +63,8 @@ export class AddPreauthorizationComponent implements OnInit {
   selectedPlanIdError: string;
   IsSubscriberRequired = false;
   IsAccident = false;
+  isOnline: boolean = false;
+  isOffline: boolean = false;
   AllTPA: any[] = [];
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
 
@@ -89,6 +92,7 @@ export class AddPreauthorizationComponent implements OnInit {
     date: [''],
     dateWritten: [''],
     prescriber: [''],
+    eligibilityType: [''],
     eligibilityOfflineDate: [''],
     eligibilityOfflineId: [''],
     eligibilityResponseId: [''],
@@ -211,7 +215,10 @@ export class AddPreauthorizationComponent implements OnInit {
   selectedDefaultPlan = null;
   providerType = "";
   isPBMValidationVisible =false;
+  isMREValidationVisible = false;
   Pbm_result:any;
+  Mre_result:any;
+  
   constructor(
     private sharedDataService: SharedDataService,
     private dialogService: DialogService,
@@ -227,15 +234,20 @@ export class AddPreauthorizationComponent implements OnInit {
     private providerNphiesApprovalService: ProviderNphiesApprovalService,
     private dbMapping: DbMappingService
   ) {
+    
     this.today = new Date();
   }
 
   ngOnInit() {
     
-   
+    this.FormPreAuthorization.get('eligibilityType').valueChanges.subscribe(value => {
+        this.isOnline = value === 'online';
+        this.isOffline = value === 'offline';
+      });
     this.getPayees();
     this.getTPA();
     this.getPBMValidation();
+    this.getMREValidation();
     this.FormPreAuthorization.controls.dateOrdered.setValue(this.removeSecondsFromDate(new Date()));
     this.filteredNations.next(this.nationalities.slice());
     if (this.claimReuseId) {
@@ -257,6 +269,19 @@ export class AddPreauthorizationComponent implements OnInit {
       }
     }, err => {
       console.log(err);
+    });
+
+  }
+
+  getMREValidation() {
+    this.adminService.checkIfNphiesApprovalMREValidationIsEnabled(this.sharedServices.providerId, '101').subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        const body = event['body'];
+        this.isMREValidationVisible = body.value === '1' ? true : false;
+      }
+    }, err => {
+        console.log(err);
+
     });
 
   }
@@ -761,6 +786,12 @@ export class AddPreauthorizationComponent implements OnInit {
       postalCode: beneficiary.postalCode ? beneficiary.postalCode : '',
     });
 
+    if (beneficiary.plans.filter(x => x.primary)[0].payerNphiesId === '0000000163') {
+            
+        this.dialogService.showMessage('Error', 'Selected Payer is not valid for Pre-Auth Request Transaction ', 'alert', true, 'OK');
+        return;
+   }
+
     if (beneficiary.plans.length > 0 && beneficiary.plans.filter(x => x.primary)[0]) {
       this.FormPreAuthorization.controls.insurancePlanId.setValue(beneficiary.plans.filter(x => x.primary)[0].payerNphiesId);
       const plan: any = {};
@@ -823,7 +854,13 @@ export class AddPreauthorizationComponent implements OnInit {
     const plan: any = {};
     plan.value = planObj.payerNphiesId;
     plan.memberCardId = planObj.memberCardId;
+    if (planObj.payerNphiesId === '0000000163') {
+    
+        this.dialogService.showMessage('Error', 'Selected Payer is not valid for Pre-Auth Request Transaction ', 'alert', true, 'OK');
+        return;
+   }
     this.selectPlan(plan);
+
   }
 
   selectPlan(plan) {
@@ -1405,6 +1442,30 @@ export class AddPreauthorizationComponent implements OnInit {
     }
   }
 
+//   checkMreItemsCodeForSupportingInfo() {
+//     // tslint:disable-next-line:max-line-length
+//     if (this.Items.length > 0 && this.Items.filter(x => (x.type === 'medication-codes' || x.type !== 'medical-devices')).length > 0 && (this.SupportingInfo.filter(x => x.category === 'days-supply').length === 0)) {
+//       // tslint:disable-next-line:max-line-length
+//       this.dialogService.showMessage('Error', 'Days-Supply is required in Supporting Info if any services is used', 'alert', true, 'OK');
+//       return false;
+//       // tslint:disable-next-line:max-line-length
+//     } else if (this.Items.length > 0 && this.Items.filter(x => (x.type !== 'medication-codes' || x.type !== 'medical-devices')).length > 0 && (this.SupportingInfo.filter(x => x.category === 'days-supply').length > 0)) {
+//       let SupportingList = this.SupportingInfo.filter(x => x.category === 'days-supply').map(t => t.sequence);
+//       let ItemSeqList = this.Items.filter(x => (x.type !== 'medication-codes' || x.type !== 'medical-devices')).map(t => t.sequence);
+//       var SeqIsThere = ItemSeqList.filter(x => SupportingList.includes(x));
+
+//       if (this.Items.filter(x =>(x.type !== 'medication-codes' || x.type !== 'medical-devices') && (x.supportingInfoSequence.length === 0)).length > 0 || !SeqIsThere) {
+//         // tslint:disable-next-line:max-line-length
+//         this.dialogService.showMessage('Error', 'Supporting Info with Days-Supply must be linked with Item of any type type of service', 'alert', true, 'OK');
+//         return false;
+//       } else {
+//         return true;
+//       }
+//     } else {
+//       return true;
+//     }
+//}
+
   updateSequenceNames() {
     this.Items.forEach(x => {
       if (x.supportingInfoSequence) {
@@ -1670,7 +1731,7 @@ export class AddPreauthorizationComponent implements OnInit {
     }
   }
 
-  onSubmit(isPbmvalidation=false) {
+  onSubmit(isPbmvalidation=false ,isMrevalidation=false ) {
     this.providerType = this.providerType == null || this.providerType == "" ? 'any' : this.providerType;
     if (this.providerType.toLowerCase() !== 'any' && this.FormPreAuthorization.controls.type.value.value !== this.providerType) {
       const filteredClaimType = this.sharedDataService.claimTypeList.filter(x => x.value === this.providerType)[0];
@@ -1683,6 +1744,8 @@ export class AddPreauthorizationComponent implements OnInit {
 
     let hasError = false;
     // tslint:disable-next-line:max-line-length
+    // date and accidentType must be exist together 
+
     if (this.FormPreAuthorization.controls.date.value && !(this.FormPreAuthorization.controls.accidentType.value && this.FormPreAuthorization.controls.accidentType.value.value)) {
       this.FormPreAuthorization.controls.accidentType.setValidators([Validators.required]);
       this.FormPreAuthorization.controls.accidentType.updateValueAndValidity();
@@ -1748,6 +1811,14 @@ export class AddPreauthorizationComponent implements OnInit {
         return;
       }
     }
+
+    if (isMrevalidation) {
+        let daysOFSupplyValidtation = this.SupportingInfo.filter(f=>f.category == 'days-supply').length;
+        if (daysOFSupplyValidtation == 0) {
+          this.dialogService.showMessage('Error', 'please add days supply to complete MRE request', 'alert', true, 'OK');
+          return;
+        }
+      }
     if (this.FormPreAuthorization.valid) {
 
       if (this.Diagnosises.length === 0 || this.Items.length === 0) {
@@ -2151,6 +2222,11 @@ export class AddPreauthorizationComponent implements OnInit {
       if(isPbmvalidation){
         requestOb = this.providerNphiesApprovalService.sendApprovalPBMRequest(this.sharedServices.providerId, this.model);
       }
+      if(isMrevalidation){
+        let requestObMre = this.providerNphiesApprovalService.sendApprovalMRERequest(this.sharedServices.providerId, this.model);
+        this.onMreSubmit(requestObMre);
+        return;
+      }
       requestOb.subscribe(event => {
         if (event instanceof HttpResponse) {
           if (event.status === 200 && !isPbmvalidation) {
@@ -2232,6 +2308,59 @@ export class AddPreauthorizationComponent implements OnInit {
       });
     }
   }
+
+onMreSubmit(requestObMre: any){
+
+    requestObMre.subscribe(event => {
+          if (event instanceof HttpResponse) {
+            if(event.status === 200 ){
+              const body: any = event.body;
+              this.sharedServices.loadingChanged.next(false);
+              this.Mre_result=body;
+              this.openMreValidationResponseSummaryDialog(body);
+            }
+          }
+        }, error => {
+          this.sharedServices.loadingChanged.next(false);
+          if (error instanceof HttpErrorResponse) {
+            if (error.status === 400) {
+                console.log(error);
+              //this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', error.error.errors);                 
+              this.dialogService.showMessageObservable(error.error.status, error.error.errors[0].description, 'alert', true, 'OK', error.error.errors[0].description, true).subscribe(res => {
+                if (this.claimReuseId) {
+                  this.reset();
+                }
+                this.getProviderTypeConfiguration();
+              });
+            } else if (error.status === 404) {
+              const errors: any[] = [];
+              if (error.error.errors) {
+                error.error.errors.forEach(x => {
+                  errors.push(x);
+                });
+                this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+              } else {
+                this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+              }
+            } else if (error.status === 500) {
+              this.dialogService.showMessage(error.error.errors[0].code ? error.error.errors[0].code : 'INVALID', '', 'alert', true, 'OK', error.error.errors[0].description );
+            } else if (error.status === 503) {
+              const errors: any[] = [];
+              if (error.error.errors) {
+                error.error.errors.forEach(x => {
+                  errors.push(x);
+                });
+                this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK', errors);
+              } else {
+                this.dialogService.showMessage(error.error.message, '', 'alert', true, 'OK');
+              }
+            }
+          }
+        });
+      }
+      
+
+  //ends here 
   SetToMax(data) {
     const ChosenDate = new Date(data);
     const OrderDate = new Date(this.FormPreAuthorization.controls.dateOrdered.value);
@@ -2477,6 +2606,15 @@ export class AddPreauthorizationComponent implements OnInit {
       PBM_result:body
     };
     const dialogRef = this.dialog.open(PbmValidationResponseSummaryDialogComponent, dialogConfig);
+  }
+
+  openMreValidationResponseSummaryDialog(body) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = ['primary-dialog', 'dialog-lg'];
+    dialogConfig.data = {
+        MRE_result:body
+    };
+    const dialogRef = this.dialog.open(MreValidationResponseSummaryDialogComponent, dialogConfig);
   }
   
 }

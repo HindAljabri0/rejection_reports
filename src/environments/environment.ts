@@ -7,6 +7,7 @@ let host = 'http://localhost';
 host = 'http://localhost';
 const hostFeedback = 'http://localhost';
 const hostjisr = 'https://qa-jisr.waseel.com/signIn'
+const hostlegacy = 'http://legacy.dr-eclaims.waseel.com/'
 
 export const environment = {
     name: `dev`,
@@ -35,6 +36,7 @@ export const environment = {
     providerNphiesSearch: `${host}:8090`,
     providerNphiesApproval: `${host}:8025`,
     providerNphiesClaim: `${host}:8102`,
+    mreClaimsSender:`${host}:8078`,
     nphiesClaimUploader: `${host}:8088`,
     claimsDownloadsService: `${host}:8052/downloads`,
     nphiesPollManagement: `${host}:9991`,
@@ -49,11 +51,13 @@ export const environment = {
     eclaimsTicketManagement: `${host}:8100`,
     providerNphiesClaimsSearch: `${host}:8091`,
     nphiesApprovalPBM: `${host}:8096`,
+    nphiesApprovalMRE: `${host}:8077`,
     nphiesPollApprovalManagement: `${host}:8093`,
     nphiesPollClaimManagement: `${host}:8097`,
     chronicDiseaseManagement: `${host}:8199`,    
     feedbacksurveyUrl: `${hostFeedback}:5000/en`,
     communicationportalUrl: `${hostjisr}`,
+    legacyUrl:`${hostlegacy}`,
 };
 
 /*

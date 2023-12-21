@@ -341,10 +341,12 @@
               <th>Code - Description</th>
               <th>Type</th>
               <th>On Admission</th>
+              <th *ngIf="isMREValidationVisible && otherDataModel.status === 'Accepted'">MRE</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let diagnosis of Diagnosises; let i = index">
+            <ng-container *ngFor="let diagnosis of Diagnosises; let i = index">
+            <tr>
               <td>
                 {{diagnosis.sequence}}
               </td>
@@ -357,7 +359,53 @@
               <td>
                 {{diagnosis.onAdmissionName ? diagnosis.onAdmissionName :"-"}}
               </td>
+              <td (click)="currentOpenDiagnosis = (i == currentOpenDiagnosis) ? -1 : i" class="text-start row-click"
+              *ngIf="isMREValidationVisible && otherDataModel.status === 'Accepted' && diagnosis.mreStatus?.status !=='APPROVED' && diagnosis.mreStatus?.status">       
+              <mat-icon *ngIf="(diagnosis.mreStatus?.status | lowercase)==='approved'" class="material-icons-outlined size-21 text-success"
+                matTooltip="Approved">check_circle</mat-icon>
+              <mat-icon *ngIf="(diagnosis.mreStatus?.status | lowercase)==='partial_approved'" class="material-icons-outlined size-21 text-warning"
+                matTooltip="Partially Approved">report
+              </mat-icon>
+              <mat-icon *ngIf="(diagnosis.mreStatus?.status | lowercase)==='unknown'" class="material-icons-outlined size-21 text-warning"
+              matTooltip="Unknown">report</mat-icon>
+              <mat-icon *ngIf="(diagnosis.mreStatus?.status | lowercase)==='invalid'" class="size-21 text-danger" matTooltip="Invalid">error_outline</mat-icon>
+              <mat-icon *ngIf="(diagnosis.mreStatus?.status | lowercase)==='rejected'" class="material-icons-outlined size-21 text-danger" matTooltip="Rejected">dangerous</mat-icon>
+            </td>
+
+            <td class="text-start row-click"
+            *ngIf="isMREValidationVisible && otherDataModel.status === 'Accepted' && (diagnosis.mreStatus?.status ==='APPROVED' || !(diagnosis.mreStatus?.status))">       
+            <mat-icon *ngIf="(diagnosis.mreStatus?.status | lowercase)==='approved'" class="material-icons-outlined size-21 text-success"
+              matTooltip="Approved">check_circle</mat-icon>
+          </td>
             </tr>
+            <tr *ngIf="currentOpenDiagnosis==i">
+                <td colspan="10">
+                  <div class="box mb-2"
+                  *ngIf="isMREValidationVisible && otherDataModel.status === 'Accepted' && diagnosis.mreStatus && diagnosis.mreStatus.status && diagnosis.mreStatus.errors?.length > 0">
+                  <h6 class="align-self-center medium pb-2">MRE Status <span class="status ml-2"
+                      [ngClass]="{'light-bg-danger text-danger': diagnosis.mreStatus.status.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(diagnosis.mreStatus.status)}}</span>
+                  </h6>
+                  <!-- Benefit, Submitted, Eligible, Eligible %, Patient Copay, Deductible, Unallocated Deductible, Tax (display '-' when null)  -->
+                  <div class="table-responsive">
+                    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+                      <thead>
+                        <tr>
+                          <th class="light-bg-danger text-danger">MRE Error Code</th>
+                          <th class="light-bg-danger text-danger">MRE Error Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let error of diagnosis.mreStatus.errors">
+                          <td>{{error.errorCode}}</td>
+                          <td>{{error.errorDescription}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                </td>
+              </tr>
+            </ng-container>
           </tbody>
         </table>
       </div>
@@ -564,7 +612,7 @@
         <table class="primary-grid claim-view-table">
           <thead>
             <tr>
-              <th width="10"></th>
+              <th width="11"></th>
               <th>Sequence No.</th>
               <th>Invoice No.</th>
               <th>Type</th>
@@ -583,6 +631,7 @@
               <th>Status</th>
               <th>Adjudication Reason Code</th>
               <th *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted'">PBM</th>
+              <th *ngIf="isMREValidationVisible && otherDataModel.status === 'Accepted'">MRE</th>
               <th>Note No.</th>
 
               <!-- <th>Quantity</th>
@@ -643,6 +692,20 @@
                   <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='invalid'" class="size-21 text-danger" matTooltip="Invalid">error_outline</mat-icon>
                   <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='rejected'" class="material-icons-outlined size-21 text-danger" matTooltip="Rejected">dangerous</mat-icon>
                 </td>
+
+                <td (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i" class="text-center row-click"
+                *ngIf="isMREValidationVisible && otherDataModel.status === 'Accepted'">
+                <mat-icon *ngIf="(item.mreStatus?.status | lowercase)==='approved'" class="material-icons-outlined size-21 text-success"
+                  matTooltip="Approved">check_circle</mat-icon>
+                <mat-icon *ngIf="(item.mreStatus?.status | lowercase)==='partial_approved'" class="material-icons-outlined size-21 text-warning"
+                  matTooltip="Partially Approved">report
+                </mat-icon>
+                <mat-icon *ngIf="(item.mreStatus?.status | lowercase)==='unknown'" class="material-icons-outlined size-21 text-warning"
+                matTooltip="Unknown">report</mat-icon>
+                <mat-icon *ngIf="(item.mreStatus?.status | lowercase)==='invalid'" class="size-21 text-danger" matTooltip="Invalid">error_outline</mat-icon>
+                <mat-icon *ngIf="(item.mreStatus?.status | lowercase)==='rejected'" class="material-icons-outlined size-21 text-danger" matTooltip="Rejected">dangerous</mat-icon>
+              </td>
+
                 <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                   <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo : '-'}}</span>
                   <span *ngIf="!item.itemDecision">-</span>
@@ -650,7 +713,7 @@
 
               </tr>
               <tr *ngIf="currentOpenItem==i">
-                <td colspan="11">
+                <td colspan="12">
                   <div class="box mb-2" *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
                     <h5 class="align-self-center medium pb-2">Adjudication</h5>
                     <!-- Benefit, Submitted, Eligible, Eligible %, Patient Copay, Deductible, Unallocated Deductible, Tax (display '-' when null)  -->
@@ -674,9 +737,9 @@
                   </div>
                   <div class="box mb-2"
                     *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted' && item.pbmStatus && item.pbmStatus.status && item.pbmStatus.errors?.length > 0">
-                    <h5 class="align-self-center medium pb-2">PBM Status <span class="status ml-2"
+                    <h6 class="align-self-center medium pb-2">      PBM Status <span class="status ml-2"
                         [ngClass]="{'light-bg-danger text-danger': item.pbmStatus.status.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(item.pbmStatus.status)}}</span>
-                    </h5>
+                    </h6>
                     <!-- Benefit, Submitted, Eligible, Eligible %, Patient Copay, Deductible, Unallocated Deductible, Tax (display '-' when null)  -->
                     <div class="table-responsive">
                       <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
@@ -695,6 +758,29 @@
                       </table>
                     </div>
                   </div>
+                  <div class="box mb-2"
+                  *ngIf="isMREValidationVisible && otherDataModel.status === 'Accepted' && item.mreStatus && item.mreStatus.status && item.mreStatus.errors?.length > 0">
+                  <h6 class="align-self-center medium pb-2">MRE Status <span class="status ml-2"
+                      [ngClass]="{'light-bg-danger text-danger': item.mreStatus.status.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(item.mreStatus.status)}}</span>
+                  </h6>
+                  <!-- Benefit, Submitted, Eligible, Eligible %, Patient Copay, Deductible, Unallocated Deductible, Tax (display '-' when null)  -->
+                  <div class="table-responsive">
+                    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+                      <thead>
+                        <tr>
+                          <th class="light-bg-danger text-danger">MRE Error Code</th>
+                          <th class="light-bg-danger text-danger">MRE Error Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let error of item.mreStatus.errors">
+                          <td>{{error.errorCode}}</td>
+                          <td>{{error.errorDescription}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
                   <div class="box mb-2">
                     <h5 class="align-self-center medium pb-2">Item Info</h5>
                     <div class="row small-gutter">
@@ -849,9 +935,9 @@
                       </tbody>
                     </table>
                   </div>
-                </td>
-              </tr>
-              <tr>
+                </td>  
+               </tr>
+                <tr>
 
               </tr>
             </ng-container>
@@ -1481,6 +1567,32 @@
         </app-empty-state>
       </div>
     </mat-tab>
+
+    <mat-tab *ngIf="isMREValidationVisible && otherDataModel.status === 'Accepted' && otherDataModel.mreComments && otherDataModel.mreComments.mreClaimStatus"
+      [label]="'MRE Comments'">
+      <div class="table-responsive">
+        <div class="d-flex justify-content-end pb-2 align-items-center">
+          MRE Status: <span class="status ml-2"
+            [ngClass]="{'light-bg-danger text-danger': otherDataModel.mreComments.mreClaimStatus.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(otherDataModel.mreComments.mreClaimStatus)}}</span>
+        </div>
+        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0" *ngIf="otherDataModel.mreComments.mreClaimErrors?.length > 0">
+          <thead>
+            <tr>
+              <th class="light-bg-danger text-danger">Comments</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let comment of otherDataModel.mreComments.mreClaimErrors">
+              <td>{{comment}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <app-empty-state *ngIf="otherDataModel.mreComments.mreClaimErrors?.length === 0" message='No Comments found!'>
+        </app-empty-state>
+      </div>
+    </mat-tab>
+
+
   </mat-tab-group>
 
   <div class="block-footer sticky" *ngIf="!isLoading">
@@ -1696,62 +1808,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-4 col-xxl-3">
-              <div class="form-group">
-                <label class="control-label">Offline Eligibility ID</label>
-                <input class="form-control" placeholder="Enter Offline Eligibility ID" formControlName="eligibilityOfflineId">
-              </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-              <div class="form-group">
-                <label class="control-label">Offline Eligibility Date</label>
-                <div class="date-picker">
-                  <input [matDatepicker]="eligibilityOfflineDateCtrl" class="form-control" placeholder="Select Offline Eligibility Date" [max]="today"
-                    formControlName="eligibilityOfflineDate">
-                  <mat-datepicker-toggle [for]="eligibilityOfflineDateCtrl">
-                  </mat-datepicker-toggle>
-                  <mat-datepicker #eligibilityOfflineDateCtrl></mat-datepicker>
-                </div>
-              </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-              <div class="form-group">
-                <label class="control-label">Eligibility Response Identifier (Value)</label>
-                <input class="form-control" placeholder="Eligibility Response Identifier (Value)" formControlName="eligibilityResponseId">
-              </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-              <div class="form-group">
-                <label class="control-label">Eligibility Response Identifier (URL)</label>
-                <input class="form-control" placeholder="Eligibility Response Identifier (URL)" formControlName="eligibilityResponseUrl">
-              </div>
-            </div>
-            <!-- <div class="col-4 col-xxl-3">
-              <div class="form-group" [ngClass]="{'has-error' : IsApprovalDateRequired && ((isSubmitted || FormNphiesClaim.get('preAuthOfflineDate').touched) && FormNphiesClaim.get('preAuthOfflineDate').hasError('required'))}">
-                <label class="control-label">Offline Preauthorization Date</label>
-                <div class="date-picker">
-                  <input [matDatepicker]="offlineApprovalDateCtrl" class="form-control" placeholder="Select Offline Preauthorization Date" [max]="today"
-                    formControlName="preAuthOfflineDate">
-                  <mat-datepicker-toggle [for]="offlineApprovalDateCtrl"></mat-datepicker-toggle>
-                  <mat-datepicker #offlineApprovalDateCtrl></mat-datepicker>
-                </div>
-                <div *ngIf="IsApprovalDateRequired && ((isSubmitted || FormNphiesClaim.get('preAuthOfflineDate').touched) && FormNphiesClaim.get('preAuthOfflineDate').hasError('required'))">
-                  <span class="error-text">Please select Offline Preauthorization Date</span>
-                </div>
-              </div>
-            </div> -->
-            <div class="col-4 col-xxl-3">
-              <div class="form-group">
-                <label class="control-label">Offline Preauthorization Date</label>
-                <div class="date-picker">
-                  <input [matDatepicker]="offlineApprovalDateCtrl" class="form-control" placeholder="Select Offline Preauthorization Date" [max]="today"
-                    formControlName="preAuthOfflineDate">
-                  <mat-datepicker-toggle [for]="offlineApprovalDateCtrl"></mat-datepicker-toggle>
-                  <mat-datepicker #offlineApprovalDateCtrl></mat-datepicker>
-                </div>
-              </div>
-            </div>
-            <div class="col-4 col-xxl-3">
+             <div class="col-4 col-xxl-3">
               <div class="form-group"
                 [ngClass]="{'has-error' : IsPreAuthRefRequired && ((isSubmitted || FormNphiesClaim.get('preAuthRefNo').touched) && FormNphiesClaim.get('preAuthRefNo').hasError('required'))}">
                 <label class="control-label">Preauthorization Reference No(s).<span *ngIf="IsPreAuthRefRequired" class="asterisk">*</span></label>
@@ -1807,6 +1864,59 @@
                 <input class="form-control" placeholder="Referral Provider Name" formControlName="ReferralName">
               </div>
             </div>
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                  <label class="control-label">Eligibility Details</label>
+                  <mat-form-field class="form-control custom-select-control">
+                    <mat-select formControlName="eligibilityType">
+                      <mat-option value="">Select Eligibility Type</mat-option>
+                      <mat-option value="online">Online</mat-option>
+                      <mat-option value="offline">Offline</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            <div class="col-4 col-xxl-3" *ngIf="isOffline">
+                <div class="form-group">
+                  <label class="control-label">Eligibility ID</label>
+                  <input class="form-control" placeholder="Enter Eligibility ID" formControlName="eligibilityOfflineId">
+                </div>
+              </div>
+              <div class="col-4 col-xxl-3" *ngIf="isOffline">
+                <div class="form-group">
+                  <label class="control-label">Eligibility Date</label>
+                  <div class="date-picker">
+                    <input [matDatepicker]="eligibilityOfflineDateCtrl" class="form-control" placeholder="Select Eligibility Date" [max]="today"
+                      formControlName="eligibilityOfflineDate">
+                    <mat-datepicker-toggle [for]="eligibilityOfflineDateCtrl">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #eligibilityOfflineDateCtrl></mat-datepicker>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4 col-xxl-3" *ngIf="isOnline">
+                <div class="form-group">
+                  <label class="control-label">Eligibility Response Identifier (Value)</label>
+                  <input class="form-control" placeholder="Eligibility Response Identifier (Value)" formControlName="eligibilityResponseId">
+                </div>
+              </div>
+              <div class="col-4 col-xxl-3" *ngIf="isOnline">
+                <div class="form-group">
+                  <label class="control-label">Eligibility Response Identifier (URL)</label>
+                  <input class="form-control" placeholder="Eligibility Response Identifier (URL)" formControlName="eligibilityResponseUrl">
+                </div>
+              </div>
+              <div class="col-4 col-xxl-3" *ngIf="isOffline">
+                <div class="form-group">
+                  <label class="control-label">Preauthorization Date</label>
+                  <div class="date-picker">
+                    <input [matDatepicker]="offlineApprovalDateCtrl" class="form-control" placeholder="Select Preauthorization Date" [max]="today"
+                      formControlName="preAuthOfflineDate">
+                    <mat-datepicker-toggle [for]="offlineApprovalDateCtrl"></mat-datepicker-toggle>
+                    <mat-datepicker #offlineApprovalDateCtrl></mat-datepicker>
+                  </div>
+                </div>
+              </div>
             <!-- <div class="col-4 col-xxl-3">
                                 <div class="form-group">
                                     <label class="control-label">Approval Response ID</label>
@@ -2149,7 +2259,7 @@
           <app-empty-state *ngIf="SupportingInfo.length === 0" message='No Supporting Info found!'>
           </app-empty-state> -->
         </mat-tab>
-
+        <!--ITEMS IN THE CLAIM DETAILS-->
         <mat-tab>
           <ng-template mat-tab-label>
             <mat-icon class="mr-1" *ngIf="IsItemRequired" [class.text-danger]="IsItemRequired">
@@ -2243,6 +2353,21 @@
                       <mat-icon *ngIf="(item.pbmStatus?.status | lowercase)==='rejected'" class="material-icons-outlined size-21 text-danger"
                         matTooltip="Rejected">dangerous</mat-icon>
                     </td>
+                    <td (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i" class="text-center row-click"
+                      *ngIf="isMREValidationVisible && otherDataModel.status === 'Accepted'">
+                      <mat-icon *ngIf="(item.mreStatus?.status | lowercase)==='approved'" class="material-icons-outlined size-21 text-success"
+                        matTooltip="Approved">check_circle</mat-icon>
+                      <mat-icon *ngIf="(item.mreStatus?.status | lowercase)==='partial_approved'" class="material-icons-outlined size-21 text-warning"
+                        matTooltip="Partially Approved">report
+                      </mat-icon>
+                      <mat-icon *ngIf="(item.mreStatus?.status | lowercase)==='unknown'" class="material-icons-outlined size-21 text-warning"
+                      matTooltip="Unknown">report
+                    </mat-icon>
+                      <mat-icon *ngIf="(item.mreStatus?.status | lowercase)==='invalid'" class="size-21 text-danger" matTooltip="Invalid">error_outline</mat-icon>
+                      <mat-icon *ngIf="(item.mreStatus?.status | lowercase)==='rejected'" class="material-icons-outlined size-21 text-danger"
+                        matTooltip="Rejected">dangerous</mat-icon>
+                    </td>
+
                     <td class="text-nowrap row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                       <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo :
                         '-'}}</span>
@@ -2303,9 +2428,9 @@
                       </div>
                       <div class="box mb-2"
                         *ngIf="isPBMValidationVisible && otherDataModel.status === 'Accepted' && item.pbmStatus && item.pbmStatus.status && item.pbmStatus.errors?.length > 0">
-                        <h5 class="align-self-center medium pb-2">PBM Status <span class="status ml-2"
+                        <h6 class="align-self-center medium pb-2">PBM Status <span class="status ml-2"
                             [ngClass]="{'light-bg-danger text-danger': item.pbmStatus.status.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(item.pbmStatus.status)}}</span>
-                        </h5>
+                        </h6>
                         <!-- Benefit, Submitted, Eligible, Eligible %, Patient Copay, Deductible, Unallocated Deductible, Tax (display '-' when null)  -->
                         <div class="table-responsive">
                           <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
@@ -2324,6 +2449,30 @@
                           </table>
                         </div>
                       </div>
+
+                      <div class="box mb-2"
+                      *ngIf="isMREValidationVisible && otherDataModel.status === 'Accepted' && item.mreStatus && item.mreStatus.status && item.mreStatus.errors?.length > 0">
+                      <h6 class="align-self-center medium pb-2">MRE Status <span class="status ml-2"
+                          [ngClass]="{'light-bg-danger text-danger': item.mreStatus.status.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(item.mreStatus.status)}}</span>
+                      </h6>
+                      <!-- Benefit, Submitted, Eligible, Eligible %, Patient Copay, Deductible, Unallocated Deductible, Tax (display '-' when null)  -->
+                      <div class="table-responsive">
+                        <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+                          <thead>
+                            <tr>
+                              <th class="light-bg-danger text-danger">MRE Error Code</th>
+                              <th class="light-bg-danger text-danger">MRE Error Description</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let error of item.mreStatus.errors">
+                              <td>{{error.errorCode}}</td>
+                              <td>{{error.errorDescription}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
                       <div class="box mb-2">
                         <h5 class="align-self-center medium pb-2">Item Info</h5>
                         <div class="row">
@@ -3223,7 +3372,30 @@
             </app-empty-state>
           </div>
         </mat-tab>
-
+        <!-- change the way we git the mre from pbm  -->
+        <mat-tab *ngIf="isMREValidationVisible && otherDataModel.status === 'Accepted' && otherDataModel.mreComments && otherDataModel.mreComments.mreClaimStatus"
+          [label]="'MRE Comments'">
+          <div class="table-responsive">
+            <div class="d-flex justify-content-end pb-2 align-items-center">
+              MRE Status: <span class="status ml-2"
+                [ngClass]="{'light-bg-danger text-danger': otherDataModel.mreComments.mreClaimStatus.toUpperCase() === 'REJECTED'}">{{upperCaseAndReplace(otherDataModel.mreComments.mreClaimStatus)}}</span>
+            </div>
+            <table class="primary-grid" cellpadding="0" cellspacing="0" border="0" *ngIf="otherDataModel.mreComments.mreClaimErrors?.length > 0">
+              <thead>
+                <tr>
+                  <th class="light-bg-danger text-danger">Comments</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let comment of otherDataModel.mreComments.mreClaimErrors">
+                  <td>{{comment}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <app-empty-state *ngIf="otherDataModel.mreComments.mreClaimErrors?.length === 0" message='No Comments found!'>
+            </app-empty-state>
+          </div>
+        </mat-tab>
       </mat-tab-group>
 
       <div class="block-footer sticky">

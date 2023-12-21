@@ -42,8 +42,8 @@ export class FeedbackService {
         const httpRequest = new HttpRequest('GET', Url);
         return this.http.request(httpRequest);
     }
-    getSurveyId(providerId, page, pageSize) {
-        const Url = `${environment.NotificationServiceHost}/survey/${providerId}/view?page=${page}&pageSize=${pageSize}`;
+    getSurveyId(providerId) {
+        const Url = `${environment.NotificationServiceHost}/survey/${providerId}/productName/WCS/view`;
         const httpRequest = new HttpRequest('GET', Url);
         return this.http.request(httpRequest);
     }
@@ -51,7 +51,7 @@ export class FeedbackService {
         const requestUrl = `${environment.NotificationServiceHost}/survey/${feedback.surveyId}/manage-survey`;
         const surveyUrl = new HttpRequest('PUT', requestUrl, feedback);
         return this.http.request(surveyUrl);
-      }
+    }
 
     // postSurveyDate(feedback: FeedbackDate): Observable<FeedbackDate> {
     //     return this.http.post<FeedbackDate>(`${environment.NotificationServiceHost}/survey/${feedback.surveyId}/manage-survey`, feedback)

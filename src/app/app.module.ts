@@ -100,6 +100,7 @@ import { ChooseAttachmentUploadDialogComponent } from './modules/nphies/choose-a
 import { HttpRequestExceptionHandler } from './components/reusables/feedbackExceptionHandling/HttpRequestExceptionHandler';
 import { AnnountmentDialogComponent } from './components/annountment-dialog/annountment-dialog.component';
 import { SsoComponent } from './sso/sso.component';
+import { MreCommentsComponent } from './claim-module-components/mre-comments/mre-comments.component';
 
 
 
@@ -170,8 +171,9 @@ import { SsoComponent } from './sso/sso.component';
         UpcomingFeatureDialogComponent,
         ChooseAttachmentUploadDialogComponent,
         AnnountmentDialogComponent,
-        SsoComponent
-    ],
+        SsoComponent,
+        MreCommentsComponent
+        ],
     imports: [
         AppRoutingModule,
         StoreModule.forRoot({ mainState: mainReducer, dashboardState: dashboardReducer, searchState: searchReducer }),

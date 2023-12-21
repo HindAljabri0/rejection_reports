@@ -726,6 +726,127 @@
     </mat-expansion-panel>   
 
     <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            MRE Configuration
+            <mat-menu #mreSuccessConfigurationMenu xPosition="before">
+              <ng-template matMenuContent>
+                <div class="pt-7 pb-7 pr-14 pl-14">                
+                  <ng-container *ngIf="success.mreConfigurationSaveSuccess != null">Waseel {{success.mreConfigurationSaveSuccess}}</ng-container>                
+                  <br *ngIf="success.mreConfigurationSaveSuccess != null && success.nphiesMreConfigurationSaveSuccess != null"/>
+                  <ng-container *ngIf="success.nphiesMreConfigurationSaveSuccess != null">Nphies {{success.nphiesMreConfigurationSaveSuccess}}</ng-container>
+                </div>
+              </ng-template>
+            </mat-menu>
+            <mat-menu #mreErrorConfigurationMenu xPosition="before">
+              <ng-template matMenuContent>
+                <div class="pt-7 pb-7 pr-14 pl-14">
+                  <ng-container *ngIf="errors.mreConfigurationSaveError != null">Waseel - {{errors.mreConfigurationSaveError}}</ng-container>                
+                  <br *ngIf="errors.mreConfigurationSaveError != null && errors.nphiesMreConfigurationSaveError != null"/>
+                  <ng-container *ngIf="errors.nphiesMreConfigurationSaveError != null">Nphies - {{errors.nphiesMreConfigurationSaveError}}</ng-container>                
+                </div>
+              </ng-template>
+            </mat-menu>
+            <button type="button" *ngIf="errors.nphiesMreConfigurationSaveError != null || errors.mreConfigurationSaveError != null" class="text-danger" (click)="$event.stopPropagation()" mat-icon-button
+              [matMenuTriggerFor]="mreErrorConfigurationMenu">
+              <mat-icon>error</mat-icon>
+            </button>
+            <button type="button" *ngIf="success.nphiesMreConfigurationSaveSuccess != null || success.mreConfigurationSaveSuccess != null" class="text-success" (click)="$event.stopPropagation()" mat-icon-button [class.ml-2]="errors.nphiesMreConfigurationSaveError != null || errors.mreConfigurationSaveError != null"
+              [matMenuTriggerFor]="mreSuccessConfigurationMenu">
+              <mat-icon>check_circle</mat-icon>
+            </button>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <ng-container *ngIf="((errors.mreConfigurationError == null || errors.mreConfigurationError == '') && !componentLoading.mreConfiguration) && ((errors.nphiesMreConfigurationError == null || errors.nphiesMreConfigurationError == '') && !componentLoading.nphiesMreConfiguration)">
+          <div class="provider-config-container">
+            <div class="row small-gutter">
+              <div class="col-6">
+                <div class="form-group form-group-static">                
+                  <p class="form-control-static">NPHIES Claim MRE</p>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group pt-2">
+                  <mat-slide-toggle color="primary" [(ngModel)]="newNphiesMREValidationSettings['101']">Enable</mat-slide-toggle>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="provider-config-container">
+            <div class="row small-gutter">
+              <div class="col-6">
+                <div class="form-group form-group-static">                
+                  <p class="form-control-static">NPHIES Approval MRE</p>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group pt-2">
+                  <mat-slide-toggle color="primary" [(ngModel)]="newNphiesApprovalMREValidationSettings['101']">Enable</mat-slide-toggle>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>          
+        <div *ngIf="componentLoading.mreConfiguration || componentLoading.nphiesMreConfiguration" class="inline-loader">
+          <mat-spinner diameter="48"></mat-spinner>
+        </div>
+      </mat-expansion-panel>   
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Radiology Report Configuration
+                <mat-menu #radiologySuccessConfigurationMenu xPosition="before">
+                    <ng-template matMenuContent>
+                        <div class="pt-7 pb-7 pr-14 pl-14">
+                            <ng-container
+                                *ngIf="success.radiologyConfigurationSaveSuccess != null">{{success.radiologyConfigurationSaveSuccess}}</ng-container>
+                        </div>
+                    </ng-template>
+                </mat-menu>
+                <mat-menu #radiologyErrorConfigurationMenu xPosition="before">
+                    <ng-template matMenuContent>
+                        <div class="pt-7 pb-7 pr-14 pl-14">
+                            <ng-container
+                                *ngIf="errors.radiologyConfigurationSaveError != null">{{errors.radiologyConfigurationSaveError}}</ng-container>
+                        </div>
+                    </ng-template>
+                </mat-menu>
+                <button type="button" *ngIf="errors.radiologyConfigurationSaveError != null" class="text-danger"
+                    (click)="$event.stopPropagation()" mat-icon-button
+                    [matMenuTriggerFor]="radiologyErrorConfigurationMenu">
+                    <mat-icon>error</mat-icon>
+                </button>
+                <button type="button" *ngIf="success.radiologyConfigurationSaveSuccess != null" class="text-success"
+                    (click)="$event.stopPropagation()" mat-icon-button
+                    [class.ml-2]="errors.radiologyConfigurationSaveError != null"
+                    [matMenuTriggerFor]="radiologySuccessConfigurationMenu">
+                    <mat-icon>check_circle</mat-icon>
+                </button>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <ng-container
+            *ngIf="((errors.radiologyConfigurationError == null || errors.radiologyConfigurationError == '') && !componentLoading.radiologyConfiguration)">
+            <div class="provider-config-container">
+                <div class="row small-gutter">
+                    <div class="col-6">
+                        <div class="form-group form-group-static">
+                            <p class="form-control-static">Radiology Report Attachment</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group pt-2">
+                            <mat-slide-toggle color="primary"
+                                [(ngModel)]="newRadiologyValidationSettings['101']">Enable</mat-slide-toggle>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <div *ngIf="componentLoading.radiologyConfiguration" class="inline-loader">
+            <mat-spinner diameter="48"></mat-spinner>
+        </div>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
           Net Amount Accuracy
