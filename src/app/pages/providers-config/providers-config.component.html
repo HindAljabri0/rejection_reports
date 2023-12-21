@@ -791,6 +791,61 @@
           <mat-spinner diameter="48"></mat-spinner>
         </div>
       </mat-expansion-panel>   
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Radiology Report Configuration
+                <mat-menu #radiologySuccessConfigurationMenu xPosition="before">
+                    <ng-template matMenuContent>
+                        <div class="pt-7 pb-7 pr-14 pl-14">
+                            <ng-container
+                                *ngIf="success.radiologyConfigurationSaveSuccess != null">{{success.radiologyConfigurationSaveSuccess}}</ng-container>
+                        </div>
+                    </ng-template>
+                </mat-menu>
+                <mat-menu #radiologyErrorConfigurationMenu xPosition="before">
+                    <ng-template matMenuContent>
+                        <div class="pt-7 pb-7 pr-14 pl-14">
+                            <ng-container
+                                *ngIf="errors.radiologyConfigurationSaveError != null">{{errors.radiologyConfigurationSaveError}}</ng-container>
+                        </div>
+                    </ng-template>
+                </mat-menu>
+                <button type="button" *ngIf="errors.radiologyConfigurationSaveError != null" class="text-danger"
+                    (click)="$event.stopPropagation()" mat-icon-button
+                    [matMenuTriggerFor]="radiologyErrorConfigurationMenu">
+                    <mat-icon>error</mat-icon>
+                </button>
+                <button type="button" *ngIf="success.radiologyConfigurationSaveSuccess != null" class="text-success"
+                    (click)="$event.stopPropagation()" mat-icon-button
+                    [class.ml-2]="errors.radiologyConfigurationSaveError != null"
+                    [matMenuTriggerFor]="radiologySuccessConfigurationMenu">
+                    <mat-icon>check_circle</mat-icon>
+                </button>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <ng-container
+            *ngIf="((errors.radiologyConfigurationError == null || errors.radiologyConfigurationError == '') && !componentLoading.radiologyConfiguration)">
+            <div class="provider-config-container">
+                <div class="row small-gutter">
+                    <div class="col-6">
+                        <div class="form-group form-group-static">
+                            <p class="form-control-static">Radiology Report Attachment</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group pt-2">
+                            <mat-slide-toggle color="primary"
+                                [(ngModel)]="newRadiologyValidationSettings['101']">Enable</mat-slide-toggle>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <div *ngIf="componentLoading.radiologyConfiguration" class="inline-loader">
+            <mat-spinner diameter="48"></mat-spinner>
+        </div>
+    </mat-expansion-panel>
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
-import { SERVICE_CODE_RESTRICTION_KEY, PBM_RESTRICTION_KEY, NPHIES_PBM_RESTRICTION_KEY, NPHIES_PBM_APPROVAL_KEY , NPHIES_MRE_APPROVAL_KEY , NPHIES_MRE_RESTRICTION_KEY } from '../administration/superAdminService/super-admin.service';
+import { SERVICE_CODE_RESTRICTION_KEY, PBM_RESTRICTION_KEY, NPHIES_PBM_RESTRICTION_KEY, NPHIES_PBM_APPROVAL_KEY , NPHIES_MRE_APPROVAL_KEY , NPHIES_MRE_RESTRICTION_KEY, RADIOLOGY_REPORT_KEY } from '../administration/superAdminService/super-admin.service';
 import { DatePipe } from '@angular/common';
 
 @Injectable({
