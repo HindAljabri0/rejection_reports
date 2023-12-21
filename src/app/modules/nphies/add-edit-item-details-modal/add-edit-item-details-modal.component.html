@@ -25,7 +25,15 @@
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="type" (selectionChange)="getItemList()">
               <mat-option value="">Select Type</mat-option>
-              <mat-option *ngFor="let type of typeList" [value]="type">{{type.name}}</mat-option>
+              <ng-container *ngIf="data.source === 'CNHI'">
+                <mat-option *ngFor="let type of cnhiTypeList"  [value]="type">  {{ type.name }}</mat-option>
+              </ng-container>
+            
+              <ng-container *ngIf="data.source !== 'CNHI'">
+                <mat-option *ngFor="let type of typeList" [value]="type">
+                  {{ type.name }}
+                </mat-option>
+              </ng-container>
             </mat-select>
           </mat-form-field>
           <div *ngIf="(isSubmitted || FormItem.get('type').touched) && FormItem.get('type').hasError('required')">

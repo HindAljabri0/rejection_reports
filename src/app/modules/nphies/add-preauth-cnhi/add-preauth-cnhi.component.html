@@ -585,8 +585,15 @@
                   <mat-form-field class="form-control custom-select-control">
                     <mat-select formControlName="encounterClass" placeholder="Select class">
                       <mat-option value="">Select class</mat-option>
-                      <mat-option *ngFor="let classType of encounterClassList" [value]="classType.value">{{classType.name}}</mat-option>   
-                    </mat-select>
+                      <ng-container *ngIf="this.data != undefined">
+                        <mat-option *ngFor="let classType of encounterCNHIClassList"  [value]="classType.value">{{classType.name}}</mat-option>
+                      </ng-container>
+                    
+                      <ng-container *ngIf="this.data == undefined">
+                        <mat-option *ngFor="let classType of encounterClassList" [value]="classType.value">{{classType.name}}
+                        </mat-option>
+                      </ng-container>
+                     </mat-select>
                   </mat-form-field>
                   <div *ngIf="(isSubmitted || FormPreAuthorization.get('encounterClass').touched) && FormPreAuthorization.get('encounterClass').hasError('required')">
                     <span class="error-text">Please select the class</span>

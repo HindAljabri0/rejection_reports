@@ -207,6 +207,7 @@ export class DashboardComponent implements OnInit {
             dialogConfig.data = {
                 providerId: ProviderId,
                 username: userName,
+                product: 'WCS',
             }
             const dialogRef = this.dialog.open(FeedbackDialogComponent, dialogConfig);
 
@@ -227,7 +228,7 @@ export class DashboardComponent implements OnInit {
         let feedbackable: any;
 
         let survey:any;
-        const surveyObj = await this._feedbackservice.getSurveyId(this.authService.getProviderId(), 0, 1).pipe(
+        const surveyObj = await this._feedbackservice.getSurveyId(this.authService.getProviderId()).pipe(
             filter(response => response instanceof HttpResponse || response instanceof HttpErrorResponse)).toPromise();
         if (surveyObj instanceof HttpResponse) {
             const body = surveyObj.body;

@@ -426,7 +426,7 @@ export class PrescriptionTransactionsComponent implements OnInit {
       approvalRequestId: requestId,
       approvalResponseId: responseId,
       type: reqType,
-      isApproval:true
+      isPrescriber:true
     };
 
     const dialogRef = this.dialog.open(PrescriptionCancelReasonModalComponent, dialogConfig);
@@ -548,7 +548,7 @@ export class PrescriptionTransactionsComponent implements OnInit {
     this.sharedServices.loadingChanged.next(true);
     const model: any = {};
     model.approvalResponseId = responseId;
-    this.providerNphiesApprovalService.statusCheck(this.sharedServices.providerId, model,true).subscribe(event => {
+    this.providerNphiesApprovalService.prescriberStatusCheck(this.sharedServices.providerId, model,true).subscribe(event => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
@@ -711,7 +711,7 @@ export class PrescriptionTransactionsComponent implements OnInit {
     this.sharedServices.loadingChanged.next(true);
 
     // tslint:disable-next-line:max-line-length
-    this.providerNphiesApprovalService.inquireApprovalRequest(this.sharedServices.providerId, requestId).subscribe((event: any) => {
+    this.providerNphiesApprovalService.inquirePrescriberRequest(this.sharedServices.providerId, requestId).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;

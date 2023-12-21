@@ -212,7 +212,7 @@ export class AddCommunicationDialogComponent implements OnInit {
     });
 
     console.log(model);
-    this.nphiesPollManagementService.sendCommunication(this.sharedServices.providerId, model,this.data.isApproval).subscribe((event: any) => {
+    this.nphiesPollManagementService.sendCommunication(this.sharedServices.providerId, model,this.data.isApproval,this.data.isPrescriber).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;

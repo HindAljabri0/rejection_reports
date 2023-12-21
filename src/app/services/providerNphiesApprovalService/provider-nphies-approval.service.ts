@@ -35,6 +35,13 @@ export class ProviderNphiesApprovalService {
     const request = new HttpRequest('POST', environment.nphiesApprovalPBM + requestUrl, body);
     return this.http.request(request);
   }
+
+  sendApprovalMRERequest(providerId: string, body: any) {
+    const requestUrl = `/providers/${providerId}/approval/mre-validation`;
+    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
+    const request = new HttpRequest( 'POST', environment.nphiesApprovalMRE + requestUrl, body , {headers});
+    return this.http.request(request);
+  }
   LinkAttachments(providerId: string,
     folderName: string,
     isReplace: boolean,
@@ -354,12 +361,18 @@ export class ProviderNphiesApprovalService {
     return this.http.request(request);
   }
 
+  cancelPrescriberRequest(providerId: string, body: any,isPrescriber = false) {
+      let requestURL = `/providers/${providerId}/prescriber/cancel/request`;
+      const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, body);
+      return this.http.request(request);
+    } 
+  
   cancelApprovalRequest(providerId: string, body: any, isApproval = false) {
     if (isApproval) {
       let requestURL = `/providers/${providerId}/approval/cancel/request`;
       const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, body);
       return this.http.request(request);
-    } else {
+    }  else  {
       const isHeadOffice = AuthService.isProviderHeadOffice();
       let requestURL = `/providers/${providerId}/claims/cancel/request`;
       if (isHeadOffice) {
@@ -409,8 +422,15 @@ export class ProviderNphiesApprovalService {
     return this.http.request(request);
   }
 
+
   statusCheck(providerId: string, body: any, isApproval = false) {
     let requestURL = `/providers/${providerId}/approval/checkstatus`;
+    const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, body);
+    return this.http.request(request);
+  }
+
+  prescriberStatusCheck(providerId: string, body: any, isPrescriber = false) {
+    let requestURL = `/providers/${providerId}/prescriber/checkstatus`;
     const request = new HttpRequest('POST', environment.providerNphiesApproval + requestURL, body);
     return this.http.request(request);
   }
@@ -801,8 +821,23 @@ export class ProviderNphiesApprovalService {
     return this.http.request(request);
   }
 
+  inquirePrescriberRequest(providerId: string, requestId: number) {
+    let requestUrl = `/providers/${providerId}/prescriber/inquiry?`;
+    if (requestId) {
+      requestUrl += `approvalRequestId=${requestId}`;
+    }
+    const request = new HttpRequest('POST', environment.nphiesApprovalInquiry + requestUrl, {});
+    return this.http.request(request);
+  }
+
   getJSONTransactions(providerId: string, _claimId: number, _claimProviderId: string, isApproval = false) {
     let requestUrl = `/providers/${providerId}/approval/view/jsons/${_claimId}`;
+    let request = new HttpRequest('GET', environment.providerNphiesApproval + requestUrl);
+    return this.http.request(request);
+  }
+
+  getPrescriberJSONTransactions(providerId: string, prescriberRequestId: number, _claimProviderId: string, isPrescriber = false) {
+    let requestUrl = `/providers/${providerId}/prescriber/view/jsons/${prescriberRequestId}`;
     let request = new HttpRequest('GET', environment.providerNphiesApproval + requestUrl);
     return this.http.request(request);
   }
@@ -819,15 +854,19 @@ export class ProviderNphiesApprovalService {
   }
 
 
-  getJSON(providerId: string, body: any, isApproval = false) {
+  getJSON(providerId: string, body: any, isApproval = false, isPrescriber = false) {
     if(isApproval){
       let requestUrl = `/providers/${providerId}/approval/transactionlog/json`;
       const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
       return this.http.request(request);
-    }else{
+    }else  if(isPrescriber){
+        let requestUrl = `/providers/${providerId}/prescriber/transactionlog/json`;
+        const request = new HttpRequest('POST', environment.providerNphiesApproval + requestUrl, body);
+        return this.http.request(request);
+      }else {
       const isHeadOffice = AuthService.isProviderHeadOffice();
       let requestUrl = `/providers/${providerId}/claims/transactionlog/json`;
-      if (isHeadOffice && !isApproval) {
+      if (isHeadOffice && !isApproval && !isPrescriber) {
         requestUrl = `/head-office/${providerId}/claims/branch/transactionlog/json`;
       }
       const request = new HttpRequest('POST', environment.providerNphiesClaim + requestUrl, body);
@@ -1067,6 +1106,26 @@ export class ProviderNphiesApprovalService {
     return this.http.request(httpRequest);
   }
 
+  MREValidation(
+    providerId: string,
+    claimIds?: string[],
+    uploadId?: string
+    ) {
+    let requestURL = `/providers/${providerId}/criteria?`;
+
+    if (uploadId) {
+      requestURL += `uploadId=${uploadId}`;
+    }
+
+    if (claimIds && claimIds.length > 0) {
+      requestURL += `&requestIds=${claimIds.join(',')}`;
+    }
+
+    const headers: HttpHeaders = new HttpHeaders('Content-Type: application/json');
+    const httpRequest =
+    new HttpRequest('GET', environment.mreClaimsSender + requestURL, {}, { headers });
+    return this.http.request(httpRequest);
+  }
   moveToReadyState(
     providerId: string,
     claimIds?: string[],

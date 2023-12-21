@@ -238,7 +238,9 @@ export class CreateClaimNphiesComponent implements OnInit {
   responseId: number;
   pageMode = '';
   currentOpenItem: number = null;
+  currentOpenDiagnosis: number = null;
   otherDataModel: any = {};
+
   // EditBtn = 'Edit';
   communications = [];
 
@@ -247,6 +249,8 @@ export class CreateClaimNphiesComponent implements OnInit {
   PrescriberDefault = "";
   claimType: string;
   isPBMValidationVisible = false;
+  isMREValidationVisible = false;
+
   providerType = '';
   submittionErrors: Map<string, string>;
   //IsResubmitMode = false;
@@ -346,6 +350,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       this.selectedTab = (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') ? 9 : 8;
     }
     this.getPBMValidation();
+    this.getMREValidation();
     this.getProviderTypeConfiguration()
 
   }
@@ -2358,7 +2363,6 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.reset();
 
     this.otherDataModel = {};
-
     this.otherDataModel.reIssueReason = response.reIssueReason;   
     if (this.otherDataModel.reIssueReason) {
       // tslint:disable-next-line:max-line-length
@@ -2578,7 +2582,8 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     this.otherDataModel.errors = response.errors;
     this.otherDataModel.pbmComments = response.pbmComments;
-
+    this.otherDataModel.mreComments = response.mreComments;
+    
     this.otherDataModel.processNotes = response.processNotes;
 
     this.FormNphiesClaim.controls.preAuthResponseId.setValue(response.preAuthorizationInfo.preAuthResponseId);
@@ -2760,6 +2765,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.diagnosisDescription = x.diagnosisDescription;
       model.type = x.type;
       model.onAdmission = x.onAdmission;
+      model.mreStatus = x.mreStatus;
       // tslint:disable-next-line:max-line-length
       model.typeName = this.sharedDataService.diagnosisTypeList.filter(y => y.value === x.type)[0] ? this.sharedDataService.diagnosisTypeList.filter(y => y.value === x.type)[0].name : '';
       // tslint:disable-next-line:max-line-length
@@ -3001,6 +3007,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       model.itemId = x.itemId;
       model.bodySite = x.bodySite;
       model.pbmStatus = x.pbmStatus;
+      model.mreStatus = x.mreStatus;
       // tslint:disable-next-line:max-line-length
       model.bodySiteName = this.sharedDataService.getBodySite(response.preAuthorizationInfo.type).filter(y => y.value == x.bodySite)[0] ? this.sharedDataService.getBodySite(response.preAuthorizationInfo.type).filter(y => y.value == x.bodySite)[0].name : '';
 
@@ -3443,6 +3450,18 @@ export class CreateClaimNphiesComponent implements OnInit {
       if (event instanceof HttpResponse) {
         const body = event['body'];
         this.isPBMValidationVisible = body.value === '1' ? true : false;
+      }
+    }, err => {
+      console.log(err);
+    });
+
+  }
+
+  getMREValidation() {
+    this.adminService.checkIfNphiesMREValidationIsEnabled(this.sharedServices.providerId, '101').subscribe((event: any) => {
+      if (event instanceof HttpResponse) {
+        const body = event['body'];
+        this.isMREValidationVisible = body.value === '1' ? true : false;
       }
     }, err => {
       console.log(err);

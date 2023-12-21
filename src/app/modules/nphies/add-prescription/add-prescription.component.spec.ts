@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddPreauthorizationComponent } from './add-preauthorization.component';
+import { AddPreauthorizationComponent } from '../add-preauthorization/add-preauthorization.component';
 
 describe('AddPreauthorizationComponent', () => {
   let component: AddPreauthorizationComponent;
