@@ -498,7 +498,7 @@ span.hasNotifications::after {content: ".";position: absolute;display: flex;colo
 /* sidebar
 --------------------------------------------------------------------------------------------------------*/
 .sidebar {width: 240px;z-index: 1;top: 68px;bottom: 0;left: 0;height:auto;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);position:fixed;background-color: #fff;box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);}
-.global-notification-on .sidebar{top: 100px;}
+.global-notification-on .sidebar{top: 130px;}
 .sidebar>.inner{height: calc(100vh - 156px);overflow: auto;border-bottom: 1px solid #e1e1e1;}
 .sidebar hr{margin: 0;}
 .sidebar .list-container{padding: 10px 0;}
@@ -532,7 +532,7 @@ span.hasNotifications::after {content: ".";position: absolute;display: flex;colo
 /* main content
 --------------------------------------------------------------------------------------------------------*/
 .main-content {display: block;padding: 82px 14px 14px 254px;transition:all 0.2s cubic-bezier(0.35,0,0.25,1);}
-.global-notification-on .main-content{padding-top: 114px;}
+.global-notification-on .main-content{padding-top: 130px;}
 
 /* advance search
 --------------------------------------------------------------------------------------------------------*/
