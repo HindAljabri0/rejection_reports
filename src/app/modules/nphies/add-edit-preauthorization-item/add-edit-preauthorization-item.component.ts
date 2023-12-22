@@ -8,7 +8,7 @@ import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSear
 import { takeUntil } from 'rxjs/operators';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { X } from '@angular/cdk/keycodes';
-import { DatePipe } from '@angular/common';
+import { DatePipe, JsonPipe } from '@angular/common';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
@@ -409,6 +409,13 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
     setPrescribedMedication(gtinNumber: any) {
         const filteredData = this.itemList.filter((item) => item.code === gtinNumber);
+
+        this.itemListFilteredFun(gtinNumber);
+        this.FormItem.patchValue({
+            item: this.itemList.filter(x => x.code === gtinNumber)[0]
+        });
+   
+
         this.FormItem.patchValue({
             unitPrice: filteredData[0].unitPrice,
         });
@@ -537,22 +544,32 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             });
         }
     }
-
+     search='';
+     filterMyOptions(val){ 
+        this.search = val;
+        this.filterItem();
+        console.log(val);
+        console.log( "Test " + this.search);
+    }
     filterItem() {
-        if (!this.itemList) {
+        if (!this.itemListFiltered) {
             return;
         }
         // get the search keyword
-        let search = this.FormItem.controls.itemFilter.value;
-        if (!search) {
-            this.filteredItem.next(this.itemList.slice());
+
+        //let search = this.FormItem.controls.itemFilter.value;
+        if (this.search===null ||  this.search==='' || this.search.length ===0 ||  !this.search ) {
+            console.log(this.search);
+            console.log("tes2");
+            this.filteredItem.next(this.itemListFiltered.slice());
             return;
         } else {
-            search = search.toLowerCase();
+           console.log("test2")
+           this.search = this.search.toLowerCase();
         }
         // filter the nations
         this.filteredItem.next(
-            this.itemList.filter(item => item.description.toLowerCase().indexOf(search) > -1 || item.code.toString().toLowerCase().indexOf(search) > -1)
+            this.itemListFiltered.filter(item => item.description.toLowerCase().indexOf(this.search) > -1 || item.code.toString().toLowerCase().indexOf(this.search) > -1)
         );
     }
 
@@ -911,7 +928,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             model.display = this.FormItem.controls.display.value;
             model.isPackage = this.FormItem.controls.isPackage.value;
             model.isDentalBodySite = this.FormItem.controls.isDentalBodySite.value
-             if ((!this.FormItem.controls.isDentalBodySite.value && this.data.source === 'CNHI') || this.data.type === 'oral' || (this.data.type === 'institutional' && this.FormItem.controls.type.value.value === 'oral-health-ip')) {
+             if ((!this.FormItem.controls.isDentalBodySite.value && this.data.source === 'CNHI') || this.data.type === 'oral' || (this.data.type === 'institutional' &&  this.FormItem.controls.type.value.value === 'oral-health-ip')) {
                 this.bodySiteList = this.sharedDataService.getBodySite('oral');
              let bodySite = this.bodySiteList.filter(x => x.value === this.FormItem.controls.bodySite.value)[0];
                 model.bodySite = this.FormItem.controls.bodySite ? bodySite ? bodySite.value : '' : '';

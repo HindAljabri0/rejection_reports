@@ -60,7 +60,7 @@
           <mat-form-field class="form-control custom-select-control">
             <mat-select panelClass="custom-dropdown" formControlName="item" [disabled]="IsItemLoading" #itemSelect (selectionChange)="setPrescribedMedication($event.value.code)" placeholder="Select Code-Description">
               <mat-option>
-                  <ngx-mat-select-search placeholderLabel="Search Item" formControlName="itemFilter" noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
+                  <ngx-mat-select-search placeholderLabel="Search Item" (ngModelChange)="filterMyOptions($event)" formControlName="itemFilter" noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
               </mat-option>
               <cdk-virtual-scroll-viewport itemSize="100" minBufferPx="{{ itemList.length > 0 ? 100 : 100 }}" maxBufferPx="{{itemList.length * 10}}" class="viewport">  
                 <mat-option *cdkVirtualFor="let item of filteredItem | async" [value]="item" >
@@ -99,7 +99,7 @@
         </div>
       </div>
      
-      <div class="col-4 col-lg-3" *ngIf="(FormItem.controls.isDentalBodySite.value && data.source === 'CNHI') || (((data.type !== 'oral') && !(data.type === 'institutional' && FormItem.controls.type.value.value === 'oral-health-ip')) && data.source !== 'CNHI')" [hidden]="data.source === 'APPROVAL' && data.providerType === 'vision'">
+      <div class="col-4 col-lg-3" *ngIf="(FormItem.controls.isDentalBodySite.value && data.source === 'CNHI') || (((data.type !== 'oral') && !(data.type === 'institutional' && FormItem.controls.type.value &&FormItem.controls.type.value.value === 'oral-health-ip')) && data.source !== 'CNHI')" [hidden]="data.source === 'APPROVAL' && data.providerType === 'vision'">
         <div class="form-group">
           <label class="control-label">Body Site</label>
           <mat-form-field class="form-control custom-select-control">
@@ -110,7 +110,7 @@
           </mat-form-field>
         </div>
       </div>
-       <div class="col-4 col-lg-3" *ngIf="(!FormItem.controls.isDentalBodySite.value && data.source === 'CNHI') || ((data.type === 'oral') || (data.type === 'institutional' && FormItem.controls.type.value.value === 'oral-health-ip'))" [hidden]="data.source === 'APPROVAL' && data.providerType === 'vision'">
+       <div class="col-4 col-lg-3" *ngIf="(!FormItem.controls.isDentalBodySite.value && data.source === 'CNHI') || ((data.type === 'oral') || (data.type === 'institutional' && FormItem.controls.type.value && FormItem.controls.type.value.value === 'oral-health-ip'))" [hidden]="data.source === 'APPROVAL' && data.providerType === 'vision'">
         <div class="form-group">
           <label class="control-label">Body Site</label>
           <div class="input-group">
