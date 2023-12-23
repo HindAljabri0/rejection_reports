@@ -1,7 +1,7 @@
 <div class="advance-search">
     <mat-form-field class="search-mode-select">
         <mat-select [value]="selectedSearchMode" (selectionChange)="onSearchModeChange($event);">
-            <mat-option *ngFor="let type of searchMode(isClaimUser)" [value]="type.key">
+            <mat-option *ngFor="let type of searchModesNphies" [value]="type.key">
                 {{type.label}}
             </mat-option>
         </mat-select>
