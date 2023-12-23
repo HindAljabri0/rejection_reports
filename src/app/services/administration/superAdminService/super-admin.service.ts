@@ -183,6 +183,7 @@ export const NPHIES_PBM_RESTRICTION_KEY = 'NphiesPbmValidation';
 export const NPHIES_PBM_APPROVAL_KEY = 'NphiesApprovalPbmValidation';
 export const MRE_RESTRICTION_KEY = 'MREValidation';
 export const NPHIES_MRE_RESTRICTION_KEY = 'NphiesMREValidation';
+export const RADIOLOGY_REPORT_KEY = 'RadiologyReport';
 export const NPHIES_MRE_APPROVAL_KEY = 'NphiesApprovalMREValidation';
 export const NET_AMOUNT_RESTRICTION_KEY = 'netAmountValidation';
 export const PROVIDER_TYPE_CONFIGURATION_KEY = 'providerTypeConfiguration';
