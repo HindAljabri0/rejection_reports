@@ -1,6 +1,7 @@
 const host = 'http://gateway.okd.waseel.com';
 const hostFeedback = 'https://feedback.qa-eclaims.waseel.com/en/';
 const hostjisr = 'https://qa-jisr.waseel.com/signIn';
+const hostlegacy = 'http://legacy.dr-eclaims.waseel.com/';
 export const environment = {
     name: 'qa',
     production: true,
@@ -30,7 +31,8 @@ export const environment = {
 
     nphiesPollManagement: `${host}/poll-management`,
     contractManagementService: `${host}/contract-billing`,
-
+    mreClaimsSender:`${host}/mre-claims-sender`,
+    nphiesApprovalMRE: `${host}/nphies-approval-mre-validation`,
     claimsDownloadsService: `${host}/downloads`,
     claimReviewService: `${host}/review`,
     nphiesConfigurationService: `${host}/nphies-configurations`,
@@ -48,4 +50,5 @@ export const environment = {
     chronicDiseaseManagement: `${host}/chronic-disease-management`,   
     feedbacksurveyUrl: `${hostFeedback}`,
     communicationportalUrl: `${hostjisr}`,
+    legacyUrl:`${hostlegacy}`,
 };

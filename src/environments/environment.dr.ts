@@ -2,6 +2,7 @@ const host = window.location.protocol + '//api.' + window.location.hostname;
 const url = window.location.protocol + '//' + window.location.hostname;
 const hostFeedback = 'https://feedback.dr-eclaims.waseel.com/en/';
 const hostjisr = 'https://qa-jisr.waseel.com/signIn'
+const hostlegacy = 'http://legacy.dr-eclaims.waseel.com/'
 export const environment = {
     name: 'dr',
     production: true,
@@ -21,6 +22,8 @@ export const environment = {
     creditReportService: `${host}/reports`,
     tawuniyaCreditReportService: `${host}/credit-report`,
     pbmValidationService: `${host}/pbm`,
+    mreClaimsSender:`${host}/mre-claims-sender`,
+    nphiesApprovalMRE: `${host}/nphies-approval-mre-validation`,
     payerPaymentContractService: `${host}/payer-payment-contract`,
     approvalDetailInquiryService: `${host}/approval-detail-inquiry`,
     providersBeneficiariesService: `${host}/beneficiaries`,
@@ -45,4 +48,5 @@ export const environment = {
     chronicDiseaseManagement: `${host}/chronic-disease-management`,   
     feedbacksurveyUrl: `${hostFeedback}`,
     communicationportalUrl: `${hostjisr}`,
+    legacyUrl:`${hostlegacy}`,
 };

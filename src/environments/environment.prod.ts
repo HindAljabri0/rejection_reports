@@ -1,6 +1,7 @@
 const host = 'https://api.eclaims.waseel.com';
 const hostFeedback = 'https://feedback.eclaims.waseel.com/en/';
 const hostjisr = 'https://jisr.waseel.com/signIn';
+const hostlegacy = 'http://legacy.eclaims.waseel.com/'
 export const environment = {
     name: 'prod',
     production: true,
@@ -10,6 +11,8 @@ export const environment = {
     uploaderHost: `${host}/upload`,
     claimSearchHost: `${host}/search`,
     claimServiceHost: `${host}/claims`,
+    mreClaimsSender:`${host}/mre-claims-sender`,
+    nphiesApprovalMRE: `${host}/nphies-approval-mre-validation`,
     NotificationServiceHost: `${host}/notifications`,
     authenticationHost: `${host}/oauth`,
     adminServiceHost: `${host}/admin`,
@@ -48,4 +51,5 @@ export const environment = {
     chronicDiseaseManagement: `${host}/chronic-disease-management`,
     feedbacksurveyUrl: `${hostFeedback}`,
     communicationportalUrl: `${hostjisr}`,
+    legacyUrl:`${hostlegacy}`,
 };
