@@ -749,8 +749,8 @@ export class CreateClaimNphiesComponent implements OnInit {
           break;
       }
 
-      this.Items = [];
-      this.VisionSpecifications = [];
+      //this.Items = [];
+      //this.VisionSpecifications = [];
     }
   }
 
