@@ -50,7 +50,6 @@ import { environment } from 'src/environments/environment';
 })
 export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, OnDestroy {
 
-
     owlCarouselOptions: OwlOptions = {
         mouseDrag: false,
         pullDrag: false,
@@ -76,6 +75,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         nav: true
     };
 
+    
+
     file: File;
     claimSearchCriteriaModel: ClaimSearchCriteriaModel = {};
 
@@ -100,6 +101,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     providerId: string;
 
     routerSubscription: Subscription;
+    upwardFlag: boolean;
+    downwardFlag: boolean;
 
     summaries: SearchStatusSummary[];
     currentSummariesPage = 1;
@@ -386,6 +389,9 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     }
 
     async getSummaryOfStatus(statuses: string[]): Promise<number> {
+        this.upwardFlag=false;
+        this.downwardFlag=true;
+
 
 
         this.commen.loadingChanged.next(true);
@@ -429,7 +435,11 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
         //debugger;
 
-        this.claimSearchCriteriaModel.organizationId = this.params.organizationId;
+
+        
+            
+
+         this.claimSearchCriteriaModel.organizationId = this.params.organizationId;
         event = await this.providerNphiesSearchService.getClaimSummary(this.claimSearchCriteriaModel, this.isSearchByStatus
 
         ).toPromise().catch(error => {
@@ -445,6 +455,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
                 return error.status;
             }
         });
+
         if (event instanceof HttpResponse) {
             if ((event.status / 100).toFixed() == '2') {
                 // debugger;
@@ -465,6 +476,104 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         }
         this.commen.loadingChanged.next(false);
         return event.status;
+    }
+
+
+
+
+        async getSummaryOfClaims(statuses: string[]): Promise<number> {
+            this.upwardFlag=true;
+            this.downwardFlag=false;
+
+
+            this.commen.loadingChanged.next(true);
+            let event;
+    
+            this.claimSearchCriteriaModel.uploadId = this.params.uploadId;
+    
+            this.claimSearchCriteriaModel.statuses = statuses;
+    
+            this.claimSearchCriteriaModel.page = this.pageIndex;
+    
+            this.claimSearchCriteriaModel.pageSize = this.pageSize;
+    
+            this.claimSearchCriteriaModel.payerIds = this.params.payerId;
+    
+            this.claimSearchCriteriaModel.claimTypes = this.params.claimTypes;
+    
+            this.claimSearchCriteriaModel.batchId = this.params.batchId;
+    
+            this.claimSearchCriteriaModel.claimDate = this.params.filter_claimDate;
+            this.claimSearchCriteriaModel.claimSubmissionDate = this.params.filter_claimSubmissionDate;
+            this.claimSearchCriteriaModel.claimResponseDate = this.params.filter_claimResponseDate;
+    
+            this.claimSearchCriteriaModel.provderClaimReferenceNumber = this.params.claimRefNo;
+    
+            this.claimSearchCriteriaModel.claimIds = this.params.claimId;
+    
+            this.claimSearchCriteriaModel.patientFileNo = this.params.patientFileNo;
+    
+            this.claimSearchCriteriaModel.memberId = this.params.memberId;
+            this.claimSearchCriteriaModel.documentId = this.params.nationalId;
+            this.claimSearchCriteriaModel.requestBundleId = this.params.requestBundleId;
+            this.claimSearchCriteriaModel.bundleIds = this.params.bundleIds;
+            this.claimSearchCriteriaModel.invoiceNo = this.params.invoiceNo;
+            this.claimSearchCriteriaModel.providerId = this.commen.providerId;
+            this.claimSearchCriteriaModel.claimDate = this.params.from;
+            this.claimSearchCriteriaModel.claimSubmissionDate = this.params.claimSubmissionDate;
+            this.claimSearchCriteriaModel.claimResponseDate = this.params.claimResponseDate;
+            this.claimSearchCriteriaModel.toDate = this.params.to;
+            this.claimSearchCriteriaModel.reissueReason = this.params.reissueReason;
+    
+
+            this.claimSearchCriteriaModel.organizationId = this.params.organizationId;
+            event = await this.providerNphiesSearchService.getClaimCount(this.claimSearchCriteriaModel, this.isSearchByStatus
+    
+            ).toPromise().catch(error => {
+                this.commen.loadingChanged.next(false);
+                if (error instanceof HttpErrorResponse) {
+                    if ((error.status / 100).toFixed() == '4') {
+                        this.errorMessage = error.message;
+                    } else if ((error.status / 100).toFixed() == '5') {
+                        this.errorMessage = 'Server could not handle the request. Please try again later.';
+                    } else {
+                        this.errorMessage = 'Somthing went wrong.';
+                    }
+                    return error.status;
+                }
+
+        });
+
+      
+        if (event instanceof HttpResponse) {
+            if ((event.status / 100).toFixed() == '2') {
+                // debugger;
+                const summary: SearchStatusSummary = new SearchStatusSummary(event.body);
+
+                if (summary.totalClaims > 0 || summary.inActiveClaimCount > 0) {
+
+                    if (statuses.includes('all') || statuses.includes('All') || statuses.includes('ALL')) {
+                        summary.statuses.push('all');
+                        summary.statuses.push('All');
+                        summary.statuses.push('ALL');
+                    } else {
+                        summary.statuses = statuses;
+                    }
+                    this.summaries.push(summary);
+                }
+            }
+        }
+        this.commen.loadingChanged.next(false);
+        return event.status;
+    }
+
+    getFirst(){
+        this.upwardFlag=true;
+    }
+
+    getSecond(){
+        this.downwardFlag=true;
+
     }
 
     getResultsOfStatus(key: number, page?: number) {

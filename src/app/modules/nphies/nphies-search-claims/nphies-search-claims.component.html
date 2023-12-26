@@ -15,6 +15,69 @@
       <p class="align-self-center pr-2">Upload Name: {{summaries[0].uploadName}}</p>
       <p class="ml-auto">{{summaries[0].uploadDate | date: 'dd/MM/yyyy'}}</p>
     </div>
+
+    <div class="block-body pb-0">
+        <owl-carousel-o [options]="owlCarouselOptions" class="abstract-card-carousel dynamic-width" [class.fixed-card]="summaries.length<4">
+          <ng-container *ngFor="let summary of summaries | keyvalue; let i = index">
+            <ng-template carouselSlide [width]="summary.value.statuses[0] == 'partially_paid'?320:0">
+              <app-abstractcard [clickable]="cardsClickAble" [title]="commen.statusToName(i == 0?'all':summary.value.statuses[0])" [totalCount]="summary.value.totalClaims"
+                [inactiveCount]="summary.value.inActiveClaimCount" [accentColor]="commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])"
+                (action)="getResultsOfStatus(summary.key)" class="primary-card abstract-card">
+                <span class="label total">Totals</span>
+                <table>
+                  <tr>
+                    <th class="label">Net</th>
+                    <th class="label">Patient Share</th>
+                    <th class="label" *ngIf="summary.value.statuses[0] == 'partial'">Rejected</th>
+                  </tr>
+                  <tr>
+                    <td class="pb-6 text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
+                      <span class="dashboard-numbers">{{summary.value.totalNetAmount!=null?summary.value.totalNetAmount:'-'}}</span><span *ngIf="summary.value.totalNetAmount!=null"
+                        class="currency"> SR</span>
+                    </td>
+                    <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
+                      <span class="dashboard-numbers">{{summary.value.totalPatientShare!=null?summary.value.totalPatientShare:'-'}}</span><span
+                        *ngIf="summary.value.totalPatientShare!=null" class="currency"> SR</span>
+                    </td>
+                    <td *ngIf="summary.value.statuses[0] == 'partial'" class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
+                      <span class="dashboard-numbers">{{summary.value.actualDeducted}}</span><span class="currency">
+                        SR</span>
+                    </td>
+  
+                  </tr>
+  
+                  <tr>
+                    <th class="label">Tax</th>
+                    <th class="label">Payer Share</th>
+                    <th class="label" *ngIf="summary.value.statuses[0] == 'partial'">Approved</th>
+                  </tr>
+                  <tr>
+                    <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
+                      <span class="dashboard-numbers">{{summary.value.totalTax!=null?summary.value.totalTax:'-'}}</span><span *ngIf="summary.value.totalTax!=null" class="currency">
+                        SR</span>
+                    </td>
+                    <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
+                      <span class="dashboard-numbers">{{summary.value.totalPayerShare!=null?summary.value.totalPayerShare:'-'}}</span><span
+                        *ngIf="summary.value.totalPayerShare!=null" class="currency"> SR</span>
+                    </td>
+                    <td *ngIf="summary.value.statuses[0] == 'partial'" class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
+                      <span class="dashboard-numbers">{{summary.value.actualPaid}}</span><span class="currency"> SR</span>
+                    </td>
+  
+                  </tr>
+                </table>
+                <mat-icon class="text-primary" (click)="getSummaryOfClaims(summary.value.statuses[0])" *ngIf="upwardFlag === false" >arrow_downward</mat-icon>
+
+                <mat-icon class="text-primary" (click)="getFirst()" *ngIf="upwardFlag === true">arrow_upward</mat-icon>
+               
+  
+              </app-abstractcard>
+            </ng-template>
+          </ng-container>
+        </owl-carousel-o>
+      </div>
+  
+
     <div class="block-body pb-0">
       <owl-carousel-o [options]="owlCarouselOptions" class="abstract-card-carousel dynamic-width" [class.fixed-card]="summaries.length<4">
         <ng-container *ngFor="let summary of summaries | keyvalue; let i = index">
