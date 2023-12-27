@@ -184,6 +184,12 @@ typeChange(type = null) {
     this.FormItem.controls.item.setValue('');
  
 }
+
+setPrescribedMedication(gtinNumber: any) {
+    const filteredData = this.itemList.filter((item) => item.code === gtinNumber);
+   
+  
+}
 filterPrescribedMedicationItem() {
     if (!this.prescribedMedicationList) {
         return;
@@ -199,6 +205,40 @@ filterPrescribedMedicationItem() {
         this.prescribedMedicationList.filter(item => (item.descriptionCode && item.descriptionCode.toLowerCase().indexOf(search) > -1) || (item.tradeName && item.tradeName.toString().toLowerCase().indexOf(search) > -1) || (item.gtinNumber && item.gtinNumber.toString().toLowerCase().indexOf(search) > -1))
     );
 }
+
+SetSingleRecord(type = null) {
+    if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
+        this.FormItem.controls.quantityCode.setValidators([Validators.required]);
+        this.FormItem.controls.quantityCode.updateValueAndValidity();
+    } else {
+        this.FormItem.controls.quantityCode.clearValidators();
+        this.FormItem.controls.quantityCode.updateValueAndValidity();
+    }
+    this.FormItem.controls.item.setValue('');
+    // this.itemList = [{ "code": type.code, "description": type.display }];
+
+    this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, type.itemType).subscribe(event => {
+        if (event instanceof HttpResponse) {
+            this.itemList = event.body;
+            if (type) {
+                this.FormItem.patchValue({
+                    item: this.itemList.filter(x => x.code === type.code)[0]
+                });
+            }
+            this.filteredItem.next(this.itemList.slice());
+            this.FormItem.controls.itemFilter.valueChanges
+                .pipe(takeUntil(this.onDestroy))
+                .subscribe(() => {
+                    this.filterItem();
+                });
+        }
+    }, error => {
+        if (error instanceof HttpErrorResponse) {
+            console.log(error);
+        }
+    });
+}
+
   getItemList(type = null) {
     this.IsItemLoading = true;
     this.FormItem.controls.item.disable();

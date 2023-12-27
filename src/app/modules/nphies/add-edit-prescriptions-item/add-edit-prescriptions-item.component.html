@@ -19,6 +19,9 @@
                    <mat-option *ngFor="let type of prescribedCode"  [value]="type">  {{ type.name }}</mat-option>
                        </mat-select>
                 </mat-form-field>
+                  <div *ngIf="(isSubmitted || FormItem.get('type').touched) && FormItem.get('type').hasError('required')">
+            <span class="error-text">Please select a Type</span>
+          </div>
               </div>
           </div>
           
@@ -26,7 +29,7 @@
             <div class="form-group" [ngClass]="{'has-error': (isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')}">
               <label class="control-label">GTIN Code - Description<span class="asterisk">*</span></label>
               <mat-form-field class="form-control custom-select-control">
-                <mat-select panelClass="custom-dropdown" formControlName="item" [disabled]="IsItemLoading" #itemSelect (selectionChange)="setPrescribedMedication($event.value.code)" placeholder="Select Code-Description">
+                <mat-select panelClass="custom-dropdown" formControlName="item" [disabled]="IsItemLoading" placeholder="Select Code-Description">
                   <mat-option>
                       <ngx-mat-select-search placeholderLabel="Search Item" formControlName="item" noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
                   </mat-option>
@@ -48,7 +51,7 @@
             <div class="form-group" [ngClass]="{'has-error': (isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')}">
               <label class="control-label">Scientific Code - Description<span class="asterisk">*</span></label>
               <mat-form-field class="form-control custom-select-control">
-                <mat-select panelClass="custom-dropdown" formControlName="item" [disabled]="IsItemLoading" #itemSelect (selectionChange)="setPrescribedMedication($event.value.code)" placeholder="Select Code-Description">
+                <mat-select panelClass="custom-dropdown" formControlName="item" [disabled]="IsItemLoading" placeholder="Select Code-Description">
                   <mat-option>
                       <ngx-mat-select-search placeholderLabel="Search Item" formControlName="item" noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
                   </mat-option>
