@@ -627,8 +627,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.FormNphiesClaim.controls.dateOrdered.disable();
     this.FormNphiesClaim.controls.payeeType.disable();
     this.FormNphiesClaim.controls.payee.disable();
-    this.FormNphiesClaim.controls.type.disable();
-    this.FormNphiesClaim.controls.subType.disable();
+    /*this.FormNphiesClaim.controls.type.disable();
+    this.FormNphiesClaim.controls.subType.disable();*/
     this.FormNphiesClaim.controls.accidentType.disable();
     this.FormNphiesClaim.controls.streetName.disable();
     this.FormNphiesClaim.controls.city.disable();
@@ -665,8 +665,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.FormNphiesClaim.controls.dateOrdered.enable();
     // this.FormNphiesClaim.controls.payeeType.enable();
     // this.FormNphiesClaim.controls.payee.enable();
-    this.FormNphiesClaim.controls.type.disable();
-    this.FormNphiesClaim.controls.subType.disable();
+    //this.FormNphiesClaim.controls.type.disable();
+    //this.FormNphiesClaim.controls.subType.disable();
     this.FormNphiesClaim.controls.accidentType.enable();
     this.FormNphiesClaim.controls.streetName.enable();
     this.FormNphiesClaim.controls.city.enable();
@@ -757,8 +757,8 @@ export class CreateClaimNphiesComponent implements OnInit {
           break;
       }
 
-      this.Items = [];
-      this.VisionSpecifications = [];
+      //this.Items = [];
+      //this.VisionSpecifications = [];
     }
   }
 
