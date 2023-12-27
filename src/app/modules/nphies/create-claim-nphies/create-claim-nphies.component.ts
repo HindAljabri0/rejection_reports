@@ -66,6 +66,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     type: ['', Validators.required],
     subType: [''],
     eligibilityType: [''],
+    preauthType: [''],
     eligibilityOfflineId: [''],
     eligibilityOfflineDate: [''],
     eligibilityResponseId: [''],
@@ -218,6 +219,8 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   IsDateRequired = false;
   IsAccidentTypeRequired = false;
+  preauthOnline: boolean = false;
+  preauthOffline: boolean = false;
   isOnline: boolean = false;
   isOffline: boolean = false;
 
@@ -300,6 +303,11 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.FormNphiesClaim.get('eligibilityType').valueChanges.subscribe(value => {
         this.isOnline = value === 'online';
         this.isOffline = value === 'offline';
+      });
+
+      this.FormNphiesClaim.get('preauthType').valueChanges.subscribe(value => {
+        this.preauthOnline = value === 'online';
+        this.preauthOffline = value === 'offline';
       });
 
     const urlHasEditMode = +this.router.url.endsWith('edit');

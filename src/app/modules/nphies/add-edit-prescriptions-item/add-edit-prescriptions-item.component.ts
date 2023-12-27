@@ -204,13 +204,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
                 });
         
             this.SetSingleRecord(type);
-             if (this.data.type === "pharmacy") {
-                this.FormItem.patchValue({
-                    prescribedDrugCode: ""
-                });
-                this.setPrescribedMedication(type.code);
-            }
-        }
+           }
     }
     typeChange(type = null) {
         if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'scientific-codes') {
@@ -250,35 +244,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
         this.FormItem.controls.item.setValue('');
      
     }
-    setPrescribedMedication(gtinNumber: any) {
-        const filteredData = this.itemList.filter((item) => item.code === gtinNumber);
-        this.FormItem.patchValue({
-            unitPrice: filteredData[0].unitPrice,
-        });
-
-        this.originalPrice = filteredData[0].unitPrice;
-
-        this.granularUnit = filteredData[0].granularUnit;
-            if (this.data.type === "pharmacy") {
-            this.itemList.filter(x => x.code === this.data.item.itemCode)[0]
-            this.filteredPescribedMedicationItem.next(this.prescribedMedicationList);
-            const res = this.prescribedMedicationList.filter(x => x.gtinNumber === gtinNumber)[0];
-            if (res != undefined) {
-                this.FormItem.patchValue({
-                    prescribedDrugCode: res
-                });
-            } else {
-                this.FormItem.patchValue({
-                    prescribedDrugCode: ""
-                });
-            }
-            this.filteredPescribedMedicationItem.next(this.prescribedMedicationList.slice());
-            this.filterPrescribedMedicationItem();
-        }
-    }
-
-
-
+ 
     SetSingleRecord(type = null) {
         if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
             this.FormItem.controls.quantityCode.setValidators([Validators.required]);

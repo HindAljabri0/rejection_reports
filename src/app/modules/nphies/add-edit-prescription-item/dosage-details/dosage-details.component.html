@@ -92,7 +92,7 @@
       
         <div class="col-4" *ngIf="FormItem.get('dosageType').value === 'RateType'">
             <div class="form-group">
-              <label class="control-label">Rate Type</label>
+              <label class="control-label">Rate Type<span class="asterisk">*</span></label>
               <mat-form-field class="form-control custom-select-control">
                 <mat-select  placeholder="Select rate type" formControlName="rateType">
                   <mat-option value="Rate_Ratio">Rate Ratio</mat-option>
@@ -119,7 +119,7 @@
           
           <div class="col-4" *ngIf="FormItem.get('dosageType').value === 'RateType' && FormItem.get('rateType').value === 'Rate_Range'">
             <div class="form-group">
-              <label class="control-label">Rate Range</label>
+              <label class="control-label">Rate Range<span class="asterisk">*</span></label>
               <div class="row small-gutter">
                 <div class="col-6">
                   <input class="form-control" placeholder="Min" formControlName = "ratemin">
@@ -133,14 +133,14 @@
           
           <div class="col-4" *ngIf="FormItem.get('dosageType').value === 'RateType' && FormItem.get('rateType').value === 'Rate_Quantity'">
             <div class="form-group">
-              <label class="control-label">Rate Quantity</label>
+              <label class="control-label">Rate Quantity<span class="asterisk">*</span></label>
               <input class="form-control" placeholder="Enter the rate quantity" formControlName = "rateQuantity">
             </div>
           </div>
           
         <div class="col-4" *ngIf="FormItem.get('dosageType').value === 'RateType'">
           <div class="form-group">
-            <label class="control-label">Rate Unit</label>
+            <label class="control-label">Rate Unit<span class="asterisk">*</span></label>
             <mat-form-field class="form-control custom-select-control">
               <mat-select placeholder="Select rate unit" formControlName = "rateUnit">
                 <mat-option value="">Select rate unit</mat-option>
@@ -219,7 +219,7 @@
 
         <div class="col-4">
             <div class="form-group">
-                <label class="control-label">Frequency</label>
+                <label class="control-label">Frequency<span class="asterisk">*</span></label>
                 <div class="row extra-small-gutter">
                     <div class="col-auto">
                         <mat-form-field class="form-control custom-select-control">
