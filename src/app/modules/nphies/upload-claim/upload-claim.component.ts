@@ -3,6 +3,9 @@ import { SharedServices } from 'src/app/services/shared.services';
 import { Location } from '@angular/common';
 import { NphiesClaimUploaderService } from 'src/app/services/nphiesClaimUploaderService/nphies-claim-uploader.service';
 import { UploadSummary } from 'src/app/models/uploadSummary';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { DialogService } from 'src/app/services/dialogsService/dialog.service';
+
 
 @Component({
   selector: 'app-upload-claim',
@@ -16,12 +19,15 @@ export class UploadClaimComponent implements OnInit {
     private uploadService: NphiesClaimUploaderService,
     public location: Location,
     private commen: SharedServices,
+    private dialogService: DialogService,
+    private sharedServices: SharedServices,
   ) {
     this.uploadService.uploadingObs.subscribe(value => this.uploadingObs = value);
   }
 
   ngOnInit() {
   }
+  
 
 
   get summary(): UploadSummary {
@@ -31,6 +37,8 @@ export class UploadClaimComponent implements OnInit {
       return new UploadSummary();
     }
   }
+
+
 
   get uploading(): boolean {
     return this.uploadingObs;
@@ -48,5 +56,25 @@ export class UploadClaimComponent implements OnInit {
   get providerId() {
     return this.commen.providerId;
   }
+  downloadSample() {
 
+    this.uploadService.download(this.sharedServices.providerId).subscribe(event => {
+      if (event instanceof HttpResponse) {
+        if (event.body != null) {
+          var data = new Blob([event.body as BlobPart], { type: 'application/octet-stream' });
+          const FileSaver = require('file-saver');
+        FileSaver.saveAs(data, "SampleClaimDownload.xlsx");
+        }
+      }
+    }
+      , err => {
+        if (err instanceof HttpErrorResponse) {
+          this.dialogService.openMessageDialog({
+            title: '',
+            message: `Unable to download File at this moment`,
+            isError: true
+          });
+        }
+      });
+  }
 }
