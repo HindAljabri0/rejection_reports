@@ -567,14 +567,6 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         return event.status;
     }
 
-    getFirst(){
-        this.upwardFlag=true;
-    }
-
-    getSecond(){
-        this.downwardFlag=true;
-
-    }
 
     getResultsOfStatus(key: number, page?: number) {
 
