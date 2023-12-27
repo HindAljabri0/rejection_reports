@@ -29,6 +29,7 @@ export class DosageDetailsComponent implements OnInit {
     note: [''],
     patientInstruction: [''],
     route: [''],
+    dosageType: [''],
     doseType: [''],
     min: [''],
     max: [''],
@@ -46,6 +47,7 @@ export class DosageDetailsComponent implements OnInit {
     refill: [''],
     duration: [''],
     frequency: [''],
+    frequencyUnit: [''],
     period: [''],  
     periodUnit: [''],  
     durationUnit: [''],  
@@ -66,8 +68,6 @@ routes = this.sharedDataService.prescriberRoutes;
  
 filteredRoutes: string[] = [];
 selectedOption: string = '';
-selectedDoseType: string = 'Dose_Quantity'; 
-selectedRateType: string = 'Rate Quantity';
 selectedAbsenceOption: string = ''; 
 onOptionChange: string = '';
 
@@ -123,6 +123,7 @@ onOptionChange: string = '';
       model.note = this.FormItem.controls.note.value;
       model.patientInstruction = this.FormItem.controls.patientInstruction.value;
       model.route = this.FormItem.controls.route.value.value;
+      model.dosageCategory = this.FormItem.controls.dosageType.value;
       model.doseType = this.FormItem.controls.doseType.value;
       model.doseQuantityOrRangeMin = this.FormItem.controls.min.value || this.FormItem.controls.doseQuantity.value;
       model.doseRangeMax = this.FormItem.controls.max.value;
@@ -142,6 +143,8 @@ onOptionChange: string = '';
       model.period = this.FormItem.controls.period.value;
       model.durationUnit = this.FormItem.controls.durationUnit.value;
       model.periodUnit = this.FormItem.controls.periodUnit.value;
+
+      model.claimItemDosageModel = [];
 console.log(model,"model")
       this.dialogRef.close(model);
     }

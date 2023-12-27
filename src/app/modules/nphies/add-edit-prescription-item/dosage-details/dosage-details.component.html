@@ -31,9 +31,21 @@
         
         <div class="col-4">
             <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('doseType').touched) && FormItem.get('doseType').hasError('required')}">
+              <label class="control-label">Dosage Type<span class="asterisk">*</span></label>
+              <mat-form-field class="form-control custom-select-control">
+                <mat-select placeholder="Select dosage type" formControlName="dosageType">
+                  <mat-option value="DoseType">Dose</mat-option>
+                  <mat-option value="RateType">Rate</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+
+        <div class="col-4" *ngIf="FormItem.get('dosageType').value === 'DoseType'">
+            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('doseType').touched) && FormItem.get('doseType').hasError('required')}">
               <label class="control-label">Dose Type<span class="asterisk">*</span></label>
               <mat-form-field class="form-control custom-select-control">
-                <mat-select placeholder="Select dose type" [(ngModel)]="selectedDoseType" formControlName="doseType">
+                <mat-select placeholder="Select dose type" formControlName="doseType">
                   <mat-option value="Dose_Quantity_Range">Dose Quantity Range</mat-option>
                   <mat-option value="Dose_Quantity">Dose Quantity</mat-option>
                 </mat-select>
@@ -41,7 +53,7 @@
             </div>
           </div>
           
-          <div class="col-4" *ngIf="selectedDoseType === 'Dose_Quantity_Range'">
+          <div class="col-4" *ngIf="FormItem.get('dosageType').value === 'DoseType' && FormItem.get('doseType').value === 'Dose_Quantity_Range'">
             <div class="form-group" >
               <label class="control-label">Dose Quantity Range<span class="asterisk">*</span></label>
               <div class="row small-gutter">
@@ -55,13 +67,13 @@
             </div>
           </div>
           
-          <div class="col-4" *ngIf="selectedDoseType === 'Dose_Quantity'">
+          <div class="col-4" *ngIf="FormItem.get('dosageType').value === 'DoseType' && FormItem.get('doseType').value === 'Dose_Quantity'">
             <div class="form-group">
               <label class="control-label">Dose Quantity<span class="asterisk">*</span></label>
               <input class="form-control" placeholder="Enter the dose quantity" formControlName = "doseQuantity">
             </div>
           </div>
-           <div class="col-4">
+           <div class="col-4" *ngIf="FormItem.get('dosageType').value === 'DoseType'">
           <div class="form-group">
             <label class="control-label">Dose Unit<span class="asterisk">*</span></label>
             <mat-form-field class="form-control custom-select-control">
@@ -78,20 +90,20 @@
           </div>
         </div>
       
-        <div class="col-4">
+        <div class="col-4" *ngIf="FormItem.get('dosageType').value === 'RateType'">
             <div class="form-group">
               <label class="control-label">Rate Type</label>
               <mat-form-field class="form-control custom-select-control">
-                <mat-select [(ngModel)]="selectedRateType" placeholder="Select rate type" formControlName="rateType">
-                  <mat-option value="Rate Ratio">Rate Ratio</mat-option>
-                  <mat-option value="Rate Range">Rate Range</mat-option>
-                  <mat-option value="Rate Quantity">Rate Quantity</mat-option>
+                <mat-select  placeholder="Select rate type" formControlName="rateType">
+                  <mat-option value="Rate_Ratio">Rate Ratio</mat-option>
+                  <mat-option value="Rate_Range">Rate Range</mat-option>
+                  <mat-option value="Rate_Quantity">Rate Quantity</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
           </div>
           
-          <div class="col-4" *ngIf="selectedRateType === 'Rate Ratio'">
+          <div class="col-4" *ngIf="FormItem.get('dosageType').value === 'RateType' && FormItem.get('rateType').value === 'Rate_Ratio'">
             <div class="form-group">
               <label class="control-label">Rate Ratio<span class="asterisk">*</span></label>
               <div class="row small-gutter">
@@ -105,7 +117,7 @@
             </div>
           </div>
           
-          <div class="col-4" *ngIf="selectedRateType === 'Rate Range'">
+          <div class="col-4" *ngIf="FormItem.get('dosageType').value === 'RateType' && FormItem.get('rateType').value === 'Rate_Range'">
             <div class="form-group">
               <label class="control-label">Rate Range</label>
               <div class="row small-gutter">
@@ -119,14 +131,14 @@
             </div>
           </div>
           
-          <div class="col-4" *ngIf="selectedRateType === 'Rate Quantity'">
+          <div class="col-4" *ngIf="FormItem.get('dosageType').value === 'RateType' && FormItem.get('rateType').value === 'Rate_Quantity'">
             <div class="form-group">
               <label class="control-label">Rate Quantity</label>
               <input class="form-control" placeholder="Enter the rate quantity" formControlName = "rateQuantity">
             </div>
           </div>
           
-        <div class="col-4">
+        <div class="col-4" *ngIf="FormItem.get('dosageType').value === 'RateType'">
           <div class="form-group">
             <label class="control-label">Rate Unit</label>
             <mat-form-field class="form-control custom-select-control">
