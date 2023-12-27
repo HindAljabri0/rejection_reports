@@ -163,132 +163,131 @@
                             </mat-form-field>
                         </div>
                     </div>
-
-                    <div class="col-4 col-xxl-3">
-                        <div class="form-group">
-                            <label class="control-label">Eligibility Response Identifier (Value)</label>
-                            <input class="form-control" placeholder="Enter Eligibility Response Identifier (Value)"
-                                formControlName="eligibilityResponseId">
-                        </div>
-                    </div>
-
-                    <div class="col-4 col-xxl-3">
-                        <div class="form-group">
-                            <label class="control-label">Eligibility Response Identifier (URL)</label>
-                            <input class="form-control" placeholder="Enter Eligibility Response Identifier (URL)"
-                                formControlName="eligibilityResponseUrl">
-                        </div>
-                    </div>
-
-                    <div class="col-4 col-xxl-3">
-                        <div class="form-group">
-                            <label class="control-label">Offline Eligibility ID</label>
-                            <input class="form-control" placeholder="Enter Offline Eligibility ID"
-                                formControlName="eligibilityOfflineId">
-                        </div>
-                    </div>
-                    <div class="col-4 col-xxl-3">
-                        <div class="form-group">
-                            <label class="control-label">Offline Eligibility Date</label>
-                            <div class="date-picker">
-                                <input [matDatepicker]="eligibilityOfflineDateCtrl" class="form-control"
-                                    placeholder="Select Offline Eligibility Date" [max]="today"
-                                    formControlName="eligibilityOfflineDate">
-                                <mat-datepicker-toggle [for]="eligibilityOfflineDateCtrl"></mat-datepicker-toggle>
-                                <mat-datepicker #eligibilityOfflineDateCtrl></mat-datepicker>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-4 col-xxl-3">
+                
+                      <div class="col-4 col-xxl-3">
                         <div class="form-group"
-                            [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('payeeType').touched) && FormPreAuthorization.get('payeeType').hasError('required')}">
-                            <label class="control-label">Payee Type<span class="asterisk">*</span></label>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select formControlName="payeeType" (selectionChange)="onPayeeTypeChange()">
-                                    <mat-option value="">Select Payee Type</mat-option>
-                                    <mat-option *ngFor="let pType of payeeTypeList" [value]="pType">{{pType.name}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                            <div
-                                *ngIf="(isSubmitted || FormPreAuthorization.get('payeeType').touched) && FormPreAuthorization.get('payeeType').hasError('required')">
-                                <span class="error-text">Please select Payee Type</span>
-                            </div>
+                          [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('payeeType').touched) && FormPreAuthorization.get('payeeType').hasError('required')}">
+                          <label class="control-label">Payee Type<span class="asterisk">*</span></label>
+                          <mat-form-field class="form-control custom-select-control">
+                            <mat-select formControlName="payeeType" (selectionChange)="onPayeeTypeChange()">
+                              <mat-option value="">Select Payee Type</mat-option>
+                              <mat-option *ngFor="let pType of payeeTypeList" [value]="pType">{{pType.name}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <div *ngIf="(isSubmitted || FormPreAuthorization.get('payeeType').touched) && FormPreAuthorization.get('payeeType').hasError('required')">
+                            <span class="error-text">Please select Payee Type</span>
+                          </div>
                         </div>
-                    </div>
-                    <div class="col-4 col-xxl-3">
+                      </div>
+                      <div class="col-4 col-xxl-3">
                         <div class="form-group"
-                            [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('payee').touched) && FormPreAuthorization.get('payee').hasError('required')}">
-                            <label class="control-label">Payee<span class="asterisk">*</span></label>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select formControlName="payee">
-                                    <mat-option value="">Select Payee</mat-option>
-                                    <mat-option *ngFor="let payee of payeeList"
-                                        [value]="payee.nphiesId">{{payee.englistName}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                            <div
-                                *ngIf="(isSubmitted || FormPreAuthorization.get('payee').touched) && FormPreAuthorization.get('payee').hasError('required')">
-                                <span class="error-text">Please select payee</span>
-                            </div>
+                          [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('payee').touched) && FormPreAuthorization.get('payee').hasError('required')}">
+                          <label class="control-label">Payee<span class="asterisk">*</span></label>
+                          <mat-form-field class="form-control custom-select-control">
+                            <mat-select formControlName="payee">
+                              <mat-option value="">Select Payee</mat-option>
+                              <mat-option *ngFor="let payee of payeeList" [value]="payee.nphiesId">{{payee.englistName}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <div *ngIf="(isSubmitted || FormPreAuthorization.get('payee').touched) && FormPreAuthorization.get('payee').hasError('required')">
+                            <span class="error-text">Please select payee</span>
+                          </div>
                         </div>
-                    </div>
-                    <div class="col-4 col-xxl-3">
+                      </div>
+                      <div class="col-4 col-xxl-3">
                         <div class="form-group">
-                            <label class="control-label">Related Prescription Reference No(s).
-                                <mat-icon class="material-icons-outlined size-20"
-                                    matTooltip="Useful for extending a transferred Prescription">
-                                    info</mat-icon>
-                            </label>
-                            <tag-input formControlName="preAuthRefNo"
-                                [placeholder]="'Enter Related Prescription Reference No(s)'" [addOnBlur]="true">
-                            </tag-input>
-                            <!-- <div *ngIf="IsPreAuthRefRequired && ((isSubmitted || FormNphiesClaim.get('preAuthRefNo').touched) && FormNphiesClaim.get('preAuthRefNo').hasError('required'))">
-                  <span class="error-text">Please enter Related Preauthorization Reference No(s).</span>
-                  <mat-icon class="material-icons-outlined size-20" matTooltip="Payer share Tax only">info</mat-icon>
-                </div> -->
+                          <label class="control-label">Related Preauthorization Reference No(s).
+                            <mat-icon class="material-icons-outlined size-20" matTooltip="Useful for extending a transferred preauthorization">
+                              info</mat-icon>
+                          </label>
+                          <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Related Preauthorization Reference No(s)'" [addOnBlur]="true">
+                          </tag-input>
+                          <!-- <div *ngIf="IsPreAuthRefRequired && ((isSubmitted || FormNphiesClaim.get('preAuthRefNo').touched) && FormNphiesClaim.get('preAuthRefNo').hasError('required'))">
+                            <span class="error-text">Please enter Related Preauthorization Reference No(s).</span>
+                            <mat-icon class="material-icons-outlined size-20" matTooltip="Payer share Tax only">info</mat-icon>
+                          </div> -->
                         </div>
-                    </div>
-                    <div class="col-4 col-xxl-3">
+                      </div>
+                      <div class="col-4 col-xxl-3">
                         <div class="form-group">
-                            <label class="control-label">Referring Provider</label>
-                            <mat-form-field class="form-control custom-select-control" id="referringProvider">
-                                <mat-select formControlName="referral" [disabled]="IsRefferalProviderLoading"
-                                    #itemSelect (selectionChange)="referralChange($event)">
-                                    <mat-option>
-                                        <ngx-mat-select-search placeholderLabel="Search Item"
-                                            formControlName="referralFilter"
-                                            noEntriesFoundLabel="No Referring Provider found" name='searchedItem'>
-                                        </ngx-mat-select-search>
-                                    </mat-option>
-
-                                    <ng-container *ngIf="IsRefferalProviderLoading">
-                                        <mat-option value="">Loading Referring Provider ...</mat-option>
-                                    </ng-container>
-                                    <ng-container *ngIf="!IsRefferalProviderLoading">
-                                        <mat-option value="">Select Referring Provider</mat-option>
-                                        <mat-option value="-1">Other</mat-option>
-                                        <mat-option *ngFor="let provider of filteredProviderList  | async"
-                                            [value]="provider">
-                                            {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}
-                                        </mat-option>
-                                    </ng-container>
-
-                                </mat-select>
-                            </mat-form-field>
+                          <label class="control-label">Referring Provider</label>
+                          <mat-form-field class="form-control custom-select-control" id="referringProvider">
+                            <mat-select formControlName="referral" [disabled]="IsRefferalProviderLoading" #itemSelect (selectionChange)="referralChange($event)">
+                              <mat-option>
+                                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="referralFilter" noEntriesFoundLabel="No Referring Provider found" name='searchedItem'>
+                                </ngx-mat-select-search>
+                              </mat-option>
+            
+                              <ng-container *ngIf="IsRefferalProviderLoading">
+                                <mat-option value="">Loading Referring Provider ...</mat-option>
+                              </ng-container>
+                              <ng-container *ngIf="!IsRefferalProviderLoading">
+                                <mat-option value="">Select Referring Provider</mat-option>
+                                <mat-option value="-1">Other</mat-option>
+                                <mat-option *ngFor="let provider of filteredProviderList  | async" [value]="provider">
+                                  {{provider.switchAccountId}} | {{provider.code}} | {{provider.name}}
+                                </mat-option>
+                              </ng-container>
+            
+                            </mat-select>
+                          </mat-form-field>
                         </div>
-                    </div>
-                    <div *ngIf="IsOtherReferral" class="col-4 col-xxl-3">
+                      </div>
+                      <div *ngIf="IsOtherReferral" class="col-4 col-xxl-3">
                         <div class="form-group">
-                            <label class="control-label">Other Referring Provider</label>
-                            <input class="form-control" placeholder="Enter Referring Provider Name"
-                                formControlName="otherReferral">
+                          <label class="control-label">Other Referring Provider</label>
+                          <input class="form-control" placeholder="Enter Referring Provider Name" formControlName="otherReferral">
                         </div>
+                      </div>
+            
+                      <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                          <label class="control-label">Eligibility Details</label>
+                          <mat-form-field class="form-control custom-select-control">
+                            <mat-select formControlName="eligibilityType">
+                              <mat-option value="">Select Eligibility Type</mat-option>
+                              <mat-option value="online">Online</mat-option>
+                              <mat-option value="offline">Offline</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      
+                      <div class="col-4 col-xxl-3" *ngIf="isOnline">
+                        <div class="form-group">
+                          <label class="control-label">Eligibility Response Identifier (Value)</label>
+                          <input class="form-control" placeholder="Enter Eligibility Response Identifier (Value)" formControlName="eligibilityResponseId">
+                        </div>
+                      </div>
+                      
+                      <div class="col-4 col-xxl-3" *ngIf="isOnline">
+                        <div class="form-group">
+                          <label class="control-label">Eligibility Response Identifier (URL)</label>
+                          <input class="form-control" placeholder="Enter Eligibility Response Identifier (URL)" formControlName="eligibilityResponseUrl">
+                        </div>
+                      </div>
+            
+                      <div class="col-4 col-xxl-3" *ngIf="isOffline">
+                        <div class="form-group">
+                          <label class="control-label">Eligibility ID</label>
+                          <input class="form-control" placeholder="Enter Eligibility ID" formControlName="eligibilityOfflineId">
+                        </div>
+                      </div>
+                      <div class="col-4 col-xxl-3" *ngIf="isOffline">
+                        <div class="form-group">
+                          <label class="control-label">Eligibility Date</label>
+                          <div class="date-picker">
+                            <input [matDatepicker]="eligibilityOfflineDateCtrl" class="form-control" placeholder="Select Eligibility Date" [max]="today"
+                              formControlName="eligibilityOfflineDate">
+                            <mat-datepicker-toggle [for]="eligibilityOfflineDateCtrl"></mat-datepicker-toggle>
+                            <mat-datepicker #eligibilityOfflineDateCtrl></mat-datepicker>
+                          </div>
+                        </div>
+                      </div>
+            
                     </div>
-
-                </div>
 
 
                 <app-manage-care-team [(isSubmitted)]="isSubmitted"

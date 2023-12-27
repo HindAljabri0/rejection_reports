@@ -22,36 +22,52 @@
               </div>
           </div>
           
-          <div class="col-4 col-lg-3">
-            <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')}">
-              <label class="control-label">{{ FormItem.get('type').value.name === 'Scientific Code' ? 'Scientific Code' : 'GTIN Code' }}<span class="asterisk">*</span></label>
+          <div class="col-4 col-lg-3" *ngIf="FormItem.get('type').value.value === 'medication-codes'">
+            <div class="form-group" [ngClass]="{'has-error': (isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')}">
+              <label class="control-label">GTIN Code - Description<span class="asterisk">*</span></label>
               <mat-form-field class="form-control custom-select-control">
-                <mat-select value="" formControlName="item" placeholder="Select Code-Description">
-                    <ng-container *ngIf="FormItem.get('type').value.name === 'Scientific Code'; else gtincode">
-                        <mat-option *ngFor="let type of filteredPescribedMedicationItem | async" [value]="type">
-                          <span>{{type.descriptionCode}} ( {{type.tradeName}} )</span><br/>
-                          <span class="text-primary non-standard-code">{{type.gtinNumber}}</span>
-                        </mat-option>
-                      </ng-container>
-                      </mat-select>
-                  <ng-template #gtincode>
-                    <mat-form-field class="form-control custom-select-control">
-                    <mat-select panelClass="custom-dropdown" formControlName="item" [disabled]="IsItemLoading" placeholder="Select Code-Description">
-                        <mat-option>
-                            <ngx-mat-select-search placeholderLabel="Search Item" formControlName="itemFilter" noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
-                        </mat-option>
-                        <cdk-virtual-scroll-viewport itemSize="10" minBufferPx="{{itemList.length}}" maxBufferPx="{{itemList.length * 10}}" class="viewport">  
-                          <mat-option *cdkVirtualFor="let item of filteredItem | async" [value]="item" >
-                              {{item.code}} - {{item.description}}
-                          </mat-option>
-                      </cdk-virtual-scroll-viewport>
-                    </mat-select>
-                    </mat-form-field>
-                  </ng-template>
+                <mat-select panelClass="custom-dropdown" formControlName="item" [disabled]="IsItemLoading" #itemSelect (selectionChange)="setPrescribedMedication($event.value.code)" placeholder="Select Code-Description">
+                  <mat-option>
+                      <ngx-mat-select-search placeholderLabel="Search Item" formControlName="item" noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
+                  </mat-option>
+                  <cdk-virtual-scroll-viewport itemSize="100" minBufferPx="{{ itemList.length > 0 ? 100 : 100 }}" maxBufferPx="{{itemList.length * 10}}" class="viewport">  
+                    <mat-option *cdkVirtualFor="let item of filteredItem | async" [value]="item" >
+                        {{item.code}} - {{item.description}}
+                    </mat-option>
+                </cdk-virtual-scroll-viewport>
+              </mat-select>
               
-              </mat-form-field>
+              </mat-form-field>          
+              <div *ngIf="(isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')">
+                <span class="error-text">Please select a Code - Description</span>
+              </div>
             </div>
           </div>
+
+          <div class="col-4 col-lg-3" *ngIf="FormItem.get('type').value.value === 'scientific-codes'">
+            <div class="form-group" [ngClass]="{'has-error': (isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')}">
+              <label class="control-label">Scientific Code - Description<span class="asterisk">*</span></label>
+              <mat-form-field class="form-control custom-select-control">
+                <mat-select panelClass="custom-dropdown" formControlName="item" [disabled]="IsItemLoading" #itemSelect (selectionChange)="setPrescribedMedication($event.value.code)" placeholder="Select Code-Description">
+                  <mat-option>
+                      <ngx-mat-select-search placeholderLabel="Search Item" formControlName="item" noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
+                  </mat-option>
+                  <cdk-virtual-scroll-viewport itemSize="100" minBufferPx="{{ itemList.length > 0 ? 100 : 100 }}" maxBufferPx="{{itemList.length * 10}}" class="viewport">  
+                    <mat-option *cdkVirtualFor="let type of filteredPescribedMedicationItem | async" [value]="type" >
+                        {{type.descriptionCode}} ( {{type.tradeName}} )
+                    </mat-option>
+                </cdk-virtual-scroll-viewport>
+              </mat-select>
+              
+              </mat-form-field>          
+              <div *ngIf="(isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')">
+                <span class="error-text">Please select a Code - Description</span>
+              </div>
+            </div>
+          </div>
+
+
+ 
 
         <div class="col-4 col-lg-3">
             <div class="form-group">
@@ -66,7 +82,7 @@
                 <input class="form-control" placeholder="Enter non standard description" formControlName="display">
             </div>
         </div>
-        <div class="col-4 col-lg-3" *ngIf="FormItem.get('type').value.name === 'GTIN Code'">
+        <div class="col-4 col-lg-3" *ngIf="FormItem.get('type').value.value === 'medication-codes'">
             <div class="form-group" >
               <label class="control-label">Absence of Scientific Code<span class="asterisk">*</span></label>
               <mat-form-field class="form-control custom-select-control">

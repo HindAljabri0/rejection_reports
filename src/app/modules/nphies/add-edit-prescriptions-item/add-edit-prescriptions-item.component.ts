@@ -102,18 +102,18 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
       
         if (this.data.item) {        
             this.FormItem.patchValue({
-                type: this.data.source ===  this.prescribedCode.filter(x => x.value === this.data.item.type)[0],
+                type: this.prescribedCode.filter(x => x.value === this.data.item.type)[0],
                 itemDescription: this.itemList.filter(x => x.code === this.data.item.itemDescription)[0],
                 itemCode: this.itemList.filter(x => x.code === this.data.item.itemCode)[0],
                 nonStandardCode: this.data.item.nonStandardCode,
                 display: this.data.item.display,
                 isPackage: this.data.item.isPackage,
-                bodySite: ((this.data.item.bodySite && !this.data.item.isDentalBodySite) || (this.data.item.bodySite && (this.data.type === 'oral' || (this.data.type === 'institutional' && this.data.item.type === 'oral-health-ip' ))))? this.data.item.bodySite : (this.data.item.bodySite != null ? this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0] : ""),
-                subSite: this.data.item.subSite != null ? this.subSiteList.filter(x => x.value === this.data.item.subSite)[0] : "",
+                bodySite: this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0],
+                subSite: this.subSiteList.filter(x => x.value === this.data.item.subSite)[0],
                 quantity: this.data.item.quantity,
                 quantityCode: this.data.item.quantityCode != null ? this.data.item.quantityCode : "",
                 strength: this.data.item.strength,
-                absenceScientificCode: this.absenceReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0] ? this.absenceReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0] : ''
+                absenceScientificCode: this.absenceReasonList.filter(x => x.value === this.data.item.absenceScientificCode)[0],
                 });
 
             if (this.data.careTeams) {
@@ -312,15 +312,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
         });
     }
  
-    onRadioChange(event: any) {
-        if (!this.FormItem.controls.isDentalBodySite.value) {
-            this.subSiteList = this.sharedDataService.getSubSite('oral');
-        } else {
-            this.subSiteList = this.sharedDataService.getSubSite(this.data.type);
-        }
-    }
-
-    getItemList(type = null) {
+     getItemList(type = null) {
 
         if (this.FormItem.controls.type.value) {
             this.sharedServices.loadingChanged.next(true);
@@ -607,7 +599,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
             model.sequence = this.data.Sequence;
             model.type = this.FormItem.controls.type.value.value;
             model.typeName = this.FormItem.controls.type.value.name;
-            model.itemCode = this.FormItem.controls.item.value.code || this.FormItem.controls.item.value.gtinNumber;
+            model.itemCode = this.FormItem.controls.item.value.code || this.FormItem.controls.item.value.descriptionCode;
             model.itemDescription = this.FormItem.controls.item.value.description || this.FormItem.controls.item.value.tradeName;
             model.nonStandardCode = this.FormItem.controls.nonStandardCode.value;
             model.display = this.FormItem.controls.display.value;
@@ -636,6 +628,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
             }
 
             model.itemDetails = [];
+            model.claimItemDosageModel = [];
          
             // console.log("item model = " + JSON.stringify(model));
             this.dialogRef.close(model);
