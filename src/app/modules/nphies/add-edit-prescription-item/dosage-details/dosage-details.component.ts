@@ -84,9 +84,31 @@ onOptionChange: string = '';
     if (this.data.item && this.data.item.itemCode) {
      
       this.FormItem.patchValue({
-        type: this.typeList.filter(x => x.value === this.data.item.type)[0],
-        nonStandardCode: this.data.item.nonStandardCode,
-        display: this.data.item.display,
+        note: this.data.item.note,
+        patientInstruction: this.data.item.patientInstruction,
+        route: this.data.item.route,
+        dosageType: this.data.item.dosageType,
+        doseType: this.data.item.doseType,
+        min: this.data.item.min,
+        max: this.data.item.max,
+        doseQuantity: this.data.item.doseQuantity,
+        doseUnit: this.data.item.doseUnit,
+        rateType: this.data.item.rateType,
+        numerator: this.data.item.numerator,
+        denominator: this.data.item.denominator,
+        ratemin: this.data.item.ratemin,
+        ratemax: this.data.item.ratemax,
+        rateQuantity: this.data.item.rateQuantity,
+        rateUnit: this.data.item.rateUnit,
+        startDate: this.data.item.startDate,
+        endDate: this.data.item.endDate,
+        refill: this.data.item.refill,
+        duration: this.data.item.duration,
+        frequency: this.data.item.frequency,
+        frequencyUnit: this.data.item.frequencyUnit,
+        period: this.data.item.period,
+        periodUnit: this.data.item.periodUnit,  
+        durationUnit: this.data.item.durationUnit,
       });
     }
 

@@ -1937,7 +1937,7 @@ export class AddPrescriptionComponent implements OnInit {
                                 if (this.claimReuseId) {
                                     this.closeEvent.emit({ IsReuse: true });
                                 } else {
-                                    this.getTransactionDetails(body.approvalRequestId, body.approvalResponseId);
+                                    this.getTransactionDetails(body.prescriberRequestId, body.prescriberResponseId);
                                 }
                             }
                         }
