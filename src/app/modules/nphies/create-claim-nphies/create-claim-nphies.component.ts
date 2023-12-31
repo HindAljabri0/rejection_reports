@@ -65,6 +65,7 @@ export class CreateClaimNphiesComponent implements OnInit {
     payeeType: ['', Validators.required],
     type: ['', Validators.required],
     subType: [''],
+    eligibilityType: [''],
     eligibilityOfflineId: [''],
     eligibilityOfflineDate: [''],
     eligibilityResponseId: [''],
@@ -217,6 +218,8 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   IsDateRequired = false;
   IsAccidentTypeRequired = false;
+  isOnline: boolean = false;
+  isOffline: boolean = false;
 
   today: Date;
   pastDate: Date;
@@ -246,7 +249,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   routeMode;
   selectedTab = 0;
-  PrescriberDefault = "";
+  PrescriberDefault = 0;
   claimType: string;
   isPBMValidationVisible = false;
   isMREValidationVisible = false;
@@ -293,6 +296,11 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   }
   ngOnInit() {
+
+    this.FormNphiesClaim.get('eligibilityType').valueChanges.subscribe(value => {
+        this.isOnline = value === 'online';
+        this.isOffline = value === 'offline';
+      });
 
     const urlHasEditMode = +this.router.url.endsWith('edit');
     if (this.activatedRoute.snapshot.queryParams.claimId) {
@@ -741,8 +749,8 @@ export class CreateClaimNphiesComponent implements OnInit {
           break;
       }
 
-      this.Items = [];
-      this.VisionSpecifications = [];
+      //this.Items = [];
+      //this.VisionSpecifications = [];
     }
   }
 
@@ -1724,7 +1732,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       } else if (this.pageMode === 'CREATE') {
 
         // tslint:disable-next-line:max-line-length
-        this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}${now.getSeconds()}${now.getMilliseconds()}`;
+        this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
       } /*else if (this.pageMode === 'RESUBMIT') {
         // tslint:disable-next-line:max-line-length
         this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
@@ -1834,8 +1842,9 @@ export class CreateClaimNphiesComponent implements OnInit {
       });
       if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') {
         this.model.visionPrescription = {};
+
         // tslint:disable-next-line:max-line-length
-        this.model.visionPrescription.dateWritten = this.FormNphiesClaim.controls.dateWritten.value!=null?moment(this.removeSecondsFromDate(this.FormNphiesClaim.controls.dateWritten.value)).utc():null;;
+        this.model.visionPrescription.dateWritten = moment(this.removeSecondsFromDate(this.FormNphiesClaim.controls.dateWritten.value)).utc();
         this.model.visionPrescription.prescriber = this.FormNphiesClaim.controls.prescriber.value;
         let sequence = 1; let index = 0;
         let lens_model: any = [];
