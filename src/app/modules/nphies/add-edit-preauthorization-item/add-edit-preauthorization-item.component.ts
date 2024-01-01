@@ -21,7 +21,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
     @ViewChild('itemSelect', { static: true }) itemSelect: MatSelect;
     itemList: any = [];
-    itemListFiltered :any=[];
+    itemListFiltered: any = [];
     // tslint:disable-next-line:max-line-length
     filteredItem: ReplaySubject<any> = new ReplaySubject<any[]>(1);
     filteredPescribedMedicationItem: ReplaySubject<any> = new ReplaySubject<any[]>(1);
@@ -132,10 +132,10 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         }
 
         if (this.data.type) {
-               this.setTypes(this.data.type);
-               this.bodySiteList = this.sharedDataService.getBodySite(this.data.type);
-               this.subSiteList = this.sharedDataService.getSubSite(this.data.type);          
-               }
+            this.setTypes(this.data.type);
+            this.bodySiteList = this.sharedDataService.getBodySite(this.data.type);
+            this.subSiteList = this.sharedDataService.getSubSite(this.data.type);
+        }
         if (this.data.type === "pharmacy") {
             this.providerNphiesSearchService.getPrescribedMedicationList(this.sharedServices.providerId).subscribe(event => {
                 if (event instanceof HttpResponse) {
@@ -173,14 +173,14 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
                     this.FormItem.controls.endDate.disable();
                 }
             }
-            if(this.data.isDentalBodySite){
-            this.bodySiteList =  (this.data.isDentalBodySite === false)
-          ? this.sharedDataService.getBodySite('oral')
-          : this.sharedDataService.getBodySite(this.data.type)
-           this.subSiteList = ( this.data.isDentalBodySite === false)
-          ? this.sharedDataService.getSubSite('oral')
-          : this.sharedDataService.getSubSite(this.data.type); 
-            }          
+            if (this.data.isDentalBodySite) {
+                this.bodySiteList = (this.data.isDentalBodySite === false)
+                    ? this.sharedDataService.getBodySite('oral')
+                    : this.sharedDataService.getBodySite(this.data.type)
+                this.subSiteList = (this.data.isDentalBodySite === false)
+                    ? this.sharedDataService.getSubSite('oral')
+                    : this.sharedDataService.getSubSite(this.data.type);
+            }
             this.FormItem.patchValue({
                 type: this.data.source === 'CNHI' ? this.cnhiTypeList.filter(x => x.value === this.data.item.type)[0] : this.typeList.filter(x => x.value === this.data.item.type)[0],
                 itemDescription: this.itemList.filter(x => x.code === this.data.item.itemDescription)[0],
@@ -189,7 +189,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
                 display: this.data.item.display,
                 isPackage: this.data.item.isPackage,
                 isDentalBodySite: this.data.item.isDentalBodySite,
-                bodySite: ((this.data.item.bodySite && !this.data.item.isDentalBodySite) || (this.data.item.bodySite && (this.data.type === 'oral' || (this.data.type === 'institutional' && this.data.item.type === 'oral-health-ip' ))))? this.data.item.bodySite : (this.data.item.bodySite != null ? this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0] : ""),
+                bodySite: ((this.data.item.bodySite && !this.data.item.isDentalBodySite) || (this.data.item.bodySite && (this.data.type === 'oral' || (this.data.type === 'institutional' && this.data.item.type === 'oral-health-ip')))) ? this.data.item.bodySite : (this.data.item.bodySite != null ? this.bodySiteList.filter(x => x.value === this.data.item.bodySite)[0] : ""),
                 subSite: this.data.item.subSite != null ? this.subSiteList.filter(x => x.value === this.data.item.subSite)[0] : "",
                 quantity: this.data.item.quantity,
                 quantityCode: this.data.item.quantityCode != null ? this.data.item.quantityCode : "",
@@ -385,13 +385,13 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             }
 
             this.FormItem.patchValue({
-                type:  this.data.source === 'CNHI' ? this.cnhiTypeList.filter(x => x.value === type.itemType)[0] : this.typeList.filter(x => x.value === type.itemType)[0],
+                type: this.data.source === 'CNHI' ? this.cnhiTypeList.filter(x => x.value === type.itemType)[0] : this.typeList.filter(x => x.value === type.itemType)[0],
                 nonStandardCode: type.nonStandardCode,
                 display: type.nonStandardDescription,
                 unitPrice: type.unitPrice,
                 factor: type.factor ? type.factor : 1,
                 tax: 0
-                });
+            });
             if (this.data.providerType === 'vision' && this.data.source === 'APPROVAL') {
                 this.FormItem.controls.factor.setValue(1);
                 this.FormItem.controls.factor.disable();
@@ -408,16 +408,16 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         }
     }
 
-    itemListFilteredFun(StanderCode){
-        this.itemListFiltered=[];
-        this.itemList.forEach(x=>{
-            if(x.code===StanderCode){
-               
-              this.itemListFiltered.unshift(x);
-            }else{
-              this.itemListFiltered.push(x);
+    itemListFilteredFun(StanderCode) {
+        this.itemListFiltered = [];
+        this.itemList.forEach(x => {
+            if (x.code === StanderCode) {
+
+                this.itemListFiltered.unshift(x);
+            } else {
+                this.itemListFiltered.push(x);
             }
-          });
+        });
     }
     setPrescribedMedication(gtinNumber: any) {
         const filteredData = this.itemList.filter((item) => item.code === gtinNumber);
@@ -454,7 +454,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     }
 
 
-    
+
     SetSingleRecord(type = null) {
         if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
             this.FormItem.controls.quantityCode.setValidators([Validators.required]);
@@ -466,7 +466,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         this.FormItem.controls.item.setValue('');
         // this.itemList = [{ "code": type.code, "description": type.display }];
 
-        this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, type.itemType).subscribe(event => {
+        this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, type.itemType, this.data.source === 'APPROVAL' ? this.data.source : '').subscribe(event => {
             if (event instanceof HttpResponse) {
                 this.itemList = event.body;
                 if (type) {
@@ -495,9 +495,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             this.FormItem.controls.quantityCode.updateValueAndValidity();
             this.FormItem.controls.quantityCode.setValue('{package}');
             this.subSiteList = (this.data.source === 'CNHI' && !this.FormItem.controls.isDentalBodySite.value)
-            ? this.sharedDataService.getSubSite('oral')
-            : this.sharedDataService.getSubSite(this.data.type);
-             } else {
+                ? this.sharedDataService.getSubSite('oral')
+                : this.sharedDataService.getSubSite(this.data.type);
+        } else {
             this.FormItem.controls.quantityCode.clearValidators();
             this.FormItem.controls.quantityCode.updateValueAndValidity();
             this.FormItem.controls.quantityCode.setValue('');
@@ -525,10 +525,10 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             this.sharedServices.loadingChanged.next(true);
             this.IsItemLoading = true;
             this.FormItem.controls.item.disable();
-            this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, this.FormItem.controls.type.value.value).subscribe(event => {
+            this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, this.FormItem.controls.type.value.value, this.data.source === 'APPROVAL' ? this.data.source : '').subscribe(event => {
                 if (event instanceof HttpResponse) {
                     this.itemList = event.body;
-                    this.itemListFiltered=this.itemList;
+                    this.itemListFiltered = this.itemList;
                     if (this.data.item && this.data.item.itemCode) {
                         this.FormItem.patchValue({
                             item: this.itemList.filter(x => x.code === this.data.item.itemCode)[0]
@@ -543,7 +543,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
                         }
                     }
                     this.filteredItem.next(this.itemListFiltered.slice());
-                   // this.filteredItem.next(this.itemList.slice());
+                    // this.filteredItem.next(this.itemList.slice());
                     this.IsItemLoading = false;
                     this.FormItem.controls.item.enable();
                     this.FormItem.controls.itemFilter.valueChanges
@@ -560,12 +560,12 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             });
         }
     }
-     search='';
-     filterMyOptions(val){ 
+    search = '';
+    filterMyOptions(val) {
         this.search = val;
         this.filterItem();
         console.log(val);
-        console.log( "Test " + this.search);
+        console.log("Test " + this.search);
     }
     filterItem() {
         if (!this.itemListFiltered) {
@@ -573,14 +573,14 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         }
         // get the search keyword
         //let search = this.FormItem.controls.itemFilter.value;
-        if (this.search===null ||  this.search==='' || this.search.length ===0 ||  !this.search ) {
+        if (this.search === null || this.search === '' || this.search.length === 0 || !this.search) {
             console.log(this.search);
             console.log("tes2");
             this.filteredItem.next(this.itemListFiltered.slice());
             return;
         } else {
-           console.log("test2")
-           this.search = this.search.toLowerCase();
+            console.log("test2")
+            this.search = this.search.toLowerCase();
         }
         // filter the nations
         this.filteredItem.next(
@@ -782,7 +782,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         if (searchStr.length > 2) {
             this.loadSearchItem = true;
             // tslint:disable-next-line:max-line-length
-            this.SearchRequest = this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, tpaNphiesId, 0, 10).subscribe(event => {
+            this.SearchRequest = this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, tpaNphiesId, 0, 10,(this.data.source === 'APPROVAL' ? this.data.source : '')).subscribe(event => {
                 if (event instanceof HttpResponse) {
                     if (event.status === 200) {
                         const body = event.body;
@@ -905,7 +905,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     CalculateUnitPrice(event) {
         if (event == "{unit}") {
             this.FormItem.patchValue({
-                unitPrice: this.granularUnit != null ? (this.originalPrice / this.granularUnit).toFixed(2): this.originalPrice,
+                unitPrice: this.granularUnit != null ? (this.originalPrice / this.granularUnit).toFixed(2) : this.originalPrice,
             });
         }
         else if (event == "{package}") {
@@ -943,19 +943,19 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             model.display = this.FormItem.controls.display.value;
             model.isPackage = this.FormItem.controls.isPackage.value;
             model.isDentalBodySite = this.FormItem.controls.isDentalBodySite.value
-             if ((!this.FormItem.controls.isDentalBodySite.value && this.data.source === 'CNHI') || this.data.type === 'oral' || (this.data.type === 'institutional' &&  this.FormItem.controls.type.value.value === 'oral-health-ip')) {
+            if ((!this.FormItem.controls.isDentalBodySite.value && this.data.source === 'CNHI') || this.data.type === 'oral' || (this.data.type === 'institutional' && this.FormItem.controls.type.value.value === 'oral-health-ip')) {
                 this.bodySiteList = this.sharedDataService.getBodySite('oral');
-             let bodySite = this.bodySiteList.filter(x => x.value === this.FormItem.controls.bodySite.value)[0];
+                let bodySite = this.bodySiteList.filter(x => x.value === this.FormItem.controls.bodySite.value)[0];
                 model.bodySite = this.FormItem.controls.bodySite ? bodySite ? bodySite.value : '' : '';
                 model.bodySiteName = this.FormItem.controls.bodySite ? bodySite ? bodySite.name : '' : '';
             } else {
                 model.bodySite = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.value : '';
                 model.bodySiteName = this.FormItem.controls.bodySite.value ? this.FormItem.controls.bodySite.value.name : '';
-            }if(this.data.source === 'CNHI' && !this.FormItem.controls.isDentalBodySite.value){
+            } if (this.data.source === 'CNHI' && !this.FormItem.controls.isDentalBodySite.value) {
                 this.subSiteList = this.sharedDataService.getSubSite('oral');
                 model.subSite = this.FormItem.controls.subSite.value ? this.FormItem.controls.subSite.value.value : '';
                 model.subSiteName = this.FormItem.controls.subSite.value ? this.FormItem.controls.subSite.value.name : '';
-            }else {
+            } else {
                 model.subSite = this.FormItem.controls.subSite.value ? this.FormItem.controls.subSite.value.value : '';
                 model.subSiteName = this.FormItem.controls.subSite.value ? this.FormItem.controls.subSite.value.name : '';
             }
