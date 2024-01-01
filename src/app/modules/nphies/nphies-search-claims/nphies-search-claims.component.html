@@ -17,7 +17,7 @@
         </div>
 
         <div class="block-body pb-0 relative">
-            <owl-carousel-o [options]="owlCarouselOptions" class="abstract-card-carousel dynamic-width" [class.fixed-card]="summaries.length<4">
+            <owl-carousel-o  *ngIf="downwardFlag === true" [options]="owlCarouselOptions" class="abstract-card-carousel dynamic-width" [class.fixed-card]="summaries.length<4">
                 <ng-container *ngFor="let summary of summaries | keyvalue; let i = index">
                     <ng-template carouselSlide [width]="summary.value.statuses[0] == 'partially_paid'?320:0">
                         <app-abstractcard [clickable]="cardsClickAble" [title]="commen.statusToName(i == 0?'all':summary.value.statuses[0])" [totalCount]="''" [inactiveCount]="''"
@@ -28,9 +28,9 @@
                                     <span class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">{{summary.value.totalClaims}}</span>
                                     <p>Active</p>
                                 </div>
-                                <span class="separator"></span>
-                                <div>
-                                    <span class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">{{summary.value.totalClaims}}</span>
+                                <span *ngIf="summary.value.inActiveClaimCount" class="separator"></span>
+                                <div *ngIf="summary.value.inActiveClaimCount">
+                                    <span class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">{{summary.value.inActiveClaimCount}}</span>
                                     <p>Inactive</p>
                                 </div>
                             </div>
@@ -39,7 +39,7 @@
                 </ng-container>
             </owl-carousel-o>
 
-            <owl-carousel-o [options]="owlCarouselOptions" class="abstract-card-carousel dynamic-width" [class.fixed-card]="summaries.length<4">
+            <owl-carousel-o *ngIf="downwardFlag === false"  [options]="owlCarouselOptions" class="abstract-card-carousel dynamic-width" [class.fixed-card]="summaries.length<4">
                 <ng-container *ngFor="let summary of summaries | keyvalue; let i = index">
                     <ng-template carouselSlide [width]="summary.value.statuses[0] == 'partially_paid'?320:0">
                         <app-abstractcard [clickable]="cardsClickAble" [title]="commen.statusToName(i == 0?'all':summary.value.statuses[0])"
@@ -95,9 +95,10 @@
                 </ng-container>
             </owl-carousel-o>
 
-            <button class="abstract-card-toggle">
+            <button class="abstract-card-toggle" (click)=" summary.value?getSummaryOfClaims(summary.value.statuses[0]):''" *ngIf="downwardFlag === true">
                 <mat-icon class="text-primary">expand_more</mat-icon>
-                <!-- <mat-icon class="text-primary">expand_less</mat-icon> -->
+                
+                <mat-icon class="text-primary"  (click)="getSummaryOfStatus(summary.value.statuses[0])" *ngIf="upwardFlag === true">expand_less</mat-icon>
             </button>
         </div>
     </div>

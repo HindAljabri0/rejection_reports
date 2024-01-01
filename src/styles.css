@@ -287,7 +287,7 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .currency {font-size: 12px;font-weight: 700;opacity: 0.4;}
 .abstract-card-list{display: flex;margin-left: -7px;margin-right: -7px;flex-wrap: wrap;}
 .abstract-card-list>div{padding-left: 7px;padding-right: 7px;flex-grow: 0;flex-shrink: 0;flex-basis: 20%;max-width: 20%;}
-.abstract-card-toggle{background: white;border: none;border-radius: 50px;padding: 2px;box-shadow: 0 1px 2px rgba(0,0,0,0.24), 0 6px 6px rgba(0,0,0,0.23);position: absolute;left: 50%;transform: translate(-50%, -20px);transition:all 0.2s cubic-bezier(0.35,0,0.25,1);}
+.abstract-card-toggle{background: white;border: none;border-radius: 50px;padding: 2px;box-shadow: 0 1px 2px rgba(0,0,0,0.24), 0 6px 6px rgba(0,0,0,0.23);position: absolute;left: 50%;transform: translate(-50%, -20px);transition:all 0.2s cubic-bezier(0.35,0,0.25,1);z-index: 1;}
 .abstract-card-toggle:hover,.abstract-card-toggle:focus,.abstract-card-toggle:active{background: #f2f2f2;}
 .abstract-card-toggle .mat-icon{display: block;}
 .tab-btn {color: #3060AA;opacity: 0.5;}

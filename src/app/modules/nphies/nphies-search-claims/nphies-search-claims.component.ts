@@ -49,6 +49,7 @@ import { environment } from 'src/environments/environment';
     styles: []
 })
 export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, OnDestroy {
+    summary: any;
 
     owlCarouselOptions: OwlOptions = {
         mouseDrag: false,
@@ -74,7 +75,6 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         },
         nav: true
     };
-
     
 
     file: File;
@@ -297,7 +297,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
             this.selectedstatus = [this.params.claimStatus.toLowerCase()];
         }
         this.showValidationTab = false;
-        const statusCode = await this.getSummaryOfStatus(this.isSearchByStatus ? [this.params.claimStatus] : [ClaimStatus.ALL]);
+        const statusCode = await this.getSummaryOfStatus(this.isSearchByStatus ? [this.params.claimStatus] : [ClaimStatus.ALL]);        
         if (statusCode == 200 && this.summaries[0] != null && this.summaries[0].statuses != null && this.summaries[0].totalClaims > 0) {
             const statuses = this.summaries[0].statuses;
             statuses.sort((s1, s2) => {
@@ -389,6 +389,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     }
 
     async getSummaryOfStatus(statuses: string[]): Promise<number> {
+        console.log(statuses,"statuses")
+
         this.upwardFlag=false;
         this.downwardFlag=true;
 
@@ -484,6 +486,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         async getSummaryOfClaims(statuses: string[]): Promise<number> {
             this.upwardFlag=true;
             this.downwardFlag=false;
+            console.log(statuses,"string");
 
 
             this.commen.loadingChanged.next(true);
@@ -566,6 +569,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         this.commen.loadingChanged.next(false);
         return event.status;
     }
+
 
 
     getResultsOfStatus(key: number, page?: number) {
