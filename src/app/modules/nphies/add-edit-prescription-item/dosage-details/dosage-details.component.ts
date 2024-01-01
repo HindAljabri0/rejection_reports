@@ -81,7 +81,7 @@ onOptionChange: string = '';
 
   ngOnInit() {
     console.log(this.data,"klssks")
-    if (this.data.item && this.data.item.itemCode) {
+    if (this.data.item) {
      
       this.FormItem.patchValue({
         note: this.data.item.note,

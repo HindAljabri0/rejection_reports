@@ -435,10 +435,10 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
     checkItemsCodeForSupportingInfo() {
         let SeqIsThere = null;
         // tslint:disable-next-line:max-line-length
-        if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
+        if (this.FormItem.controls.type.value && (this.FormItem.controls.type.value.value === 'medication-codes' || this.FormItem.controls.type.value.value === 'scientific-codes')) {
 
             if (this.data.supportingInfos.filter(x => x.category === 'days-supply').length === 0) {
-                // tslint:disable-next-line:max-line-length
+                // tslint:disable-next-line:max-line-length            z
                 // this.dialogService.showMessage('Error', 'Days-Supply is required in Supporting Info if any medication-code is used', 'alert', true, 'OK');
 
                 this.FormItem.controls.supportingInfoSequence.setValidators([Validators.required]);
@@ -529,20 +529,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
         return diffDays;
     }
 
-    CalculateUnitPrice(event) {
-        if (event == "{unit}") {
-            this.FormItem.patchValue({
-                unitPrice: this.granularUnit != null ? (this.originalPrice / this.granularUnit).toFixed(2): this.originalPrice,
-            });
-        }
-        else if (event == "{package}") {
-            this.FormItem.patchValue({
-                unitPrice: this.originalPrice,
-            });
-
-        }
-    }
-    onSubmit() {
+      onSubmit() {
         this.isSubmitted = true;
         if (!this.checkItemsCodeForSupportingInfo()) {
             return;

@@ -461,76 +461,10 @@
 
                 <h5 class="form-title">
                     <span>Supporting Info</span>
-                    <!-- <button type="button" class="btn-icon btn-primary ml-auto" (click)="openAddEditSupportInfoDialog()">
-            <mat-icon>add</mat-icon>
-          </button> -->
-                </h5>
+                         </h5>
                 <app-manage-supporting-info [(isSubmitted)]="isSubmitted" [(supportingInfoList)]="SupportingInfo">
                 </app-manage-supporting-info>
-                <!--  <div *ngIf="SupportingInfo.length > 0" class="table-responsive">
-            <table class="primary-grid">
-              <thead>
-                <tr>
-                  <th>Category</th>
-                  <th>Attachment</th>
-                  <th>Code</th>
-                  <th>Timing</th>
-                  <th>Value</th>
-                  <th>Reason</th>
-                  <th width="10"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let s of SupportingInfo; let i = index">
-                  <td>
-                    {{s.categoryName}}
-                  </td>
-                  <td>
-                    {{s.attachment}}
-                  </td>
-                  <td>
-                    {{s.code}} <span *ngIf="s.codeName">- {{s.codeName}}</span>
-                  </td>
-                  <td>
-                    <span *ngIf="!s.toDate">{{s.fromDateStr}}</span>
-                    <span *ngIf="s.toDate">{{s.fromDateStr}} - {{s.toDateStr}}</span>
-                  </td>
-                  <td>
-                    <span *ngIf="s.category=='attachment'">
-                      <a href="#" title="View" class="primary-link" (click)="viewAttachment($event,s)">View</a>
-                    </span>
-                    <span *ngIf="s.category!='attachment'">
-                      {{s.value}} <span *ngIf="s.unit">{{s.unit}}</span>
-                    </span>
-                  </td>
-                  <td>
-                    {{s.reasonName}}
-                  </td>
-                  <td class="actions">
-                    <mat-menu #supportingInfoActionsMenu xPosition="before">
-                      <ng-template matMenuContent>
-                        <button mat-menu-item type="button" (click)="openAddEditSupportInfoDialog(s)">
-                          <mat-icon class="material-icons-outlined">edit</mat-icon>
-                          <span>Edit</span>
-                        </button>
-                        <button mat-menu-item type="button" (click)="deleteSupportingInfo(s.sequence, i)">
-                          <mat-icon class="material-icons-outlined">delete</mat-icon>
-                          <span>Delete</span>
-                        </button>
-                      </ng-template>
-                    </mat-menu>
-                    <button type="button" mat-icon-button [matMenuTriggerFor]="supportingInfoActionsMenu">
-                      <mat-icon>more_vert</mat-icon>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <app-empty-state *ngIf="SupportingInfo.length === 0" message='No Supporting Info found!'>
-          </app-empty-state> -->
-
-                <h5 class="form-title">
+                               <h5 class="form-title">
                     Accident
                     <mat-slide-toggle class="ml-2" [(ngModel)]="IsAccident" [ngModelOptions]="{standalone: true}"
                         color="primary" id="accident">
@@ -923,7 +857,7 @@
                                                             <span>Edit</span>
                                                         </button>
                                                         <button mat-menu-item type="button"
-                                                            (click)="deleteItemDetails(item.sequence, di)">
+                                                            (click)="deleteDosageDetails(item.sequence, di)">
                                                             <mat-icon class="material-icons-outlined">delete</mat-icon>
                                                             <span>Delete</span>
                                                         </button>
