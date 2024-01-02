@@ -95,10 +95,10 @@
                 </ng-container>
             </owl-carousel-o>
 
-            <button class="abstract-card-toggle" (click)=" summary.value?getSummaryOfClaims(summary.value.statuses[0]):''" *ngIf="downwardFlag === true">
-                <mat-icon class="text-primary">expand_more</mat-icon>
+            <button class="abstract-card-toggle" >
+                <mat-icon class="text-primary" (click)="getSumm(summaries[0].statuses)" *ngIf="downwardFlag" >expand_more</mat-icon>
                 
-                <mat-icon class="text-primary"  (click)="getSummaryOfStatus(summary.value.statuses[0])" *ngIf="upwardFlag === true">expand_less</mat-icon>
+                <mat-icon class="text-primary"  (click)="expand_less()"  *ngIf="!downwardFlag">expand_less</mat-icon>
             </button>
         </div>
     </div>
