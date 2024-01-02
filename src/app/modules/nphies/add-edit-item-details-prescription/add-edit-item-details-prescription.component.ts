@@ -61,9 +61,7 @@ export class AddEditItemDetailsPrescriptionComponent implements OnInit {
   ngOnInit() {
     this.prescribedCode = [{ value: 'scientific-codes', name: 'Scientific Code' },
     { value: 'medication-codes', name: 'GTIN Code' }];
-    if (this.data.type) {
-      this.setTypes(this.data.type);
-    }
+  
 
     if (this.data.item && this.data.item.itemCode) {
       this.FormItem.patchValue({
@@ -75,7 +73,7 @@ export class AddEditItemDetailsPrescriptionComponent implements OnInit {
                 quantity: this.data.item.quantity,
                 quantityCode: this.data.item.quantityCode != null ? this.data.item.quantityCode : "",
                 strength: this.data.item.strength,
-                absenceScientificCode: this.absenceReasonList.filter(x => x.value === this.data.item.absenceScientificCode)[0] ? this.absenceReasonList.filter(x => x.value === this.data.item.absenceScientificCode)[0] : ''
+                absenceScientificCode: this.absenceReasonList.filter(x => x.value === this.data.item.absenceScientificCode)[0]
     
       });
 
@@ -85,61 +83,7 @@ export class AddEditItemDetailsPrescriptionComponent implements OnInit {
 
   }
 
-  setTypes(type) {
-
-    switch (type) {
-      case 'vision':
-        this.typeList = [
-          { value: 'medical-devices', name: 'Medical Devices' },
-          { value: 'procedures', name: 'Procedures' },
-          { value: 'services', name: 'Services' }
-        ];
-        break;
-      case 'professional':
-        this.typeList = [
-          { value: 'medical-devices', name: 'Medical Devices' },
-          { value: 'medication-codes', name: 'Medication Codes' },
-          { value: 'transportation-srca', name: 'Transportation SRCA' },
-          { value: 'imaging', name: 'Imaging' },
-          { value: 'procedures', name: 'Procedures' },
-          { value: 'services', name: 'Services' },
-          { value: 'laboratory', name: 'Laboratory' }
-        ];
-        break;
-      case 'oral':
-        this.typeList = [
-          { value: 'medical-devices', name: 'Medical Devices' },
-          { value: 'medication-codes', name: 'Medication Codes' },
-          { value: 'transportation-srca', name: 'Transportation SRCA' },
-          { value: 'imaging', name: 'Imaging' },
-          { value: 'services', name: 'Services' },
-          { value: 'laboratory', name: 'Laboratory' },
-          { value: 'oral-health-op', name: 'Oral Health OP' },
-          { value: 'oral-health-ip', name: 'Oral Health IP' }
-        ];
-        break;
-      case 'institutional':
-        this.typeList = [
-          { value: 'medical-devices', name: 'Medical Devices' },
-          { value: 'medication-codes', name: 'Medication Codes' },
-          { value: 'transportation-srca', name: 'Transportation SRCA' },
-          { value: 'imaging', name: 'Imaging' },
-          { value: 'procedures', name: 'Procedures' },
-          { value: 'services', name: 'Services' },
-          { value: 'laboratory', name: 'Laboratory' },
-          { value: 'oral-health-ip', name: 'Oral Health IP' }
-        ];
-        break;
-      case 'pharmacy':
-        this.typeList = [
-          { value: 'medical-devices', name: 'Medical Devices' },
-          { value: 'medication-codes', name: 'Medication Codes' }
-        ];
-        break;
-    }
-  }
-
-  get IsQuantityCodeRequired() {
+   get IsQuantityCodeRequired() {
     if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
         return true;
     } else {

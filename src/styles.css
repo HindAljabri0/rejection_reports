@@ -287,6 +287,9 @@ button.mat-stroked-button.btn-sm, a.mat-stroked-button.btn-sm{line-height: 30px;
 .currency {font-size: 12px;font-weight: 700;opacity: 0.4;}
 .abstract-card-list{display: flex;margin-left: -7px;margin-right: -7px;flex-wrap: wrap;}
 .abstract-card-list>div{padding-left: 7px;padding-right: 7px;flex-grow: 0;flex-shrink: 0;flex-basis: 20%;max-width: 20%;}
+.abstract-card-toggle{background: white;border: none;border-radius: 50px;padding: 2px;box-shadow: 0 1px 2px rgba(0,0,0,0.24), 0 6px 6px rgba(0,0,0,0.23);position: absolute;left: 50%;transform: translate(-50%, -20px);transition:all 0.2s cubic-bezier(0.35,0,0.25,1);z-index: 1;}
+.abstract-card-toggle:hover,.abstract-card-toggle:focus,.abstract-card-toggle:active{background: #f2f2f2;}
+.abstract-card-toggle .mat-icon{display: block;}
 .tab-btn {color: #3060AA;opacity: 0.5;}
 .tab-btn.mat-flat-button{padding-left: 10px;padding-right: 10px;}
 .tab-btn.active {opacity: 1;}
@@ -729,6 +732,12 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 .primary-card.abstract-card .primary-card-title .total-counts li span{font-weight: 400;font-size: 12px;line-height: 14px;color: #444444;display: block;}
 .primary-card.abstract-card .label{font-weight: 400;font-size: 12px;line-height: 14px;color: #444;}
 .primary-card.abstract-card .total.label{font-weight: 600;padding-bottom: 6px;margin-top: -18px;display: block;}
+.primary-card.abstract-card.summary-card{min-height: 100px;}
+.primary-card.abstract-card .summary{text-align: center;padding-top: 4px;display: flex;}
+.primary-card.abstract-card .summary>div{flex-grow: 1;}
+.primary-card.abstract-card .summary span{font-size: 24px;font-weight: 500;line-height: 30px;display: block;}
+.primary-card.abstract-card .summary p{font-size: 12px;line-height: 16px;font-weight: 500;color: #444;}
+.primary-card.abstract-card .summary .separator{background: #e1e1e1;display: block;width: 1px;}
 .item-list>li{background-color: #f6f6f6;border-radius: 8px;padding: 14px;margin-bottom: 14px;display: flex;align-items: center;font-weight: 600;}
 .item-list>li .status-dot{margin-right: 14px;flex-shrink: 0;}
 .item-list>li small{font-weight: 400;}
