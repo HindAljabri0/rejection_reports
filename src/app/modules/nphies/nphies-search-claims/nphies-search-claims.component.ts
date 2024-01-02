@@ -234,6 +234,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     }
     currentStatuses=[];
     async fetchData() {
+        this.downwardFlag=true;
         this.commen.searchIsOpenChange.next(true);
         this.claims = new Array();
         this.summaries = new Array();
