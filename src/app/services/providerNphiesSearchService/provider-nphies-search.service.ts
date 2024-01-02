@@ -68,53 +68,61 @@ export class ProviderNphiesSearchService {
     return this.http.request(request);
   }
 
-  getCodeDescriptionList(providerId: string, itemType: string) {
-    const requestURL = '/providers/' + providerId + '/approval/itemcodes?itemType=' + itemType;
+
+  getCodeDescriptionList(providerId: string, itemType: string, requestType?: String) {
+
+    let requestURL = '/providers/' + providerId + '/approval/itemcodes?itemType=' + itemType;
+    if (requestType && requestType.trim().length > 0) {
+        requestURL += `&requestType=${requestType}`;
+    }
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
     return this.http.request(request);
-  }
-
-  getItemList(
+}
+getItemList(
     providerId: string, itemType: string, query: string, payerNphiesId: string,
-    claimType: string, requestDate: string, tpaNphiesId: string, pageNumber: number, pageSize: number) {
+    claimType: string, requestDate: string, tpaNphiesId: string, pageNumber: number, pageSize: number, requestType?: String) {
 
     let requestURL = '/providers/' + providerId + '/items?';
 
     if (itemType && itemType.trim().length > 0) {
-      requestURL += `itemType=${itemType}&`;
+        requestURL += `itemType=${itemType}&`;
+    }
+    if (requestType && requestType.trim().length > 0) {
+        requestURL += `requestType=${requestType}&`;
     }
     if (query && query.trim().length > 0) {
-      requestURL += `query=${query}&`;
+        requestURL += `query=${query}&`;
     }
     if (payerNphiesId && payerNphiesId.trim().length > 0) {
-      requestURL += `payerNphiesId=${payerNphiesId}&`;
+        requestURL += `payerNphiesId=${payerNphiesId}&`;
     }
     if (claimType && claimType.trim().length > 0) {
-      requestURL += `claimType=${claimType}&`;
+        requestURL += `claimType=${claimType}&`;
     }
     if (requestDate && requestDate.trim().length > 0) {
-      requestURL += `requestDate=${requestDate}&`;
+        requestURL += `requestDate=${requestDate}&`;
     }
 
     if (tpaNphiesId && tpaNphiesId.trim().length > 0) {
-      requestURL += `tpaNphiesId=${tpaNphiesId}&`;
+        requestURL += `tpaNphiesId=${tpaNphiesId}&`;
     }
     const isHeadOffice = AuthService.isProviderHeadOffice();
-    let headOfficeProviderId=localStorage.getItem("headOfficeProviderId");
+    let headOfficeProviderId = localStorage.getItem("headOfficeProviderId");
     //console.log("print the value ="+headOfficeProviderId);
-    
-    if(!isHeadOffice && headOfficeProviderId){
-      requestURL += `headOfficeProviderId=${headOfficeProviderId}&`;
+
+    if (!isHeadOffice && headOfficeProviderId) {
+        requestURL += `headOfficeProviderId=${headOfficeProviderId}&`;
     }
     if (pageNumber) {
-      requestURL += `pageNumber=${pageNumber}&`;
+        requestURL += `pageNumber=${pageNumber}&`;
     }
     if (pageSize) {
-      requestURL += `pageSize=${pageSize}&`;
+        requestURL += `pageSize=${pageSize}&`;
     }
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
     return this.http.request(request);
-  }
+}
+
 
   searchPriceList(
     providerId: string, priceListId: string, query: string, pageNumber: number, pageSize: number) {
@@ -244,6 +252,12 @@ export class ProviderNphiesSearchService {
   return this.http.request(request);
 }
 
+
+getPrescriberCommunications(providerId: string, responseId: number) {
+    const requestUrl = `/providers/${providerId}/prescriber?responseId=${responseId}`;
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
+    return this.http.request(request);
+}
   getCommunicationRequests(providerId: string, claimType: string, page?: number, pageSize?: number) {
     if (page == null) {
       page = 0;
