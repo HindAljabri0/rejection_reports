@@ -10,12 +10,11 @@ import { SharedServices } from 'src/app/services/shared.services';
     styles: []
 })
 export class UploadBeneficiaryCchiErrorsDialogComponent implements OnInit {
-    
+  totalPages: any;
     uploadErrorList = [];
-    currentPage = 0;
-    tempCurrentPage = 0;
-    maxPages = Number.MAX_VALUE;
-    tempMaxPages = Number.MAX_VALUE;
+    pageSizeOptions = [5, 10, 25, 100];
+    page = 0;
+    pageSize = 5;
     constructor(
         private dialogRef: MatDialogRef<UploadBeneficiaryCchiErrorsDialogComponent>,
         private commen: SharedServices,
@@ -26,16 +25,14 @@ export class UploadBeneficiaryCchiErrorsDialogComponent implements OnInit {
         this.fetchData();
     }
     fetchData() {
-        if (this.currentPage >= this.maxPages || this.loading) {
-            return;
-        }
         this.commen.loadingChanged.next(true);
-        this.beneficiarySerivce.getSummaryError(this.commen.providerId,this.data, this.currentPage,100000  )
+        this.beneficiarySerivce.getSummaryError(this.commen.providerId,this.data, this.page,this.pageSize)
             .subscribe(event => {
                 if (event instanceof HttpResponse) {
                     this.uploadErrorList = event.body['content'];
                     console.log("errors = " + JSON.stringify(event.body['content']));
                     this.commen.loadingChanged.next(false);
+                    this.totalPages = event.body["totalElements"] as string;
                 }
 
 
@@ -51,6 +48,12 @@ export class UploadBeneficiaryCchiErrorsDialogComponent implements OnInit {
     }
     closeDialog() {
         this.dialogRef.close();
+    }
+    handlePageChange(event) {
+      console.log(event.pageIndex)
+      this.page = event.pageIndex;
+      this.pageSize = event.pageSize;
+      this.fetchData();
     }
 
 }
