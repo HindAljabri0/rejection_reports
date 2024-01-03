@@ -1808,6 +1808,18 @@
                 </div>
               </div>
             </div>
+
+            <div class="col-4 col-xxl-3" >
+                <div class="form-group">
+                  <label class="control-label">Preauthorization Date</label>
+                  <div class="date-picker">
+                    <input [matDatepicker]="offlineApprovalDateCtrl" class="form-control" placeholder="Select Preauthorization Date" [max]="today"
+                      formControlName="preAuthOfflineDate">
+                    <mat-datepicker-toggle [for]="offlineApprovalDateCtrl"></mat-datepicker-toggle>
+                    <mat-datepicker #offlineApprovalDateCtrl></mat-datepicker>
+                  </div>
+                </div>
+              </div>
              <div class="col-4 col-xxl-3">
               <div class="form-group"
                 [ngClass]="{'has-error' : IsPreAuthRefRequired && ((isSubmitted || FormNphiesClaim.get('preAuthRefNo').touched) && FormNphiesClaim.get('preAuthRefNo').hasError('required'))}">
@@ -1906,17 +1918,7 @@
                   <input class="form-control" placeholder="Eligibility Response Identifier (URL)" formControlName="eligibilityResponseUrl">
                 </div>
               </div>
-              <div class="col-4 col-xxl-3" >
-                <div class="form-group">
-                  <label class="control-label">Preauthorization Date</label>
-                  <div class="date-picker">
-                    <input [matDatepicker]="offlineApprovalDateCtrl" class="form-control" placeholder="Select Preauthorization Date" [max]="today"
-                      formControlName="preAuthOfflineDate">
-                    <mat-datepicker-toggle [for]="offlineApprovalDateCtrl"></mat-datepicker-toggle>
-                    <mat-datepicker #offlineApprovalDateCtrl></mat-datepicker>
-                  </div>
-                </div>
-              </div>
+              
             <!-- <div class="col-4 col-xxl-3">
                                 <div class="form-group">
                                     <label class="control-label">Approval Response ID</label>
