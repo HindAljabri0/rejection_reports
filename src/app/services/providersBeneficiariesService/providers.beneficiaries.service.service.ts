@@ -47,8 +47,8 @@ export class ProvidersBeneficiariesService {
     const httpRequest = new HttpRequest('GET', environment.providersBeneficiariesService + requestUrl);
     return this.httpClient.request(httpRequest);
   }
-  getSummaryError(providerId: string,uploadId:number,page: number,size: number) {
-    let requestUrl = `/providers/${providerId}/beneficiary/errors-upload?uploadSummaryId=${uploadId}&size=${size}&page=${page}`;
+  getSummaryError(providerId: string,uploadId:number,page: number,pageSize: number) {
+    let requestUrl = `/providers/${providerId}/beneficiary/errors-upload?uploadSummaryId=${uploadId}&pageSize=${pageSize}&page=${page}`;
 
     const httpRequest = new HttpRequest('GET', environment.providersBeneficiariesService + requestUrl);
     return this.httpClient.request(httpRequest);
