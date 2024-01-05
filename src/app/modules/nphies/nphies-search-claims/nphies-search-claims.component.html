@@ -17,8 +17,8 @@
         </div>
 
         <div class="block-body pb-0 relative">
-            <owl-carousel-o  *ngIf="downwardFlag === true" [options]="owlCarouselOptions" class="abstract-card-carousel dynamic-width" [class.fixed-card]="summaries.length<4">
-                <ng-container *ngFor="let summary of summaries | keyvalue; let i = index">
+            <owl-carousel-o  *ngIf="downwardFlag === true" [options]="owlCarouselOptions" class="abstract-card-carousel dynamic-width" [class.fixed-card]="statusesSummaries.length<4">
+                <ng-container *ngFor="let summary of statusesSummaries | keyvalue; let i = index">
                     <ng-template carouselSlide [width]="summary.value.statuses[0] == 'partially_paid'?320:0">
                         <app-abstractcard [clickable]="cardsClickAble" [title]="commen.statusToName(i == 0?'all':summary.value.statuses[0])" [totalCount]="''" [inactiveCount]="''"
                             [accentColor]="commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])" (action)="getResultsOfStatus(summary.key)"
@@ -39,8 +39,8 @@
                 </ng-container>
             </owl-carousel-o>
 
-            <owl-carousel-o *ngIf="downwardFlag === false"  [options]="owlCarouselOptions" class="abstract-card-carousel dynamic-width" [class.fixed-card]="summaries.length<4">
-                <ng-container *ngFor="let summary of summaries | keyvalue; let i = index">
+            <owl-carousel-o *ngIf="downwardFlag === false"  [options]="owlCarouselOptions" class="abstract-card-carousel dynamic-width" [class.fixed-card]="statusesSummaries.length<4"  >
+                <ng-container *ngFor="let summary of statusesSummaries | keyvalue; let i = index"  (click)="$event.stopPropagation()">
                     <ng-template carouselSlide [width]="summary.value.statuses[0] == 'partially_paid'?320:0">
                         <app-abstractcard [clickable]="cardsClickAble" [title]="commen.statusToName(i == 0?'all':summary.value.statuses[0])"
                             [totalCount]="summary.value.totalClaims" [inactiveCount]="summary.value.inActiveClaimCount"
