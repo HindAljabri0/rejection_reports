@@ -51,7 +51,7 @@ import { error } from 'console';
 })
 export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, OnDestroy {
     summary: any;
-
+     statuses:any;
     owlCarouselOptions: OwlOptions = {
         mouseDrag: false,
         pullDrag: false,
@@ -303,8 +303,9 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         this.showValidationTab = false;
         const statusCode = await this.getSummaryOfClaims(this.isSearchByStatus ? [this.params.claimStatus] : [ClaimStatus.ALL]);
         if (statusCode == 200 && this.summaries[0] != null && this.summaries[0].statuses != null && this.summaries[0].totalClaims > 0) {
-            const statuses = this.summaries[0].statuses;
-            statuses.sort((s1, s2) => {
+             this.statuses = this.summaries[0].statuses;
+            this.statusesSummaries=this.summaries;
+            this.statuses.sort((s1, s2) => {
                 if (this.isReadyForSubmissionStatus(s1) || s1 == 'NotAccepted' || s1 == 'Batched' || this.isUnderProcessingStatus(s1)) {
                     return -1;
                 } else if (this.isReadyForSubmissionStatus(s2) || s2 == 'NotAccepted' || s2 == 'Batched' || this.isUnderProcessingStatus(s2)) {
@@ -312,7 +313,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
                 }
                 return 0;
             });
-            await this.loadStatues(statuses.filter(status => status != null && status.toUpperCase() != 'ALL'), true);
+            await this.loadStatues(this.statuses.filter(status => status != null && status.toUpperCase() != 'ALL'), true);
         }
         if (this.params.payerId) {
             this.getPayerList();
@@ -337,8 +338,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
             if (this.isUnderProcessingStatus(status)) {
                 if (!underProcessingIsDone) {
-                    await iscountOfClaims ? this.getSummaryOfClaims([ClaimStatus.OUTSTANDING, 'PENDING', 'UNDER_PROCESS']) :
-                        this.getSummaryOfStatus([ClaimStatus.OUTSTANDING, 'PENDING', 'UNDER_PROCESS']);
+                     iscountOfClaims ? await this.getSummaryOfClaims([ClaimStatus.OUTSTANDING, 'PENDING', 'UNDER_PROCESS']) :
+                     await this.getSummaryOfStatus([ClaimStatus.OUTSTANDING, 'PENDING', 'UNDER_PROCESS']);
 
                 }
                 underProcessingIsDone = true;
@@ -349,25 +350,25 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
                 rejectedByPayerIsDone = true;
             } else if (this.isReadyForSubmissionStatus(status)) {
                 if (!readyForSubmissionIsDone) {
-                    await iscountOfClaims ? this.getSummaryOfClaims([ClaimStatus.Accepted]) : this.getSummaryOfStatus([ClaimStatus.Accepted]);
+                     iscountOfClaims ? await this.getSummaryOfClaims([ClaimStatus.Accepted]) : await this.getSummaryOfStatus([ClaimStatus.Accepted]);
                 }
                 readyForSubmissionIsDone = true;
             } else if (this.isFailedStatus(status)) {
                 if (!failedDone) {
-                    await iscountOfClaims ? this.getSummaryOfClaims(['Failed']) : this.getSummaryOfStatus(['Failed']);
+                     iscountOfClaims ? await this.getSummaryOfClaims(['Failed']) : await this.getSummaryOfStatus(['Failed']);
                 }
                 failedDone = true;
 
             }
             else if (this.isPaidStatus(status)) {
                 if (!paidIsDone) {
-                    await iscountOfClaims ? this.getSummaryOfClaims([ClaimStatus.PAID, 'SETTLED']) : this.getSummaryOfStatus([ClaimStatus.PAID, 'SETTLED']);
+                     iscountOfClaims ? await this.getSummaryOfClaims([ClaimStatus.PAID, 'SETTLED']) : await this.getSummaryOfStatus([ClaimStatus.PAID, 'SETTLED']);
                 }
                 paidIsDone = true;
                 console.log(this.isInvalidStatus(status) + '1234')
             } else if (this.isInvalidStatus(status)) {
                 if (!invalidIsDone) {
-                    await iscountOfClaims ? this.getSummaryOfClaims([ClaimStatus.INVALID, 'RETURNED']) : this.getSummaryOfStatus([ClaimStatus.INVALID, 'RETURNED']);
+                     iscountOfClaims ? this.getSummaryOfClaims([ClaimStatus.INVALID, 'RETURNED']) : this.getSummaryOfStatus([ClaimStatus.INVALID, 'RETURNED']);
 
                 }
                 invalidIsDone = true;
@@ -375,16 +376,16 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
             } else if (this.isAllStatus(status)) {
                 if (!isAllDone) {
-                    iscountOfClaims ? this.getSummaryOfClaims([status]) : this.getSummaryOfStatus([status]);
+                    iscountOfClaims ? await this.getSummaryOfClaims([status]) : await this.getSummaryOfStatus([status]);
 
                 }
                 isAllDone = true;
             } else {
-                iscountOfClaims ? this.getSummaryOfClaims([status]) : this.getSummaryOfStatus([status]);
+                iscountOfClaims ? await this.getSummaryOfClaims([status]) : await this.getSummaryOfStatus([status]);
             }
         }
-        this.summaries.sort((a, b) => b.statuses.length - a.statuses.length);
-        this.statusesSummaries.sort((a, b) => b.statuses.length - a.statuses.length);
+        // this.summaries.sort((a, b) => b.statuses.length - a.statuses.length);
+         //this.statusesSummaries.sort((a, b) => b.statuses.length - a.statuses.length);
         if (iscountOfClaims) {
             if (this.params.status != null)
                 this.getResultsOfStatus(this.params.status, this.params.page);
@@ -397,11 +398,27 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     async getSummaryOfStatuses() {
         this.commen.loadingChanged.next(true);
         this.downwardFlag = !this.downwardFlag;
+        
         this.statusesSummaries=[];
-       // console.log(JSON.stringify(this.currentStatuseseCount) + "TEST")
-        await this.loadStatues(this.summaries[0].statuses, false);
+       
+        console.log(JSON.stringify(this.statuses) + "TEeeST");
+        await this.loadStatues(this.statuses, false);
+
+        // console.log(JSON.stringify( this.statusesSummaries) + "TEeeeeeeST");
+        // this.statusesSummaries.sort((s1, s2) => {
+        //     if (this.isReadyForSubmissionStatus(s1.statuses[0]) || s1.statuses[0] == 'NotAccepted' || s1.statuses[0] == 'Batched' || this.isUnderProcessingStatus(s1.statuses[0])) {
+        //         return -1;
+        //     } else if (this.isReadyForSubmissionStatus(s2.statuses[0]) || s2.statuses[0] == 'NotAccepted' || s2.statuses[0] == 'Batched' || this.isUnderProcessingStatus(s2.statuses[0])) {
+        //         return 1;
+        //     }
+        //     return 0;
+        // });
+
+        // console.log(JSON.stringify( this.statusesSummaries) + "TEeeeeeeST");
 
     }
+
+
     async getSummaryOfStatus(statuses: string[]) {
         console.log(statuses, "statuses")
      
@@ -466,23 +483,26 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
                             summary.statuses.push('ALL');
                             this.statusesSummaries.unshift(summary)
                         } else {
-                            //     var foundIndex = this.summaries.findIndex(x => x.statuses[0] == summary.statuses[0]);
-
-                            //    this.summaries.splice(foundIndex, 1);
+                              //  var foundIndex = this.statusesSummaries.findIndex(x => x.statuses[0] == summary.statuses[0]);
+                              //this.statusesSummaries= this.statusesSummaries.map(x => { x.statuses[0] = selectedMobile.includes(x.key); return x});
+                              // this.summaries.splice(foundIndex, 1);
                             summary.statuses = statuses;
                             this.statusesSummaries.push(summary);;
+                          
                         }
+                      
                     }
 
                 }
-                this.statusesSummaries[0].statuses.sort((s1, s2) => {
-                    if (this.isReadyForSubmissionStatus(s1) || s1 == 'NotAccepted' || s1 == 'Batched' || this.isUnderProcessingStatus(s1)) {
-                        return -1;
-                    } else if (this.isReadyForSubmissionStatus(s2) || s2 == 'NotAccepted' || s2 == 'Batched' || this.isUnderProcessingStatus(s2)) {
-                        return 1;
-                    }
-                    return 0;
-                });
+               // this.statusesSummaries.filter(x => x.statuses[0] != null && x.statuses[0].toUpperCase() != 'ALL');
+        //       this.statusesSummaries.sort((s1, s2) => {
+        //     if (this.isReadyForSubmissionStatus(s1.statuses[0]) || s1.statuses[0] == 'NotAccepted' ||s1.statuses.includes('All')  || s1.statuses[0] == 'Batched' || this.isUnderProcessingStatus(s1.statuses[0])) {
+        //         return -1;
+        //     } else if (this.isReadyForSubmissionStatus(s2.statuses[0]) || s2.statuses[0] == 'NotAccepted' ||s2.statuses.includes('All') || s2.statuses[0] == 'Batched' || this.isUnderProcessingStatus(s2.statuses[0])) {
+        //         return 1;
+        //     }
+        //     return 0;
+        // });
                 console.log(JSON.stringify(this.statusesSummaries) + "TEST2")
             }
 
