@@ -380,7 +380,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
             }
         }
         // this.summaries.sort((a, b) => b.statuses.length - a.statuses.length);
-        this.statusesSummaries.sort((a, b) => b.statuses.length - a.statuses.length);
+       // this.statusesSummaries.sort((a, b) => b.statuses.length - a.statuses.length);
         if (iscountOfClaims) {
             if (this.params.status != null)
                 this.getResultsOfStatus(this.params.status, this.params.page);
