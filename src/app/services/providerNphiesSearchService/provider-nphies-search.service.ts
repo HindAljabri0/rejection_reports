@@ -362,7 +362,7 @@ getPrescriberCommunications(providerId: string, responseId: number) {
     }
 
     // tslint:disable-next-line:max-line-length
-    requestURL += (claimSearchCriteriaModel.statuses != null && !claimSearchCriteriaModel.statuses.includes('All') &&  !isSearchByStatus? `&statuses=${claimSearchCriteriaModel.statuses.toString()}` : '')
+    requestURL += (claimSearchCriteriaModel.statuses != null && !claimSearchCriteriaModel.statuses.includes('All') && !claimSearchCriteriaModel.statuses.includes('all') &&  !isSearchByStatus? `&statuses=${claimSearchCriteriaModel.statuses.toString()}` : '')
     //requestURL = `/providers/${claimSearchCriteriaModel.providerId}/claimcount?`;
     const request = new HttpRequest('GET', environment.providerNphiesClaimsSearch + requestURL);
 
@@ -437,7 +437,7 @@ getPrescriberCommunications(providerId: string, responseId: number) {
     }
 
     // tslint:disable-next-line:max-line-length
-    requestURL += (claimSearchCriteriaModel.statuses != null && !claimSearchCriteriaModel.statuses.includes('All') &&  !isSearchByStatus? `&statuses=${claimSearchCriteriaModel.statuses.toString()}` : '')
+    requestURL += (claimSearchCriteriaModel.statuses != null && !claimSearchCriteriaModel.statuses.includes('all') && !claimSearchCriteriaModel.statuses.includes('All') &&  !isSearchByStatus? `&statuses=${claimSearchCriteriaModel.statuses.toString()}` : '')
     const request = new HttpRequest('GET', environment.providerNphiesClaimsSearch + requestURL);
     return this.http.request(request);
   }
