@@ -55,15 +55,15 @@
                                 </tr>
                                 <tr>
                                     <td class="pb-6 text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                                        <span class="dashboard-numbers">{{summary.value.totalNetAmount!=null?summary.value.totalNetAmount:'-'}}</span><span
+                                        <span class="dashboard-numbers">{{summary.value.totalNetAmount!=null?getformatCurrency(summary.value.totalNetAmount):'-'}}</span><span
                                             *ngIf="summary.value.totalNetAmount!=null" class="currency"> SR</span>
                                     </td>
                                     <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                                        <span class="dashboard-numbers">{{summary.value.totalPatientShare!=null?summary.value.totalPatientShare:'-'}}</span><span
+                                        <span class="dashboard-numbers">{{summary.value.totalPatientShare!=null?getformatCurrency(summary.value.totalPatientShare):'-'}}</span><span
                                             *ngIf="summary.value.totalPatientShare!=null" class="currency"> SR</span>
                                     </td>
                                     <td *ngIf="summary.value.statuses[0] == 'partial'" class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                                        <span class="dashboard-numbers">{{summary.value.actualDeducted}}</span><span class="currency">
+                                        <span class="dashboard-numbers">{{getformatCurrency(summary.value.actualDeducted)}}</span><span class="currency">
                                             SR</span>
                                     </td>
 
@@ -76,16 +76,16 @@
                                 </tr>
                                 <tr>
                                     <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                                        <span class="dashboard-numbers">{{summary.value.totalTax!=null?summary.value.totalTax:'-'}}</span><span *ngIf="summary.value.totalTax!=null"
+                                        <span class="dashboard-numbers">{{summary.value.totalTax!=null?getformatCurrency(summary.value.totalTax):'-'}}</span><span *ngIf="summary.value.totalTax!=null"
                                             class="currency">
                                             SR</span>
                                     </td>
                                     <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                                        <span class="dashboard-numbers">{{summary.value.totalPayerShare!=null?summary.value.totalPayerShare:'-'}}</span><span
+                                        <span class="dashboard-numbers">{{summary.value.totalPayerShare!=null?getformatCurrency(summary.value.totalPayerShare):'-'}}</span><span
                                             *ngIf="summary.value.totalPayerShare!=null" class="currency"> SR</span>
                                     </td>
                                     <td *ngIf="summary.value.statuses[0] == 'partial'" class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                                        <span class="dashboard-numbers">{{summary.value.actualPaid}}</span><span class="currency"> SR</span>
+                                        <span class="dashboard-numbers">{{getformatCurrency(summary.value.actualPaid)}}</span><span class="currency"> SR</span>
                                     </td>
 
                                 </tr>
