@@ -14,7 +14,7 @@ export class UploadBeneficiaryCchiErrorsDialogComponent implements OnInit {
     uploadErrorList = [];
     pageSizeOptions = [5, 10, 25, 100];
     page = 0;
-    pageSize = 5;
+    size = 5;
     constructor(
         private dialogRef: MatDialogRef<UploadBeneficiaryCchiErrorsDialogComponent>,
         private commen: SharedServices,
@@ -26,7 +26,7 @@ export class UploadBeneficiaryCchiErrorsDialogComponent implements OnInit {
     }
     fetchData() {
         this.commen.loadingChanged.next(true);
-        this.beneficiarySerivce.getSummaryError(this.commen.providerId,this.data, this.page,this.pageSize)
+        this.beneficiarySerivce.getSummaryError(this.commen.providerId,this.data, this.page,this.size)
             .subscribe(event => {
                 if (event instanceof HttpResponse) {
                     this.uploadErrorList = event.body['content'];
@@ -50,9 +50,8 @@ export class UploadBeneficiaryCchiErrorsDialogComponent implements OnInit {
         this.dialogRef.close();
     }
     handlePageChange(event) {
-      console.log(event.pageIndex)
       this.page = event.pageIndex;
-      this.pageSize = event.pageSize;
+      this.size = event.pageSize;
       this.fetchData();
     }
 

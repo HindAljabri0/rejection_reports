@@ -26,7 +26,7 @@
 
 <div class="primary-dialog-footer has-border d-flex align-items-center">
     <div class="pagination-header p-0">
-        <mat-paginator [length]="totalPages" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="handlePageChange($event)">
+        <mat-paginator [length]="totalPages" [pageSize]="size" [pageSizeOptions]="pageSizeOptions" (page)="handlePageChange($event)">
         </mat-paginator>
     </div>
     <button mat-flat-button color="primary" class="ml-auto" (click)="closeDialog()">Close</button>
