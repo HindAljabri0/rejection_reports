@@ -38,13 +38,13 @@ export class BeneficiaryUploadsSummaryComponent implements OnInit {
             return;
         }
         this.commen.loadingChanged.next(true);
-        this.beneficiarySerivce.getUploadSummary(this.commen.providerId, this.currentPage, 9)
+        this.beneficiarySerivce.getUploadSummary(this.commen.providerId, this.currentPage, 10)
             .subscribe(event => {
                 if (event instanceof HttpResponse) {
                     this.maxPages = event.body['totalPages'];
                     this.currentPage++;
                     this.uploadSummaryList = event.body['content'];
-                    console.log("list = " + JSON.stringify(event.body['content']));
+                    
                     /* event.body['content'].forEach((upload: UploadSummary) => {
                        upload.uploadDate = new Date(upload.uploadDate);
                         const key = formatDate(upload.uploadDate, 'MMM, yyyy', this.locale);
@@ -69,6 +69,7 @@ export class BeneficiaryUploadsSummaryComponent implements OnInit {
             });
     }
     scrollHandler(e) {
+        //console.log(e);
         if (e === 'bottom') {
             this.fetchData();
         }

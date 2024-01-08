@@ -436,7 +436,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         this.updateNet();
 
         if (this.data.type === "pharmacy") {
-            this.itemList.filter(x => x.code === this.data.item.itemCode)[0]
+            //this.itemList.filter(x => x.code === this.data.item.itemCode)[0];
             this.filteredPescribedMedicationItem.next(this.prescribedMedicationList);
             const res = this.prescribedMedicationList.filter(x => x.gtinNumber === gtinNumber)[0];
             if (res != undefined) {
