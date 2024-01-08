@@ -1,5 +1,5 @@
 import { log } from 'util';
-import { Location } from '@angular/common';
+import { Location, formatCurrency } from '@angular/common';
 import { HttpErrorResponse, HttpEvent, HttpResponse } from '@angular/common/http';
 import { AfterViewChecked, Component, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
@@ -323,6 +323,10 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         if (!this.hasData && this.errorMessage == null) { this.errorMessage = 'Sorry, we could not find any result.'; }
     }
 
+    getformatCurrency(value){
+
+        return formatCurrency(value, 'en-US','');  
+      }
     async loadStatues(statuses: string[], iscountOfClaims) {
 
         let underProcessingIsDone = false;
