@@ -48,7 +48,7 @@ export class BeneficiaryUploadsSummaryComponent implements OnInit {
                         this.uploadSummaryList.push(upload);
                     });
                     
-                    console.log(this.uploadSummaryList);
+                    
                     /* event.body['content'].forEach((upload: UploadSummary) => {
                        upload.uploadDate = new Date(upload.uploadDate);
                         const key = formatDate(upload.uploadDate, 'MMM, yyyy', this.locale);
