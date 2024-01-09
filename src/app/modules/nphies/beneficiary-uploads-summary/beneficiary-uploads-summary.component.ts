@@ -43,8 +43,12 @@ export class BeneficiaryUploadsSummaryComponent implements OnInit {
                 if (event instanceof HttpResponse) {
                     this.maxPages = event.body['totalPages'];
                     this.currentPage++;
-                    this.uploadSummaryList = event.body['content'];
+                    //this.uploadSummaryList = event.body['content'];
+                    event.body['content'].forEach((upload: any) => {
+                        this.uploadSummaryList.push(upload);
+                    });
                     
+                    console.log(this.uploadSummaryList);
                     /* event.body['content'].forEach((upload: UploadSummary) => {
                        upload.uploadDate = new Date(upload.uploadDate);
                         const key = formatDate(upload.uploadDate, 'MMM, yyyy', this.locale);
