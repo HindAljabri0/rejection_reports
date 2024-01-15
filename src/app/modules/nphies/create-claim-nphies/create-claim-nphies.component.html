@@ -1808,7 +1808,42 @@
                 </div>
               </div>
             </div>
-   
+
+            <div class="col-4 col-xxl-3" >
+                <div class="form-group">
+                  <label class="control-label">Preauthorization Date</label>
+                  <div class="date-picker">
+                    <input [matDatepicker]="offlineApprovalDateCtrl" class="form-control" placeholder="Select Preauthorization Date" [max]="today"
+                      formControlName="preAuthOfflineDate">
+                    <mat-datepicker-toggle [for]="offlineApprovalDateCtrl"></mat-datepicker-toggle>
+                    <mat-datepicker #offlineApprovalDateCtrl></mat-datepicker>
+                  </div>
+                </div>
+              </div>
+             <div class="col-4 col-xxl-3">
+              <div class="form-group"
+                [ngClass]="{'has-error' : IsPreAuthRefRequired && ((isSubmitted || FormNphiesClaim.get('preAuthRefNo').touched) && FormNphiesClaim.get('preAuthRefNo').hasError('required'))}">
+                <label class="control-label">Preauthorization Reference No(s).<span *ngIf="IsPreAuthRefRequired" class="asterisk">*</span></label>
+                <tag-input formControlName="preAuthRefNo" [placeholder]="'Enter Preauthorization Reference No(s).'" [addOnBlur]="true">
+                </tag-input>
+                <div *ngIf="IsPreAuthRefRequired && ((isSubmitted || FormNphiesClaim.get('preAuthRefNo').touched) && FormNphiesClaim.get('preAuthRefNo').hasError('required'))">
+                  <span class="error-text">Please enter Preauthorization Reference No(s)</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">Preauthorization Response Identifier (Value)</label>
+                <input class="form-control" placeholder="Preauthorization Response Identifier (Value)" formControlName="preAuthResponseId">
+              </div>
+            </div>
+            <div class="col-4 col-xxl-3">
+              <div class="form-group">
+                <label class="control-label">Preauthorization Response Identifier (URL)</label>
+                <input class="form-control" placeholder="Preauthorization Response Identifier (URL)" formControlName="preAuthResponseUrl">
+              </div>
+            </div>
+
             <div class="col-4 col-xxl-3">
               <div class="form-group"
                 [ngClass]="{'has-error' : (isSubmitted || FormNphiesClaim.get('episodeId').touched) && FormNphiesClaim.get('episodeId').hasError('required')}">
@@ -1885,6 +1920,7 @@
                 </div>
               </div>
 
+
               <div class="col-4 col-xxl-3">
                 <div class="form-group">
                   <label class="control-label">Preauthorization Details</label>
@@ -1933,6 +1969,7 @@
                   <input class="form-control" placeholder="Preauthorization Response Identifier (URL)" formControlName="preAuthResponseUrl">
                 </div>
               </div>
+
           </div>
         </mat-tab>
 

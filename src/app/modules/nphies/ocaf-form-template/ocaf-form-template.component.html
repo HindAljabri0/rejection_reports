@@ -161,7 +161,6 @@
                                         <td colspan="5">RIGHT EYE</td>
                                     </tr>
                                     <tr>
-                                        <td class="border-top-0 border-left-0"></td>
                                         <td>Sphere</td>
                                         <td>Cylinder</td>
                                         <td>Axis</td>
@@ -169,7 +168,6 @@
                                         <td>V/N</td>
                                     </tr>
                                     <tr *ngFor="let right of lensData.right">
-                                        <td>{{right.isDistance ? 'Distance':'Near'}}</td>
                                         <td>{{right.sphere ? right.sphere : '-'}}</td>
                                         <td>{{right.cylinder ? right.cylinder : '-'}}</td>
                                         <td>{{right.axis ? right.axis : '-'}}</td>
@@ -213,7 +211,6 @@
                                         <td colspan="5">RIGHT EYE</td>
                                     </tr>
                                     <tr>
-                                        <td class="border-top-0 border-left-0"></td>
                                         <td>Lens Power</td>
                                         <td>Cylinder</td>
                                         <td>Axis</td>
@@ -221,7 +218,6 @@
                                         <td>V/N</td>
                                     </tr>
                                     <tr *ngFor="let right of contactData.right">
-                                        <td>{{right.isDistance ? 'Distance':'Near'}}</td>
                                         <td>{{right.lensPower ? right.lensPower : '-'}}</td>
                                         <td>{{right.cylinder ? right.cylinder : '-'}}</td>
                                         <td>{{right.axis ? right.axis : '-'}}</td>
