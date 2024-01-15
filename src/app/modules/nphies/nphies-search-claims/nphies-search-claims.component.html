@@ -526,7 +526,7 @@
                                             {{claim.body.claimResponseDate | date: 'dd-MM-yyyy'}}
                                         </td>
                                         <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="row-click text-nowrap">
-                                            {{claim.netAmount}}<span class="currency" *ngIf="claim.netAmount"> SR</span>
+                                            {{getformatCurrency(claim.netAmount)}}<span class="currency" *ngIf="claim.netAmount"> SR</span>
                                         </td>
 
                                         <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="text-center row-click">
