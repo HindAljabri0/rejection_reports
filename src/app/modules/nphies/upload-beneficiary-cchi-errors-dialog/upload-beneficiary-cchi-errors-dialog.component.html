@@ -2,23 +2,32 @@
     <h5 class="primary-dialog-title">Errors</h5>
     <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
-<div class="primary-dialog-body">
-    <div class="table-responsive">
-        <table class="primary-grid claim-view-table">
-            <thead>
-                <tr>
-                    <th class="light-bg-danger text-danger">Errors</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let row of uploadErrorList">
-                    <td> [ {{row.status}} ] : Document Id: [{{row.documentId}}], COMMENT/ERROR:
-                        [{{row.errorMessage}}]</td>
-                </tr>
-            </tbody>
-        </table>
+<ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+    <div class="primary-dialog-body">
+        <div class="table-responsive">
+            <table class="primary-grid claim-view-table">
+                <thead>
+                    <tr>
+                        <th class="light-bg-danger text-danger">Errors</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of uploadErrorList">
+                        <td> [ {{row.status}} ] : Document Id: [{{row.documentId}}], COMMENT/ERROR:
+                            [{{row.errorMessage}}]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
-<div class="primary-dialog-footer has-border text-right">
-    <button mat-flat-button color="primary" (click)="closeDialog()">Close</button>
+</ng-scrollbar>
+
+
+
+<div class="primary-dialog-footer has-border d-flex align-items-center">
+    <div class="pagination-header p-0">
+        <mat-paginator [length]="totalPages" [pageSize]="size" [pageSizeOptions]="pageSizeOptions" (page)="handlePageChange($event)">
+        </mat-paginator>
+    </div>
+    <button mat-flat-button color="primary" class="ml-auto" (click)="closeDialog()">Close</button>
 </div>

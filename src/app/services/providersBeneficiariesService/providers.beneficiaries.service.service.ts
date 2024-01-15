@@ -53,7 +53,7 @@ export class ProvidersBeneficiariesService {
     const httpRequest = new HttpRequest('GET', environment.providersBeneficiariesService + requestUrl);
     return this.httpClient.request(httpRequest);
   }
-  
+
   getPayers() {
     const requestUrl = `/lov/payers`;
     const httpRequest = new HttpRequest('GET', environment.providersBeneficiariesService + requestUrl);
@@ -99,7 +99,7 @@ export class ProvidersBeneficiariesService {
         reportProgress: true,
       });
     } else {
-      req = new HttpRequest('POST', environment.providersBeneficiariesService + `/providers/${providerID}/beneficiaryFile/upload/inquiry`, formdata, {
+      req = new HttpRequest('POST', environment.providersBeneficiariesService + `/providers/${providerID}/beneficiaryFile/bulk/upload/inquiry`, formdata, {
         reportProgress: true,
       });
     }

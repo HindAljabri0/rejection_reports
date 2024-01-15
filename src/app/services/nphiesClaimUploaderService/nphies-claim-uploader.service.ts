@@ -30,6 +30,12 @@ export class NphiesClaimUploaderService {
     this.errorChange.subscribe(value => this.error = value);
   }
 
+  download(providerId: string) {
+    let requestUrl = `/providers/${providerId}/file/download`;
+    const request = new HttpRequest('GET', environment.nphiesClaimUploader + requestUrl, '', { responseType: 'blob', reportProgress: true });
+    return this.http.request(request);
+  }
+ 
   createNphisClaim(providerId: string, body: any) {
     const requestUrl = `/providers/${providerId}/claim/upload`;
     const request = new HttpRequest('POST', environment.nphiesClaimUploader + requestUrl, body);
