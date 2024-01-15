@@ -239,9 +239,9 @@
                             </li>
                         </ul>
                     </mat-expansion-panel>
-                </mat-accordion> --> 
+                </mat-accordion> -->
             </ng-container>
-<!-- 
+<!--
             <ul class="nav-list" *ngIf="userPrivileges.ProviderPrivileges.GSSReportForTawuniya.canAccessGSSReport">
                 <li>
                     <a routerLink="/tawuniya-gss" routerLinkActive="is-active">
@@ -275,13 +275,18 @@
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
                         <li>
+                            <a routerLink="/nphies/beneficiary/add" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="is-active">
+                                <span class="text">Create Beneficiary</span>
+                            </a>
+                        </li>
+                        <li>
                             <a routerLink="/nphies/beneficiary" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="is-active">
                                 <span class="text">Beneficiary List</span>
                             </a>
                         </li>
                         <li>
                             <a routerLink="/nphies/beneficiary/upload" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="is-active">
-                                <span class="text">Upload Beneficiaries</span>
+                                <span class="text">Upload Beneficiary</span>
                             </a>
                         </li>
                         <li>
@@ -294,12 +299,7 @@
                                 <span class="text">Uploads Summary</span>
                             </a>
                         </li>
-                        <li>
-                            <a routerLink="/nphies/beneficiary/add" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="is-active">
-                                <span class="text">Create Beneficiary</span>
-                            </a>
-                        </li>
-                    </ul>
+                      </ul>
                 </mat-expansion-panel>
                 <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessEligibility">
                     <mat-expansion-panel-header>

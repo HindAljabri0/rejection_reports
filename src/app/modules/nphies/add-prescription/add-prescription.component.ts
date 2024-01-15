@@ -64,6 +64,8 @@ export class AddPrescriptionComponent implements OnInit {
     IsSubscriberRequired = false;
     itemDetails = false;
     IsAccident = false;
+    isOnline: boolean = false;
+    isOffline: boolean = false;
     AllTPA: any[] = [];
     filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
 
@@ -92,6 +94,7 @@ export class AddPrescriptionComponent implements OnInit {
         date: [''],
         dateWritten: [''],
         prescriber: [''],
+        eligibilityType: [''],
         eligibilityOfflineDate: [''],
         eligibilityOfflineId: [''],
         eligibilityResponseId: [''],
@@ -237,7 +240,10 @@ export class AddPrescriptionComponent implements OnInit {
 
     ngOnInit() {
 
-
+        this.FormPreAuthorization.get('eligibilityType').valueChanges.subscribe(value => {
+            this.isOnline = value === 'online';
+            this.isOffline = value === 'offline';
+          });
         this.getPayees();
         this.getTPA();
         this.FormPreAuthorization.controls.dateOrdered.setValue(this.removeSecondsFromDate(new Date()));
@@ -1280,38 +1286,18 @@ export class AddPrescriptionComponent implements OnInit {
                 console.log(result, "result")
                 if (this.Items.find(x => x.sequence === itemSequence)) {
                     this.Items.map(x => {
-                        x.claimItemDosageModel = [];
+                      
                         if (x.sequence === itemSequence) {
-                            console.log(x, "skss111111111111")
-                            if (x.claimItemDosageModel.find(y => y.sequence === result.sequence)) {
-                                x.claimItemDosageModel.map(y => {
-                                    if (y.sequence === result.sequence) {
-                                        y.note = result.note;
-                                        y.patientInstruction = result.patientInstruction;
-                                        y.route = result.route;
-                                        y.doseType = result.doseType;
-                                        y.doseQuantityOrRangeMin = result.doseQuantityOrRangeMin;
-                                        y.doseRangeMax = result.doseRangeMax;
-                                        y.doseUnit = result.doseUnit;
-                                        y.rateType = result.rateType;
-                                        y.rateRatioNumeratorMin = result.rateRatioNumeratorMin;
-                                        y.rateRatioDenominatorMax = result.rateRatioDenominatorMax;
-                                        y.rateUnit = result.rateUnit;
-                                        y.startDate = result.startDate;
-                                        y.endDate = result.endDate;
-                                        y.refill = result.refill;
-                                        y.duration = result.duration;
-                                        y.frequency = result.frequency;
-                                        y.period = result.period;
-                                        y.durationUnit = result.durationUnit;
-                                        y.periodUnit = result.periodUnit;
+                           
+            
+                                       x.claimItemDosageModel.push(result);
+                            console.log(   x.claimItemDosageModel," x.claimItemDosageModel")
 
-                                    }
-                                });
-                            } else {
+                         
+                        } else {
                                 x.claimItemDosageModel.push(result);
                             }
-                        }
+                     //   }
                     });
 
                 }
@@ -1951,7 +1937,7 @@ export class AddPrescriptionComponent implements OnInit {
                                 if (this.claimReuseId) {
                                     this.closeEvent.emit({ IsReuse: true });
                                 } else {
-                                    this.getTransactionDetails(body.approvalRequestId, body.approvalResponseId);
+                                    this.getTransactionDetails(body.prescriberRequestId, body.prescriberResponseId);
                                 }
                             }
                         }
