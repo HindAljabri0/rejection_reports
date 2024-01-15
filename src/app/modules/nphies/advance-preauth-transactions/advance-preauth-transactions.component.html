@@ -31,73 +31,84 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-4 col-xxl-3">
-                            <div class="form-group">
-                                <label class="control-label">Payer</label>
-                                <app-nphies-payers-selector (selectionChange)="selectPayer($event)"></app-nphies-payers-selector>
+                        <ng-container *ngIf="advanceSearchEnable">
+                            <div class="col-4 col-xxl-3">
+                                <div class="form-group">
+                                    <label class="control-label">Payer</label>
+                                    <app-nphies-payers-selector (selectionChange)="selectPayer($event)"></app-nphies-payers-selector>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-4 col-xxl-3">
-                            <div class="form-group">
-                                <label class="control-label">Type</label>
-                                <mat-form-field class="form-control custom-select-control">
-                                    <mat-select formControlName="type">
-                                        <mat-option value="">Select Type</mat-option>
-                                        <mat-option *ngFor="let type of typeList" [value]="type.value">{{type.name}}</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
+                            <div class="col-4 col-xxl-3">
+                                <div class="form-group">
+                                    <label class="control-label">Type</label>
+                                    <mat-form-field class="form-control custom-select-control">
+                                        <mat-select formControlName="type">
+                                            <mat-option value="">Select Type</mat-option>
+                                            <mat-option *ngFor="let type of typeList" [value]="type.value">{{type.name}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-4 col-xxl-3">
-                            <div class="form-group">
-                                <label class="control-label" matTooltip="Minimum 3 Character(s)/Number(s)">Select a
-                                    Beneficiary</label>
-                                <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName"
-                                    [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
-                                <mat-autocomplete #auto="matAutocomplete">
-                                    <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
-                                        {{beneficiary.name}} ({{beneficiary.documentId}})
-                                    </mat-option>
-                                </mat-autocomplete>
+                            <div class="col-4 col-xxl-3">
+                                <div class="form-group">
+                                    <label class="control-label" matTooltip="Minimum 3 Character(s)/Number(s)">Select a
+                                        Beneficiary</label>
+                                    <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID..."
+                                        formControlName="beneficiaryName" [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
+                                    <mat-autocomplete #auto="matAutocomplete">
+                                        <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
+                                            {{beneficiary.name}} ({{beneficiary.documentId}})
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-4 col-xxl-3">
-                            <div class="form-group">
-                                <label class="control-label">Pre Authorization ID</label>
-                                <input placeholder="Enter pre authorization ID" class="form-control" formControlName="nphiesRequestId">
+                            <div class="col-4 col-xxl-3">
+                                <div class="form-group">
+                                    <label class="control-label">Pre Authorization ID</label>
+                                    <input placeholder="Enter pre authorization ID" class="form-control" formControlName="nphiesRequestId">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-4 col-xxl-3">
-                            <div class="form-group">
-                                <label class="control-label">Status</label>
-                                <mat-form-field class="form-control custom-select-control">
-                                    <mat-select formControlName="status">
-                                        <mat-option value="">Select Status</mat-option>
-                                        <mat-option *ngFor="let status of statusList" [value]="status.value">{{status.name}}</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
+                            <div class="col-4 col-xxl-3">
+                                <div class="form-group">
+                                    <label class="control-label">Status</label>
+                                    <mat-form-field class="form-control custom-select-control">
+                                        <mat-select formControlName="status">
+                                            <mat-option value="">Select Status</mat-option>
+                                            <mat-option *ngFor="let status of statusList" [value]="status.value">{{status.name}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-4 col-xxl-3">
-                            <div class="form-group">
-                                <label class="control-label">Pre Auth Reference No</label>
-                                <input placeholder="Enter Preauth Ref No" class="form-control" formControlName="preAuthRefNo">
+                            <div class="col-4 col-xxl-3">
+                                <div class="form-group">
+                                    <label class="control-label">Pre Auth Reference No</label>
+                                    <input placeholder="Enter Preauth Ref No" class="form-control" formControlName="preAuthRefNo">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-4 col-xxl-3">
-                            <div class="form-group">
-                                <label class="control-label">Response Bundle ID</label>
-                                <input placeholder="Enter Response Bundle ID" class="form-control" formControlName="ResponseBundleId">
+                            <div class="col-4 col-xxl-3">
+                                <div class="form-group">
+                                    <label class="control-label">Response Bundle ID</label>
+                                    <input placeholder="Enter Response Bundle ID" class="form-control" formControlName="ResponseBundleId">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-4 col-xxl-3">
+                        </ng-container>
+                        <div class="col-4 col-xxl-3" *ngIf="!advanceSearchEnable">
                             <div class="form-group">
                                 <label class="control-label">&nbsp;</label>
-                                <button type="submit" mat-flat-button color="primary">Search</button>
+                                <div class="btn-list">
+                                    <button type="submit" mat-flat-button color="primary">Search</button>
+                                    <button type="button" class="text-primary" (click)="toggleAdvanceSearch()" mat-button>Advance
+                                        Search</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-
+                    <div *ngIf="advanceSearchEnable" class="form-group">
+                        <div class="btn-list">
+                            <button type="submit" mat-flat-button color="primary">Search</button>
+                            <button type="button" class="text-primary" mat-button (click)="toggleAdvanceSearch()">Basic Search</button>
+                        </div>
+                    </div>
                 </form>
             </div>
 
@@ -184,43 +195,42 @@
             <app-empty-state *ngIf="transactionModel && transactions.length === 0" message='No Pre Authorization transactions found!'>
             </app-empty-state>
 
-    <div class="pagination-header" *ngIf="!(transactionModel && transactions.length === 0)">
-        <div class="form-group page-select">
-            <label class="control-label">Go to page: </label>
-            <mat-form-field class="form-control custom-select-control">
-                <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
-                    <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-        <div class="material-paginator">
-            <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions"
-                (page)="paginatorAction($event)">
-            </mat-paginator>
-        </div>
-    </div>
-    </mat-tab>
+            <div class="pagination-header" *ngIf="!(transactionModel && transactions.length === 0)">
+                <div class="form-group page-select">
+                    <label class="control-label">Go to page: </label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
+                            <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="material-paginator">
+                    <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
+                    </mat-paginator>
+                </div>
+            </div>
+        </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
-              <div class="d-flex align-items-center">
-                <span>Processed</span>
-                <span *ngIf="NewAPAProcessed > 0" class="alert-marker ml-2 alert-count">{{NewAPAProcessed}}</span>
-              </div>
+                <div class="d-flex align-items-center">
+                    <span>Processed</span>
+                    <span *ngIf="NewAPAProcessed > 0" class="alert-marker ml-2 alert-count">{{NewAPAProcessed}}</span>
+                </div>
             </ng-template>
-      
+
             <app-apa-processed-transactions #apaProcessedTransactions *ngIf="payersList" [payersList]="payersList" (openDetailsDialogEvent)="openDetailsDialoEv($event)">
             </app-apa-processed-transactions>
-      
-          </mat-tab>
-          <mat-tab>
-    <ng-template mat-tab-label>
-        <div class="d-flex align-items-center">
-          <span>Communication Request</span>
-          <span *ngIf="NewAPAComunicationRequests > 0" class="alert-marker ml-2 alert-count">{{NewAPAComunicationRequests}}</span>
-        </div>
-      </ng-template>
-      <app-apa-communication-requests #communicationRequests *ngIf="payersList" [payersList]="payersList" (openDetailsDialogEvent)="openDetailsDialogCR($event)">
-      </app-apa-communication-requests>
-    </mat-tab>
-  </mat-tab-group>
+
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <div class="d-flex align-items-center">
+                    <span>Communication Request</span>
+                    <span *ngIf="NewAPAComunicationRequests > 0" class="alert-marker ml-2 alert-count">{{NewAPAComunicationRequests}}</span>
+                </div>
+            </ng-template>
+            <app-apa-communication-requests #communicationRequests *ngIf="payersList" [payersList]="payersList" (openDetailsDialogEvent)="openDetailsDialogCR($event)">
+            </app-apa-communication-requests>
+        </mat-tab>
+    </mat-tab-group>
 </div>

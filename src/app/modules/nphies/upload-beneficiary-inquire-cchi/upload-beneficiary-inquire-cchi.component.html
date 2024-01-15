@@ -1,80 +1,46 @@
 <div class="animate__animated animate__faster animate__fadeIn block-card">
-    <div class="block-header">
-        <p class="align-self-center">Upload Beneficiary by Inquire CCHI</p>
-        <button type="button" mat-flat-button class="ml-auto btn btn-light-primary my-n2 mr-n2" (click)="downloadBeneSample('2')">
-            <img src="./assets/ic-download.svg" alt="Download" />
-            <span>Download Sample</span>
-          </button>
-    </div>
+  <div class="block-header">
+    <p class="align-self-center">Upload Beneficiary by Inquire CCHI</p>
+    <button type="button" mat-flat-button class="ml-auto btn btn-light-primary my-n2 mr-n2"
+      (click)="downloadBeneSample('2')">
+      <img src="./assets/ic-download.svg" alt="Download" />
+      <span>Download Sample</span>
+    </button>
+  </div>
 
-    <div class="block-body">
-        <div class="info-block mb-3">Please upload file containing maximum 1000 records only </div>
+  <div class="block-body">
+    <!-- <div class="info-block mb-3">Please upload file containing maximum 1000 records only </div> -->
 
-        <div class="file-upload-drag-drop">
-            <div class="inner-block" *ngIf="currentFileUpload != undefined">
-                <div class="icon-wrapper"> 
-<!-- <img [src]="currentFileUpload.name.endsWith('.csv')? './assets/csv.svg':'./assets/xls.svg'"
+    <div class="file-upload-drag-drop">
+      <div class="inner-block" *ngIf="currentFileUpload != undefined">
+        <div class="icon-wrapper">
+          <!-- <img [src]="currentFileUpload.name.endsWith('.csv')? './assets/csv.svg':'./assets/xls.svg'"
 alt="{{currentFileUpload.name}}"> -->
- <img src='./assets/xlsx.svg' alt="{{currentFileUpload.name}}">
-                    <p class="file-name">{{currentFileUpload.name}}</p>
-                </div>
-                <div *ngIf="!uploading && !loading" class="btn-list pt-5">
-                    <button mat-button (click)="cancel()">Cancel</button>
-                    <button mat-flat-button color="primary" (click)="upload('2')">Upload</button>
-                </div>
-            </div>
-            <div class="inner-block {{uploadContainerClass}}" *ngIf="currentFileUpload == undefined" appDragdrop (onFileDropped)="selectFile($event)">
-                <div class="icon-wrapper">
-                    <img src="./assets/xlsx.svg" alt="XLSX File" />
-                </div>
-                <p class="text-block" *ngIf="currentFileUpload == undefined"><span>Drag an Excel file here, or
-                        use</span> <button mat-flat-button color="primary" (click)="fileInput.click()">Upload</button>
-                </p>
-                <p class="error-text" *ngIf="error">{{error}}</p>
-                <input hidden type="file" #fileInput id="file" onclick="this.value = null" (change)="selectFile($event.target.files)"
-                    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
-            </div>
+          <img src='./assets/xlsx.svg' alt="{{currentFileUpload.name}}">
+          <p class="file-name">{{currentFileUpload.name}}</p>
         </div>
-        <div class="file-upload-progress-wrapper" *ngIf="uploading">
-            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        <div *ngIf="!uploading && !loading" class="btn-list pt-5">
+          <button mat-button (click)="cancel()">Cancel</button>
+          <button mat-flat-button color="primary" (click)="upload('2')">Upload</button>
         </div>
-        <ng-container *ngIf="data && data != null">
-
-        <h5 class="form-title">Upload Summary</h5>
-
-        <div class="row small-gutter pt-3">
-            <div class="col-6 col-lg-4 col-xl-3 pb-2">
-                <p class="small-label short-text-height">No. of Beneficiaries Saved</p>
-                <p class="dashboard-numbers text-success">{{data.savedBeneficiaryCount}}</p>
-            </div>
-            <div class="col-6 col-lg-4 col-xl-3 pb-2">
-                <p class="small-label short-text-height">No. of Beneficiaries Not Saved</p>
-                <p class="dashboard-numbers text-danger">{{data.failToSaveBeneficiaryCount}}</p>
-            </div>
-            <div class="col-6 col-lg-4 col-xl-3 pb-2">
-                <p class="small-label short-text-height">No. of Beneficiaries </p>
-                <p class="dashboard-numbers text-success">{{data.totalBeneficiaryCount}}</p>
-            </div>
-
+      </div>
+      <div class="inner-block {{uploadContainerClass}}" *ngIf="currentFileUpload == undefined" appDragdrop
+        (onFileDropped)="selectFile($event)">
+        <div class="icon-wrapper">
+          <img src="./assets/xlsx.svg" alt="XLSX File" />
         </div>
-        <hr class="hr separator">
-
-        <ng-container *ngIf="data.errors != null && data.errors.length > 0">
-            <div class="table-responsive">
-                <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-                    <thead>
-                        <tr>
-                            <th class="light-bg-danger text-danger">Errors</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let error of data.errors ">
-                            <td>{{error}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </ng-container>
-        </ng-container>
+        <p class="text-block" *ngIf="currentFileUpload == undefined"><span>Drag an Excel file here, or
+            use</span> <button mat-flat-button color="primary" (click)="fileInput.click()">Upload</button>
+        </p>
+        <p class="error-text" *ngIf="error">{{error}}</p>
+        <input hidden type="file" #fileInput id="file" onclick="this.value = null"
+          (change)="selectFile($event.target.files)"
+          accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+      </div>
     </div>
-</div> 
+    <div class="file-upload-progress-wrapper" *ngIf="uploading">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+
+
+  </div>

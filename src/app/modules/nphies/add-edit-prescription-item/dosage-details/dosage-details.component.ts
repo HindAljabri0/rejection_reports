@@ -29,6 +29,7 @@ export class DosageDetailsComponent implements OnInit {
     note: [''],
     patientInstruction: [''],
     route: [''],
+    dosageType: [''],
     doseType: [''],
     min: [''],
     max: [''],
@@ -46,6 +47,7 @@ export class DosageDetailsComponent implements OnInit {
     refill: [''],
     duration: [''],
     frequency: [''],
+    frequencyUnit: [''],
     period: [''],  
     periodUnit: [''],  
     durationUnit: [''],  
@@ -66,8 +68,6 @@ routes = this.sharedDataService.prescriberRoutes;
  
 filteredRoutes: string[] = [];
 selectedOption: string = '';
-selectedDoseType: string = 'Dose_Quantity'; 
-selectedRateType: string = 'Rate Quantity';
 selectedAbsenceOption: string = ''; 
 onOptionChange: string = '';
 
@@ -81,12 +81,34 @@ onOptionChange: string = '';
 
   ngOnInit() {
     console.log(this.data,"klssks")
-    if (this.data.item && this.data.item.itemCode) {
+    if (this.data.item) {
      
       this.FormItem.patchValue({
-        type: this.typeList.filter(x => x.value === this.data.item.type)[0],
-        nonStandardCode: this.data.item.nonStandardCode,
-        display: this.data.item.display,
+        note: this.data.item.note,
+        patientInstruction: this.data.item.patientInstruction,
+        route: this.data.item.route,
+        dosageType: this.data.item.dosageType,
+        doseType: this.data.item.doseType,
+        min: this.data.item.min,
+        max: this.data.item.max,
+        doseQuantity: this.data.item.doseQuantity,
+        doseUnit: this.data.item.doseUnit,
+        rateType: this.data.item.rateType,
+        numerator: this.data.item.numerator,
+        denominator: this.data.item.denominator,
+        ratemin: this.data.item.ratemin,
+        ratemax: this.data.item.ratemax,
+        rateQuantity: this.data.item.rateQuantity,
+        rateUnit: this.data.item.rateUnit,
+        startDate: this.data.item.startDate,
+        endDate: this.data.item.endDate,
+        refill: this.data.item.refill,
+        duration: this.data.item.duration,
+        frequency: this.data.item.frequency,
+        frequencyUnit: this.data.item.frequencyUnit,
+        period: this.data.item.period,
+        periodUnit: this.data.item.periodUnit,  
+        durationUnit: this.data.item.durationUnit,
       });
     }
 
@@ -123,6 +145,7 @@ onOptionChange: string = '';
       model.note = this.FormItem.controls.note.value;
       model.patientInstruction = this.FormItem.controls.patientInstruction.value;
       model.route = this.FormItem.controls.route.value.value;
+      model.dosageCategory = this.FormItem.controls.dosageType.value;
       model.doseType = this.FormItem.controls.doseType.value;
       model.doseQuantityOrRangeMin = this.FormItem.controls.min.value || this.FormItem.controls.doseQuantity.value;
       model.doseRangeMax = this.FormItem.controls.max.value;
@@ -142,6 +165,8 @@ onOptionChange: string = '';
       model.period = this.FormItem.controls.period.value;
       model.durationUnit = this.FormItem.controls.durationUnit.value;
       model.periodUnit = this.FormItem.controls.periodUnit.value;
+
+      model.claimItemDosageModel = [];
 console.log(model,"model")
       this.dialogRef.close(model);
     }
