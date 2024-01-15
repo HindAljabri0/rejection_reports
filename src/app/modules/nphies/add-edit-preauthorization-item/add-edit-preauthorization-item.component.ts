@@ -782,12 +782,13 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         if (searchStr.length > 2) {
             this.loadSearchItem = true;
             // tslint:disable-next-line:max-line-length
-            this.SearchRequest = this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, tpaNphiesId, 0, 10,(this.data.source === 'APPROVAL' ? this.data.source : '')).subscribe(event => {
+            this.SearchRequest = this.providerNphiesSearchService.getItemList(this.sharedServices.providerId, itemType, searchStr, payerNphiesId, claimType, RequestDate, tpaNphiesId, 0, 150,(this.data.source === 'APPROVAL' ? this.data.source : '')).subscribe(event => {
                 if (event instanceof HttpResponse) {
                     if (event.status === 200) {
                         const body = event.body;
                         if (body) {
-                            this.typeListSearchResult = body['content'];
+                         //   this.typeListSearchResult = body['content'];
+                            this.typeListSearchResult =   body['content'].sort((a, b) => ( a.nonStandardCode.length< b.nonStandardCode.length  ? -1 : 1));
                         }
                         this.loadSearchItem = false;
 
