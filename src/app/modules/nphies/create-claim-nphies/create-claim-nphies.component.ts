@@ -343,6 +343,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.getPayees();
     this.InitClaimPagenation();
     this.getSpecialityList();
+
+
     // if (urlHasEditMode) {
     //   this.pageMode = 'EDIT';
     //   this.disableControls();
@@ -2350,6 +2352,8 @@ export class CreateClaimNphiesComponent implements OnInit {
       }
     });
   }
+
+
   getSpecialityList() {
     this.providerNphiesSearchService.getSpecialityList(this.sharedService.providerId).subscribe(event => {
       if (event instanceof HttpResponse) {
@@ -3614,4 +3618,6 @@ export class CreateClaimNphiesComponent implements OnInit {
 
       return allOfItemsSeq;
   }
+
+  
 }

@@ -165,7 +165,9 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     appliedFilters: any = [];
 
     isPBMValidationVisible = false;
+    isMREValidationVisible = false;
     apiPBMValidationEnabled: any;
+    apiMREValidationEnabled: any;
     claimList: ClaimListModel = new ClaimListModel();
 
     claimDialogRef: MatDialogRef<any, any>;
@@ -639,6 +641,8 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         this.isPBMValidationVisible = this.apiPBMValidationEnabled
             && this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.Accepted.toLowerCase() ? true : false;
 
+            this.isMREValidationVisible = this.apiMREValidationEnabled
+            && this.summaries[this.selectedCardKey].statuses[0] === ClaimStatus.Accepted.toLowerCase() ? true : false;     
         this.claims = new Array();
         this.store.dispatch(storeClaims({
             claims: this.claims,
@@ -655,6 +659,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         const status = this.routeActive.snapshot.queryParamMap.get('status');
         this.status = status === null ? this.status : status;
         this.getPBMValidation();
+        this.getMREValidation();
     }
 
     getClaimTransactions(key?: number, page?: number) {
@@ -1535,6 +1540,20 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
     }
 
+    getMREValidation(){
+        this.adminService.checkIfNphiesMREValidationIsEnabled(this.commen.providerId, '101').subscribe((event: any) => {
+            if (event instanceof HttpResponse) {
+              const body = event['body'];
+              this.apiMREValidationEnabled = body.value === '1' ? true : false;
+              this.isMREValidationVisible =  this.apiMREValidationEnabled
+              && (this.summaries[this.selectedCardKey].statuses[0].toLowerCase() === ClaimStatus.Accepted.toLowerCase()
+                || this.summaries[this.selectedCardKey].statuses[0].toLowerCase() === ClaimStatus.Downloadable.toLowerCase()) ? true : false;      
+            }
+          }, err => {
+            console.log(err);
+          });
+        }
+
     get statusSelected() {
         return ClaimStatus;
     }
@@ -2350,6 +2369,59 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         // }
         // });
     }
+
+    applyMREValidation(){
+
+        this.setFilterData();
+        this.commen.loadingChanged.next(true);
+
+        const payerIds: string[] = [];
+        if (this.params.payerId) {
+          payerIds.push(this.params.payerId);
+        }
+        const status = this.isMREValidationVisible ? this.summaries[this.selectedCardKey].statuses : null;
+    
+        this.providerNphiesApprovalService.MREValidation(
+            this.providerId,
+            this.selectedClaims,
+            this.params.uploadId
+            ).subscribe(event => {
+            if (event instanceof HttpResponse) {
+              this.commen.loadingChanged.next(false);
+              if (event.body['status'] === true) {
+                this.dialogService.openMessageDialog(
+                  new MessageDialogData('',
+                    event.body['message'],
+                    false))
+                  .subscribe(afterColse => {
+                    location.reload();
+                  });
+              } else {
+                this.dialogService.openMessageDialog(
+                  new MessageDialogData('',
+                    event.body['message'],
+                    true))
+                  .subscribe(afterColse => {
+                    location.reload();
+                  });
+              }
+              this.commen.loadingChanged.next(false);
+            }
+          }, errorEvent => {
+            if (errorEvent instanceof HttpErrorResponse) {
+              if (errorEvent.status === 404) {
+                this.dialogService.openMessageDialog(new MessageDialogData('Error', errorEvent.error.message, true));
+              } else if (errorEvent.status === 400) {
+                this.dialogService.openMessageDialog(new MessageDialogData('Error', errorEvent.error.message, true));
+              } else if (errorEvent.status === 500) {
+                this.dialogService.openMessageDialog(new MessageDialogData('Error', errorEvent.error.message, true));
+              } else {
+                this.dialogService.openMessageDialog(new MessageDialogData('Error', errorEvent.message, true));
+              }
+            }
+            this.commen.loadingChanged.next(false);
+          });
+      }
 
     moveToReadyState() {
         if (this.userPrivileges.WaseelPrivileges.isNphiesAdmin) {
