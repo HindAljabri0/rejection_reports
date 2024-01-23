@@ -707,8 +707,8 @@ getPrescriberCommunications(providerId: string, responseId: number) {
   }
 
   getTpaNphies() {
-    const requestURL = '/tpa/fetch';
-    const request = new HttpRequest('GET', environment.providerNphiesClaimsSearch + requestURL);
+    const requestURL = '/payers/organizationDetails/list';
+    const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
     return this.http.request(request);
   }
 
