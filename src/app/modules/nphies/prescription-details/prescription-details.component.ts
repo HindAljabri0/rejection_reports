@@ -94,8 +94,8 @@ export class PrescriptionDetailsComponent implements OnInit {
       this.data.reIssueReasonName = this.sharedDataService.reissueReaseons.filter(x => x.value === this.data.reIssueReason)[0] ? this.sharedDataService.reissueReaseons.filter(x => x.value === this.data.reIssueReason)[0].name : '';
     }
 
-    if (this.data.prescriptionDetails) {
-      this.data.prescriptionDetails = this.data.prescriptionDetails.join(',');
+if (this.data.preAuthDetails) {
+      this.data.preAuthDetails = this.data.preAuthDetails.join(',');
     }
 
     if (this.data.beneficiary && this.data.beneficiary.documentType) {
@@ -130,8 +130,8 @@ export class PrescriptionDetailsComponent implements OnInit {
       this.data.accident.date = moment(this.data.accident.date).format('DD-MM-YYYY');
     }
 
-    // if (this.data && this.data.prescriptionInfo.dateOrdered) {
-    //   this.data.prescriptionInfo.dateOrdered = moment(this.data.prescriptionInfo.dateOrdered).format('DD-MM-YYYY');
+    // if (this.data && this.data.preAuthorizationInfo.dateOrdered) {
+    //   this.data.preAuthorizationInfo.dateOrdered = moment(this.data.prescriptionInfo.dateOrdered).format('DD-MM-YYYY');
     // }
 
     // if (this.data.visionPrescription && this.data.visionPrescription.dateWritten) {
@@ -140,14 +140,14 @@ export class PrescriptionDetailsComponent implements OnInit {
 
 
 
-    this.data.prescriptionInfo.typeName = this.sharedDataService.claimTypeList.filter(
-      x => x.value === this.data.prescriptionInfo.type)[0]
-      ? this.sharedDataService.claimTypeList.filter(x => x.value === this.data.prescriptionInfo.type)[0].name
+    this.data.preAuthorizationInfo.typeName = this.sharedDataService.claimTypeList.filter(
+      x => x.value === this.data.preAuthorizationInfo.type)[0]
+      ? this.sharedDataService.claimTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0].name
       : '';
 
-    this.data.prescriptionInfo.subTypeName = this.sharedDataService.subTypeList.filter(
-      x => x.value === this.data.prescriptionInfo.subType)[0]
-      ? this.sharedDataService.subTypeList.filter(x => x.value === this.data.prescriptionInfo.subType)[0].name
+    this.data.preAuthorizationInfo.subTypeName = this.sharedDataService.subTypeList.filter(
+      x => x.value === this.data.preAuthorizationInfo.subType)[0]
+      ? this.sharedDataService.subTypeList.filter(x => x.value === this.data.preAuthorizationInfo.subType)[0].name
       : '';
 
     if (this.data.accident) {
@@ -351,9 +351,10 @@ export class PrescriptionDetailsComponent implements OnInit {
       this.data.items.forEach(x => {
         x.display = x.nonStandardDesc;
         // tslint:disable-next-line:max-line-length
-        x.bodySiteName = this.sharedDataService.getBodySite(this.data.prescriptionInfo.type).filter(y => y.value === x.bodySite)[0] ? this.sharedDataService.getBodySite(this.data.prescriptionInfo.type).filter(y => y.value === x.bodySite)[0].name : '';
+        x.bodySiteName = this.sharedDataService.getBodySite(this.data.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0] ? this.sharedDataService.getBodySite(this.data.preAuthorizationInfo.type).filter(y => y.value === x.bodySite)[0].name : '';
         // tslint:disable-next-line:max-line-length
-        x.subSiteName = this.sharedDataService.getSubSite(this.data.prescriptionInfo.type).filter(y => y.value === x.subSite)[0] ? this.sharedDataService.getSubSite(this.data.prescriptionInfo.type).filter(y => y.value === x.subSite)[0].name : '';
+        x.subSiteName = this.sharedDataService.getSubSite(this.data.preAuthorizationInfo.type).filter(y => y.value === x.subSite)[0] ? this.sharedDataService.getSubSite(this.data.preAuthorizationInfo.type).filter(y => y.value === x.subSite)[0].name : '';
+       
         x.drugSelectionReasonName  = this.sharedDataService.itemMedicationReasonList.filter(e=>e.value ===  x.drugSelectionReason)[0] ? this.sharedDataService.itemMedicationReasonList.filter(e=>e.value ===  x.drugSelectionReason)[0].name : "-" ;
         if (x.itemDetails && x.itemDetails.length > 0) {
           x.itemDetails.forEach(y => {

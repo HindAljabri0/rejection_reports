@@ -1,86 +1,104 @@
 <header class="brand-header animate__animated animate__fadeIn animate__faster">
-  <button class="nav-toggle" (click)="toggleNav()" mat-icon-button>
-    <mat-icon aria-hidden="false" aria-label="Toggle">menu</mat-icon>
-  </button>
-  <div class="logo-wrapper">
-    <a routerLink="/" class="logo"><img src="assets/logo-white.svg" alt="Waseel"></a>
-  </div>
-  <app-search-with-advance *ngIf="isProvider"></app-search-with-advance>
-  <div class="right-block">
-    <button (click)="toggleSearch()" *ngIf="isProvider" class="icon-btn tablet-search" mat-icon-button matTooltip="Search">
-      <mat-icon aria-hidden="false" aria-label="Search">search</mat-icon>
+    <button class="nav-toggle" (click)="toggleNav()" mat-icon-button>
+        <mat-icon aria-hidden="false" aria-label="Toggle">menu</mat-icon>
     </button>
-    <app-language-switcher class="language-switch" [languageList]="languageList" [activeLanguageLabel]="activeLanguageLabel"></app-language-switcher>
-    <button *ngIf="isThereAreActiveDownloads" [matMenuTriggerFor]="downloadMenu" class="icon-btn uploads-btn"
-      [ngClass]="{'hasNotifications':hasNewProviderDownload || hasNewAdminDownload}" #downloadMenuTriggerButton mat-icon-button
-      matTooltip="You can view your download progress here">
-      <mat-icon aria-hidden="false">download</mat-icon>
-    </button>
-    <button (click)="toggleUploadHistoryCenter()" *ngIf="isProvider" class="icon-btn uploads-btn" mat-icon-button matTooltip="Uploads">
-      <mat-icon aria-hidden="false">cloud_queue</mat-icon>
-    </button>
-    <button (click)="toggleNotificationCenter()" *ngIf="isProvider" class="icon-btn {{notificationIconClasses}} notifications-btn" mat-icon-button matTooltip="Notifications">
-      <mat-icon aria-hidden="false" aria-label="Notifications">notifications_none</mat-icon>
-    </button>
-    <button (click)="toggleAnnouncementCenter()" *ngIf="isProvider" class="icon-btn announcements-btn" mat-icon-button matTooltip="Announcements">
-      <mat-icon aria-hidden="false" aria-label="Announcements" class="material-icons-outlined">feedback</mat-icon>
-    </button>
-    <div class="user-info">
-      <div matTooltip="{{providerId}}" class="left-block">
-        <span class="inner-user-info">{{userName}}</span>
-        <span class="inner-user-info">{{providerName}}</span>
-      </div>
-      <button (click)="logout()" class="logout" mat-icon-button matTooltip="Sign Out">
-        <mat-icon aria-hidden="false" aria-label="Sign Out">exit_to_app</mat-icon>
-      </button>
+    <div class="logo-wrapper">
+        <a routerLink="/" class="logo"><img src="assets/logo-white.svg" alt="Waseel"></a>
     </div>
-  </div>
-  <!-- <div class="global-loader" [class.visible]="loading">
+    <app-search-with-advance *ngIf="isProvider"></app-search-with-advance>
+    <div class="right-block">
+        <button (click)="toggleSearch()" *ngIf="isProvider" class="icon-btn tablet-search" mat-icon-button
+            matTooltip="Search">
+            <mat-icon aria-hidden="false" aria-label="Search">search</mat-icon>
+        </button>
+        <app-language-switcher class="language-switch" [languageList]="languageList"
+            [activeLanguageLabel]="activeLanguageLabel"></app-language-switcher>
+        <button *ngIf="isThereAreActiveDownloads" [matMenuTriggerFor]="downloadMenu" class="icon-btn uploads-btn"
+            [ngClass]="{'hasNotifications':hasNewProviderDownload || hasNewAdminDownload}" #downloadMenuTriggerButton
+            mat-icon-button matTooltip="You can view your download progress here">
+            <mat-icon aria-hidden="false">download</mat-icon>
+        </button>
+        <button (click)="toggleUploadHistoryCenter()" *ngIf="isProvider" class="icon-btn uploads-btn" mat-icon-button
+            matTooltip="Uploads">
+            <mat-icon aria-hidden="false">cloud_queue</mat-icon>
+        </button>
+        <button (click)="toggleNotificationCenter()" *ngIf="isProvider"
+            class="icon-btn {{notificationIconClasses}} notifications-btn" mat-icon-button matTooltip="Notifications">
+            <mat-icon aria-hidden="false" aria-label="Notifications">notifications_none</mat-icon>
+        </button>
+        <button (click)="toggleAnnouncementCenter()" *ngIf="isProvider" class="icon-btn announcements-btn"
+            mat-icon-button matTooltip="Announcements">
+            <mat-icon aria-hidden="false" aria-label="Announcements" class="material-icons-outlined">feedback</mat-icon>
+        </button>
+        <div class="user-info">
+            <div matTooltip="{{providerId}}" class="left-block">
+                <span class="inner-user-info">{{userName}}</span>
+                <span class="inner-user-info">{{providerName}}</span>
+            </div>
+            <button (click)="logout()" class="logout" mat-icon-button matTooltip="Sign Out">
+                <mat-icon aria-hidden="false" aria-label="Sign Out">exit_to_app</mat-icon>
+            </button>
+        </div>
+    </div>
+    <!-- <div class="global-loader" [class.visible]="loading">
     <mat-spinner diameter="64"></mat-spinner>
   </div> -->
-  <mat-progress-bar *ngIf="!loading" mode="determinate" value="100"></mat-progress-bar>
-  <div class="notification" [class.visible]="isShowAlert">
-    <marquee direction="left">
-      {{alertMessage}}
+    <mat-progress-bar *ngIf="!loading" mode="determinate" value="100"></mat-progress-bar>
+  <div class="notification" [class.visible]="!isClaimsEnabledSubmit" >
+     <!-- <marquee behavior="scroll" direction="up" scrollamount="3">Notification</marquee> -->
+    <marquee direction="left" scrollamount="4" >
+        <div style="color: red;"> {{deactivateReason}}</div>
     </marquee>
-  </div>
+    
+</div>
+    <div *ngIf="hasAnyNphiesPrivilege && isClaimsEnabledSubmit" >
+    <div class="notification" [class.visible]="isShowAlert" >
+        <marquee direction="left" scrollamount="4" >
+            <div  [innerHTML]="englishMessage"></div>
+        </marquee>
+        <marquee *ngIf="arabicMessage!null" behavior="scroll" direction="right" scrollamount="4">
+            <div dir="rtl" lang="ar" [innerHTML]="arabicMessage"></div>
+        </marquee>
+    </div>
+</div>
 </header>
 
 <mat-menu #downloadMenu="matMenu" xPosition="before" class="download-progress-view-panel">
-  <div (click)="$event.stopPropagation()">
-    <mat-tab-group *ngIf="providerDownloads.length > 0 && adminDownloads.length > 0" [dynamicHeight]="true" class="primary-tab no-body-padding" [selectedIndex]="0">
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <div class="d-flex align-items-center">
-            <span>Provider Files</span>
-            <span class="alert-marker ml-2 bg-danger" *ngIf="hasNewProviderDownload"></span>
-          </div>
-        </ng-template>
-        <ng-container *ngFor="let request of providerDownloads; let i = index">
-          <app-download-progress-view [downloadRequest]="request"></app-download-progress-view>
+    <div (click)="$event.stopPropagation()">
+        <mat-tab-group *ngIf="providerDownloads.length > 0 && adminDownloads.length > 0" [dynamicHeight]="true"
+            class="primary-tab no-body-padding" [selectedIndex]="0">
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <div class="d-flex align-items-center">
+                        <span>Provider Files</span>
+                        <span class="alert-marker ml-2 bg-danger" *ngIf="hasNewProviderDownload"></span>
+                    </div>
+                </ng-template>
+                <ng-container *ngFor="let request of providerDownloads; let i = index">
+                    <app-download-progress-view [downloadRequest]="request"></app-download-progress-view>
+                </ng-container>
+            </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <div class="d-flex align-items-center">
+                        <span>Admin Files</span>
+                        <span class="alert-marker ml-2 bg-danger" *ngIf="hasNewAdminDownload"></span>
+                    </div>
+                </ng-template>
+                <ng-container *ngFor="let request of adminDownloads; let i = index">
+                    <app-download-progress-view [downloadRequest]="request"></app-download-progress-view>
+                </ng-container>
+            </mat-tab>
+        </mat-tab-group>
+        <ng-container *ngIf="providerDownloads.length == 0 || adminDownloads.length == 0">
+            <ng-container *ngFor="let request of providerDownloads; let i = index">
+                <app-download-progress-view [downloadRequest]="request"></app-download-progress-view>
+            </ng-container>
+            <ng-container *ngFor="let request of adminDownloads; let i = index">
+                <app-download-progress-view [downloadRequest]="request"></app-download-progress-view>
+            </ng-container>
         </ng-container>
-      </mat-tab>
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <div class="d-flex align-items-center">
-            <span>Admin Files</span>
-            <span class="alert-marker ml-2 bg-danger" *ngIf="hasNewAdminDownload"></span>
-          </div>
-        </ng-template>
-        <ng-container *ngFor="let request of adminDownloads; let i = index">
-          <app-download-progress-view [downloadRequest]="request"></app-download-progress-view>
-        </ng-container>
-      </mat-tab>
-    </mat-tab-group>
-    <ng-container *ngIf="providerDownloads.length == 0 || adminDownloads.length == 0">
-      <ng-container *ngFor="let request of providerDownloads; let i = index">
-        <app-download-progress-view [downloadRequest]="request"></app-download-progress-view>
-      </ng-container>
-      <ng-container *ngFor="let request of adminDownloads; let i = index">
-        <app-download-progress-view [downloadRequest]="request"></app-download-progress-view>
-      </ng-container>
-    </ng-container>
-  </div>
+    </div>
 </mat-menu>
 
 <!-- <a *ngIf="showWhatsAppSupport" target="_blank" href="https://api.whatsapp.com/send/?phone=920012099&text=Hi"

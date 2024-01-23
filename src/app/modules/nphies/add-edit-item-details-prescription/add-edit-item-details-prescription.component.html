@@ -1,0 +1,134 @@
+<div class="primary-dialog-header has-border">
+  <h5 *ngIf="!data.item" class="primary-dialog-title">Add Item Detail</h5>
+  <h5 *ngIf="data.item" class="primary-dialog-title">Edit Item Detail</h5>
+  <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
+</div>
+<form [formGroup]="FormItem" (ngSubmit)="onSubmit()">
+  <div class="primary-dialog-body pb-0 row">
+    <div class="col-4 col-lg-3">
+        <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('type').touched) && FormItem.get('type').hasError('required')}">
+            <label class="control-label">Prescribed Medication<span class="asterisk">*</span></label>
+            <mat-form-field class="form-control custom-select-control">        
+                <mat-select formControlName="type" (selectionChange)="typeChange()">
+                    <mat-option value="">Select Type</mat-option>
+               <mat-option *ngFor="let type of prescribedCode"  [value]="type">  {{ type.name }}</mat-option>
+                   </mat-select>
+            </mat-form-field>
+          </div>
+      </div>
+      
+      <div class="col-4 col-lg-3" *ngIf="FormItem.get('type').value.value === 'medication-codes'">
+        <div class="form-group" [ngClass]="{'has-error': (isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')}">
+          <label class="control-label">GTIN Code - Description<span class="asterisk">*</span></label>
+          <mat-form-field class="form-control custom-select-control">
+            <mat-select panelClass="custom-dropdown" formControlName="item" [disabled]="IsItemLoading" placeholder="Select Code-Description">
+              <mat-option>
+                  <ngx-mat-select-search placeholderLabel="Search Item" formControlName="item" noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
+              </mat-option>
+              <cdk-virtual-scroll-viewport itemSize="100" minBufferPx="{{ itemList.length > 0 ? 100 : 100 }}" maxBufferPx="{{itemList.length * 10}}" class="viewport">  
+                <mat-option *cdkVirtualFor="let item of filteredItem | async" [value]="item" >
+                    {{item.code}} - {{item.description}}
+                </mat-option>
+            </cdk-virtual-scroll-viewport>
+          </mat-select>
+          
+          </mat-form-field>          
+          <div *ngIf="(isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')">
+            <span class="error-text">Please select a Code - Description</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-4 col-lg-3" *ngIf="FormItem.get('type').value.value === 'scientific-codes'">
+        <div class="form-group" [ngClass]="{'has-error': (isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')}">
+          <label class="control-label">Scientific Code - Description<span class="asterisk">*</span></label>
+          <mat-form-field class="form-control custom-select-control">
+            <mat-select panelClass="custom-dropdown" formControlName="item" [disabled]="IsItemLoading" placeholder="Select Code-Description">
+              <mat-option>
+                  <ngx-mat-select-search placeholderLabel="Search Item" formControlName="item" noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
+              </mat-option>
+              <cdk-virtual-scroll-viewport itemSize="100" minBufferPx="{{ itemList.length > 0 ? 100 : 100 }}" maxBufferPx="{{itemList.length * 10}}" class="viewport">  
+                <mat-option *cdkVirtualFor="let type of filteredPescribedMedicationItem | async" [value]="type" >
+                    {{type.descriptionCode}} ( {{type.tradeName}} )
+                </mat-option>
+            </cdk-virtual-scroll-viewport>
+          </mat-select>
+          
+          </mat-form-field>          
+          <div *ngIf="(isSubmitted || FormItem.get('item').touched) && FormItem.get('item').hasError('required')">
+            <span class="error-text">Please select a Code - Description</span>
+          </div>
+        </div>
+      </div>
+
+    <div class="col-4 col-lg-3">
+        <div class="form-group">
+            <label class="control-label">Non Standard Code</label>
+            <input class="form-control" placeholder="Enter non standard code" formControlName="nonStandardCode">
+        </div>
+    </div>
+
+    <div class="col-4 col-lg-3">
+        <div class="form-group">
+            <label class="control-label">Non Standard Description</label>
+            <input class="form-control" placeholder="Enter non standard description" formControlName="display">
+        </div>
+    </div>
+    <div class="col-4 col-lg-3" *ngIf="FormItem.get('type').value.name === 'GTIN Code'">
+        <div class="form-group" >
+          <label class="control-label">Absence of Scientific Code<span class="asterisk">*</span></label>
+          <mat-form-field class="form-control custom-select-control">
+            <mat-select formControlName="absenceScientificCode">
+                <mat-option value="">Select the reason</mat-option>
+                <mat-option *ngFor="let medication of absenceReasonList" [value]="medication">{{medication.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-4 col-lg-3">
+        <div class="form-group">
+            <label class="control-label">Strength</label>
+            <input class="form-control" placeholder="Enter Strength" formControlName = "strength">
+        </div>
+    </div>
+
+    <div class="col-4 col-lg-3">
+        <div class="form-group"
+        [ngClass]="{'has-error' : ((isSubmitted || FormItem.get('quantity').touched) && (FormItem.get('quantity').hasError('required')))|| (IsQuantityCodeRequired && ((isSubmitted || FormItem.get('quantityCode').touched) && FormItem.get('quantityCode').hasError('required')))}">
+        <label class="control-label">Quantity <span class="asterisk">*</span></label>
+        <div class="row extra-small-gutter">
+          <div class="col">
+            <input type="text" class="form-control"  placeholder="Enter quantity" formControlName="quantity">
+          </div>
+          <div *ngIf="showQuantityCode" class="col-auto">
+            <mat-form-field class="form-control custom-select-control">
+              <mat-select   formControlName="quantityCode">
+                <mat-option value="">Code<span *ngIf="IsQuantityCodeRequired">*</span></mat-option>
+                <mat-option value="{unit}">Unit</mat-option>
+                <mat-option value="{package}">Package</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div *ngIf="(isSubmitted || FormItem.get('quantity').touched) && FormItem.get('quantity').hasError('required')">
+          <span class="error-text">Please enter Quantity</span>
+        </div>
+        <div *ngIf="IsInvalidQuantity && (isSubmitted || FormItem.get('quantity').touched)">
+          <span class="error-text">Quantity must be greater than 0</span>
+        </div>
+        <div *ngIf="IsQuantityCodeRequired && ((isSubmitted || FormItem.get('quantityCode').touched) && FormItem.get('quantityCode').hasError('required'))">
+          <span class="error-text">Please enter Quantity Code</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="primary-dialog-footer has-border">
+    <div class="btn-list text-right">
+      <button type="button" mat-button (click)="closeDialog()">Close</button>
+      <button type="submit" mat-flat-button color="primary">
+        <span *ngIf="!data.item">Add</span>
+        <span *ngIf="data.item">Save</span>
+      </button>
+    </div>
+  </div>
+</form>

@@ -57,12 +57,10 @@ export class NphiesDownloadApprovalEligibilityService {
     const request = new HttpRequest('GET', environment.nphiesDownloadApprovleEligibility + requestURL, '', { responseType: 'text', reportProgress: true });
     return this.http.request(request);
   }
- 
 
+  downloadEligibilityAsJson(eligibilitySearchModel: EligibilitySearchModel) {
 
-  downloadEligibilityExcelsheet(eligibilitySearchModel: EligibilitySearchModel) {
-
-    let requestURL = `/providers/${eligibilitySearchModel.providerId}/eligibility?`;
+    let requestURL = `/providers/${eligibilitySearchModel.providerId}/eligibility/jsonlist?`;
 
     if (eligibilitySearchModel.payerId != null) {
       requestURL += `&payerId=${eligibilitySearchModel.payerId}`;

@@ -41,6 +41,18 @@ export class ProvidersBeneficiariesService {
     const httpRequest = new HttpRequest('POST', environment.providersBeneficiariesService + requestUrl, body);
     return this.httpClient.request(httpRequest);
   }
+  getUploadSummary(providerId: string,page: number,size: number) {
+    let requestUrl = `/providers/${providerId}/beneficiary/upload-summary?size=${size}&page=${page}`;
+
+    const httpRequest = new HttpRequest('GET', environment.providersBeneficiariesService + requestUrl);
+    return this.httpClient.request(httpRequest);
+  }
+  getSummaryError(providerId: string,uploadId:number,page: number,size: number) {
+    let requestUrl = `/providers/${providerId}/beneficiary/errors-upload?uploadSummaryId=${uploadId}&size=${size}&page=${page}`;
+
+    const httpRequest = new HttpRequest('GET', environment.providersBeneficiariesService + requestUrl);
+    return this.httpClient.request(httpRequest);
+  }
 
   getPayers() {
     const requestUrl = `/lov/payers`;
@@ -87,7 +99,7 @@ export class ProvidersBeneficiariesService {
         reportProgress: true,
       });
     } else {
-      req = new HttpRequest('POST', environment.providersBeneficiariesService + `/providers/${providerID}/beneficiaryFile/upload/inquiry`, formdata, {
+      req = new HttpRequest('POST', environment.providersBeneficiariesService + `/providers/${providerID}/beneficiaryFile/bulk/upload/inquiry`, formdata, {
         reportProgress: true,
       });
     }

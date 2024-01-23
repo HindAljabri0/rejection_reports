@@ -15,6 +15,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { NphiesPayersSelectorComponent } from 'src/app/components/reusables/nphies-payers-selector/nphies-payers-selector.component';
 import { AuthService } from 'src/app/services/authService/authService.service';
+import { UserPrivileges, getUserPrivileges, initState } from 'src/app/store/mainStore.reducer';
 
 @Component({
   selector: 'app-pricelist',
@@ -30,6 +31,7 @@ export class PricelistComponent implements OnInit {
   manualPage = null;
   page: number;
   pageSize: number;
+  userPrivileges: UserPrivileges = initState.userPrivileges;
 
   FormPriceList: FormGroup = this.formBuilder.group({
     payerNphiesId: [''],
@@ -47,6 +49,7 @@ export class PricelistComponent implements OnInit {
   isHeadOffice = false;
   headOfficeProviderId;
   providerId;
+    store: any;
   constructor(
     private router: Router,
     private dialog: MatDialog,
@@ -104,6 +107,7 @@ export class PricelistComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.store.select(getUserPrivileges).subscribe(privileges => this.userPrivileges = privileges);
     this.isHeadOffice = AuthService.isProviderHeadOffice();
     this.headOfficeProviderId = localStorage.getItem("headOfficeProviderId");
     this.providerId = localStorage.getItem("providerId");

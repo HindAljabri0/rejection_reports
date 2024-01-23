@@ -106,7 +106,9 @@ export class FeedbackDialogComponent implements OnInit {
     const authorizationData = {
       token,
       providerId,
-      username: this.feedback.userName
+      username: this.feedback.userName,
+      product: 'WCS',
+      
 
     };
     this.isLoading = false; // Show the spinner  

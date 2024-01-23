@@ -66,32 +66,32 @@
         <div class="dashboard-claim-card">
             <ng-container *ngIf="!summaries.loading&& !summaries.error">
                 <p class="title">Gross Amount</p>
-                <h4 matTooltip="{{summaries.data.all_gross}} SR">{{sharedServices.kFormatter(summaries.data.all_gross)}} <small>SR</small></h4>
+                <h4 matTooltip="{{summaries.data.all_gross}} {{ currencyCode }}">{{sharedServices.kFormatter(summaries.data.all_gross)}} <small>{{ currencyCode }}</small></h4>
                 <div class="chart-wrapper">
                     <canvas baseChart [datasets]="grossChartData" [options]="doughnutChartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
                     </canvas>
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-under-processing"
-                        matTooltip="{{getConvertfromStringToNumber(summaries.data.outstanding_gross)+getConvertfromStringToNumber(summaries.data.under_process_gross)}} SR">
+                        matTooltip="{{getConvertfromStringToNumber(summaries.data.outstanding_gross)+getConvertfromStringToNumber(summaries.data.under_process_gross)}} {{ currencyCode }}">
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.outstanding_gross)+getConvertfromStringToNumber(summaries.data.under_process_gross))}}
-                        <small>SR</small>
+                        <small>{{ currencyCode }}</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-under-processing">
                         {{PercentageCalculator(summaries.data.outstanding_gross , summaries.data.under_process_gross,null,summaries.data.all_gross)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-paid" matTooltip="{{summaries.data.paid_gross}} SR">
-                        {{sharedServices.kFormatter(summaries.data.paid_gross)}} <small>SR</small>
+                    <div class="text-paid" matTooltip="{{summaries.data.paid_gross}} {{ currencyCode }}">
+                        {{sharedServices.kFormatter(summaries.data.paid_gross)}} <small>{{ currencyCode }}</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-paid">
                         {{PercentageCalculator(summaries.data.paid_gross,null,null, summaries.data.all_gross)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-partially-paid" matTooltip="{{summaries.data.partially_paid_gross}} SR">
-                        {{sharedServices.kFormatter(summaries.data.partially_paid_gross)}} <small>SR</small>
+                    <div class="text-partially-paid" matTooltip="{{summaries.data.partially_paid_gross}} {{ currencyCode }}">
+                        {{sharedServices.kFormatter(summaries.data.partially_paid_gross)}} <small>{{ currencyCode }}</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-partially-paid">
                         {{PercentageCalculator(summaries.data.partially_paid_gross,null,null, summaries.data.all_gross)}} <small>%</small>
@@ -99,9 +99,9 @@
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-rejected"
-                        matTooltip="{{getConvertfromStringToNumber(summaries.data.returend_gross)+getConvertfromStringToNumber(summaries.data.invalid_gross)+getConvertfromStringToNumber(summaries.data.rejected_gross)}} SR">
+                        matTooltip="{{getConvertfromStringToNumber(summaries.data.returend_gross)+getConvertfromStringToNumber(summaries.data.invalid_gross)+getConvertfromStringToNumber(summaries.data.rejected_gross)}} {{ currencyCode }}">
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.returend_gross)+getConvertfromStringToNumber(summaries.data.invalid_gross)+getConvertfromStringToNumber(summaries.data.rejected_gross))}}
-                        <small>SR</small>
+                        <small>{{ currencyCode }}</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-rejected">
                         {{PercentageCalculator(summaries.data.returend_gross,summaries.data.invalid_gross,summaries.data.rejected_gross,summaries.data.all_gross)}} <small>%</small>
@@ -121,8 +121,8 @@
         <div class="dashboard-claim-card">
             <ng-container *ngIf="!summaries.loading  && !summaries.error">
                 <p class="title">Discount</p>
-                <h4 matTooltip="{{summaries.data.all_disCount}} SR">{{sharedServices.kFormatter(summaries.data.all_disCount)}}
-                    <small>SR</small>
+                <h4 matTooltip="{{summaries.data.all_disCount}} {{ currencyCode }}">{{sharedServices.kFormatter(summaries.data.all_disCount)}}
+                    <small>{{ currencyCode }}</small>
                 </h4>
                 <div class="chart-wrapper">
                     <canvas baseChart [datasets]="discountChartData" [options]="doughnutChartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
@@ -130,25 +130,25 @@
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-under-processing"
-                        matTooltip="{{getConvertfromStringToNumber(summaries.data.outstanding_disCount)+getConvertfromStringToNumber(summaries.data.under_process_disCount)}} SR">
+                        matTooltip="{{getConvertfromStringToNumber(summaries.data.outstanding_disCount)+getConvertfromStringToNumber(summaries.data.under_process_disCount)}} {{ currencyCode }}">
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.outstanding_disCount)+getConvertfromStringToNumber(summaries.data.under_process_disCount))}}
-                        <small>SR</small>
+                        <small>{{ currencyCode }}</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-under-processing">
                         {{PercentageCalculator(summaries.data.outstanding_disCount , summaries.data.under_process_disCount,null,summaries.data.all_disCount)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-paid" matTooltip="{{summaries.data.paid_disCount}} SR">
-                        {{sharedServices.kFormatter(summaries.data.paid_disCount)}} <small>SR</small>
+                    <div class="text-paid" matTooltip="{{summaries.data.paid_disCount}} {{ currencyCode }}">
+                        {{sharedServices.kFormatter(summaries.data.paid_disCount)}} <small>{{ currencyCode }}</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-paid">
                         {{PercentageCalculator(summaries.data.paid_disCount,null,null, summaries.data.all_disCount)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-partially-paid" matTooltip="{{summaries.data.partially_paid_disCount}} SR">
-                        {{sharedServices.kFormatter(summaries.data.partially_paid_disCount)}} <small>SR</small>
+                    <div class="text-partially-paid" matTooltip="{{summaries.data.partially_paid_disCount}} {{ currencyCode }}">
+                        {{sharedServices.kFormatter(summaries.data.partially_paid_disCount)}} <small>{{ currencyCode }}</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-partially-paid">
                         {{PercentageCalculator(summaries.data.partially_paid_disCount,null,null, summaries.data.all_disCount)}} <small>%</small>
@@ -156,9 +156,9 @@
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-rejected"
-                        matTooltip="{{getConvertfromStringToNumber(summaries.data.returend_disCount)+getConvertfromStringToNumber(summaries.data.invalid_disCount)+getConvertfromStringToNumber(summaries.data.rejected_disCount)}} SR">
+                        matTooltip="{{getConvertfromStringToNumber(summaries.data.returend_disCount)+getConvertfromStringToNumber(summaries.data.invalid_disCount)+getConvertfromStringToNumber(summaries.data.rejected_disCount)}} {{ currencyCode }}">
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.returend_disCount)+getConvertfromStringToNumber(summaries.data.invalid_disCount)+getConvertfromStringToNumber(summaries.data.rejected_disCount))}}
-                        <small>SR</small>
+                        <small>{{ currencyCode }}</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-rejected">
                         {{PercentageCalculator(summaries.data.returend_disCount,summaries.data.invalid_disCount,summaries.data.rejected_disCount,summaries.data.all_disCount)}}
@@ -179,8 +179,8 @@
         <div class="dashboard-claim-card">
             <ng-container *ngIf="!summaries.loading  && !summaries.error">
                 <p class="title">Patient Share</p>
-                <h4 matTooltip="{{summaries.data.all_Patientshare}} SR">{{sharedServices.kFormatter(summaries.data.all_Patientshare)}}
-                    <small>SR</small>
+                <h4 matTooltip="{{summaries.data.all_Patientshare}} {{ currencyCode }}">{{sharedServices.kFormatter(summaries.data.all_Patientshare)}}
+                    <small>{{ currencyCode }}</small>
                 </h4>
                 <div class="chart-wrapper">
                     <canvas baseChart [datasets]="patientShareChartData" [options]="doughnutChartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
@@ -188,9 +188,9 @@
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-under-processing"
-                        matTooltip="{{getConvertfromStringToNumber(summaries.data.outstanding_Patientshare)+getConvertfromStringToNumber(summaries.data.under_process_Patientshare)}} SR">
+                        matTooltip="{{getConvertfromStringToNumber(summaries.data.outstanding_Patientshare)+getConvertfromStringToNumber(summaries.data.under_process_Patientshare)}} {{ currencyCode }}">
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.outstanding_Patientshare)+getConvertfromStringToNumber(summaries.data.under_process_Patientshare))}}
-                        <small>SR</small>
+                        <small>{{ currencyCode }}</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-under-processing">
                         {{PercentageCalculator(summaries.data.outstanding_Patientshare , summaries.data.under_process_Patientshare,null,summaries.data.all_Patientshare)}}
@@ -198,16 +198,16 @@
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-paid" matTooltip="{{summaries.data.paid_Patientshare}} SR">
-                        {{sharedServices.kFormatter(summaries.data.paid_Patientshare)}} <small>SR</small>
+                    <div class="text-paid" matTooltip="{{summaries.data.paid_Patientshare}} {{ currencyCode }}">
+                        {{sharedServices.kFormatter(summaries.data.paid_Patientshare)}} <small>{{ currencyCode }}</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-paid">
                         {{PercentageCalculator(summaries.data.paid_Patientshare,null,null, summaries.data.all_Patientshare)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-partially-paid" matTooltip="{{summaries.data.partially_paid_Patientshare}} SR">
-                        {{sharedServices.kFormatter(summaries.data.partially_paid_Patientshare)}} <small>SR</small>
+                    <div class="text-partially-paid" matTooltip="{{summaries.data.partially_paid_Patientshare}} {{ currencyCode }}">
+                        {{sharedServices.kFormatter(summaries.data.partially_paid_Patientshare)}} <small>{{ currencyCode }}</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-partially-paid">
                         {{PercentageCalculator(summaries.data.partially_paid_Patientshare,null,null, summaries.data.all_Patientshare)}} <small>%</small>
@@ -215,9 +215,9 @@
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-rejected"
-                        matTooltip="{{getConvertfromStringToNumber(summaries.data.returend_Patientshare)+getConvertfromStringToNumber(summaries.data.invalid_Patientshare)+getConvertfromStringToNumber(summaries.data.rejected_Patientshare)}} SR">
+                        matTooltip="{{getConvertfromStringToNumber(summaries.data.returend_Patientshare)+getConvertfromStringToNumber(summaries.data.invalid_Patientshare)+getConvertfromStringToNumber(summaries.data.rejected_Patientshare)}} {{ currencyCode }}">
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.returend_Patientshare)+getConvertfromStringToNumber(summaries.data.invalid_Patientshare)+getConvertfromStringToNumber(summaries.data.rejected_Patientshare))}}
-                        <small>SR</small>
+                        <small>{{ currencyCode }}</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-rejected">
                         {{PercentageCalculator(summaries.data.returend_Patientshare,summaries.data.invalid_Patientshare,summaries.data.rejected_Patientshare,summaries.data.all_VatAmount)}}
@@ -238,7 +238,7 @@
         <div class="dashboard-claim-card">
             <ng-container *ngIf="!summaries.loading && !summaries.error">
                 <p class="title">Net Amount</p>
-                <h4 matTooltip="{{summaries.data.all_netAmount}} SR">{{sharedServices.kFormatter(summaries.data.all_netAmount)}} <small>SR</small>
+                <h4 matTooltip="{{summaries.data.all_netAmount}} {{ currencyCode }}">{{sharedServices.kFormatter(summaries.data.all_netAmount)}} <small>{{ currencyCode }}</small>
                 </h4>
                 <div class="chart-wrapper">
                     <canvas baseChart [datasets]="netChartData" [options]="doughnutChartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
@@ -246,25 +246,25 @@
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-under-processing"
-                        matTooltip="{{getConvertfromStringToNumber(summaries.data.outstanding_netAmount)+getConvertfromStringToNumber(summaries.data.under_process_netAmount)}} SR">
+                        matTooltip="{{getConvertfromStringToNumber(summaries.data.outstanding_netAmount)+getConvertfromStringToNumber(summaries.data.under_process_netAmount)}} {{ currencyCode }}">
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.outstanding_netAmount)+getConvertfromStringToNumber(summaries.data.under_process_netAmount))}}
-                        <small>SR</small>
+                        <small>{{ currencyCode }}</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-under-processing">
                         {{PercentageCalculator(summaries.data.outstanding_netAmount , summaries.data.under_process_netAmount,null,summaries.data.all_netAmount)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-paid" matTooltip="{{summaries.data.paid_netAmount}} SR">
-                        {{sharedServices.kFormatter(summaries.data.paid_netAmount)}} <small>SR</small>
+                    <div class="text-paid" matTooltip="{{summaries.data.paid_netAmount}} {{ currencyCode }}">
+                        {{sharedServices.kFormatter(summaries.data.paid_netAmount)}} <small>{{ currencyCode }}</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-paid">
                         {{PercentageCalculator(summaries.data.paid_netAmount,null,null, summaries.data.all_netAmount)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-partially-paid" matTooltip="{{summaries.data.partially_paid_netAmount}} SR">
-                        {{sharedServices.kFormatter(summaries.data.partially_paid_netAmount)}} <small>SR</small>
+                    <div class="text-partially-paid" matTooltip="{{summaries.data.partially_paid_netAmount}} {{ currencyCode }}">
+                        {{sharedServices.kFormatter(summaries.data.partially_paid_netAmount)}} <small>{{ currencyCode }}</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-partially-paid">
                         {{PercentageCalculator(summaries.data.partially_paid_netAmount,null,null, summaries.data.all_netAmount)}} <small>%</small>
@@ -272,9 +272,9 @@
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-rejected"
-                        matTooltip="{{getConvertfromStringToNumber(summaries.data.returend_netAmount)+getConvertfromStringToNumber(summaries.data.invalid_netAmount)+getConvertfromStringToNumber(summaries.data.rejected_netAmount)}} SR">
+                        matTooltip="{{getConvertfromStringToNumber(summaries.data.returend_netAmount)+getConvertfromStringToNumber(summaries.data.invalid_netAmount)+getConvertfromStringToNumber(summaries.data.rejected_netAmount)}} {{ currencyCode }}">
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.returend_netAmount)+getConvertfromStringToNumber(summaries.data.invalid_netAmount)+getConvertfromStringToNumber(summaries.data.rejected_netAmount))}}
-                        <small>SR</small>
+                        <small>{{ currencyCode }}</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-rejected">
                         {{PercentageCalculator(summaries.data.returend_netAmount,summaries.data.invalid_netAmount,summaries.data.rejected_netAmount,summaries.data.all_netAmount)}}
@@ -295,8 +295,8 @@
         <div class="dashboard-claim-card">
             <ng-container *ngIf="!summaries.loading  && !summaries.error">
                 <p class="title">VAT Amount</p>
-                <h4 matTooltip="{{summaries.data.all_VatAmount}} SR">{{sharedServices.kFormatter(summaries.data.all_VatAmount)}}
-                    <small>SR</small>
+                <h4 matTooltip="{{summaries.data.all_VatAmount}} {{ currencyCode }}">{{sharedServices.kFormatter(summaries.data.all_VatAmount)}}
+                    <small>{{ currencyCode }}</small>
                 </h4>
                 <div class="chart-wrapper">
                     <canvas baseChart [datasets]="vatChartData" [options]="doughnutChartOptions" [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
@@ -304,25 +304,25 @@
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-under-processing"
-                        matTooltip="{{getConvertfromStringToNumber(summaries.data.outstanding_VatAmount)+getConvertfromStringToNumber(summaries.data.under_process_VatAmount)}} SR">
+                        matTooltip="{{getConvertfromStringToNumber(summaries.data.outstanding_VatAmount)+getConvertfromStringToNumber(summaries.data.under_process_VatAmount)}} {{ currencyCode }}">
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.outstanding_VatAmount)+getConvertfromStringToNumber(summaries.data.under_process_VatAmount))}}
-                        <small>SR</small>
+                        <small>{{ currencyCode }}</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-under-processing">
                         {{PercentageCalculator(summaries.data.outstanding_VatAmount , summaries.data.under_process_VatAmount,null,summaries.data.all_VatAmount)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-paid" matTooltip="{{summaries.data.paid_VatAmount}} SR">
-                        {{sharedServices.kFormatter(summaries.data.paid_VatAmount)}} <small>SR</small>
+                    <div class="text-paid" matTooltip="{{summaries.data.paid_VatAmount}} {{ currencyCode }}">
+                        {{sharedServices.kFormatter(summaries.data.paid_VatAmount)}} <small>{{ currencyCode }}</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-paid">
                         {{PercentageCalculator(summaries.data.paid_VatAmount,null,null, summaries.data.all_VatAmount)}} <small>%</small>
                     </div>
                 </div>
                 <div class="statistics d-flex">
-                    <div class="text-partially-paid" matTooltip="{{summaries.data.partially_paid_VatAmount}} SR">
-                        {{sharedServices.kFormatter(summaries.data.partially_paid_VatAmount)}} <small>SR</small>
+                    <div class="text-partially-paid" matTooltip="{{summaries.data.partially_paid_VatAmount}} {{ currencyCode }}">
+                        {{sharedServices.kFormatter(summaries.data.partially_paid_VatAmount)}} <small>{{ currencyCode }}</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-partially-paid">
                         {{PercentageCalculator(summaries.data.partially_paid_VatAmount,null,null, summaries.data.all_VatAmount)}} <small>%</small>
@@ -330,9 +330,9 @@
                 </div>
                 <div class="statistics d-flex">
                     <div class="text-rejected"
-                        matTooltip="{{getConvertfromStringToNumber(summaries.data.returend_VatAmount)+getConvertfromStringToNumber(summaries.data.invalid_VatAmount)+getConvertfromStringToNumber(summaries.data.rejected_VatAmount)}} SR">
+                        matTooltip="{{getConvertfromStringToNumber(summaries.data.returend_VatAmount)+getConvertfromStringToNumber(summaries.data.invalid_VatAmount)+getConvertfromStringToNumber(summaries.data.rejected_VatAmount)}} {{ currencyCode }}">
                         {{sharedServices.kFormatter(getConvertfromStringToNumber(summaries.data.returend_VatAmount)+getConvertfromStringToNumber(summaries.data.invalid_VatAmount)+getConvertfromStringToNumber(summaries.data.rejected_VatAmount))}}
-                        <small>SR</small>
+                        <small>{{ currencyCode }}</small>
                     </div>
                     <div class="ml-auto pl-2 text-right text-rejected">
                         {{PercentageCalculator(summaries.data.returend_VatAmount,summaries.data.invalid_VatAmount,summaries.data.rejected_VatAmount,summaries.data.all_total)}}

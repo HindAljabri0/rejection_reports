@@ -1,5 +1,5 @@
-<app-add-preauthorization *ngIf="data && data.claimReuseId && data.detailsModel && IsDescriptionLoaded" [claimReuseId]="data.claimReuseId" (closeEvent)="closeDialog($event)"
-  [data]="data.detailsModel"></app-add-preauthorization>
+<app-add-prescription *ngIf="data && data.claimReuseId && data.detailsModel && IsDescriptionLoaded" [claimReuseId]="data.claimReuseId" (closeEvent)="closeDialog($event)"
+  [data]="data.detailsModel"></app-add-prescription>
 <div class="primary-dialog-footer has-border">
   <div class="btn-list text-right">
     <button mat-flat-button color="primary" (click)="closeDialog()">Close</button>

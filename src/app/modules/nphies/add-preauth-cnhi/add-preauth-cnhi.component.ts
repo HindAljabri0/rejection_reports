@@ -63,6 +63,8 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
   selectedPlanIdError: string;
   IsSubscriberRequired = false;
   IsAccident = false;
+  isOnline: boolean = false;
+  isOffline: boolean = false;
   IsEncounter: boolean = false;
   AllTPA: any[] = [];
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
@@ -91,6 +93,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
     date: [''],
     dateWritten: [''],
     prescriber: [''],
+    eligibilityType: [''],
     eligibilityOfflineDate: [''],
     eligibilityOfflineId: [''],
     eligibilityResponseId: [''],
@@ -220,7 +223,8 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
   nationalities = nationalities;
   selectedCountry = '';
   encounterStatusList = this.sharedDataService.encounterStatusList;
-  encounterClassList = this.sharedDataService.encounterCnhiClassList;
+  encounterClassList = this.sharedDataService.encounterClassList;
+  encounterCNHIClassList = this.sharedDataService.encounterCnhiClassList;
   encounterServiceTypeList = this.sharedDataService.encounterServiceTypeList;
   encounterPriorityList = this.sharedDataService.encounterPriorityList;
   encounterAdminSourceList = this.sharedDataService.encounterAdminsSourceList;
@@ -254,9 +258,13 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
   }
 
   ngOnInit() {
-    
     this.cnhiSubType = [ { value: 'ip', name: 'InPatient' },
     { value: 'emr', name: 'Emergency' },];
+
+    this.FormPreAuthorization.get('eligibilityType').valueChanges.subscribe(value => {
+        this.isOnline = value === 'online';
+        this.isOffline = value === 'offline';
+      });
     this.getPayees();
     this.getTPA();
     this.getPBMValidation();
@@ -286,7 +294,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
   }
   selectedDefualtPrescriberChange($event) {
     this.PrescriberDefault = $event;
-    console.log("$event = " + $event);
+   // console.log("$event = " + $event);
   }
   setReuseValues() {
 
@@ -324,13 +332,13 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       this.FormPreAuthorization.controls.payee.setValue(this.payeeList.filter(x => x.nphiesId === this.data.preAuthorizationInfo.payeeId)[0] ? this.payeeList.filter(x => x.nphiesId === this.data.preAuthorizationInfo.payeeId)[0].nphiesId : '');
     }
-    this.claimType = this.data.preAuthorizationInfo.type;
-    // tslint:disable-next-line:max-line-length
-    this.FormPreAuthorization.controls.type.setValue(this.sharedDataService.cnhiTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] ? this.sharedDataService.claimTypeList.filter(x => x.value === this.data.preAuthorizationInfo.type)[0] : '');
-    if (this.data.preAuthorizationInfo.subType != null) {
-      // tslint:disable-next-line:max-line-length
-      this.FormPreAuthorization.controls.subType.setValue(this.sharedDataService.subTypeList.filter(x => x.value === this.data.preAuthorizationInfo.subType)[0] ? this.sharedDataService.subTypeList.filter(x => x.value === this.data.preAuthorizationInfo.subType)[0] : '');
+     if (this.data.preAuthorizationInfo.type != null) {
+       this.FormPreAuthorization.controls.type.setValue(this.sharedDataService.cnhiTypeList[0]);
     }
+    if (this.data.preAuthorizationInfo.subType != null) {
+        this.FormPreAuthorization.controls.subType.setValue(this.cnhiSubType.filter(x => x.value === this.data.preAuthorizationInfo.subType)[0] ? this.cnhiSubType.filter(x => x.value === this.data.preAuthorizationInfo.subType)[0] : '');
+            }
+      
     if (this.data.preAuthorizationInfo.eligibilityOfflineId != null) {
       // tslint:disable-next-line:max-line-length
       this.FormPreAuthorization.controls.eligibilityOfflineId.setValue(this.data.preAuthorizationInfo.eligibilityOfflineId);
@@ -368,6 +376,52 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
         this.FormPreAuthorization.controls.date.setValue(this.data.accident.date);
       }
     }
+    if (this.data.encounter) {
+             if (this.data.encounter.status != null) {
+          this.FormPreAuthorization.controls.status.setValue(this.data.encounter.status);
+        
+        }
+  
+        if (this.data.encounter.encounterClass != null) {
+          this.FormPreAuthorization.controls.encounterClass.setValue(this.sharedDataService.encounterCnhiClassList[0].value);
+         }
+  
+        if (this.data.encounter.serviceType != null) {
+          this.FormPreAuthorization.controls.serviceType.setValue(this.data.encounter.serviceType);
+    
+        }
+  
+        if (this.data.encounter.startDate != null) {
+                this.FormPreAuthorization.controls.startDate.setValue(this.data.encounter.startDate);
+        }
+  
+        if (this.data.encounter.periodEnd != null) {
+            this.FormPreAuthorization.controls.periodEnd.setValue(this.data.encounter.periodEnd);
+        }
+  
+        if (this.data.encounter.origin != null) {
+          this.FormPreAuthorization.controls.origin.setValue(this.data.encounter.origin);  
+         }
+  
+        if (this.data.encounter.admitSource != null) {
+          this.FormPreAuthorization.controls.adminSource.setValue(this.data.encounter.admitSource);
+        
+        }
+  
+        if (this.data.encounter.reAdmission != null) {
+              this.FormPreAuthorization.controls.reAdmission.setValue(this.data.encounter.reAdmission);
+             }
+  
+        if (this.data.encounter.dischargeDispotion != null) {
+          this.FormPreAuthorization.controls.dischargeDispotion.setValue(this.data.encounter.dischargeDispotion);
+           
+        }
+  
+        if (this.data.encounter.priority != null) {
+          this.FormPreAuthorization.controls.priority.setValue(this.data.encounter.priority);
+          }
+  
+     }
     this.Diagnosises = this.data.diagnosis;
     this.SupportingInfo = this.data.supportingInfo;
     //this.CareTeams = this.data.careTeam;
@@ -458,6 +512,10 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
             documentId: res.beneficiary.documentId,
             documentType: res.beneficiary.documentType,
             fullName: res.beneficiary.fullName,
+            firstName:res.beneficiary.firstName,
+            familyName:res.beneficiary.familyName,
+            nationality:res.beneficiary.nationality,
+            contactNumber:res.beneficiary.contactNumber,
             gender: res.beneficiary.gender,
             insurancePlanMemberCardId: res.beneficiary.insurancePlan.memberCardId,
             insurancePlanPolicyNumber: res.beneficiary.insurancePlan.policyNumber,
@@ -1176,6 +1234,7 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
               x.nonStandardCode = result.nonStandardCode;
               x.display = result.display;
               x.isPackage = result.isPackage;
+              x.isDentalBodySite = result.isDentalBodySite;
               x.bodySite = result.bodySite;
               x.bodySiteName = result.bodySiteName;
               x.subSite = result.subSite;
@@ -1724,7 +1783,7 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
     let hasError = false;
     if (this.CareTeams.length !== 0) {
       this.CareTeams.forEach(element => {
-        console.log("physicianCode = " + element.physicianCode + " practitionerName = " + element.practitionerName);
+        //console.log("physicianCode = " + element.physicianCode + " practitionerName = " + element.practitionerName);
         if (element.physicianCode == null || element.physicianCode == '' || element.practitionerName == null || element.practitionerName == '') {
           element.error = "Please Select Valid Practitioner";
           hasError = true;
@@ -1837,15 +1896,7 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
       }
     }
   
-    if (isPbmvalidation) {
-      let weightValidtation = this.SupportingInfo.filter(f=>f.category == 'vital-sign-weight').length;
-      if (weightValidtation == 0) {
-        this.dialogService.showMessage('Error', 'please add vital sign weight to complete PBM request', 'alert', true, 'OK');
-        return;
-      }
-    
-    }
-    if (this.FormPreAuthorization.valid) {
+   if (this.FormPreAuthorization.valid) {
       
       if (this.Diagnosises.length === 0 || this.Items.length === 0) {
         hasError = true;
@@ -2162,7 +2213,7 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
             ++index;
           });
           this.model.visionPrescription.lensSpecifications = lens_model;
-          console.log("on save - > " + JSON.stringify(lens_model));
+          //console.log("on save - > " + JSON.stringify(lens_model));
         }
       }
 
@@ -2177,6 +2228,7 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
           model.nonStandardCode = x.nonStandardCode;
           model.nonStandardDesc = x.display;
           model.isPackage = x.isPackage;
+          model.isDentalBodySite = x.isDentalBodySite;
           model.bodySite = x.bodySite;
           model.subSite = x.subSite;
           model.quantity = x.quantity;
@@ -2219,6 +2271,7 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
           model.nonStandardCode = x.nonStandardCode;
           model.nonStandardDesc = x.display;
           model.isPackage = x.isPackage;
+          model.isDentalBodySite = x.isDentalBodySite;
           model.bodySite = x.bodySite;
           model.subSite = x.subSite;
           model.quantity = x.quantity;
@@ -2264,14 +2317,11 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
 
            this.sharedServices.loadingChanged.next(true);
       let requestOb = this.providerNphiesApprovalService.sendCnhiApprovalRequest(this.sharedServices.providerId, this.model);
-      if(isPbmvalidation){
-        requestOb = this.providerNphiesApprovalService.sendApprovalPBMRequest(this.sharedServices.providerId, this.model);
-      }
       requestOb.subscribe(event => {
         if (event instanceof HttpResponse) {
-          if (event.status === 200 && !isPbmvalidation) {
+           if (event.status === 200) {
             const body: any = event.body;
-            if (body.status === 'OK' ) {
+            if (body.status === 'OK' ) {             
               if (body.outcome.toString().toLowerCase() === 'error') {
                 const errors: any[] = [];
 
@@ -2302,14 +2352,25 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
                 }
               }
             }
-          }else if(event.status === 200 && isPbmvalidation){
-            const body: any = event.body;
+            if (body.status === 'Service Unavailable'){
+                 if (body.outcome === 'FailedNphies') {
+                  const errors: any[] = [];                   
+                    if (body.errors && body.errors.length > 0) {
 
-            this.sharedServices.loadingChanged.next(false);
-            this.Pbm_result=body;
-            this.openPbmValidationResponseSummaryDialog(body);
-          }
-        }
+                        body.errors.forEach(x => {
+                            errors.push(x);
+                          });
+                       
+                      }
+                      this.sharedServices.loadingChanged.next(false);
+                      if (body.transactionId) {
+                        this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors, null, null, body.transactionId);
+                      } else {
+                        this.dialogService.showMessage(body.message, '', 'alert', true, 'OK', errors, null, null);
+                      }
+                }
+            }
+                  }        }
       }, error => {
         this.sharedServices.loadingChanged.next(false);
         if (error instanceof HttpErrorResponse) {

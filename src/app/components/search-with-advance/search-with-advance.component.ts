@@ -32,7 +32,8 @@ export class SearchWithAdvanceComponent implements OnInit {
     { key: 'patientFileNo', label: 'Patient File No' },
     { key: 'policyNo', label: 'Policy No.' },
     { key: 'nationalId', label: 'National ID' },
-    { key: 'requestBundleId', label: 'Request Bundle ID' }
+    { key: 'requestBundleId', label: 'Request Bundle ID' },
+    { key: 'bundleIds', label: 'Bundle IDs' }
   ];
 
   searchModesNphies: { key: string, label: string }[] = [
@@ -45,8 +46,8 @@ export class SearchWithAdvanceComponent implements OnInit {
     { key: 'invoiceNo', label: 'Invoice No.' },
     { key: 'patientFileNo', label: 'Patient File No' },
     { key: 'nationalId', label: 'National ID' },
-    { key: 'requestBundleId', label: 'Request Bundle ID' }
-
+    { key: 'requestBundleId', label: 'Request Bundle ID' },
+    { key: 'bundleIds', label: 'Bundle IDs' }
   ];
 
   statusList: { value: string, name: string }[] = [
@@ -76,6 +77,10 @@ export class SearchWithAdvanceComponent implements OnInit {
   NphiesTpas: any[] = [];
 
 
+  get bundleIdsHint(){
+
+    return this.selectedSearchMode=='bundleIds'?'Enter List Of Bundle ids for example 000-000-0000-1111, 0000-1111-222-444,':'';
+  }
   casetypes: { value: string, name: string }[] = [
     { value: 'OUTPATIENT,INPATIENT', name: 'Any' },
     { value: 'OUTPATIENT', name: 'Outpatient' },
@@ -185,6 +190,10 @@ export class SearchWithAdvanceComponent implements OnInit {
 
   search(isWassel: boolean) {
 
+
+    if(this.selectedSearchMode == 'bundleIds' && this.searchControl.value.split(',').length>1 ){
+      console.log("test " + this.searchControl.value.split(',').length )
+    }
     if (this.selectedSearchMode == 'payer&date' || this.selectedSearchMode == 'tpa&date' || this.selectedSearchMode == 'status&date') {
       if (this.selectedSearchMode == 'payer&date' && this.selectedPayer == null) {
         this.payerHasError = true;
@@ -255,6 +264,7 @@ export class SearchWithAdvanceComponent implements OnInit {
           policyNo: this.selectedSearchMode == 'policyNo' ? this.searchControl.value : null,
           nationalId: this.selectedSearchMode == 'nationalId' ? this.searchControl.value : null,
           requestBundleId: this.selectedSearchMode == 'requestBundleId' ? this.searchControl.value : null,
+          bundleIds:this.selectedSearchMode == 'bundleIds' ? this.searchControl.value : null,
         },
         fragment: 'reload'
       });

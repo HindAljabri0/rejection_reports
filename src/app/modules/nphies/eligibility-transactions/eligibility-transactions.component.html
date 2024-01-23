@@ -1,145 +1,162 @@
 <div class="animate__animated animate__faster animate__fadeIn block-card">
-  <div class="block-header">
-    <p>Eligibility Transactions</p>
-  </div>
-  <div class="block-filter-panel">
-    <form [formGroup]="FormEligibilityTransaction" (ngSubmit)="onSubmit()">
-      <div class="row small-gutter">
-        <div class="col-4 col-xxl-3">
-          <div class="form-group"
-            [ngClass]="{'has-error' : (isSubmitted || FormEligibilityTransaction.get('fromDate').touched) && FormEligibilityTransaction.get('fromDate').hasError('required')}">
-            <label class="control-label">From Date</label>
-            <div class="date-picker">
-              <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date" formControlName="fromDate">
-              <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
-              <mat-datepicker #filterFromDate></mat-datepicker>
-            </div>
-            <div *ngIf="(isSubmitted || FormEligibilityTransaction.get('fromDate').touched) && FormEligibilityTransaction.get('fromDate').hasError('required')">
-              <span class="error-text">Please select From Date</span>
-            </div>
-          </div>
-        </div>
-        <div class="col-4 col-xxl-3">
-          <div class="form-group"
-            [ngClass]="{'has-error' : (isSubmitted || FormEligibilityTransaction.get('toDate').touched) && FormEligibilityTransaction.get('toDate').hasError('required')}">
-            <label class="control-label">To Date</label>
-            <div class="date-picker">
-              <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date" [min]="FormEligibilityTransaction.controls.fromDate.value"
-                formControlName="toDate">
-              <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>
-              <mat-datepicker #filterToDate></mat-datepicker>
-            </div>
-            <div *ngIf="(isSubmitted || FormEligibilityTransaction.get('toDate').touched) && FormEligibilityTransaction.get('toDate').hasError('required')">
-              <span class="error-text">Please select To Date</span>
-            </div>
-          </div>
-        </div>
-        <div class="col-4 col-xxl-3">
-          <div class="form-group">
-            <label class="control-label">Eligibility ID</label>
-            <input placeholder="Enter eligibility ID" class="form-control" formControlName="eligibilityId">
-          </div>
-        </div>
-        <div class="col-4 col-xxl-3">
-          <div class="form-group">
-            <label class="control-label">Payer</label>
-            <!-- <mat-form-field class="form-control custom-select-control">
+    <div class="block-header">
+        <p>Eligibility Transactions</p>
+    </div>
+    <div class="block-filter-panel">
+        <form [formGroup]="FormEligibilityTransaction" (ngSubmit)="onSubmit()">
+            <div class="row small-gutter">
+                <div class="col-4 col-xxl-3">
+                    <div class="form-group"
+                        [ngClass]="{'has-error' : (isSubmitted || FormEligibilityTransaction.get('fromDate').touched) && FormEligibilityTransaction.get('fromDate').hasError('required')}">
+                        <label class="control-label">From Date</label>
+                        <div class="date-picker">
+                            <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date" formControlName="fromDate">
+                            <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
+                            <mat-datepicker #filterFromDate></mat-datepicker>
+                        </div>
+                        <div *ngIf="(isSubmitted || FormEligibilityTransaction.get('fromDate').touched) && FormEligibilityTransaction.get('fromDate').hasError('required')">
+                            <span class="error-text">Please select From Date</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4 col-xxl-3">
+                    <div class="form-group"
+                        [ngClass]="{'has-error' : (isSubmitted || FormEligibilityTransaction.get('toDate').touched) && FormEligibilityTransaction.get('toDate').hasError('required')}">
+                        <label class="control-label">To Date</label>
+                        <div class="date-picker">
+                            <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date" [min]="FormEligibilityTransaction.controls.fromDate.value"
+                                formControlName="toDate">
+                            <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>
+                            <mat-datepicker #filterToDate></mat-datepicker>
+                        </div>
+                        <div *ngIf="(isSubmitted || FormEligibilityTransaction.get('toDate').touched) && FormEligibilityTransaction.get('toDate').hasError('required')">
+                            <span class="error-text">Please select To Date</span>
+                        </div>
+                    </div>
+                </div>
+                <ng-container *ngIf="advanceSearchEnable">
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label">Eligibility ID</label>
+                            <input placeholder="Enter eligibility ID" class="form-control" formControlName="eligibilityId">
+                        </div>
+                    </div>
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label">Payer</label>
+                            <!-- <mat-form-field class="form-control custom-select-control">
               <mat-select formControlName="payerId">
                 <mat-option value="">Select Payer</mat-option>
                 <mat-option *ngFor="let payer of payersList" [value]="payer.nphiesId">{{payer.englistName}}
                   ({{payer.arabicName}})</mat-option>
               </mat-select>
             </mat-form-field> -->
-            <app-nphies-payers-selector (selectionChange)="selectPayer($event)"></app-nphies-payers-selector>
-          </div>
-        </div>
-        <div class="col-4 col-xxl-3">
-          <div class="form-group">
-            <label class="control-label" matTooltip="Minimum 3 Character(s)/Number(s)">Select a Beneficiary</label>
-            <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName"
-              [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
-            <mat-autocomplete #auto="matAutocomplete">
-              <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
-                {{beneficiary.name}} ({{beneficiary.documentId}})
-              </mat-option>
-            </mat-autocomplete>
-          </div>
-        </div>
-        <div class="col-4 col-xxl-3">
-          <div class="form-group">
-            <label class="control-label">Status</label>
-            <mat-form-field class="form-control custom-select-control">
-              <mat-select formControlName="status">
-                <mat-option value="">Select Status</mat-option>
-                <mat-option *ngFor="let status of statusList" [value]="status.value">{{status.name}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
-      </div>
-      <div class="form-group">
-        <button type="submit" mat-flat-button color="primary">Search</button>
-      </div>
-    </form>
-  </div>
+                            <app-nphies-payers-selector (selectionChange)="selectPayer($event)"></app-nphies-payers-selector>
+                        </div>
+                    </div>
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label" matTooltip="Minimum 3 Character(s)/Number(s)">Select a Beneficiary</label>
+                            <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID..." formControlName="beneficiaryName"
+                                [matAutocomplete]="auto" (keyup)="searchBeneficiaries()">
+                            <mat-autocomplete #auto="matAutocomplete">
+                                <mat-option *ngFor="let beneficiary of beneficiariesSearchResult" (click)="selectBeneficiary(beneficiary)">
+                                    {{beneficiary.name}} ({{beneficiary.documentId}})
+                                </mat-option>
+                            </mat-autocomplete>
+                        </div>
+                    </div>
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label">Status</label>
+                            <mat-form-field class="form-control custom-select-control">
+                                <mat-select formControlName="status">
+                                    <mat-option value="">Select Status</mat-option>
+                                    <mat-option *ngFor="let status of statusList" [value]="status.value">{{status.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </ng-container>
+                <div class="col-4 col-xxl-3" *ngIf="!advanceSearchEnable">
+                    <div class="form-group">
+                        <label class="control-label">&nbsp;</label>
+                        <div class="btn-list">
+                            <button type="submit" mat-flat-button color="primary">Search</button>
+                            <button type="button" class="text-primary" (click)="toggleAdvanceSearch()" mat-button>Advance
+                                Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" *ngIf="advanceSearchEnable">
+                <div class="btn-list">
+                    <button type="submit" mat-flat-button color="primary">Search</button>
+                    <button type="button" class="text-primary" mat-button (click)="toggleAdvanceSearch()">Basic Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
 
-  <div  *ngIf="transactions.length>0" class="pagination-header" >
-    <button matRipple type="button" class="ml-auto btn action-btn my-n2 mr-n2" (click)="downloadSheetFormat()" matTooltip="Download">
-      <img src="./assets/{{detailTopActionIcon}}" />
-    </button>
-  </div>
-  <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="!(transactionModel && transactions.length === 0)">
-    <div class="fixed-height  fixed-height-sm" *ngIf="transactionModel && transactions.length > 0">
-      <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
-        <thead>
-          <tr>
-            <th>Beneficiary Name</th>
-            <th>Eligibility ID</th>
-            <th>Purpose</th>
-            <th>Payer</th>
-            <th>Transaction Date</th>
-            <th>Site Eligibility</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let transaction of transactions">
-            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.beneficiaryName}} ({{transaction.documentId}})</td>
-            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.eligibilityId}}</td>
-            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.purpose}}</td>
-            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.payerName}}</td>
-            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.transactionDate | date:
-              'dd-MM-yyyy hh:mm aa'}}</td>
-            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click text-capitalize">
-              <span [ngClass]="!transaction.siteEligibility ? '': (transaction.siteEligibility === 'eligible' ? 'text-success' : 'text-danger')">{{transaction.siteEligibility ? transaction.siteEligibility : '-'}}</span>
-            </td>
-            <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.status}}</td>
-            <!-- <td class="actions">
+    <div *ngIf="transactions.length>0" class="pagination-header">
+        <button matRipple type="button" class="ml-auto btn action-btn my-n2 mr-n2" (click)="downloadEligibilityAsJson()" matTooltip="Download">
+            <img src="./assets/{{detailTopActionIcon}}" />
+        </button>
+    </div>
+    <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="!(transactionModel && transactions.length === 0)">
+        <div class="fixed-height  fixed-height-sm" *ngIf="transactionModel && transactions.length > 0">
+            <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">
+                <thead>
+                    <tr>
+                        <th>Beneficiary Name</th>
+                        <th>Eligibility ID</th>
+                        <th>Purpose</th>
+                        <th>Payer</th>
+                        <th>Transaction Date</th>
+                        <th>Site Eligibility</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let transaction of transactions">
+                        <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.beneficiaryName}} ({{transaction.documentId}})</td>
+                        <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.eligibilityId}}</td>
+                        <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.purpose}}</td>
+                        <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.payerName}}</td>
+                        <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.transactionDate | date:
+                            'dd-MM-yyyy hh:mm aa'}}</td>
+                        <td (click)="openDetailsDialog(transaction.responseId)" class="row-click text-capitalize">
+                            <span
+                                [ngClass]="!transaction.siteEligibility ? '': (transaction.siteEligibility === 'eligible' ? 'text-success' : 'text-danger')">{{transaction.siteEligibility
+                                ? transaction.siteEligibility : '-'}}</span>
+                        </td>
+                        <td (click)="openDetailsDialog(transaction.responseId)" class="row-click">{{transaction.status}}</td>
+                        <!-- <td class="actions">
               <button mat-icon-button matTooltip="Reuse" class="text-primary">
                 <mat-icon>refresh</mat-icon>
               </button>
             </td> -->
-          </tr>
-        </tbody>
-      </table>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-scrollbar>
+    <app-empty-state *ngIf="transactionModel && transactions.length === 0" message='No Eligibility transactions found!'>
+    </app-empty-state>
+    <div class="pagination-header" *ngIf="!(transactionModel && transactions.length === 0)">
+        <div class="form-group page-select">
+            <label class="control-label">Go to page: </label>
+            <mat-form-field class="form-control custom-select-control">
+                <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
+                    <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="material-paginator">
+            <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
+            </mat-paginator>
+        </div>
     </div>
-  </ng-scrollbar>
-  <app-empty-state *ngIf="transactionModel && transactions.length === 0" message='No Eligibility transactions found!'>
-  </app-empty-state>
-  <div class="pagination-header" *ngIf="!(transactionModel && transactions.length === 0)">
-    <div class="form-group page-select">
-      <label class="control-label">Go to page: </label>
-      <mat-form-field class="form-control custom-select-control">
-        <mat-select [ngModel]="manualPage" (ngModelChange)="updateManualPage($event)">
-          <mat-option *ngFor="let i of paginatorPagesNumbers" [value]="i">{{i+1}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-    <div class="material-paginator">
-      <mat-paginator #paginator [length]="paginatorLength" [pageSizeOptions]="paginatorPageSizeOptions" (page)="paginatorAction($event)">
-      </mat-paginator>
-    </div>
-  </div>
 
 
 </div>

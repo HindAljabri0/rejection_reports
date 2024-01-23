@@ -65,6 +65,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     payeeType: ['', Validators.required],
     type: ['', Validators.required],
     subType: [''],
+    eligibilityType: [''],
+    preauthType: [''],
     eligibilityOfflineId: [''],
     eligibilityOfflineDate: [''],
     eligibilityResponseId: [''],
@@ -217,6 +219,10 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   IsDateRequired = false;
   IsAccidentTypeRequired = false;
+  preauthOnline: boolean = false;
+  preauthOffline: boolean = false;
+  isOnline: boolean = false;
+  isOffline: boolean = false;
 
   today: Date;
   pastDate: Date;
@@ -293,6 +299,16 @@ export class CreateClaimNphiesComponent implements OnInit {
 
   }
   ngOnInit() {
+
+    this.FormNphiesClaim.get('eligibilityType').valueChanges.subscribe(value => {
+        this.isOnline = value === 'online';
+        this.isOffline = value === 'offline';
+      });
+
+      this.FormNphiesClaim.get('preauthType').valueChanges.subscribe(value => {
+        this.preauthOnline = value === 'online';
+        this.preauthOffline = value === 'offline';
+      });
 
     const urlHasEditMode = +this.router.url.endsWith('edit');
     if (this.activatedRoute.snapshot.queryParams.claimId) {
@@ -611,8 +627,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.FormNphiesClaim.controls.dateOrdered.disable();
     this.FormNphiesClaim.controls.payeeType.disable();
     this.FormNphiesClaim.controls.payee.disable();
-    this.FormNphiesClaim.controls.type.disable();
-    this.FormNphiesClaim.controls.subType.disable();
+    //this.FormNphiesClaim.controls.type.disable();
+    //this.FormNphiesClaim.controls.subType.disable();
     this.FormNphiesClaim.controls.accidentType.disable();
     this.FormNphiesClaim.controls.streetName.disable();
     this.FormNphiesClaim.controls.city.disable();
@@ -649,8 +665,8 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.FormNphiesClaim.controls.dateOrdered.enable();
     // this.FormNphiesClaim.controls.payeeType.enable();
     // this.FormNphiesClaim.controls.payee.enable();
-    this.FormNphiesClaim.controls.type.disable();
-    this.FormNphiesClaim.controls.subType.disable();
+    //this.FormNphiesClaim.controls.type.disable();
+    //this.FormNphiesClaim.controls.subType.disable();
     this.FormNphiesClaim.controls.accidentType.enable();
     this.FormNphiesClaim.controls.streetName.enable();
     this.FormNphiesClaim.controls.city.enable();
@@ -741,8 +757,8 @@ export class CreateClaimNphiesComponent implements OnInit {
           break;
       }
 
-      this.Items = [];
-      this.VisionSpecifications = [];
+      //this.Items = [];
+      //this.VisionSpecifications = [];
     }
   }
 
@@ -1724,7 +1740,7 @@ export class CreateClaimNphiesComponent implements OnInit {
       } else if (this.pageMode === 'CREATE') {
 
         // tslint:disable-next-line:max-line-length
-        this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
+        this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}${now.getSeconds()}${now.getMilliseconds()}`;
       } /*else if (this.pageMode === 'RESUBMIT') {
         // tslint:disable-next-line:max-line-length
         this.model.provClaimNo = `${this.sharedServices.providerId}${now.getFullYear() % 100}${now.getMonth()}${now.getDate()}${now.getHours()}${now.getMinutes()}`;

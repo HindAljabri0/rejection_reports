@@ -148,39 +148,7 @@
               </div>
             </div>
   
-            <div class="col-4 col-xxl-3">
-              <div class="form-group">
-                <label class="control-label">Eligibility Response Identifier (Value)</label>
-                <input class="form-control" placeholder="Enter Eligibility Response Identifier (Value)" formControlName="eligibilityResponseId">
-              </div>
-            </div>
-  
-            <div class="col-4 col-xxl-3">
-              <div class="form-group">
-                <label class="control-label">Eligibility Response Identifier (URL)</label>
-                <input class="form-control" placeholder="Enter Eligibility Response Identifier (URL)" formControlName="eligibilityResponseUrl">
-              </div>
-            </div>
-  
-            <div class="col-4 col-xxl-3">
-              <div class="form-group">
-                <label class="control-label">Offline Eligibility ID</label>
-                <input class="form-control" placeholder="Enter Offline Eligibility ID" formControlName="eligibilityOfflineId">
-              </div>
-            </div>
-            <div class="col-4 col-xxl-3">
-              <div class="form-group">
-                <label class="control-label">Offline Eligibility Date</label>
-                <div class="date-picker">
-                  <input [matDatepicker]="eligibilityOfflineDateCtrl" class="form-control" placeholder="Select Offline Eligibility Date" [max]="today"
-                    formControlName="eligibilityOfflineDate">
-                  <mat-datepicker-toggle [for]="eligibilityOfflineDateCtrl"></mat-datepicker-toggle>
-                  <mat-datepicker #eligibilityOfflineDateCtrl></mat-datepicker>
-                </div>
-              </div>
-            </div>
-  
-            <div class="col-4 col-xxl-3">
+           <div class="col-4 col-xxl-3">
               <div class="form-group"
                 [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('payeeType').touched) && FormPreAuthorization.get('payeeType').hasError('required')}">
                 <label class="control-label">Payee Type<span class="asterisk">*</span></label>
@@ -257,6 +225,51 @@
                 <input class="form-control" placeholder="Enter Referring Provider Name" formControlName="otherReferral">
               </div>
             </div>
+
+            <div class="col-4 col-xxl-3">
+                <div class="form-group">
+                  <label class="control-label">Eligibility Details</label>
+                  <mat-form-field class="form-control custom-select-control">
+                    <mat-select formControlName="eligibilityType">
+                      <mat-option value="">Select Eligibility Type</mat-option>
+                      <mat-option value="online">Online</mat-option>
+                      <mat-option value="offline">Offline</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              
+              <div class="col-4 col-xxl-3" *ngIf="isOnline">
+                <div class="form-group">
+                  <label class="control-label">Eligibility Response Identifier (Value)</label>
+                  <input class="form-control" placeholder="Enter Eligibility Response Identifier (Value)" formControlName="eligibilityResponseId">
+                </div>
+              </div>
+              
+              <div class="col-4 col-xxl-3" *ngIf="isOnline">
+                <div class="form-group">
+                  <label class="control-label">Eligibility Response Identifier (URL)</label>
+                  <input class="form-control" placeholder="Enter Eligibility Response Identifier (URL)" formControlName="eligibilityResponseUrl">
+                </div>
+              </div>
+    
+              <div class="col-4 col-xxl-3" *ngIf="isOffline">
+                <div class="form-group">
+                  <label class="control-label">Eligibility ID</label>
+                  <input class="form-control" placeholder="Enter Eligibility ID" formControlName="eligibilityOfflineId">
+                </div>
+              </div>
+              <div class="col-4 col-xxl-3" *ngIf="isOffline">
+                <div class="form-group">
+                  <label class="control-label">Eligibility Date</label>
+                  <div class="date-picker">
+                    <input [matDatepicker]="eligibilityOfflineDateCtrl" class="form-control" placeholder="Select Eligibility Date" [max]="today"
+                      formControlName="eligibilityOfflineDate">
+                    <mat-datepicker-toggle [for]="eligibilityOfflineDateCtrl"></mat-datepicker-toggle>
+                    <mat-datepicker #eligibilityOfflineDateCtrl></mat-datepicker>
+                  </div>
+                </div>
+              </div>
   
           </div>
   
@@ -585,8 +598,15 @@
                   <mat-form-field class="form-control custom-select-control">
                     <mat-select formControlName="encounterClass" placeholder="Select class">
                       <mat-option value="">Select class</mat-option>
-                      <mat-option *ngFor="let classType of encounterClassList" [value]="classType.value">{{classType.name}}</mat-option>   
-                    </mat-select>
+                      <ng-container *ngIf="this.data != undefined">
+                        <mat-option *ngFor="let classType of encounterCNHIClassList"  [value]="classType.value">{{classType.name}}</mat-option>
+                      </ng-container>
+                    
+                      <ng-container *ngIf="this.data == undefined">
+                        <mat-option *ngFor="let classType of encounterClassList" [value]="classType.value">{{classType.name}}
+                        </mat-option>
+                      </ng-container>
+                     </mat-select>
                   </mat-form-field>
                   <div *ngIf="(isSubmitted || FormPreAuthorization.get('encounterClass').touched) && FormPreAuthorization.get('encounterClass').hasError('required')">
                     <span class="error-text">Please select the class</span>
@@ -637,7 +657,7 @@
                   <div class="row small-gutter">
                     <div class="col-6">
                         <div class="date-picker" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('startDate').touched) && FormPreAuthorization.get('startDate').hasError('required')}">
-                            <input [owlDateTime]="startDate" class="form-control" placeholder="Select service end date" formControlName="startDate">
+                            <input [owlDateTime]="startDate" class="form-control" placeholder="Start date" formControlName="startDate">
                                  <mat-datepicker-toggle [owlDateTimeTrigger]="startDate"></mat-datepicker-toggle>
                                  <owl-date-time #startDate></owl-date-time>
                         </div>
@@ -1015,16 +1035,16 @@
         </div>
       </form>
     </ng-container>
-  
+ 
     <ng-container *ngIf="IsJSONPosted && detailsModel && !claimReuseId">
       <div class="block-header">
         <h5 class="primary-dialog-title">Authorization -
           {{detailsModel.approvalRequestId}}<span *ngIf="detailsModel.transfer">[Referral]</span></h5>&nbsp;&nbsp;
         <h5 class="primary-dialog-title ml-auto">Transaction -
-          {{detailsModel.providertransactionlogId}}</h5>
+          {{detailsModel.transactionlogId}}</h5>
       </div>
       <div class="block-body">
-        <app-pre-authorization-details *ngIf="detailsModel.providertransactionlogId" [data]="detailsModel">
+        <app-pre-authorization-details *ngIf="detailsModel.transactionlogId" [data]="detailsModel">
         </app-pre-authorization-details>
       </div>
       <div class="text-right pt-14">

@@ -16,7 +16,7 @@
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Date Ordered</div>
-      <p class="form-control-static text-primary">{{data.prescriptionInfo.dateOrdered | date : 'dd-MM-yyyy hh:mm
+      <p class="form-control-static text-primary">{{data.preAuthorizationInfo.dateOrdered | date : 'dd-MM-yyyy hh:mm
         aa'}}</p>
     </div>
   </div>
@@ -35,7 +35,7 @@
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Type</div>
-      <p class="form-control-static text-primary">{{data.prescriptionInfo.typeName}}</p>
+      <p class="form-control-static text-primary">{{data.preAuthorizationInfo.typeName}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
@@ -43,8 +43,8 @@
       <div class="control-label">Sub Type</div>
       <p class="form-control-static text-primary">
         <span
-          *ngIf="data.prescriptionInfo && data.prescriptionInfo.subType">{{data.prescriptionInfo.subTypeName}}</span>
-        <span *ngIf="data.prescriptionInfo && !data.prescriptionInfo.subType">-</span>
+          *ngIf="data.preAuthorizationInfo && data.preAuthorizationInfo.subType">{{data.preAuthorizationInfo.subTypeName}}</span>
+        <span *ngIf="data.preAuthorizationInfo && !data.preAuthorizationInfo.subType">-</span>
       </p>
     </div>
   </div>
@@ -63,7 +63,7 @@
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Prescription Reference No.</div>
-      <p class="form-control-static text-primary">{{data.prescriptionRefNo?data.prescriptionRefNo:'-'}}</p>
+      <p class="form-control-static text-primary">{{data.preAuthRefNo?data.preAuthRefNo:'-'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
@@ -95,14 +95,14 @@
     <div class="form-group form-group-static">
       <div class="control-label">Offline Eligibility ID</div>
       <p class="form-control-static text-primary">
-        {{data.prescriptionInfo.eligibilityOfflineId?data.prescriptionInfo.eligibilityOfflineId:'-'}}</p>
+        {{data.preAuthorizationInfo.eligibilityOfflineId?data.preAuthorizationInfo.eligibilityOfflineId:'-'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Offline Eligibility Date</div>
       <p class="form-control-static text-primary">
-        {{data.prescriptionInfo.eligibilityOfflineDate?(data.prescriptionInfo.eligibilityOfflineDate | date:
+        {{data.preAuthorizationInfo.eligibilityOfflineDate?(data.preAuthorizationInfo.eligibilityOfflineDate | date:
         'dd-MM-yyyy'):'-'}}
       </p>
     </div>
@@ -111,14 +111,14 @@
     <div class="form-group form-group-static">
       <div class="control-label">Eligibility Response Identifier (Value)</div>
       <p class="form-control-static text-primary">
-        {{data.prescriptionInfo.eligibilityResponseId?data.prescriptionInfo.eligibilityResponseId:'-'}}</p>
+        {{data.preAuthorizationInfo.eligibilityResponseId?data.preAuthorizationInfo.eligibilityResponseId:'-'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
     <div class="form-group form-group-static">
       <div class="control-label">Eligibility Response Identifier (URL)</div>
       <p class="form-control-static text-primary">
-        {{data.prescriptionInfo.eligibilityResponseUrl?data.prescriptionInfo.eligibilityResponseUrl:'-'}}</p>
+        {{data.preAuthorizationInfo.eligibilityResponseUrl?data.preAuthorizationInfo.eligibilityResponseUrl:'-'}}</p>
     </div>
   </div>
   <div class="col-4 col-xxl-3">
@@ -576,69 +576,13 @@
                         <td class="label">Quantity</td>
                         <td>{{item.quantity}} {{item.quantityCode}}</td>
                       </tr>
-                      <tr>
-                        <td class="label">Unit Price</td>
-                        <td>{{item.unitPrice}} <span class="currency">SR</span></td>
-                      </tr>
-                      <tr>
-                        <td class="label">Discount Amount</td>
-                        <td>{{item.discount}} <span class="currency">SR</span></td>
-                      </tr>
-
-                      <tr>
-                        <td class="label">
-                          <div class="d-flex align-items-center">
-                            <span class="pr-1">Tax</span>
-                            <mat-icon class="material-icons-outlined size-20" matTooltip="Payer share Tax only">
-                              info</mat-icon>
-                          </div>
-                        </td>
-                        <td>{{item.tax}} <span class="currency">SR</span></td>
-                      </tr>
-                      <tr>
-                        <td class="label">
-                          <div class="d-flex align-items-center">
-                            <span class="pr-1">Patient Share</span>
-                            <mat-icon class="material-icons-outlined size-20" matTooltip="Patient share without TAX">
-                              info</mat-icon>
-                          </div>
-                        </td>
-                        <td>{{item.patientShare}} <span class="currency">SR</span> ({{item.patientSharePercent}}<span
-                            class="currency">%</span>)</td>
-                      </tr>
-                      <tr>
-                        <td class="label">Payer Share</td>
-                        <td>{{item.payerShare}} <span class="currency">SR</span></td>
-                      </tr>
-
-
-                    </tbody>
+                     </tbody>
                   </table>
                 </div>
                 <div class="col-4">
                   <table class="inline-label-table">
                     <tbody>
-                      <tr>
-                        <td class="label">
-                          <div class="d-flex align-items-center">
-                            <span class="pr-1">Factor</span>
-                            <mat-icon class="material-icons-outlined size-20" matTooltip="1 - Discount (%)">info
-                            </mat-icon>
-                          </div>
-                        </td>
-                        <td>{{item.factor}}</td>
-                      </tr>
-                      <tr>
-                        <td class="label">Medication Selection Reason </td>
-                        <td>{{item.drugSelectionReasonName ?
-                          item.drugSelectionReasonName:"-"}}</td>
-                      </tr>
-                      <tr>
-                        <td class="label">Prescribed Medication </td>
-                        <td>{{item.prescribedDrugCode ?
-                          item.prescribedDrugCode:"-"}}</td>
-                      </tr>
-                      <tr>
+                       <tr>
                         <td class="label">Supporting Info</td>
                         <td>{{item.supportingInfoNames}}</td>
                       </tr>

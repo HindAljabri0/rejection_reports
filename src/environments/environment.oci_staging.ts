@@ -2,6 +2,7 @@ const host = 'https://stg-eclaims.waseel.com/api';
 const apiDotHost = 'https://api.stg-eclaims.waseel.com';
 const hostFeedback = 'https://feedback.stg-eclaims.waseel.com/en/';
 const hostjisr = 'https://stg-jisr.waseel.com/signIn'
+const hostlegacy = 'http://legacy.stg-eclaims.waseel.com/'
 
 export const environment = {
     name: 'oci_staging',
@@ -50,4 +51,5 @@ export const environment = {
     chronicDiseaseManagement: `${host}/chronic-disease-management`,
     feedbacksurveyUrl: `${hostFeedback}`,
     communicationportalUrl: `${hostjisr}`,
+    legacyUrl:`${hostlegacy}`,
 };

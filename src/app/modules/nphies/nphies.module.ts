@@ -39,6 +39,7 @@ import { NphiesUploadsComponent } from './nphies-uploads/nphies-uploads.componen
 import { NphiesUploadCardComponent } from './nphies-uploads/nphies-upload-card/nphies-upload-card.component';
 import { CancelReasonModalComponent } from './preauthorization-transactions/cancel-reason-modal/cancel-reason-modal.component';
 import { AddEditItemDetailsModalComponent } from './add-edit-item-details-modal/add-edit-item-details-modal.component';
+import { AddEditItemDetailsPrescriptionComponent } from './add-edit-item-details-prescription/add-edit-item-details-prescription.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { RecentReconciliationComponent } from './payment-reconciliation/recent-reconciliation/recent-reconciliation.component';
 import { ClaimTransactionsComponent } from './claim-transactions/claim-transactions.component';
@@ -72,6 +73,7 @@ import { ConvertPreAuthToClaimComponent } from './convert-pre-auth-to-claim/conv
 import { EligiblityJsonResponseComponent } from './view-eligibility-details/eligiblity-json-response/eligiblity-json-response.component';
 import { MatTabsModule } from '@angular/material';
 import { ApprovalJsonResponseComponent } from './view-preauthorization-details/approval-json-response/approval-json-response.component';
+import { PrescriberJsonResponseComponent } from './view-prescription-detail/prescriber-json-response/prescriber-json-response.component';
 import { DaysOfSupplyUploadComponent } from './days-of-supply-upload/days-of-supply-upload.component';
 import { MedicationDaysUploadComponent } from './medication-days-upload/medication-days-upload.component';
 import { AddMedicationSupplyDialogComponent } from './add-medication-supply-dialog/add-medication-supply-dialog.component';
@@ -88,7 +90,8 @@ import { ChooseAttachmentUploadDialogComponent } from './choose-attachment-uploa
 import { PbmValidationResponseSummaryDialogComponent } from 'src/app/components/dialogs/pbm-validation-response-summary-dialog/pbm-validation-response-summary-dialog.component';
 import { AddPrescriptionComponent } from './add-prescription/add-prescription.component';
 import { PrescriptionTransactionsComponent } from './prescription-transactions/prescription-transactions.component';
-import { AddEditPrescriptionItemComponent } from './add-edit-prescription-item/add-edit-prescription-item.component';
+import { AddEditPrescriptionsItemComponent } from './add-edit-prescriptions-item/add-edit-prescriptions-item.component';
+import { DosageDetailsComponent } from './add-edit-prescription-item/dosage-details/dosage-details.component';
 import { ViewPrescriptionDetailsDialogComponent } from './view-prescription-details-dialog/view-prescription-details-dialog.component';
 import { ApaCommunicationRequestsComponent } from './advance-preauth-transactions/apa-communication-requests/apa-communication-requests.component';
 import { PrescriptionCancelReasonModalComponent } from './prescription-transactions/prescription-cancel-reason-modal/prescription-cancel-reason-modal.component';
@@ -96,11 +99,6 @@ import { PrescriptionCommunicationRequestsComponent } from './prescription-trans
 import { PrescriptionProcessedTransactionsComponent } from './prescription-transactions/prescription-processed-transactions/prescription-processed-transactions.component';
 import { PrescriptionReuseApprovalModalComponent } from './prescription-transactions/prescription-reuse-approval-modal/prescription-reuse-approval-modal.component';
 import { ViewPrescriptionDetailsComponent } from './view-prescription-detail/view-prescription-details.component';
-import { PrescriptionAddEditCareTeamModalComponent } from './add-prescription/prescription-add-edit-care-team-modal/prescription-add-edit-care-team-modal.component';
-import { PrescriptionAddEditDiagnosisModalComponent } from './add-prescription/prescription-add-edit-diagnosis-modal/prescription-add-edit-diagnosis-modal.component';
-import { PrescriptionAddEditSupportingInfoModalComponent } from './add-prescription/prescription-add-edit-supporting-info-modal/prescription-add-edit-supporting-info-modal.component';
-import { PrescriptionAddEditVisionLensSpecificationsComponent } from './add-prescription/prescription-add-edit-vision-lens-specifications/prescription-add-edit-vision-lens-specifications.component';
-import { PrescriptionManageSupportingInfoComponent } from './add-prescription/prescription-manage-supporting-info/prescription-manage-supporting-info.component';
 import { PrescriptionDetailsComponent } from './prescription-details/prescription-details.component';
 import { MreValidationResponseSummaryDialogComponent } from 'src/app/components/dialogs/mre-validation-response-summary-dialog/mre-validation-response-summary-dialog.component';
 
@@ -141,6 +139,7 @@ import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth
         NphiesUploadCardComponent,
         CancelReasonModalComponent,
         AddEditItemDetailsModalComponent,
+        AddEditItemDetailsPrescriptionComponent,
         RecentReconciliationComponent,
         ClaimTransactionsComponent,
         ClaimProcessedTransactionsComponent,
@@ -161,6 +160,7 @@ import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth
         ConvertPreAuthToClaimComponent,
         EligiblityJsonResponseComponent,
         ApprovalJsonResponseComponent,
+        PrescriberJsonResponseComponent,
         DaysOfSupplyUploadComponent,
         MedicationDaysUploadComponent,
         AddMedicationSupplyDialogComponent,
@@ -175,7 +175,8 @@ import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth
         PbmValidationResponseSummaryDialogComponent,
         AddPrescriptionComponent,
         PrescriptionTransactionsComponent,
-        AddEditPrescriptionItemComponent,
+        AddEditPrescriptionsItemComponent,
+        DosageDetailsComponent,
         ViewPrescriptionDetailsDialogComponent,
         ApaCommunicationRequestsComponent,
         PrescriptionCancelReasonModalComponent,
@@ -183,11 +184,6 @@ import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth
         PrescriptionProcessedTransactionsComponent,
         PrescriptionReuseApprovalModalComponent,
         ViewPrescriptionDetailsComponent,
-        PrescriptionAddEditCareTeamModalComponent,
-        PrescriptionAddEditDiagnosisModalComponent,
-        PrescriptionAddEditSupportingInfoModalComponent,
-        PrescriptionAddEditVisionLensSpecificationsComponent,
-        PrescriptionManageSupportingInfoComponent,
         PrescriptionDetailsComponent,
         ApaProcessedTransactionsComponent,
         ExtractClaimsComponent,
@@ -225,9 +221,11 @@ import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth
         AddEditVisionLensSpecificationsComponent,
         AddEditSupportingInfoModalComponent,
         ApiErrorsDialogComponent,
+        ViewPrescriptionDetailsComponent,
         AddCommunicationDialogComponent,
         CancelReasonModalComponent,
         AddEditItemDetailsModalComponent,
+        AddEditItemDetailsPrescriptionComponent,
         ReuseApprovalModalComponent,
         UploadPhysiciansDialogComponent,
         AddPhysicianDialogComponent,
@@ -240,7 +238,8 @@ import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth
         ViewPrintPreviewDialogComponent,
         PbmValidationResponseSummaryDialogComponent,
         MreValidationResponseSummaryDialogComponent,
-        AddEditPrescriptionItemComponent,
+        AddEditPrescriptionsItemComponent,
+        DosageDetailsComponent,
         ViewPrescriptionDetailsDialogComponent,
         PrescriptionCancelReasonModalComponent,
         PrescriptionReuseApprovalModalComponent,
