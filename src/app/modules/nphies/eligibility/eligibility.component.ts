@@ -393,7 +393,6 @@ export class EligibilityComponent implements OnInit, AfterContentInit {
         this.showDetails = true;*/
         let response = event.body as EligibilityResponseModel;
         this.getDetails(response.responseId);
-        console.log(response);
       }
     }, errorEvent => {
       this.sharedServices.loadingChanged.next(false);
