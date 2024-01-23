@@ -1,10 +1,12 @@
-<div class="animate__animated animate__faster animate__fadeIn">
-    <div class="animate__animated animate__faster animate__fadeIn block-card">
-        <div class="block-header">
-            <p>Uploads Summary</p>
-        </div>
-        <div class="block-body" *ngIf="uploadSummaryList.length>0" scrollable (scrollPosition)="scrollHandler($event)">
+<div class="inner-loader-wrapper animate__animated animate__faster animate__fadeIn">
+    <div class="inner-loader" *ngIf="loading">
+        <mat-spinner diameter="48"></mat-spinner>
+    </div>
+    <app-detailscard title="Upload Summary" class="uploaded-card-all">
+        <div class="scroll-block" *ngIf="uploadSummaryList.length>0" scrollable
+            (scrollPosition)="scrollHandler($event)">
             <div class="row small-gutter uploaded-card-all">
+
                 <div class="col-xl-4 col-md-6" *ngFor="let row of uploadSummaryList">
                     <div class="uploaded-card">
                         <p class="medium text-primary">{{row.uploadName}}</p>
@@ -30,6 +32,8 @@
                     </div>
                 </div>
             </div>
+            <app-empty-state *ngIf="!loading && currentPage == 0"></app-empty-state>
+            <p class="info-block" *ngIf="currentPage >= maxPages">There is no more data</p>
         </div>
-    </div>
+    </app-detailscard>
 </div>

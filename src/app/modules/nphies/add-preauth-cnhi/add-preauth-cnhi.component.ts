@@ -63,6 +63,8 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
   selectedPlanIdError: string;
   IsSubscriberRequired = false;
   IsAccident = false;
+  isOnline: boolean = false;
+  isOffline: boolean = false;
   IsEncounter: boolean = false;
   AllTPA: any[] = [];
   filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
@@ -91,6 +93,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
     date: [''],
     dateWritten: [''],
     prescriber: [''],
+    eligibilityType: [''],
     eligibilityOfflineDate: [''],
     eligibilityOfflineId: [''],
     eligibilityResponseId: [''],
@@ -257,6 +260,11 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
   ngOnInit() {
     this.cnhiSubType = [ { value: 'ip', name: 'InPatient' },
     { value: 'emr', name: 'Emergency' },];
+
+    this.FormPreAuthorization.get('eligibilityType').valueChanges.subscribe(value => {
+        this.isOnline = value === 'online';
+        this.isOffline = value === 'offline';
+      });
     this.getPayees();
     this.getTPA();
     this.getPBMValidation();

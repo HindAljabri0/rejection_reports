@@ -62,6 +62,7 @@ export class ViewPrescriptionDetailsComponent implements OnInit {
         }, error => { });
     }
 
+    
     getCommunications() {
         this.sharedServices.loadingChanged.next(true);
         // tslint:disable-next-line:max-line-length

@@ -76,16 +76,16 @@ export class CancelPreviousClaimComponent implements OnInit {
 
     isValidNumberListBundleIdAndClaimsIdentifier() {
         if (this.isCancellByBundleIds && this.CancellClaimForm.controls.requestBundleId.value != null &&
-            this.CancellClaimForm.controls.requestBundleId.value.split(',').length > 100) {
-            this.dialogService.showMessage('Error', "Number List of Bundle IDs should be less then 100", 'alert',
+            this.CancellClaimForm.controls.requestBundleId.value.split(',').length > 500) {
+            this.dialogService.showMessage('Error', "Number List of Bundle IDs should be less then 500", 'alert',
                 true, 'OK');
             return false
 
         }
 
         if (!this.isCancellByBundleIds && this.CancellClaimForm.controls.claimIdentifier.value != null &&
-            this.CancellClaimForm.controls.claimIdentifier.value.split(',').length > 100) {
-            this.dialogService.showMessage('Error', "Number List of Claim Identifier IDs should be less then 100",
+            this.CancellClaimForm.controls.claimIdentifier.value.split(',').length > 500) {
+            this.dialogService.showMessage('Error', "Number List of Claim Identifier IDs should be less then 500",
                 'alert',
                 true, 'OK');
 
