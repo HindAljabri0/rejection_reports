@@ -465,8 +465,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         }
         this.FormItem.controls.item.setValue('');
         // this.itemList = [{ "code": type.code, "description": type.display }];
-
-        this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, type.itemType, this.data.source === 'APPROVAL' ? this.data.source : '').subscribe(event => {
+        const endDateStr = this.datePipe.transform(this.FormItem.controls.endDate.value, 'yyyy-MM-dd');
+        
+        this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, type.itemType, endDateStr).subscribe(event => {
             if (event instanceof HttpResponse) {
                 this.itemList = event.body;
                 if (type) {
@@ -526,7 +527,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             this.IsItemLoading = true;
             this.FormItem.controls.item.disable();
             const endDateStr = this.datePipe.transform(this.FormItem.controls.endDate.value, 'yyyy-MM-dd');
-            console.log("serviceDate = "+endDateStr);
+            
             this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, this.FormItem.controls.type.value.value, endDateStr).subscribe(event => {
                 if (event instanceof HttpResponse) {
                     this.itemList = event.body;
