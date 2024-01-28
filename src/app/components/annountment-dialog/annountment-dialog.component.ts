@@ -24,7 +24,7 @@ export class AnnountmentDialogComponent implements OnInit {
   }
 
   checkfileType(fileName: string) {
-    let fileExtension = fileName.split(".")[1];
+    let fileExtension = fileName.split(".").pop();
     let src = './assets/file-types/'
     switch (fileExtension.toUpperCase()) {
       case "PDF":
