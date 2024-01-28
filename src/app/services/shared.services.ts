@@ -96,6 +96,7 @@ export class SharedServices {
   shadesOfDangerColor = ['#faeded', '#f0c8c8', '#e6a4a4', '#dc8080', '#d25b5b', '#b94242', '#903333', '#672525', '#3d1616', '#140707'];
   shadesOfSuccessColor = ['#eef9ed', '#cdecca', '#ace0a7', '#8bd484', '#6ac761', '#50ae47', '#3e8737', '#2d6128', '#1b3a18', '#091308'];
   constructor(
+    
     public authService: AuthService,
     private router: Router,
     private notifications: NotificationsService,
@@ -874,6 +875,10 @@ export class SharedServices {
     return bytes.buffer;
   }
 
+  getPrivileges(){
+   this.store.select(getUserPrivileges).subscribe(privileges => this.userPrivileges = privileges);
+   return this.userPrivileges;
+  }
   getColorsFromShades(numberOfColors: number, shade: string) {
     let colorGroup: string[];
     if (shade === 'danger') {

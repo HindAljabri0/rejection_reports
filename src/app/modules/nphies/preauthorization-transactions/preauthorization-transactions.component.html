@@ -116,9 +116,9 @@
             <div *ngIf="transactions.length>0" class="pagination-header">
 
 
-                <button matRipple type="button" class="ml-auto btn action-btn my-n2 mr-n2" (click)="downloadSheetFormat()" matTooltip="Download">
+                <!-- <button matRipple type="button" class="ml-auto btn action-btn my-n2 mr-n2" (click)="downloadSheetFormat()" matTooltip="Download">
                     <img src="./assets/{{detailTopActionIcon}}" />
-                </button>
+                </button> -->
             </div>
 
             <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="transactionModel && transactions.length > 0">
@@ -135,11 +135,11 @@
                                 <th>Pre Auth Ref No</th>
                                 <th>Provider Claim No</th>
                                 <th>Status</th>
-                                <th class="text-nowrap"><span class="inline-text pr-1">Processing Status</span>
+                                <th *ngIf="getPrivileges().ProviderPrivileges.NPHIES.isAdmin || getPrivileges().ProviderPrivileges.NPHIES.canAccessPreAuthorization" class="text-nowrap"><span class="inline-text pr-1">Processing Status</span>
                                     <mat-icon matTooltip="This will request for the current processing status of the preauth"
                                         class="material-icons-outlined size-20 inline-text">info</mat-icon>
                                 </th>
-                                <th class="text-center text-nowrap"><span class="inline-text pr-1">Inquiry</span>
+                                <th *ngIf="getPrivileges().ProviderPrivileges.NPHIES.isAdmin || getPrivileges().ProviderPrivileges.NPHIES.canAccessPreAuthorization" class="text-center text-nowrap"><span class="inline-text pr-1">Inquiry</span>
                                     <mat-icon matTooltip="This will send the same preauth request again to NPHIES to fetch latest response from NPHIES queue"
                                         class="material-icons-outlined size-20 inline-text">info</mat-icon>
                                 </th>
@@ -172,7 +172,7 @@
                                         [ngClass]="transaction.status === 'Queued' ? 'text-orange' : (transaction.status === 'Error' ? 'text-danger' : (transaction.status === 'approved' ? 'text-success' : (transaction.status === 'rejected' ? 'text-danger' : (transaction.status === 'partial' ? 'text-light-blue' : (transaction.status === 'not-required' ? 'text-purple' : (transaction.status === 'pended' ? 'text-deep-red' : ''))))))">{{transaction.status
                                         | titlecase}}</span>
                                 </td>
-                                <td class="actions text-left text-wrap">
+                                <td  *ngIf="getPrivileges().ProviderPrivileges.NPHIES.isAdmin || getPrivileges().ProviderPrivileges.NPHIES.canAccessPreAuthorization" class="actions text-left text-wrap">
                                     <div class="d-flex align-items-center">
                                         <button mat-icon-button matTooltip="Get current status of preauth" class="text-primary ml-n2" (click)="checkStatus(transaction.responseId)"
                                             *ngIf="transaction.status !== 'Error'">
@@ -183,7 +183,7 @@
 
                                     </div>
                                 </td>
-                                <td class="actions text-center">
+                                <td  *ngIf="getPrivileges().ProviderPrivileges.NPHIES.isAdmin || getPrivileges().ProviderPrivileges.NPHIES.canAccessPreAuthorization" class="actions text-center">
                                     <!-- transaction.status === 'partial' || -->
                                     <!-- transaction.status === 'rejected' || -->
                                     <button
@@ -205,7 +205,7 @@
 
                                     </button>
                                 </td>
-                                <td class="actions">
+                                <td class="actions"  *ngIf="getPrivileges().ProviderPrivileges.NPHIES.isAdmin || getPrivileges().ProviderPrivileges.NPHIES.canAccessPreAuthorization">
                                     <ng-container *ngIf="transaction.status != 'cancelled'">
                                         <mat-menu #moreMenu="matMenu" xPosition="before">
                                             <button mat-menu-item

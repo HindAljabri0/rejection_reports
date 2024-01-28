@@ -301,12 +301,12 @@
                         </li>
                       </ul>
                 </mat-expansion-panel>
-                <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessEligibility">
+                <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessEligibility || userPrivileges.ProviderPrivileges.NPHIES.canAccessViewEligibility">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Eligibility</mat-panel-title>
                     </mat-expansion-panel-header>
-                    <ul class="nav-list">
-                        <li>
+                    <ul class="nav-list" >
+                        <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessEligibility">
                             <a routerLink="/nphies/eligibility" routerLinkActive="is-active">
                                 <span class="text">Request Eligibility</span>
                             </a>
@@ -337,7 +337,7 @@
                         </li>
                     </ul>
                 </mat-expansion-panel>
-                <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessPreAuthorization">
+                <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessPreAuthorization ||userPrivileges.ProviderPrivileges.NPHIES.canAccessViewPreAuthorization">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             <span class="d-flex align-items-center">
@@ -347,12 +347,12 @@
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <ul class="nav-list">
-                        <li>
+                        <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessPreAuthorization">
                             <a routerLink="/nphies/add-preauthorization" routerLinkActive="is-active">
                                 <span class="text">Request Pre Authorization</span>
                             </a>
                         </li>
-                        <li>
+                        <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessPreAuthorization">
                             <a routerLink="/nphies/add-cnhi-preauthorization" routerLinkActive="is-active">
                                 <span class="text">Request CNHI Pre Authorization</span>
                             </a>

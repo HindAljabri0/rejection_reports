@@ -27,7 +27,7 @@
         </div>
       </ng-template>
       <div class="communication-wrapper">
-        <h5 class="form-title px-14 py-0 mb-0">
+        <h5  *ngIf="getPrivileges().ProviderPrivileges.NPHIES.isAdmin || getPrivileges().ProviderPrivileges.NPHIES.canAccessPreAuthorization" class="form-title px-14 py-0 mb-0">
           <button mat-flat-button class="primary-text-btn ml-auto px-0" disableRipple="true"
             (click)="openAddCommunicationDialog()">
             <mat-icon>add_circle_outline</mat-icon>
@@ -349,11 +349,13 @@
 <div class="primary-dialog-footer has-border">
   <div class="btn-list text-right">
     <!-- <button mat-flat-button color="primary">Progress to Encounter</button> -->
-    <button mat-flat-button color="primary" (click)="openPreviewDialog()" *ngIf="data.detailsModel.outcome !== 'Error'">
+    <button mat-flat-button color="primary" (click)="openPreviewDialog()" *ngIf="data.detailsModel.outcome !== 'Error' && (getPrivileges().ProviderPrivileges.NPHIES.isAdmin || getPrivileges().ProviderPrivileges.NPHIES.
+    canAccessPreAuthorization)">
       {{getType()}}
     </button>
     <button
-      *ngIf="data.detailsModel.status === 'approved' || data.detailsModel.status === 'rejected' || data.detailsModel.status === 'partial'  || data.detailsModel.status === 'not-required'"
+      *ngIf=" (getPrivileges().ProviderPrivileges.NPHIES.isAdmin || getPrivileges().ProviderPrivileges.NPHIES.
+      canAccessPreAuthorization) && (data.detailsModel.status === 'approved' || data.detailsModel.status === 'rejected' || data.detailsModel.status === 'partial'  || data.detailsModel.status === 'not-required')"
       mat-flat-button color="primary" (click)="OpenReuseModal()">Follow Up/Add Related</button>
     <button mat-flat-button color="primary" (click)="closeDialog()">Close</button>
   </div>

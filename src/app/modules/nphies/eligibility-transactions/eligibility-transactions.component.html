@@ -88,11 +88,11 @@
         </form>
     </div>
 
-    <div *ngIf="transactions.length>0" class="pagination-header">
+    <!-- <div *ngIf="transactions.length>0" class="pagination-header">
         <button matRipple type="button" class="ml-auto btn action-btn my-n2 mr-n2" (click)="downloadEligibilityAsJson()" matTooltip="Download">
             <img src="./assets/{{detailTopActionIcon}}" />
         </button>
-    </div>
+    </div> -->
     <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true" *ngIf="!(transactionModel && transactions.length === 0)">
         <div class="fixed-height  fixed-height-sm" *ngIf="transactionModel && transactions.length > 0">
             <table class="primary-grid sticky-header" cellpadding="0" cellspacing="0" border="0">

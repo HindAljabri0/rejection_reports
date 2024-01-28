@@ -45,7 +45,9 @@ export interface UserPrivileges {
     NPHIES: {
       isAdmin: boolean,
       canAccessEligibility: boolean,
+      canAccessViewEligibility:boolean,
       canAccessPreAuthorization: boolean,
+      canAccessViewPreAuthorization:boolean,
       canAccessClaim: boolean,
       canAccessBeneficiary: boolean,
       canAccessPaymentReconciliation: boolean,
@@ -113,7 +115,9 @@ export const initState: MainState = {
       NPHIES: {
         isAdmin: false,
         canAccessEligibility: false,
+        canAccessViewEligibility:false,
         canAccessPreAuthorization: false,
+        canAccessViewPreAuthorization: false,
         canAccessClaim: false,
         canAccessBeneficiary: false,
         canAccessPaymentReconciliation: false,
@@ -182,7 +186,9 @@ const _mainReducer = createReducer(
         NPHIES: {
           isAdmin: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.0'),
           canAccessEligibility: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.1'),
+          canAccessViewEligibility:providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.81'),
           canAccessPreAuthorization: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.2'),
+          canAccessViewPreAuthorization:providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.82'),
           canAccessClaim: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.3'),
           canAccessBeneficiary: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.4'),
           canAccessPaymentReconciliation: providerId != '101' && AuthService.hasPrivilege(providerId, '101', '25.5'),
