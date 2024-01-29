@@ -1,4 +1,4 @@
-const host = 'http://gateway.okd.waseel.com';
+const host = 'https://api.qa-eclaims.waseel.com';
 const hostFeedback = 'https://feedback.qa-eclaims.waseel.com/en/';
 const hostjisr = 'https://qa-jisr.waseel.com/signIn';
 const hostlegacy = 'http://legacy.dr-eclaims.waseel.com/';
