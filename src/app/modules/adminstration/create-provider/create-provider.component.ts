@@ -1,6 +1,7 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { stringify } from 'querystring';
 import { Provider } from 'src/app/models/nphies/provider';
 import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
@@ -30,6 +31,7 @@ export class CreateProviderComponent implements OnInit {
   providerNameArabicControl = new FormControl();
   providerController = new FormControl();
   certificateTypeControl=new FormControl();
+  providerId='';
   constructor(private superAdmin: SuperAdminService, private dialogService: DialogService, public commen: SharedServices, private providerNphiesSearchService: ProviderNphiesSearchService, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
@@ -71,6 +73,7 @@ console.log(this.providerInfoForm.controls.certificateTypeControl.value)
         "englistName": this.providerInfoForm.controls.providerNameEnglishControl.value.trim(),
         "nphiesId": this.providerInfoForm.controls.providerNphiesIdControl.value,
         "waseel_associated_provider": this.providerInfoForm.controls.certificateTypeControl.value!='1'?false:true,
+         "switchAccountId":this.providerId
       }
       this.providerNphiesSearchService.addNewProvider(this.commen.providerId, this.providerInfo).subscribe(event => {
 
@@ -94,10 +97,11 @@ console.log(this.providerInfoForm.controls.certificateTypeControl.value)
         }
       },
         error => {
+            console.log(JSON.stringify(error));
           if (error instanceof HttpErrorResponse) {
             this.dialogService.openMessageDialog({
               title: '',
-              message: error.message,
+              message: error.error,
               isError: true
             });
           }
@@ -113,8 +117,8 @@ console.log(this.providerInfoForm.controls.certificateTypeControl.value)
   }
 
   selectProvider(providerId: string = null) {
-    ;
     if (providerId !== null) {
+        this.providerId=providerId;
       this.selectedProvider = providerId;
       this.providerInf = this.providers.filter(provider => provider.providerId == providerId)[0];
       this.providerInfoForm.controls.CCHI_IdControl.setValue(this.providerInf.cchi_ID);
@@ -127,6 +131,7 @@ console.log(this.providerInfoForm.controls.certificateTypeControl.value)
 
     } else {
       const providerId = this.providerInfoForm.controls.providerController.value.split('|')[0].trim();
+      this.providerId=providerId;
       this.selectedProvider = providerId;
     }
   }
