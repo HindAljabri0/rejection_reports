@@ -480,7 +480,7 @@ export class PrescriptionTransactionsComponent implements OnInit {
         let action: any;
 
         if (communicationId) {
-            action = this.providerNphiesApprovalService.getTransactionDetailsFromCR(this.sharedServices.providerId, requestId, communicationId);
+            action = this.providerNphiesApprovalService.getPrescriberTransactionDetailsFromCR(this.sharedServices.providerId, requestId, communicationId);
         } else {
             action = this.providerNphiesApprovalService.getPrescriberTransactionDetails(this.sharedServices.providerId, requestId, responseId);
         }
