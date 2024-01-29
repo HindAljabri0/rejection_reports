@@ -5,4 +5,5 @@ export class Provider {
     englistName: string;
     arabicName: string;
     waseel_associated_provider:any;
+    switchAccountId:string
 }
