@@ -97,7 +97,6 @@ console.log(this.providerInfoForm.controls.certificateTypeControl.value)
         }
       },
         error => {
-            console.log(JSON.stringify(error));
           if (error instanceof HttpErrorResponse) {
             this.dialogService.openMessageDialog({
               title: '',
