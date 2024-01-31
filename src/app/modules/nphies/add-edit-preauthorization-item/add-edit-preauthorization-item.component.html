@@ -339,13 +339,13 @@
         <div class="form-group">
           <label class="control-label">Pharmacist Substitute Reason</label>
           <mat-form-field class="form-control custom-select-control">
-            <mat-select #reasonSelect formControlName="pharmacySubstitute" (selectionChange)="onReasonSelectionChange(reasonSelect)">
+            <mat-select #reasonSelect formControlName="pharmacistSubstitute" (selectionChange)="onReasonSelectionChange(reasonSelect)">
               <mat-option value="">Select substitute reason</mat-option>
               <mat-option *ngFor="let medication of pharmacySubstituteList" [value]="medication.value">{{medication.name}}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
-          <div *ngIf="FormItem.get('pharmacySubstitute').value === 'Others'">
+          <div *ngIf="FormItem.get('pharmacistSubstitute').value === 'Others'">
             <mat-form-field>
               <input matInput formControlName="reasonPharmacistSubstitute" placeholder="Other reason">
             </mat-form-field>

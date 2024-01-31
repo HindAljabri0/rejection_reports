@@ -83,7 +83,7 @@ export class AddPreauthorizationComponent implements OnInit {
         type: ['', Validators.required],
         subType: [''],
         preAuthRefNo: [''],
-        prescriptionRefNo: [''],
+        prescription: [''],
         accidentType: [''],
         streetName: [''],
         city: [''],
@@ -1169,7 +1169,7 @@ export class AddPreauthorizationComponent implements OnInit {
                             x.diagnosisSequence = result.diagnosisSequence;
                             x.pharmacistSelectionReason = result.pharmacistSelectionReason;
                             x.prescribedDrugCode = result.prescribedDrugCode;
-                            x.pharmacySubstitute = result.pharmacySubstitute;
+                            x.pharmacistSubstitute = result.pharmacistSubstitute;
                             x.reasonPharmacistSubSitute = result.reasonPharmacistSubSitute;
                            
                             if (x.supportingInfoSequence) {
@@ -1980,7 +1980,7 @@ export class AddPreauthorizationComponent implements OnInit {
             preAuthorizationModel.payeeType = this.FormPreAuthorization.controls.payeeType.value.value;
             preAuthorizationModel.type = this.FormPreAuthorization.controls.type.value.value;
             preAuthorizationModel.subType = this.FormPreAuthorization.controls.subType.value.value;
-
+            preAuthorizationModel.prescription = this.FormPreAuthorization.controls.prescription.value;
             if (this.FormPreAuthorization.controls.preAuthRefNo.value) {
                 this.model.preAuthRefNo = this.FormPreAuthorization.controls.preAuthRefNo.value.map(x => {
                     return x.value;
@@ -2196,7 +2196,7 @@ export class AddPreauthorizationComponent implements OnInit {
                     model.invoiceNo = null;
                     model.pharmacistSelectionReason = x.pharmacistSelectionReason;
                     model.prescribedDrugCode = x.prescribedDrugCode;
-                    model.pharmacySubstitute = x.pharmacySubstitute;
+                    model.pharmacistSubstitute = x.pharmacistSubstitute;
                     model.reasonPharmacistSubSitute = x.reasonPharmacistSubSitute;
 
                     model.itemDetails = x.itemDetails.map(y => {
