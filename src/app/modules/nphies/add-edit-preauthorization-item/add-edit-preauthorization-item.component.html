@@ -296,20 +296,23 @@
         </div>
   
         <div class="col-4 col-lg-3" *ngIf="data.type === 'pharmacy'">
-          <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('drugSelectionReason').touched) && FormItem.get('drugSelectionReason').hasError('required')}">
-            <label class="control-label">Medication Selection Reason</label>
+            <div class="form-group" [ngClass]="{'has-error': (isSubmitted || FormItem.get('pharmacistSelectionReason').touched) && FormItem.get('pharmacistSelectionReason').hasError('required')}">
+                <label class="control-label">Pharmacist Selection Reason<span class="asterisk">*</span></label>
             <mat-form-field class="form-control custom-select-control">
-              <mat-select formControlName="drugSelectionReason">
-                <mat-option value="">Select medication reason</mat-option>
+              <mat-select formControlName="pharmacistSelectionReason">
+                <mat-option value="">Select pharmacist reason</mat-option>
                 <mat-option *ngFor="let medication of medicationReasonList" [value]="medication">{{medication.name}}</mat-option>
               </mat-select>
             </mat-form-field>
+          </div>
+          <div *ngIf="(isSubmitted || FormItem.get('pharmacistSelectionReason').touched) && FormItem.get('pharmacistSelectionReason').hasError('required')">
+            <span class="error-text">Please select the pharmacist selection reason</span>
           </div>
         </div>
   
         <div class="col-4 col-lg-6" *ngIf="data.type === 'pharmacy'">
         <div class="form-group">
-          <label class="control-label">Prescribed Medication</label>
+          <label class="control-label">Prescribed Medication<span class="asterisk">*</span></label>
           <mat-form-field class="form-control custom-select-control">
             <mat-select formControlName="prescribedDrugCode">
               <mat-option>
@@ -327,9 +330,27 @@
             </mat-select>
           </mat-form-field>
         </div>
-  
+        <div *ngIf="(isSubmitted || FormItem.get('prescribedDrugCode').touched) && FormItem.get('prescribedDrugCode').hasError('required')">
+            <span class="error-text">Please select the prescribed medication</span>
+          </div>
         
       </div>
+      <div class="col-4 col-lg-3" *ngIf="data.type === 'pharmacy' &&  data.source === 'APPROVAL' " >
+        <div class="form-group">
+          <label class="control-label">Pharmacist Substitute Reason</label>
+          <mat-form-field class="form-control custom-select-control">
+            <mat-select #reasonSelect formControlName="pharmacySubstitute" (selectionChange)="onReasonSelectionChange(reasonSelect)">
+              <mat-option value="">Select substitute reason</mat-option>
+              <mat-option *ngFor="let medication of pharmacySubstituteList" [value]="medication.value">{{medication.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+          <div *ngIf="FormItem.get('pharmacySubstitute').value === 'Others'">
+            <mat-form-field>
+              <input matInput formControlName="reasonPharmacistSubstitute" placeholder="Other reason">
+            </mat-form-field>
+          </div>
+        </div>
   
       </div>
       <hr class="hr mb-3">
