@@ -40,7 +40,10 @@ export class AddEditItemDetailsModalComponent implements OnInit {
     display: [''],
     quantity: ['1'],
     quantityCode: [''],
-    searchQuery: ['']
+    searchQuery: [''],
+    pharmacistSelectionReason: ['',Validators.required],
+    prescribedDrugCode: ['',Validators.required],
+    reasonPharmacistSubSitute: ['']
   });
 
   isSubmitted = false;

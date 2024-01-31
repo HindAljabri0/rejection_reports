@@ -76,7 +76,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         searchQuery: [''],
         pharmacistSelectionReason: ['',Validators.required],
         prescribedDrugCode: ['',Validators.required],
-        pharmacySubstitute: [''],
+       // pharmacySubstitute: [''],
         pharmacistSubstitute: [''],
         reasonPharmacistSubSitute: [''],
     });
@@ -217,7 +217,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
                 endDate: this.data.item.endDate ? new Date(this.data.item.endDate) : null,
                 invoiceNo: this.data.item.invoiceNo,
                 pharmacistSelectionReason: this.medicationReasonList.filter(x => x.value === this.data.item.pharmacistSelectionReason)[0] ? this.medicationReasonList.filter(x => x.value === this.data.item.pharmacistSelectionReason)[0] : '',
-        pharmacySubstitute: this.data.item.pharmacySubstitute,
+                pharmacistSubstitute: this.data.item.pharmacistSubstitute,
         reasonPharmacistSubSitute: this.data.item.reasonPharmacistSubSitute,
             });
 
@@ -321,7 +321,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         this.reasonSelect.nativeElement.open();
       }
       onSelectOption() {
-        if (this.FormItem.controls.pharmacySubstitute.value === 'Others') {
+        if (this.FormItem.controls.pharmacistSubstitute.value === 'Others') {
           setTimeout(() => {
             this.renderer.selectRootElement(this.otherInput.nativeElement).focus();
           });
@@ -1009,7 +1009,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
             model.endDate = this.FormItem.controls.endDate.value; //this.datePipe.transform(this.FormItem.controls.endDate.value, 'yyyy-MM-dd hh:mm aa');
             model.endDateStr = this.datePipe.transform(this.FormItem.controls.endDate.value, 'dd-MM-yyyy hh:mm aa');
-            model.pharmacySubstitute = this.FormItem.controls.pharmacySubstitute.value;
+            model.pharmacistSubstitute = this.FormItem.controls.pharmacistSubstitute.value;
             model.reasonPharmacistSubSitute = this.FormItem.controls.reasonPharmacistSubSitute.value;
             if (this.FormItem.controls.supportingInfoSequence.value && this.FormItem.controls.supportingInfoSequence.value.length > 0) {
                 model.supportingInfoSequence = this.FormItem.controls.supportingInfoSequence.value.map((x) => { return x.sequence });
