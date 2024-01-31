@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild,ElementRef} from '@angular/core';
+import { Component, OnInit, Inject, ViewChild,ElementRef, Renderer2} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSelect } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -43,7 +43,8 @@ export class AddEditItemDetailsModalComponent implements OnInit {
     searchQuery: [''],
     pharmacistSelectionReason: ['',Validators.required],
     prescribedDrugCode: ['',Validators.required],
-    reasonPharmacistSubSitute: ['']
+    reasonPharmacistSubSitute: [''],
+    pharmacistSubstitute:['']
   });
 
   isSubmitted = false;
@@ -53,6 +54,7 @@ export class AddEditItemDetailsModalComponent implements OnInit {
   cnhiTypeList: { value: string; name: string; }[];
 
   today: Date;
+    renderer: any;
   constructor(
     private sharedDataService: SharedDataService,
     private dialogRef: MatDialogRef<AddEditItemDetailsModalComponent>, @Inject(MAT_DIALOG_DATA) public data, private datePipe: DatePipe,
@@ -88,6 +90,17 @@ export class AddEditItemDetailsModalComponent implements OnInit {
     if (this.showTextInput) {
       setTimeout(() => {
         this.otherInput.nativeElement.focus();
+      });
+    }
+  }
+  openDropdown(event: Event): void {
+    event.stopPropagation();
+    this.reasonSelect.nativeElement.open();
+  }
+  onSelectOption() {
+    if (this.FormItem.controls.pharmacistSubstitute.value === 'Others') {
+      setTimeout(() => {
+        this.renderer.selectRootElement(this.otherInput.nativeElement).focus();
       });
     }
   }
@@ -255,7 +268,10 @@ export class AddEditItemDetailsModalComponent implements OnInit {
       model.display = this.FormItem.controls.display.value;
       model.quantity = parseFloat(this.FormItem.controls.quantity.value);
       model.quantityCode = this.FormItem.controls.quantityCode.value;
-
+      model.pharmacistSelectionReason = this.FormItem.controls.pharmacistSelectionReason.value;
+      model.prescribedDrugCode = this.FormItem.controls.prescribedDrugCode.value;
+      model.reasonPharmacistSubSitute = this.FormItem.controls.reasonPharmacistSubSitute.value;
+      model.pharmacistSubstitute = this.FormItem.controls.pharmacistSubstitute.value;
       this.dialogRef.close(model);
     }
   }
