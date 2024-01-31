@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild,ElementRef} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSelect } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SharedServices } from 'src/app/services/shared.services';
@@ -15,7 +15,8 @@ import { SharedDataService } from 'src/app/services/sharedDataService/shared-dat
   styles: []
 })
 export class AddEditItemDetailsModalComponent implements OnInit {
-
+    @ViewChild('reasonSelect', { static: true }) reasonSelect: ElementRef;
+    @ViewChild('otherInput', { static: true }) otherInput: ElementRef;
   @ViewChild('itemSelect', { static: true }) itemSelect: MatSelect;
   itemList: any = [];
   // tslint:disable-next-line:max-line-length
@@ -23,8 +24,12 @@ export class AddEditItemDetailsModalComponent implements OnInit {
   filteredSupportingInfo: ReplaySubject<any> = new ReplaySubject<any[]>(1);
   filteredCareTeam: ReplaySubject<any> = new ReplaySubject<any[]>(1);
   filteredDiagnosis: ReplaySubject<any> = new ReplaySubject<any[]>(1);
+  filteredPescribedMedicationItem: ReplaySubject<any> = new ReplaySubject<any[]>(1);
+  medicationReasonList = this.sharedDataService.itemMedicationReasonList;
+  pharmacySubstituteList = this.sharedDataService.pharmacySubstituteList;
   IsItemLoading = false;
-
+  showTextInput = false;
+  otherReason = '';
   onDestroy = new Subject<void>();
 
   FormItem: FormGroup = this.formBuilder.group({
@@ -73,7 +78,16 @@ export class AddEditItemDetailsModalComponent implements OnInit {
     }
 
   }
+  onReasonSelectionChange(select: MatSelect): void {
+    const selectedValue = select.value;
+    this.showTextInput = selectedValue === 'other';
 
+    if (this.showTextInput) {
+      setTimeout(() => {
+        this.otherInput.nativeElement.focus();
+      });
+    }
+  }
   setTypes(type) {
 
     switch (type) {
