@@ -19,6 +19,7 @@ export class AddEditItemDetailsModalComponent implements OnInit {
     @ViewChild('otherInput', { static: true }) otherInput: ElementRef;
   @ViewChild('itemSelect', { static: true }) itemSelect: MatSelect;
   itemList: any = [];
+  itemListFiltered: any = [];
   // tslint:disable-next-line:max-line-length
   filteredItem: ReplaySubject<any> = new ReplaySubject<any[]>(1);
   filteredSupportingInfo: ReplaySubject<any> = new ReplaySubject<any[]>(1);
@@ -27,6 +28,7 @@ export class AddEditItemDetailsModalComponent implements OnInit {
   filteredPescribedMedicationItem: ReplaySubject<any> = new ReplaySubject<any[]>(1);
   medicationReasonList = this.sharedDataService.itemMedicationReasonList;
   pharmacySubstituteList = this.sharedDataService.pharmacySubstituteList;
+  prescribedMedicationList: any;
   IsItemLoading = false;
   showTextInput = false;
   otherReason = '';
@@ -80,6 +82,36 @@ export class AddEditItemDetailsModalComponent implements OnInit {
 
 
       this.getItemList();
+    }
+    if (this.data.type === "pharmacy") {
+        this.providerNphiesSearchService.getPrescribedMedicationList(this.sharedServices.providerId).subscribe(event => {
+            if (event instanceof HttpResponse) {
+                const body = event.body;
+                if (body) {
+                    this.prescribedMedicationList = body;
+                    this.filteredPescribedMedicationItem.next(body);
+                    if (this.data.item) {
+                        const res = this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.prescribedDrugCode)[0] ? this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.prescribedDrugCode)[0] : '';
+                        if (res) {
+                            this.FormItem.patchValue({
+                                prescribedDrugCode: res
+                            });
+                        }
+                        this.filteredPescribedMedicationItem.next(this.prescribedMedicationList.slice());
+                        this.filterPrescribedMedicationItem();
+                    }
+                }
+            }
+        }, errorEvent => {
+            if (errorEvent instanceof HttpErrorResponse) {
+
+            }
+        });
+        this.FormItem.controls.prescribedMedicationItemFilter.valueChanges
+            .pipe(takeUntil(this.onDestroy))
+            .subscribe(() => {
+                this.filterPrescribedMedicationItem();
+            });
     }
 
   }
@@ -192,6 +224,22 @@ export class AddEditItemDetailsModalComponent implements OnInit {
     });
   }
 
+  filterPrescribedMedicationItem() {
+    if (!this.prescribedMedicationList) {
+        return;
+    }
+    let search = this.FormItem.controls.prescribedMedicationItemFilter.value;
+    if (!search) {
+        this.filteredPescribedMedicationItem.next(this.prescribedMedicationList.slice());
+        return;
+    } else {
+        search = search.toLowerCase();
+    }
+    this.filteredPescribedMedicationItem.next(
+        this.prescribedMedicationList.filter(item => (item.descriptionCode && item.descriptionCode.toLowerCase().indexOf(search) > -1) || (item.tradeName && item.tradeName.toString().toLowerCase().indexOf(search) > -1) || (item.gtinNumber && item.gtinNumber.toString().toLowerCase().indexOf(search) > -1))
+    );
+}
+
   filterItem() {
     if (!this.itemList) {
       return;
@@ -235,6 +283,43 @@ export class AddEditItemDetailsModalComponent implements OnInit {
 
   }
 
+  itemListFilteredFun(StanderCode) {
+    this.itemListFiltered = [];
+    this.itemList.forEach(x => {
+        if (x.code === StanderCode) {
+
+            this.itemListFiltered.unshift(x);
+        } else {
+            this.itemListFiltered.push(x);
+        }
+    });
+}
+
+  setPrescribedMedication(gtinNumber: any) {
+    const filteredData = this.itemList.filter((item) => item.code === gtinNumber);
+    this.itemListFilteredFun(gtinNumber);
+    this.FormItem.patchValue({
+        item: this.itemList.filter(x => x.code === gtinNumber)[0]
+    });
+  
+    if (this.data.type === "pharmacy") {
+        //this.itemList.filter(x => x.code === this.data.item.itemCode)[0];
+        this.filteredPescribedMedicationItem.next(this.prescribedMedicationList);
+        const res = this.prescribedMedicationList.filter(x => x.gtinNumber === gtinNumber)[0];
+        if (res != undefined) {
+            this.FormItem.patchValue({
+                prescribedDrugCode: res
+            });
+        } else {
+            this.FormItem.patchValue({
+                prescribedDrugCode: ""
+            });
+        }
+        this.filteredPescribedMedicationItem.next(this.prescribedMedicationList.slice());
+        this.filterPrescribedMedicationItem();
+    }
+}
+
   selectItem(type) {
     if (type) {
       this.FormItem.patchValue({
@@ -243,7 +328,7 @@ export class AddEditItemDetailsModalComponent implements OnInit {
         display: type.nonStandardDescription,
         unitPrice: type.unitPrice,
         discount: type.discount,
-      });
+          });
       this.getItemList(type);
     }
   }
