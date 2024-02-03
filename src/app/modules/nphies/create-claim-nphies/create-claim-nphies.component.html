@@ -1114,7 +1114,7 @@
         </div>
       </ng-template>
       <div class="communication-wrapper">
-        <h5 class="form-title px-14 py-0 mb-0">
+        <h5 class="form-title px-14 py-0 mb-0" *ngIf="getPrivileges().ProviderPrivileges.NPHIES.isAdmin || getPrivileges().ProviderPrivileges.NPHIES.canAccessClaim">
           <button type="button" mat-flat-button class="primary-text-btn ml-auto px-0" disableRipple="true" (click)="openAddCommunicationDialog()"
             *ngIf="(otherDataModel.status.toLowerCase() === 'pended' || otherDataModel.status.toLowerCase() === 'rejected' || otherDataModel.status.toLowerCase() === 'approved' || otherDataModel.status.toLowerCase() === 'partial') && (this.otherDataModel.isActive == null || this.otherDataModel.isActive)">
             <mat-icon>add_circle_outline</mat-icon>
@@ -1615,7 +1615,7 @@
     </div>
     <div class="right-block btn-list">
       <button mat-flat-button (click)="close()">Close</button>
-      <button mat-flat-button *ngIf="claimIsEditable" color="primary" (click)="toEditMode()">
+      <button mat-flat-button *ngIf="claimIsEditable && (getPrivileges().ProviderPrivileges.NPHIES.isAdmin || getPrivileges().ProviderPrivileges.NPHIES.canAccessClaim)" color="primary" (click)="toEditMode()">
         Edit</button>
       <button mat-flat-button color="primary" *ngIf="otherDataModel.status.toLowerCase() === 'partial'" (click)="createRelatedClaim()">Create Related Claim</button>
     </div>
@@ -2964,7 +2964,7 @@
               <span>Communication</span>
             </div>
           </ng-template>
-          <div class="communication-wrapper">
+          <div class="communication-wrapper"  >
             <h5 class="form-title px-14 py-0 mb-0">
               <button type="button" mat-flat-button class="primary-text-btn ml-auto px-0" disableRipple="true" (click)="openAddCommunicationDialog()"
                 *ngIf="(otherDataModel.status.toLowerCase() === 'pended' || otherDataModel.status.toLowerCase() === 'rejected' || otherDataModel.status.toLowerCase() === 'approved' || otherDataModel.status.toLowerCase() === 'partial') && (this.otherDataModel.isActive == null || this.otherDataModel.isActive)">

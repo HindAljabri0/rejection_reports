@@ -110,7 +110,7 @@
                 {{commen.statusToName(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}
             </button>
 
-            <div class="right-block" *ngIf="selectedCardKey != 0">
+            <div class="right-block" *ngIf="selectedCardKey != 0 && (getPrivileges().ProviderPrivileges.NPHIES.isAdmin || getPrivileges().ProviderPrivileges.NPHIES.canAccessClaim)">
                 <div class="actions">
                     <button matRipple type="button" class="action-btn" (click)="downloadSheetFormat()"
                         *ngIf="showDownloadBtn && searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null">
@@ -456,7 +456,7 @@
                                         </div>
                                     </th>
 
-                                    <th *ngIf="showColumns(selectedCardKey,summaries[selectedCardKey].statuses[0])"
+                                    <th *ngIf="showColumns(selectedCardKey,summaries[selectedCardKey].statuses[0]) && (getPrivileges().ProviderPrivileges.NPHIES.isAdmin || getPrivileges().ProviderPrivileges.NPHIES.canAccessClaim)"
                                         class="text-nowrap text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         <span class="inline-text pr-1">Processing Status</span>
                                         <mat-icon matTooltip="This will request for the current processing status of the claim"
@@ -553,7 +553,7 @@
                                             </div>
                                         </td>
 
-                                        <td *ngIf="showColumns(selectedCardKey,claim.status)" class="actions text-left text-wrap">
+                                        <td *ngIf="showColumns(selectedCardKey,claim.status) && (getPrivileges().ProviderPrivileges.NPHIES.isAdmin || getPrivileges().ProviderPrivileges.NPHIES.canAccessClaim)" class="actions text-left text-wrap">
                                             <div class="d-flex align-items-center" *ngIf="claim.claimResponseId">
                                                 <button mat-icon-button matTooltip="Get current status of claim" class="text-primary ml-n2"
                                                     (click)="checkStatus(claim.claimResponseId,claim.providerId)">
@@ -627,7 +627,7 @@
 
                                         </td>
 
-                                        <td class="actions">
+                                        <td class="actions" *ngIf="getPrivileges().ProviderPrivileges.NPHIES.isAdmin || getPrivileges().ProviderPrivileges.NPHIES.canAccessClaim">
                                             <ng-container *ngIf="claim.claimId && 
                                                 ((claim.claimResponseId && showCancelAll === true && (claim.isActive==null || claim.isActive)) 
                                                 || (claimIsEditable(claim.status)  && (claim.isActive==null || claim.isActive))
@@ -756,7 +756,7 @@
                 </mat-paginator>
 
             </div>
-            <div class="right-block btn-list">
+            <div class="right-block btn-list" *ngIf="getPrivileges().ProviderPrivileges.NPHIES.isAdmin || getPrivileges().ProviderPrivileges.NPHIES.canAccessClaim">
                 <button (click)="openReasonModalMultiClaims()" mat-flat-button color="primary" *ngIf="showCancelAll === true && selectedCardKey != 0">Cancel
                     {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
                 <ng-container *ngIf="currentSelectedTab==0">
