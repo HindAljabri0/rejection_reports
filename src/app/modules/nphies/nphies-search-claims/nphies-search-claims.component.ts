@@ -191,6 +191,10 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         private providerNphiesApprovalService: ProviderNphiesApprovalService,
         private settingsServices: SettingsService,) { }
 
+     
+        getPrivileges(){
+            return this.commen.getPrivileges();
+        }
     ngOnDestroy(): void {
         console.log("ngOnDestroy2")
         localStorage.removeItem(NPHIES_SEARCH_TAB_RESULTS_KEY);

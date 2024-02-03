@@ -15,6 +15,8 @@ import { Store } from '@ngrx/store';
 import { getUserPrivileges, initState, UserPrivileges } from '../store/mainStore.reducer';
 import { ProviderNphiesSearchService } from './providerNphiesSearchService/provider-nphies-search.service';
 import { DatePipe } from '@angular/common';
+import { UploadService } from './claimfileuploadservice/upload.service';
+import { NphiesClaimUploaderService } from './nphiesClaimUploaderService/nphies-claim-uploader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -103,6 +105,7 @@ export class SharedServices {
     private announcements: AnnouncementsService,
     private searchService: SearchService,
     private store: Store,
+    private nphiesClaimUploaderService: NphiesClaimUploaderService,
     private datePipe: DatePipe,
     private providerNphiesSearchService: ProviderNphiesSearchService
   ) {
@@ -255,7 +258,7 @@ export class SharedServices {
   getUploads() {
     if ((!this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser && !this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isAdmin ) || this.userPrivileges.ProviderPrivileges.NPHIES.canSwitchGroupProvider) { return; }
     this.uploadsListLoadingChange.next(true);
-    this.searchService.getUploadSummaries(this.providerId, 0, 10).subscribe(event => {
+    this.nphiesClaimUploaderService.getUploadSummaries(this.providerId, 0, 10).subscribe(event => {
       if (event instanceof HttpResponse) {
         console.log(event.body)
         if (event.body != null) {

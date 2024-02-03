@@ -144,7 +144,7 @@ export class SearchWithAdvanceComponent implements OnInit {
   }
 
   get hasNphiesClaims() {
-    return this.commen.userPrivileges.ProviderPrivileges.NPHIES.isAdmin || this.commen.userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim;
+    return this.commen.userPrivileges.ProviderPrivileges.NPHIES.isAdmin || this.commen.userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim||this.commen.userPrivileges.ProviderPrivileges.NPHIES.canAccessViewClaim;
   }
 
 

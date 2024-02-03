@@ -283,6 +283,10 @@ export class CreateClaimNphiesComponent implements OnInit {
     this.pastDate.setDate(this.pastDate.getDate() - 1);
   }
 
+  getPrivileges(){
+    return this.sharedService.getPrivileges();
+}
+
   InitClaimPagenation() {
     //console.log("ProviderId's = "+localStorage.getItem(NPHIES_PROVIDER_ID_KEYS));
     this.paginationControl = { searchTabCurrentResults: [], size: 0, currentIndex: 0 };
