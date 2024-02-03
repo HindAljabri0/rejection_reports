@@ -488,7 +488,7 @@ export class SharedDataService {
   ];
   itemMedicationReasonList = [
     { value: 'Generic', name: 'Generic' },
-    { value: 'patient-request', name: '	Patient request' },
+    { value: 'patient-request', name: 'Patient request' },
     { value: 'innovative-noGeneric', name: 'Innovative noGeneric' },
     { value: 'physician-approval', name: 'Physician-request with approval' },
     { value: 'physician-no-approval', name: 'Physician-request without approval' },

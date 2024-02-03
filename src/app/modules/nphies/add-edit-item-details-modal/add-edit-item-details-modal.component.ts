@@ -43,9 +43,10 @@ export class AddEditItemDetailsModalComponent implements OnInit {
     quantity: ['1'],
     quantityCode: [''],
     searchQuery: [''],
+    prescribedMedicationItemFilter: [''],
     pharmacistSelectionReason: ['',Validators.required],
     prescribedDrugCode: ['',Validators.required],
-    reasonPharmacistSubSitute: [''],
+    reasonPharmacistSubstitute: [''],
     pharmacistSubstitute:['']
   });
 
@@ -78,7 +79,10 @@ export class AddEditItemDetailsModalComponent implements OnInit {
         type: this.data.source === 'CNHI' ? this.cnhiTypeList.filter(x => x.value === this.data.item.type)[0] : this.typeList.filter(x => x.value === this.data.item.type)[0],
             nonStandardCode: this.data.item.nonStandardCode,
         display: this.data.item.display,
-      });
+        pharmacistSelectionReason: this.data.item.pharmacistSelectionReason,
+        pharmacistSubstitute: this.data.item.pharmacistSubstitute,
+reasonPharmacistSubstitute: this.data.item.reasonPharmacistSubstitute,
+          });
 
 
       this.getItemList();
@@ -94,8 +98,8 @@ export class AddEditItemDetailsModalComponent implements OnInit {
                         const res = this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.prescribedDrugCode)[0] ? this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.prescribedDrugCode)[0] : '';
                         if (res) {
                             this.FormItem.patchValue({
-                                prescribedDrugCode: res
-                            });
+                                prescribedDrugCode: res,
+                                     });
                         }
                         this.filteredPescribedMedicationItem.next(this.prescribedMedicationList.slice());
                         this.filterPrescribedMedicationItem();
@@ -308,8 +312,8 @@ export class AddEditItemDetailsModalComponent implements OnInit {
         const res = this.prescribedMedicationList.filter(x => x.gtinNumber === gtinNumber)[0];
         if (res != undefined) {
             this.FormItem.patchValue({
-                prescribedDrugCode: res
-            });
+                prescribedDrugCode: res,
+              });
         } else {
             this.FormItem.patchValue({
                 prescribedDrugCode: ""
@@ -328,6 +332,9 @@ export class AddEditItemDetailsModalComponent implements OnInit {
         display: type.nonStandardDescription,
         unitPrice: type.unitPrice,
         discount: type.discount,
+        pharmacistSelectionReason: this.medicationReasonList.filter(x => x.value === this.data.item.pharmacistSelectionReason)[0] ? this.medicationReasonList.filter(x => x.value === this.data.item.pharmacistSelectionReason)[0] : '',
+        pharmacistSubstitute: this.data.item.pharmacistSubstitute,
+reasonPharmacistSubstitute: this.data.item.reasonPharmacistSubstitute,
           });
       this.getItemList(type);
     }
@@ -353,10 +360,15 @@ export class AddEditItemDetailsModalComponent implements OnInit {
       model.display = this.FormItem.controls.display.value;
       model.quantity = parseFloat(this.FormItem.controls.quantity.value);
       model.quantityCode = this.FormItem.controls.quantityCode.value;
-      model.pharmacistSelectionReason = this.FormItem.controls.pharmacistSelectionReason.value;
-      model.prescribedDrugCode = this.FormItem.controls.prescribedDrugCode.value;
-      model.reasonPharmacistSubSitute = this.FormItem.controls.reasonPharmacistSubSitute.value;
-      model.pharmacistSubstitute = this.FormItem.controls.pharmacistSubstitute.value;
+        model.itemDetails = [];
+      if (this.data.type === "pharmacy") {
+          model.pharmacistSelectionReason = this.FormItem.controls.pharmacistSelectionReason.value;
+          model.prescribedDrugCode = this.FormItem.controls.prescribedDrugCode.value.descriptionCode;
+          model.pharmacistSelectionReasonName = this.FormItem.controls.pharmacistSelectionReason.value;
+          model.reasonPharmacistSubstitute = this.FormItem.controls.reasonPharmacistSubstitute.value;
+          model.pharmacistSubstitute = this.FormItem.controls.pharmacistSubstitute.value;
+      }
+      console.log(model,"modelll")
       this.dialogRef.close(model);
     }
   }

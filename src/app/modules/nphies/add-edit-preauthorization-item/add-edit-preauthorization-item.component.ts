@@ -78,7 +78,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         prescribedDrugCode: ['',Validators.required],
        // pharmacySubstitute: [''],
         pharmacistSubstitute: [''],
-        reasonPharmacistSubSitute: [''],
+        reasonPharmacistSubstitute: [''],
     });
     showTextInput = false;
   otherReason = '';
@@ -218,7 +218,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
                 invoiceNo: this.data.item.invoiceNo,
                 pharmacistSelectionReason: this.medicationReasonList.filter(x => x.value === this.data.item.pharmacistSelectionReason)[0] ? this.medicationReasonList.filter(x => x.value === this.data.item.pharmacistSelectionReason)[0] : '',
                 pharmacistSubstitute: this.data.item.pharmacistSubstitute,
-        reasonPharmacistSubSitute: this.data.item.reasonPharmacistSubSitute,
+        reasonPharmacistSubstitute: this.data.item.reasonPharmacistSubstitute,
             });
 
             if (this.data.careTeams) {
@@ -1010,7 +1010,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             model.endDate = this.FormItem.controls.endDate.value; //this.datePipe.transform(this.FormItem.controls.endDate.value, 'yyyy-MM-dd hh:mm aa');
             model.endDateStr = this.datePipe.transform(this.FormItem.controls.endDate.value, 'dd-MM-yyyy hh:mm aa');
             model.pharmacistSubstitute = this.FormItem.controls.pharmacistSubstitute.value;
-            model.reasonPharmacistSubSitute = this.FormItem.controls.reasonPharmacistSubSitute.value;
+            model.reasonPharmacistSubstitute = this.FormItem.controls.reasonPharmacistSubstitute.value;
             if (this.FormItem.controls.supportingInfoSequence.value && this.FormItem.controls.supportingInfoSequence.value.length > 0) {
                 model.supportingInfoSequence = this.FormItem.controls.supportingInfoSequence.value.map((x) => { return x.sequence });
             }
