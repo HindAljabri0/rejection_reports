@@ -94,13 +94,13 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
     ngOnInit() {
         this.prescribedCode = [{ value: 'scientific-codes', name: 'Scientific Code' },
         { value: 'medication-codes', name: 'GTIN Code' }];
-          if (this.data.type) {
-              
-               this.bodySiteList = this.sharedDataService.getBodySite(this.data.type);
-               this.subSiteList = this.sharedDataService.getSubSite(this.data.type);          
-               }
-      
-        if (this.data.item) {        
+        if (this.data.type) {
+
+            this.bodySiteList = this.sharedDataService.getBodySite(this.data.type);
+            this.subSiteList = this.sharedDataService.getSubSite(this.data.type);
+        }
+        console.log("data = "+JSON.stringify(this.data));
+        if (this.data.item) {
             this.FormItem.patchValue({
                 type: this.prescribedCode.filter(x => x.value === this.data.item.type)[0],
                 itemDescription: this.itemList.filter(x => x.code === this.data.item.itemDescription)[0],
@@ -114,7 +114,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
                 quantityCode: this.data.item.quantityCode != null ? this.data.item.quantityCode : "",
                 strength: this.data.item.strength,
                 absenceScientificCode: this.absenceReasonList.filter(x => x.value === this.data.item.absenceScientificCode)[0],
-                });
+            });
 
             if (this.data.careTeams) {
                 this.FormItem.patchValue({
@@ -129,7 +129,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
                     diagnosisSequence: this.data.item.diagnosisSequence ? this.data.diagnosises.filter(x => this.data.item.diagnosisSequence.find(y => y === x.sequence) !== undefined) : []
                 });
             }
-
+            console.log("supporting info "+JSON.stringify(this.data.supportingInfos));
             if (this.data.supportingInfos) {
                 this.FormItem.patchValue({
                     // tslint:disable-next-line:max-line-length
@@ -148,7 +148,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
                         this.filterSupportingInfo();
                     });
             }
-    
+
             if (this.data.careTeams) {
                 this.filteredCareTeam.next(this.data.careTeams.slice());
                 this.FormItem.controls.careTeamFilter.valueChanges
@@ -157,7 +157,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
                         this.filterCareTeam();
                     });
             }
-    
+
             if (this.data.diagnosises) {
                 this.filteredDiagnosis.next(this.data.diagnosises.slice());
                 this.FormItem.controls.diagnosisFilter.valueChanges
@@ -166,20 +166,14 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
                         this.filterDiagnosis();
                     });
             }
-         
-          if (this.data.subType === 'op') {
+
+            if (this.data.subType === 'op') {
                 this.FormItem.controls.quantityCode.setValue('{package}');
                 this.FormItem.controls.quantityCode.disable();
             }
             this.FormItem.controls.factor.setValue(1);
         }
 
-  
-
-        if (this.data.providerType === 'vision' && this.data.source === 'APPROVAL') {
-            this.FormItem.controls.factor.setValue(1);
-            this.FormItem.controls.factor.disable();
-        }
     }
 
     selectItem(type) {
@@ -197,18 +191,20 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
             }
 
             this.FormItem.patchValue({
-                type:  this.prescribedCode.filter(x => x.value === type.itemType)[0],
+                type: this.prescribedCode.filter(x => x.value === type.itemType)[0],
                 nonStandardCode: type.nonStandardCode,
                 display: type.nonStandardDescription,
-           
-                });
-        
+
+            });
+
             this.SetSingleRecord(type);
-           }
+        }
     }
     typeChange(type = null) {
         if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'scientific-codes') {
             this.sharedServices.loadingChanged.next(true);
+            this.FormItem.controls.item.disable();
+            this.IsItemLoading = true;
             this.providerNphiesSearchService.getPrescribedMedicationList(this.sharedServices.providerId).subscribe(event => {
                 if (event instanceof HttpResponse) {
                     const body = event.body;
@@ -221,30 +217,37 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
                                 this.FormItem.patchValue({
                                     prescribedDrugCode: res
                                 });
-                              }
+                            }
                             this.filteredPescribedMedicationItem.next(this.prescribedMedicationList.slice());
                             this.filterPrescribedMedicationItem();
                         }
                     }
                 }
-               }, errorEvent => {
+            }, errorEvent => {
                 if (errorEvent instanceof HttpErrorResponse) {
-    
+
                 }
             });
+            this.IsItemLoading = false;
+            this.FormItem.controls.item.enable();
+            this.FormItem.controls.itemFilter.valueChanges
+                .pipe(takeUntil(this.onDestroy))
+                .subscribe(() => {
+                    this.filterItem();
+                });
             this.sharedServices.loadingChanged.next(false);
             this.FormItem.controls.quantityCode.setValidators([Validators.required]);
             this.FormItem.controls.quantityCode.updateValueAndValidity();
-       
-             } 
-             if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes'){
-                
-                this.getItemList(type);
+
+        }
+        if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
+
+            this.getItemList(type);
         }
         this.FormItem.controls.item.setValue('');
-     
+
     }
- 
+
     SetSingleRecord(type = null) {
         if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes') {
             this.FormItem.controls.quantityCode.setValidators([Validators.required]);
@@ -277,8 +280,8 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
             }
         });
     }
- 
-     getItemList(type = null) {
+
+    getItemList(type = null) {
 
         if (this.FormItem.controls.type.value) {
             this.sharedServices.loadingChanged.next(true);
@@ -427,11 +430,11 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
 
     }
 
-      roundTo(num) {
+    roundTo(num) {
         var m = Number((Math.abs(num) * 100).toPrecision(15));
         return Math.round(m) / 100 * Math.sign(num);
     }
-       
+
     checkItemsCodeForSupportingInfo() {
         let SeqIsThere = null;
         // tslint:disable-next-line:max-line-length
@@ -529,14 +532,14 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
         return diffDays;
     }
 
-      onSubmit() {
+    onSubmit() {
         this.isSubmitted = true;
         if (!this.checkItemsCodeForSupportingInfo()) {
             return;
         }
 
         if (this.FormItem.valid) {
-           
+
 
             const pattern = /(^\d*\.?\d*[1-9]+\d*$)|(^[1-9]+\d*\.\d*$)/;
 
@@ -564,9 +567,9 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
             model.quantity = parseFloat(this.FormItem.controls.quantity.value);
             model.quantityCode = this.FormItem.controls.quantityCode.value;
             model.strength = this.FormItem.controls.strength.value;
-            model.endDate = this.FormItem.controls.endDate.value; 
+            model.endDate = this.FormItem.controls.endDate.value;
             model.absenceScientificCode = this.FormItem.controls.absenceScientificCode.value.value;
-         //   model.authoredOnStr = this.datePipe.transform(this.FormItem.controls.authoredOn.value, 'dd-MM-yyyy hh:mm aa');
+            //   model.authoredOnStr = this.datePipe.transform(this.FormItem.controls.authoredOn.value, 'dd-MM-yyyy hh:mm aa');
 
             if (this.FormItem.controls.supportingInfoSequence.value && this.FormItem.controls.supportingInfoSequence.value.length > 0) {
                 model.supportingInfoSequence = this.FormItem.controls.supportingInfoSequence.value.map((x) => { return x.sequence });
@@ -582,7 +585,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
 
             model.itemDetails = [];
             model.claimItemDosageModel = [];
-         
+
             // console.log("item model = " + JSON.stringify(model));
             this.dialogRef.close(model);
         }

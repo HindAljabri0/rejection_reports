@@ -147,6 +147,7 @@ onOptionChange: string = '';
       model.route = this.FormItem.controls.route.value.value;
       model.dosageCategory = this.FormItem.controls.dosageType.value;
       model.doseType = this.FormItem.controls.doseType.value;
+      console.log("dosetype = "+this.FormItem.controls.doseType.value);
       model.doseQuantityOrRangeMin = this.FormItem.controls.min.value || this.FormItem.controls.doseQuantity.value;
       model.doseRangeMax = this.FormItem.controls.max.value;
       model.doseUnit = this.FormItem.controls.doseUnit.value;
