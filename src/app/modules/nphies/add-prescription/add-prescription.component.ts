@@ -243,7 +243,7 @@ export class AddPrescriptionComponent implements OnInit {
         this.FormPreAuthorization.get('eligibilityType').valueChanges.subscribe(value => {
             this.isOnline = value === 'online';
             this.isOffline = value === 'offline';
-          });
+        });
         this.getPayees();
         this.getTPA();
         this.FormPreAuthorization.controls.dateOrdered.setValue(this.removeSecondsFromDate(new Date()));
@@ -1286,18 +1286,16 @@ export class AddPrescriptionComponent implements OnInit {
                 console.log(result, "result")
                 if (this.Items.find(x => x.sequence === itemSequence)) {
                     this.Items.map(x => {
-                      
-                        if (x.sequence === itemSequence) {
-                           
-            
-                                       x.claimItemDosageModel.push(result);
-                            console.log(   x.claimItemDosageModel," x.claimItemDosageModel")
 
-                         
+                        if (x.sequence === itemSequence) {
+                            x.claimItemDosageModel.push(result);
+                            console.log(x.claimItemDosageModel, " x.claimItemDosageModel")
+
+
                         } else {
-                                x.claimItemDosageModel.push(result);
-                            }
-                     //   }
+                            x.claimItemDosageModel.push(result);
+                        }
+                        //   }
                     });
 
                 }
@@ -1660,33 +1658,33 @@ export class AddPrescriptionComponent implements OnInit {
             // this.checkCareTeamValidation();
             this.checkDiagnosisValidation();
             this.checkItemValidation();
-             if (this.checkCareTeamValidation()) {
+            if (this.checkCareTeamValidation()) {
                 hasError = true;
-              }
+            }
 
-              if (!this.checkDiagnosisErrorValidation()) {
+            if (!this.checkDiagnosisErrorValidation()) {
                 hasError = true;
-              }
+            }
 
-              if (this.checkSupposrtingInfoValidation()) {
+            if (this.checkSupposrtingInfoValidation()) {
                 hasError = true;
-              }
+            }
 
-              if (!this.checkItemCareTeams()) {
+            if (!this.checkItemCareTeams()) {
                 hasError = true;
-              }
+            }
 
-                if (!this.checkNewBornValidation()) {
+            if (!this.checkNewBornValidation()) {
                 hasError = true;
-              }
+            }
 
-              if (!this.checkNewBornSupportingInfoCodes()) {
+            if (!this.checkNewBornSupportingInfoCodes()) {
                 hasError = true;
-              }
+            }
 
-              if (hasError) {
+            if (hasError) {
                 return;
-              }
+            }
 
             this.model = {};
             if (this.claimReuseId) {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild,Renderer2, ElementRef } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, Renderer2, ElementRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSelect } from '@angular/material';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { AdminService } from 'src/app/services/adminService/admin.service';
@@ -74,14 +74,14 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
         // IsTaxApplied: [false],
         searchQuery: [''],
-        pharmacistSelectionReason: ['',Validators.required],
-        prescribedDrugCode: ['',Validators.required],
-       // pharmacySubstitute: [''],
+        pharmacistSelectionReason: ['', Validators.required],
+        prescribedDrugCode: ['', Validators.required],
+        // pharmacySubstitute: [''],
         pharmacistSubstitute: [''],
         reasonPharmacistSubstitute: [''],
     });
     showTextInput = false;
-  otherReason = '';
+    otherReason = '';
     originalPrice = 0;
     granularUnit = null;
     isSubmitted = false;
@@ -97,6 +97,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
     IsSupportingInfoSequenceRequired = false;
     supportingInfoError = '';
+
+    IsDiagnosisSequenceRequired = false;
+    diagnosisError = '';
 
     showQuantityCode = true;
     serviceDataError = '';
@@ -218,7 +221,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
                 invoiceNo: this.data.item.invoiceNo,
                 pharmacistSelectionReason: this.medicationReasonList.filter(x => x.value === this.data.item.pharmacistSelectionReason)[0] ? this.medicationReasonList.filter(x => x.value === this.data.item.pharmacistSelectionReason)[0] : '',
                 pharmacistSubstitute: this.data.item.pharmacistSubstitute,
-        reasonPharmacistSubstitute: this.data.item.reasonPharmacistSubstitute,
+                reasonPharmacistSubstitute: this.data.item.reasonPharmacistSubstitute,
             });
 
             if (this.data.careTeams) {
@@ -309,24 +312,24 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     onReasonSelectionChange(select: MatSelect): void {
         const selectedValue = select.value;
         this.showTextInput = selectedValue === 'other';
-    
+
         if (this.showTextInput) {
-          setTimeout(() => {
-            this.otherInput.nativeElement.focus();
-          });
+            setTimeout(() => {
+                this.otherInput.nativeElement.focus();
+            });
         }
-      }
-      openDropdown(event: Event): void {
+    }
+    openDropdown(event: Event): void {
         event.stopPropagation();
         this.reasonSelect.nativeElement.open();
-      }
-      onSelectOption() {
+    }
+    onSelectOption() {
         if (this.FormItem.controls.pharmacistSubstitute.value === 'Others') {
-          setTimeout(() => {
-            this.renderer.selectRootElement(this.otherInput.nativeElement).focus();
-          });
+            setTimeout(() => {
+                this.renderer.selectRootElement(this.otherInput.nativeElement).focus();
+            });
         }
-      }
+    }
 
     setTypes(type) {
 
@@ -833,7 +836,21 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             });
         }
     }
-
+    validateDiagnosisInPharmacyForApproval() {
+        if (this.data.type === "pharmacy" && this.data.source === "APPROVAL" && this.FormItem.controls.diagnosisSequence.value.length == 0) {
+            this.FormItem.controls.diagnosisSequence.setValidators([Validators.required]);
+            this.FormItem.controls.diagnosisSequence.updateValueAndValidity();
+            this.IsDiagnosisSequenceRequired = true;
+            this.diagnosisError = 'Diagnosis is required in this item';
+            return false;
+        }else{
+            this.FormItem.controls.diagnosisSequence.clearValidators();
+            this.FormItem.controls.diagnosisSequence.updateValueAndValidity();
+            this.IsDiagnosisSequenceRequired = false;
+            this.diagnosisError = '';
+            return true;
+        }
+    }
     checkItemsCodeForSupportingInfo() {
         let SeqIsThere = null;
         // tslint:disable-next-line:max-line-length
@@ -862,7 +879,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
                         let ItemSeqList = this.FormItem.controls.supportingInfoSequence.value.map(t => t.sequence);
                         SeqIsThere = ItemSeqList.filter(x => SupportingList.includes(x));
                     }
-                    console.log("SeqIsThere = " + SeqIsThere);
+                    //console.log("SeqIsThere = " + SeqIsThere);
 
                     if (!this.FormItem.controls.supportingInfoSequence.value || (this.FormItem.controls.supportingInfoSequence.value && (SeqIsThere == null || SeqIsThere == ''))) {
                         // tslint:disable-next-line:max-line-length
@@ -897,6 +914,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             this.FormItem.controls.supportingInfoSequence.updateValueAndValidity();
             return true;
         }
+
     }
 
     validateNewBornValues() {
@@ -949,7 +967,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         if (!this.checkItemsCodeForSupportingInfo()) {
             return;
         }
-
+        if (!this.validateDiagnosisInPharmacyForApproval()) {
+            return;
+        }
         if (this.FormItem.valid) {
 
             const pattern = /(^\d*\.?\d*[1-9]+\d*$)|(^[1-9]+\d*\.\d*$)/;
