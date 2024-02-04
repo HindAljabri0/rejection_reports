@@ -497,6 +497,7 @@
                         <thead>
                             <tr>
                                 <th>Code</th>
+                                <th>Non Standard Code</th>
                                 <th>Description/Service</th>
                                 <th>Type</th>
                                 <th>Total Quantity</th>
@@ -510,6 +511,7 @@
                         <tbody>
                             <tr *ngFor="let i of UCAFData.items;">
                                 <td>{{i.itemCode}}</td>
+                                <td>{{i.nonStandardCod}}</td>
                                 <td>{{i.itemDescription}}</td>
                                 <td>{{i.type}}</td>
                                 <td>{{i.quantity}}</td>

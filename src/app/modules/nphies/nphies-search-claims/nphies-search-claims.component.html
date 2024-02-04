@@ -110,7 +110,7 @@
                 {{commen.statusToName(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}
             </button>
 
-            <div class="right-block" *ngIf="selectedCardKey != 0">
+            <div class="right-block" *ngIf="selectedCardKey != 0 && (getPrivileges().ProviderPrivileges.NPHIES.isAdmin || getPrivileges().ProviderPrivileges.NPHIES.canAccessClaim)">
                 <div class="actions">
                     <button matRipple type="button" class="action-btn" (click)="downloadSheetFormat()"
                         *ngIf="showDownloadBtn && searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null">
@@ -456,7 +456,7 @@
                                         </div>
                                     </th>
 
-                                    <th *ngIf="showColumns(selectedCardKey,summaries[selectedCardKey].statuses[0])"
+                                    <th *ngIf="showColumns(selectedCardKey,summaries[selectedCardKey].statuses[0]) && (getPrivileges().ProviderPrivileges.NPHIES.isAdmin || getPrivileges().ProviderPrivileges.NPHIES.canAccessClaim)"
                                         class="text-nowrap text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         <span class="inline-text pr-1">Processing Status</span>
                                         <mat-icon matTooltip="This will request for the current processing status of the claim"
@@ -471,6 +471,10 @@
                                     <th *ngIf="selectedCardKey != 0 && isPBMValidationVisible"
                                         class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
                                         PBM Status</th>
+
+                                    <th *ngIf="selectedCardKey != 0 && isMREValidationVisible"
+                                        class="text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
+                                        MRE Status</th>
 
                                     <th *ngIf="showInquireAll === true"
                                         class="text-nowrap text-center text-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}} light-bg-{{commen.getCardAccentColor(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}">
@@ -549,7 +553,7 @@
                                             </div>
                                         </td>
 
-                                        <td *ngIf="showColumns(selectedCardKey,claim.status)" class="actions text-left text-wrap">
+                                        <td *ngIf="showColumns(selectedCardKey,claim.status) && (getPrivileges().ProviderPrivileges.NPHIES.isAdmin || getPrivileges().ProviderPrivileges.NPHIES.canAccessClaim)" class="actions text-left text-wrap">
                                             <div class="d-flex align-items-center" *ngIf="claim.claimResponseId">
                                                 <button mat-icon-button matTooltip="Get current status of claim" class="text-primary ml-n2"
                                                     (click)="checkStatus(claim.claimResponseId,claim.providerId)">
@@ -582,6 +586,22 @@
                                                 matTooltip="Rejected">dangerous</mat-icon>
                                         </td>
 
+
+                                        <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="text-center row-click"
+                                        *ngIf="isMREValidationVisible && selectedCardKey != 0">
+                                        <mat-icon *ngIf="(claim.body.mreClaimStatus | lowercase)==='approved'" class="material-icons-outlined size-21 text-success"
+                                          matTooltip="Approved">check_circle</mat-icon>
+                                        <mat-icon *ngIf="(claim.body.mreClaimStatus | lowercase)==='partially_approved'" class="material-icons-outlined size-21 text-warning"
+                                          matTooltip="Partially Approved">report
+                                        </mat-icon>
+                                        <mat-icon *ngIf="(claim.body.mreClaimStatus | lowercase)==='invalid'" class="size-21 text-danger" matTooltip="Invalid">error_outline</mat-icon>
+                                        <mat-icon *ngIf="(claim.body.mreClaimStatus | lowercase)==='unknown'" class="material-icons-outlined size-21 text-danger"
+                                        matTooltip="Unknown">dangerous</mat-icon>
+                                        <mat-icon *ngIf="(claim.body.mreClaimStatus | lowercase)==='rejected'" class="material-icons-outlined size-21 text-danger"
+                                          matTooltip="Rejected">dangerous</mat-icon></td>
+
+
+
                                         <td *ngIf="showInquireAll === true" class="actions text-center">
                                             <span class="action-letter-btn"
                                                 [ngClass]="claim.inquiryStatus === 'not_done' ? 'theme-primary' : (claim.inquiryStatus === 'failed' ? 'theme-danger': (claim.inquiryStatus === 'passed' ? 'theme-success' : ''))"
@@ -607,7 +627,7 @@
 
                                         </td>
 
-                                        <td class="actions">
+                                        <td class="actions" *ngIf="getPrivileges().ProviderPrivileges.NPHIES.isAdmin || getPrivileges().ProviderPrivileges.NPHIES.canAccessClaim">
                                             <ng-container *ngIf="claim.claimId && 
                                                 ((claim.claimResponseId && showCancelAll === true && (claim.isActive==null || claim.isActive)) 
                                                 || (claimIsEditable(claim.status)  && (claim.isActive==null || claim.isActive))
@@ -736,7 +756,7 @@
                 </mat-paginator>
 
             </div>
-            <div class="right-block btn-list">
+            <div class="right-block btn-list" *ngIf="getPrivileges().ProviderPrivileges.NPHIES.isAdmin || getPrivileges().ProviderPrivileges.NPHIES.canAccessClaim">
                 <button (click)="openReasonModalMultiClaims()" mat-flat-button color="primary" *ngIf="showCancelAll === true && selectedCardKey != 0">Cancel
                     {{selectedClaims.length==0?" All":"Selection ("+this.selectedClaims.length+")"}}</button>
                 <ng-container *ngIf="currentSelectedTab==0">
@@ -752,6 +772,15 @@
                         {{selectedClaims.length==0?"
                         All":"Selection ("+this.selectedClaims.length+")"}}</button>
                 </ng-container>
+
+                <ng-container
+                *ngIf="(summaries[this.selectedCardKey].statuses[0].toLowerCase() === statusSelected.Accepted.toLowerCase()
+                          || summaries[this.selectedCardKey].statuses[0].toLowerCase() === statusSelected.Downloadable.toLowerCase()) && (selectedCardKey != 0)  && (isMREValidationVisible)">
+                <button (click)="applyMREValidation()" mat-flat-button color="primary">MRE Validate
+                  {{selectedClaims.length==0?"
+                  All":"Selection ("+this.selectedClaims.length+")"}}</button>         
+              </ng-container>
+              
                 <ng-container *ngIf="showMoveToReadyState === true && selectedCardKey != 0">
                     <button mat-flat-button color="primary" (click)="moveToReadyState()">{{selectedClaims.length==0?"Move All to
                         Ready State":"Move Selected ("+this.selectedClaims.length+") to Ready State"}}</button>

@@ -27,6 +27,9 @@ export class ViewPreauthorizationDetailsComponent implements OnInit {
     private providerNphiesSearchService: ProviderNphiesSearchService
   ) { }
 
+  getPrivileges(){
+    return this.sharedServices.getPrivileges();
+  }
   ngOnInit() {
     if (this.data.detailsModel.communicationId) {
       this.selectedTab = 1;

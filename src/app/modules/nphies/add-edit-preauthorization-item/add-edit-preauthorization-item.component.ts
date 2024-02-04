@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, Renderer2, ElementRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSelect } from '@angular/material';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { AdminService } from 'src/app/services/adminService/admin.service';
@@ -18,7 +18,8 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
     templateUrl: './add-edit-preauthorization-item.component.html',
 })
 export class AddEditPreauthorizationItemComponent implements OnInit {
-
+    @ViewChild('reasonSelect', { static: true }) reasonSelect: ElementRef;
+    @ViewChild('otherInput', { static: true }) otherInput: ElementRef;
     @ViewChild('itemSelect', { static: true }) itemSelect: MatSelect;
     itemList: any = [];
     itemListFiltered: any = [];
@@ -73,9 +74,14 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
         // IsTaxApplied: [false],
         searchQuery: [''],
-        drugSelectionReason: [''],
-        prescribedDrugCode: ['']
+        pharmacistSelectionReason: ['', Validators.required],
+        prescribedDrugCode: ['', Validators.required],
+        // pharmacySubstitute: [''],
+        pharmacistSubstitute: [''],
+        reasonPharmacistSubstitute: [''],
     });
+    showTextInput = false;
+    otherReason = '';
     originalPrice = 0;
     granularUnit = null;
     isSubmitted = false;
@@ -83,6 +89,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     SearchRequest;
     typeList = this.sharedDataService.itemTypeList;
     medicationReasonList = this.sharedDataService.itemMedicationReasonList;
+    pharmacySubstituteList = this.sharedDataService.pharmacySubstituteList;
     prescribedMedicationList: any;
     bodySiteList = [];
     subSiteList = [];
@@ -91,11 +98,15 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     IsSupportingInfoSequenceRequired = false;
     supportingInfoError = '';
 
+    IsDiagnosisSequenceRequired = false;
+    diagnosisError = '';
+
     showQuantityCode = true;
     serviceDataError = '';
 
     today: Date;
     loadSearchItem = false;
+    renderer: any;
     cnhiTypeList: { value: string; name: string; }[];
 
     constructor(
@@ -208,8 +219,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
                 startDate: this.data.item.startDate ? new Date(this.data.item.startDate) : null,
                 endDate: this.data.item.endDate ? new Date(this.data.item.endDate) : null,
                 invoiceNo: this.data.item.invoiceNo,
-                drugSelectionReason: this.medicationReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0] ? this.medicationReasonList.filter(x => x.value === this.data.item.drugSelectionReason)[0] : ''
-
+                pharmacistSelectionReason: this.medicationReasonList.filter(x => x.value === this.data.item.pharmacistSelectionReason)[0] ? this.medicationReasonList.filter(x => x.value === this.data.item.pharmacistSelectionReason)[0] : '',
+                pharmacistSubstitute: this.data.item.pharmacistSubstitute,
+                reasonPharmacistSubstitute: this.data.item.reasonPharmacistSubstitute,
             });
 
             if (this.data.careTeams) {
@@ -297,7 +309,27 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         }
     }
 
+    onReasonSelectionChange(select: MatSelect): void {
+        const selectedValue = select.value;
+        this.showTextInput = selectedValue === 'other';
 
+        if (this.showTextInput) {
+            setTimeout(() => {
+                this.otherInput.nativeElement.focus();
+            });
+        }
+    }
+    openDropdown(event: Event): void {
+        event.stopPropagation();
+        this.reasonSelect.nativeElement.open();
+    }
+    onSelectOption() {
+        if (this.FormItem.controls.pharmacistSubstitute.value === 'Others') {
+            setTimeout(() => {
+                this.renderer.selectRootElement(this.otherInput.nativeElement).focus();
+            });
+        }
+    }
 
     setTypes(type) {
 
@@ -804,7 +836,21 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             });
         }
     }
-
+    validateDiagnosisInPharmacyForApproval() {
+        if (this.data.type === "pharmacy" && this.data.source === "APPROVAL" && this.FormItem.controls.diagnosisSequence.value.length == 0) {
+            this.FormItem.controls.diagnosisSequence.setValidators([Validators.required]);
+            this.FormItem.controls.diagnosisSequence.updateValueAndValidity();
+            this.IsDiagnosisSequenceRequired = true;
+            this.diagnosisError = 'Diagnosis is required in this item';
+            return false;
+        }else{
+            this.FormItem.controls.diagnosisSequence.clearValidators();
+            this.FormItem.controls.diagnosisSequence.updateValueAndValidity();
+            this.IsDiagnosisSequenceRequired = false;
+            this.diagnosisError = '';
+            return true;
+        }
+    }
     checkItemsCodeForSupportingInfo() {
         let SeqIsThere = null;
         // tslint:disable-next-line:max-line-length
@@ -833,7 +879,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
                         let ItemSeqList = this.FormItem.controls.supportingInfoSequence.value.map(t => t.sequence);
                         SeqIsThere = ItemSeqList.filter(x => SupportingList.includes(x));
                     }
-                    console.log("SeqIsThere = " + SeqIsThere);
+                    //console.log("SeqIsThere = " + SeqIsThere);
 
                     if (!this.FormItem.controls.supportingInfoSequence.value || (this.FormItem.controls.supportingInfoSequence.value && (SeqIsThere == null || SeqIsThere == ''))) {
                         // tslint:disable-next-line:max-line-length
@@ -868,6 +914,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             this.FormItem.controls.supportingInfoSequence.updateValueAndValidity();
             return true;
         }
+
     }
 
     validateNewBornValues() {
@@ -920,7 +967,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         if (!this.checkItemsCodeForSupportingInfo()) {
             return;
         }
-
+        if (!this.validateDiagnosisInPharmacyForApproval()) {
+            return;
+        }
         if (this.FormItem.valid) {
 
             const pattern = /(^\d*\.?\d*[1-9]+\d*$)|(^[1-9]+\d*\.\d*$)/;
@@ -979,7 +1028,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
             model.endDate = this.FormItem.controls.endDate.value; //this.datePipe.transform(this.FormItem.controls.endDate.value, 'yyyy-MM-dd hh:mm aa');
             model.endDateStr = this.datePipe.transform(this.FormItem.controls.endDate.value, 'dd-MM-yyyy hh:mm aa');
-
+            model.pharmacistSubstitute = this.FormItem.controls.pharmacistSubstitute.value;
+            model.reasonPharmacistSubstitute = this.FormItem.controls.reasonPharmacistSubstitute.value;
             if (this.FormItem.controls.supportingInfoSequence.value && this.FormItem.controls.supportingInfoSequence.value.length > 0) {
                 model.supportingInfoSequence = this.FormItem.controls.supportingInfoSequence.value.map((x) => { return x.sequence });
             }
@@ -997,9 +1047,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             }
             model.itemDetails = [];
             if (this.data.type === "pharmacy") {
-                model.drugSelectionReason = this.FormItem.controls.drugSelectionReason.value.value;
+                model.pharmacistSelectionReason = this.FormItem.controls.pharmacistSelectionReason.value.value;
                 model.prescribedDrugCode = this.FormItem.controls.prescribedDrugCode.value.descriptionCode;
-                model.drugSelectionReasonName = this.FormItem.controls.drugSelectionReason.value.name;
+                model.pharmacistSelectionReasonName = this.FormItem.controls.pharmacistSelectionReason.value.name;
             }
             // console.log("item model = " + JSON.stringify(model));
             this.dialogRef.close(model);

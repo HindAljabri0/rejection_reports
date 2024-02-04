@@ -191,6 +191,13 @@
               </div> -->
             </div>
           </div>
+          <div class="col-4 col-xxl-3" *ngIf="FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value === 'pharmacy'">
+            <div class="form-group">
+                <label class="control-label">Prescription Reference No(s).</label>
+                <input class="form-control" placeholder="Enter Prescription Ref. No." formControlName="prescription">
+            </div>
+        </div>
+        
           <div class="col-4 col-xxl-3">
             <div class="form-group">
               <label class="control-label">Referring Provider</label>
@@ -598,7 +605,7 @@
             </thead>
             <tbody>
               <ng-container *ngFor="let item of Items; let i = index">
-                <tr>
+                <tr>                
                   <td class="text-primary text-center row-click" width="10" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                     <mat-icon *ngIf="currentOpenItem!=i" class="size-21">add_circle_outline</mat-icon>
                     <mat-icon *ngIf="currentOpenItem==i" class="size-21">remove_circle_outline</mat-icon>
@@ -756,7 +763,7 @@
                                 <td>{{item.factor}}</td>
                               </tr>
                               <tr>
-                                <td class="label">Medication Selection Reason </td>
+                                <td class="label">Pharmacist Selection Reason </td>
                                 <td>{{item.drugSelectionReasonName ?
                                   item.drugSelectionReasonName:"-"}}</td>
                               </tr>
@@ -765,6 +772,17 @@
                                 <td>{{item.prescribedDrugCode ?
                                   item.prescribedDrugCode:"-"}}</td>
                               </tr>
+                              <tr>
+                                <td class="label">Pharmacist Substitute Reason </td>
+                                <td>{{item.pharmacistSubstitute ?
+                                  item.pharmacistSubstitute:"-"}}</td>
+                              </tr>
+                              <tr>
+                                <td *ngIf="item.reasonPharmacistSubstitute" class="label">Others </td>
+                                <td>{{item.reasonPharmacistSubstitute ?
+                                  item.reasonPharmacistSubstitute:"-"}}</td>
+                              </tr>
+                              
                               <tr>
                                 <td class="label">Supporting Info</td>
                                 <td>{{item.supportingInfoNames}}</td>
