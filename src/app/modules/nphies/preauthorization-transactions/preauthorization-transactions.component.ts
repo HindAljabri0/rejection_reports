@@ -4,6 +4,7 @@ import { ViewPreauthorizationDetailsComponent } from '../view-preauthorization-d
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFullTextSearchResult';
 import { PaginatedResult } from 'src/app/models/paginatedResult';
+import { Store } from '@ngrx/store';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import { ActivatedRoute } from '@angular/router';
 import { Location, DatePipe } from '@angular/common';
@@ -28,6 +29,7 @@ import { SharedDataService } from 'src/app/services/sharedDataService/shared-dat
 import { DownloadService } from 'src/app/services/downloadService/download.service';
 import { DownloadStatus } from 'src/app/models/downloadRequest';
 import { NphiesDownloadApprovalEligibilityService } from 'src/app/services/nphies_download_approval_eligibility/nphies-download-approval-eligibility.service';
+import { UserPrivileges, getUserPrivileges, initState } from 'src/app/store/mainStore.reducer';
 
 
 @Component({
@@ -49,7 +51,6 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     detailTopActionIcon = 'ic-download.svg';
     beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
     selectedBeneficiary: BeneficiariesSearchResult;
-
     advanceSearchEnable = false;
 
     typeList = this.sharedDataService.claimTypeList;
@@ -92,6 +93,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
 
 
+
     constructor(
         public sharedServices: SharedServices,
         private formBuilder: FormBuilder,
@@ -109,9 +111,15 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     ) {
 
     }
+  
 
+
+    getPrivileges(){
+        return this.sharedServices.getPrivileges();
+    }
     ngOnInit() {
-
+      
+       // this.store.select(getUserPrivileges).subscribe(privileges => this.userPrivileges = privileges);
         this.FormPreAuthTransaction.controls.fromDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
         this.FormPreAuthTransaction.controls.toDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
 
@@ -195,6 +203,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
 
         });
     }
+
 
     searchBeneficiaries() {
         // tslint:disable-next-line:max-line-length

@@ -11,118 +11,122 @@ import { DownloadService } from 'src/app/services/downloadService/download.servi
 import { DownloadStatus } from 'src/app/models/downloadRequest';
 
 @Component({
-  selector: 'app-search-beneficiary',
-  templateUrl: './search-beneficiary.component.html'
+    selector: 'app-search-beneficiary',
+    templateUrl: './search-beneficiary.component.html'
 
 })
 export class SearchBeneficiaryComponent implements OnInit {
-  beneficiaries: BeneficiarySearch[];
-  constructor(private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private providerNphiesSearchService: ProviderNphiesSearchService, private dialogService: DialogService,private downloadService: DownloadService) { }
+    beneficiaries: BeneficiarySearch[];
+    advanceSearchEnable = false;
+    constructor(private sharedServices: SharedServices, private providersBeneficiariesService: ProvidersBeneficiariesService, private providerNphiesSearchService: ProviderNphiesSearchService, private dialogService: DialogService, private downloadService: DownloadService) { }
 
-  length = 100;
-  pageSize = 10;
-  pageIndex = 0;
-  pageSizeOptions = [10, 50, 100];
-  showFirstLastButtons = true;
-  payerId=null;
-  tpa=null;
-
-
-  nameController: FormControl = new FormControl();
-  nationalIdController: FormControl = new FormControl();
-  contactNoController: FormControl = new FormControl();
-  fileIdController: FormControl = new FormControl();
-  memberCardidController: FormControl = new FormControl();
-
-  detailTopActionIcon = 'ic-download.svg';
+    length = 100;
+    pageSize = 10;
+    pageIndex = 0;
+    pageSizeOptions = [10, 50, 100];
+    showFirstLastButtons = true;
+    payerId = null;
+    tpa = null;
 
 
-  handlePageEvent(event: PageEvent) {
-    // this.beneficiaries = [];
-    this.length = event.length;
-    this.pageSize = event.pageSize;
-    this.pageIndex = event.pageIndex;
-    localStorage.setItem('pagesize', event.pageSize + '');
-    this.searchByCriteria();
+    nameController: FormControl = new FormControl();
+    nationalIdController: FormControl = new FormControl();
+    contactNoController: FormControl = new FormControl();
+    fileIdController: FormControl = new FormControl();
+    memberCardidController: FormControl = new FormControl();
 
-  }
+    detailTopActionIcon = 'ic-download.svg';
 
-  ngOnInit() {
 
-    this.sharedServices.loadingChanged.next(true)
-    this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId, null, null, null, null, null,null,null, 0, 10).subscribe(event => {
+    handlePageEvent(event: PageEvent) {
+        // this.beneficiaries = [];
+        this.length = event.length;
+        this.pageSize = event.pageSize;
+        this.pageIndex = event.pageIndex;
+        localStorage.setItem('pagesize', event.pageSize + '');
+        this.searchByCriteria();
 
-      if (event instanceof HttpResponse) {
-        if (event.body != null && event.body instanceof Array)
-          this.beneficiaries = [];
-
-        this.beneficiaries = event.body["content"] as BeneficiarySearch[];
-        this.length = event.body["totalElements"]
-        this.sharedServices.loadingChanged.next(false)
-      }
     }
-      , err => {
 
-        if (err instanceof HttpErrorResponse) {
-          console.log(err.message)
-          this.sharedServices.loadingChanged.next(false)
+    ngOnInit() {
 
+        this.sharedServices.loadingChanged.next(true)
+        this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId, null, null, null, null, null, null, null, 0, 10).subscribe(event => {
+
+            if (event instanceof HttpResponse) {
+                if (event.body != null && event.body instanceof Array)
+                    this.beneficiaries = [];
+
+                this.beneficiaries = event.body["content"] as BeneficiarySearch[];
+                this.length = event.body["totalElements"]
+                this.sharedServices.loadingChanged.next(false)
+            }
         }
-      });
+            , err => {
 
-  }
+                if (err instanceof HttpErrorResponse) {
+                    console.log(err.message)
+                    this.sharedServices.loadingChanged.next(false)
 
-  selectPayer(event) {
+                }
+            });
 
-    this.payerId = event.value.payerNphiesId,
-      this.tpa = event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
-
-  }
-
-
-  searchByCriteria() {
-    this.sharedServices.loadingChanged.next(true)
-
-    this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId,
-      this.nationalIdController.value, this.nameController.value, this.memberCardidController.value,
-      this.fileIdController.value, this.contactNoController.value,  this.payerId, this.tpa,this.pageIndex, this.pageSize).subscribe(event => {
-        if (event instanceof HttpResponse) {
-          if (event.body != null && event.body instanceof Array)
-            this.beneficiaries = [];
-          this.beneficiaries = event.body["content"] as BeneficiarySearch[];
-          this.length = event.body["totalElements"]
-          this.sharedServices.loadingChanged.next(false)
-        }
-      }
-        , err => {
-
-          if (err instanceof HttpErrorResponse) {
-            console.log(err.message)
-            this.sharedServices.loadingChanged.next(false)
-
-
-          }
-        });
-
-  }
-
-  getDocumentTypeValue(documentType: string) {
-    switch (documentType) {
-      case 'PRC':
-        return 'Resident Card';
-      case 'PPN':
-        return 'Passport';
-      case 'VP':
-        return 'Visa';
-      case 'NI':
-        return 'National Card';
-      case 'MR':
-        return 'Medical Record Number';
-      default:
-        return "";
     }
-  }
 
+    selectPayer(event) {
+
+        this.payerId = event.value.payerNphiesId,
+            this.tpa = event.value.organizationNphiesId != '-1' ? event.value.organizationNphiesId : null
+
+    }
+
+
+    searchByCriteria() {
+        this.sharedServices.loadingChanged.next(true)
+
+        this.providerNphiesSearchService.NphisBeneficiarySearchByCriteria(this.sharedServices.providerId,
+            this.nationalIdController.value, this.nameController.value, this.memberCardidController.value,
+            this.fileIdController.value, this.contactNoController.value, this.payerId, this.tpa, this.pageIndex, this.pageSize).subscribe(event => {
+                if (event instanceof HttpResponse) {
+                    if (event.body != null && event.body instanceof Array)
+                        this.beneficiaries = [];
+                    this.beneficiaries = event.body["content"] as BeneficiarySearch[];
+                    this.length = event.body["totalElements"]
+                    this.sharedServices.loadingChanged.next(false)
+                }
+            }
+                , err => {
+
+                    if (err instanceof HttpErrorResponse) {
+                        console.log(err.message)
+                        this.sharedServices.loadingChanged.next(false)
+
+
+                    }
+                });
+
+    }
+
+    getDocumentTypeValue(documentType: string) {
+        switch (documentType) {
+            case 'PRC':
+                return 'Resident Card';
+            case 'PPN':
+                return 'Passport';
+            case 'VP':
+                return 'Visa';
+            case 'NI':
+                return 'National Card';
+            case 'MR':
+                return 'Medical Record Number';
+            default:
+                return "";
+        }
+    }
+
+    toggleAdvanceSearch() {
+        this.advanceSearchEnable = !this.advanceSearchEnable;
+    }
 }
 
 

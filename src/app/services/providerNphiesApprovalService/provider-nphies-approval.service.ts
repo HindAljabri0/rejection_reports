@@ -400,7 +400,12 @@ export class ProviderNphiesApprovalService {
     const request = new HttpRequest('GET', environment.providerNphiesApproval + requestUrl);
     return this.http.request(request);
   }
-
+  getPrescriberTransactionDetailsFromCR(providerId: string, requestId: number, communicationId) {
+    // tslint:disable-next-line:max-line-length
+    const requestUrl = `/providers/${providerId}/approval/communication-request/detail?requestId=${requestId}&communicationId=${communicationId}`;
+    const request = new HttpRequest('GET', environment.providerNphiesApproval + requestUrl);
+    return this.http.request(request);
+  }
   getTransactionDetailsFromCR(providerId: string, requestId: number, communicationId) {
     // tslint:disable-next-line:max-line-length
     const requestUrl = `/providers/${providerId}/approval/communication-request/detail?requestId=${requestId}&communicationId=${communicationId}`;

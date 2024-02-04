@@ -20,7 +20,7 @@
 
 <div class="primary-dialog-footer has-border text-right">
   <div class="btn-list text-right">
-    <button mat-flat-button color="primary" (click)="openPreviewDialog()" *ngIf="detailsModel && detailsModel.outcome !== 'Error'">
+    <button *ngIf="getPrivileges().ProviderPrivileges.NPHIES.isAdmin || getPrivileges().ProviderPrivileges.NPHIES.canAccessEligibility && detailsModel && detailsModel.outcome !== 'Error'" mat-flat-button color="primary" (click)="openPreviewDialog()">
       {{getType()}}
     </button>
     <button mat-flat-button color="primary" (click)="print()">Print</button>

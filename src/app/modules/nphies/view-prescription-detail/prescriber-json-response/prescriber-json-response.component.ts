@@ -51,9 +51,9 @@ export class PrescriberJsonResponseComponent implements OnInit {
         model.transactionId = transactionId;
         model.pollTransactionId = pollTransactionId;
         model.transactionType = transactionType;
-
+        //console.log(this.otherDataModel.isPrescriber);
         // tslint:disable-next-line:max-line-length
-        this.providerNphiesApprovalService.getJSON(this.sharedServices.providerId, model, this.otherDataModel.isPrescriber).subscribe((event: any) => {
+        this.providerNphiesApprovalService.getJSON(this.sharedServices.providerId, model, false,this.otherDataModel.isPrescriber).subscribe((event: any) => {
             if (event instanceof HttpResponse) {
                 if (event.status === 200) {
                     const json = event.body;
@@ -69,7 +69,7 @@ export class PrescriberJsonResponseComponent implements OnInit {
         }, error => {
             if (error instanceof HttpErrorResponse) {
                 this.sharedServices.loadingChanged.next(false);
-                console.log(error.status);
+                //console.log(error.status);
             }
         });
     }

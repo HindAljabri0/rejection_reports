@@ -20,6 +20,8 @@ import { PaginatedResult } from 'src/app/models/paginatedResult';
 import { BeneficiariesSearchResult } from 'src/app/models/nphies/beneficiaryFullTextSearchResult';
 import { CancelReasonModalComponent } from '../preauthorization-transactions/cancel-reason-modal/cancel-reason-modal.component';
 import { ApaCommunicationRequestsComponent } from './apa-communication-requests/apa-communication-requests.component';
+import { Store } from '@ngrx/store';
+import { UserPrivileges, getUserPrivileges, initState } from 'src/app/store/mainStore.reducer';
 @Component({
     selector: 'app-advance-preauth-transactions',
     templateUrl: './advance-preauth-transactions.component.html',
@@ -77,8 +79,9 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
         { value: 'cancelled', name: 'Cancelled' }
     ];
     data: any;
-
+    userPrivileges: UserPrivileges = initState.userPrivileges;
     constructor(
+        private store: Store,
         private formBuilder: FormBuilder,
         private datePipe: DatePipe,
         private routeActive: ActivatedRoute,
@@ -92,6 +95,7 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
         private dialogService: DialogService) { }
 
     ngOnInit() {
+        this.store.select(getUserPrivileges).subscribe(privileges => this.userPrivileges = privileges);
         this.FormAdvancePreAuthTransaction.controls.fromDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
         this.FormAdvancePreAuthTransaction.controls.toDate.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
         this.routeActive.queryParams.subscribe(params => {

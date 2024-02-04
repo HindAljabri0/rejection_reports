@@ -629,14 +629,24 @@
                         <td id="factorValue">{{item.factor}}</td>
                       </tr>
                       <tr>
-                        <td class="label">Medication Selection Reason </td>
-                        <td>{{item.drugSelectionReasonName ?
-                          item.drugSelectionReasonName:"-"}}</td>
+                        <td class="label">Pharmacist Selection Reason </td>
+                        <td>{{item.pharmacistSelectionReason ?
+                          item.pharmacistSelectionReason:"-"}}</td>
                       </tr>
                       <tr>
                         <td class="label">Prescribed Medication </td>
                         <td>{{item.prescribedDrugCode ?
                           item.prescribedDrugCode:"-"}}</td>
+                      </tr>
+                      <tr>
+                        <td class="label">Pharmacist Substitute Reason </td>
+                        <td>{{item.pharmacistSubstitute ?
+                          item.pharmacistSubstitute:"-"}}</td>
+                      </tr>
+                      <tr>
+                        <td *ngIf="item.reasonPharmacistSubstitute" class="label">Others </td>
+                        <td>{{item.reasonPharmacistSubstitute ?
+                          item.reasonPharmacistSubstitute:"-"}}</td>
                       </tr>
                       <tr>
                         <td class="label">Supporting Info</td>
