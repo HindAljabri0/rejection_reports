@@ -74,8 +74,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
         // IsTaxApplied: [false],
         searchQuery: [''],
-        pharmacistSelectionReason: ['', Validators.required],
-        prescribedDrugCode: ['', Validators.required],
+        pharmacistSelectionReason: [''],
+        prescribedDrugCode: [''],
         // pharmacySubstitute: [''],
         pharmacistSubstitute: [''],
         reasonPharmacistSubstitute: [''],
@@ -837,6 +837,20 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         }
     }
     validateDiagnosisInPharmacyForApproval() {
+        if(this.data.type === "pharmacy" && this.data.source === "APPROVAL"){
+            this.FormItem.controls.pharmacistSelectionReason.setValidators([Validators.required]);
+            this.FormItem.controls.pharmacistSelectionReason.updateValueAndValidity();
+            //------------------------------------
+            this.FormItem.controls.prescribedDrugCode.setValidators([Validators.required]);
+            this.FormItem.controls.prescribedDrugCode.updateValueAndValidity();
+            
+        }else{
+            this.FormItem.controls.prescribedDrugCode.clearValidators();
+            this.FormItem.controls.prescribedDrugCode.updateValueAndValidity();
+            //--------------------------------------
+            this.FormItem.controls.pharmacistSelectionReason.clearValidators();
+            this.FormItem.controls.pharmacistSelectionReason.updateValueAndValidity();
+        }
         if (this.data.type === "pharmacy" && this.data.source === "APPROVAL" && this.FormItem.controls.diagnosisSequence.value.length == 0) {
             this.FormItem.controls.diagnosisSequence.setValidators([Validators.required]);
             this.FormItem.controls.diagnosisSequence.updateValueAndValidity();
