@@ -69,11 +69,11 @@ export class ProviderNphiesSearchService {
   }
 
 
-  getCodeDescriptionList(providerId: string, itemType: string, requestType?: String) {
+  getCodeDescriptionList(providerId: string, itemType: string, serviceDate?: String) {
 
     let requestURL = '/providers/' + providerId + '/approval/itemcodes?itemType=' + itemType;
-    if (requestType && requestType.trim().length > 0) {
-        requestURL += `&requestType=${requestType}`;
+    if (serviceDate && serviceDate!=null) {
+        requestURL += `&serviceDate=${serviceDate}`;
     }
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
     return this.http.request(request);

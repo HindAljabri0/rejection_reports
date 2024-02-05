@@ -21,6 +21,10 @@ export class ViewEligibilityDetailsComponent implements OnInit {
     private dialogRef: MatDialogRef<ViewEligibilityDetailsComponent>, private sharedServices: SharedServices,private dialog: MatDialog,private dbMapping: DbMappingService,
     @Inject(MAT_DIALOG_DATA) public data, private providersNphiesEligibilityService: ProvidersNphiesEligibilityService) { }
 
+
+    getPrivileges(){
+        return this.sharedServices.getPrivileges();
+    }
   ngOnInit() {
     this.getDetails();
     this.getProviderTypeConfiguration();

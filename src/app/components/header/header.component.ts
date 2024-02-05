@@ -185,7 +185,7 @@ export class HeaderComponent implements OnInit {
     }
 
     get isProvider() {
-        return this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || this.userPrivileges.ProviderPrivileges.NPHIES.isAdmin || this.userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim;
+        return this.userPrivileges.ProviderPrivileges.WASEEL_CLAIMS.isClaimUser || this.userPrivileges.ProviderPrivileges.NPHIES.isAdmin || this.userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim || this.userPrivileges.ProviderPrivileges.NPHIES.canAccessViewClaim;
     }
     setNewNotificationIndecater(show: boolean) {
         if (show) {
