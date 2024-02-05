@@ -83,6 +83,7 @@ export class AddPreauthorizationComponent implements OnInit {
         type: ['', Validators.required],
         subType: [''],
         preAuthRefNo: [''],
+        prescription: [''],
         accidentType: [''],
         streetName: [''],
         city: [''],
@@ -1166,9 +1167,11 @@ export class AddPreauthorizationComponent implements OnInit {
                             x.supportingInfoSequence = result.supportingInfoSequence;
                             x.careTeamSequence = result.careTeamSequence;
                             x.diagnosisSequence = result.diagnosisSequence;
-                            x.drugSelectionReason = result.drugSelectionReason;
+                            x.pharmacistSelectionReason = result.pharmacistSelectionReason;
                             x.prescribedDrugCode = result.prescribedDrugCode;
-
+                            x.pharmacistSubstitute = result.pharmacistSubstitute;
+                            x.reasonPharmacistSubstitute = result.reasonPharmacistSubstitute;
+                           
                             if (x.supportingInfoSequence) {
                                 x.supportingInfoNames = '';
                                 x.supportingInfoSequence.forEach(s => {
@@ -1280,7 +1283,10 @@ export class AddPreauthorizationComponent implements OnInit {
                                         y.display = result.display;
                                         y.quantity = result.quantity;
                                         y.quantityCode = result.quantityCode;
-
+                                        y.pharmacistSelectionReason = result.pharmacistSelectionReason;
+                                        y.prescribedDrugCode = result.prescribedDrugCode;
+                                        y.pharmacistSubstitute = result.pharmacistSubstitute;
+                                        y.reasonPharmacistSubstitute = result.reasonPharmacistSubstitute;
                                     }
                                 });
                             } else {
@@ -1977,7 +1983,7 @@ export class AddPreauthorizationComponent implements OnInit {
             preAuthorizationModel.payeeType = this.FormPreAuthorization.controls.payeeType.value.value;
             preAuthorizationModel.type = this.FormPreAuthorization.controls.type.value.value;
             preAuthorizationModel.subType = this.FormPreAuthorization.controls.subType.value.value;
-
+            preAuthorizationModel.prescription = this.FormPreAuthorization.controls.prescription.value;
             if (this.FormPreAuthorization.controls.preAuthRefNo.value) {
                 this.model.preAuthRefNo = this.FormPreAuthorization.controls.preAuthRefNo.value.map(x => {
                     return x.value;
@@ -2160,6 +2166,10 @@ export class AddPreauthorizationComponent implements OnInit {
                         dmodel.nonStandardCode = y.nonStandardCode;
                         dmodel.nonStandardDesc = y.display;
                         dmodel.quantity = parseFloat(y.quantity);
+                        dmodel.pharmacistSelectionReason = y.pharmacistSelectionReason;
+                        dmodel.prescribedDrugCode = y.prescribedDrugCode;
+                        dmodel.pharmacistSubstitute = y.pharmacistSubstitute;
+                        dmodel.reasonPharmacistSubstitute = y.reasonPharmacistSubstitute;    
                         return dmodel;
                     });
 
@@ -2191,8 +2201,10 @@ export class AddPreauthorizationComponent implements OnInit {
                     model.careTeamSequence = x.careTeamSequence;
                     model.diagnosisSequence = x.diagnosisSequence;
                     model.invoiceNo = null;
-                    model.drugSelectionReason = x.drugSelectionReason;
+                    model.pharmacistSelectionReason = x.pharmacistSelectionReason;
                     model.prescribedDrugCode = x.prescribedDrugCode;
+                    model.pharmacistSubstitute = x.pharmacistSubstitute;
+                    model.reasonPharmacistSubstitute = x.reasonPharmacistSubstitute;
 
                     model.itemDetails = x.itemDetails.map(y => {
                         const dmodel: any = {};
@@ -2204,6 +2216,10 @@ export class AddPreauthorizationComponent implements OnInit {
                         dmodel.nonStandardDesc = y.display;
                         dmodel.quantity = parseFloat(y.quantity);
                         dmodel.quantityCode = y.quantityCode;
+                        dmodel.pharmacistSelectionReason = y.pharmacistSelectionReason;
+                        dmodel.prescribedDrugCode = y.prescribedDrugCode;
+                        dmodel.pharmacistSubstitute = y.pharmacistSubstitute;
+                        dmodel.reasonPharmacistSubstitute = y.reasonPharmacistSubstitute;    
                         return dmodel;
                     });
 
