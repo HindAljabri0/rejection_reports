@@ -847,7 +847,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         }
 
         //------------------------------------
-        if (this.data.type === "pharmacy" && this.FormItem.controls.prescribedDrugCode.value == null) {
+        if (this.data.source === 'APPROVAL' && this.data.type === "pharmacy" && this.FormItem.controls.prescribedDrugCode.value == null) {
             this.FormItem.controls.prescribedDrugCode.setValidators([Validators.required]);
             this.FormItem.controls.prescribedDrugCode.updateValueAndValidity();
         }else{
