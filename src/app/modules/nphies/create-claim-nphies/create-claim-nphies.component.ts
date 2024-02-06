@@ -1051,6 +1051,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
                             x.drugSelectionReason = result.pharmacistSelectionReason;
                             x.drugSelectionReasonName = result.pharmacistSelectionReason;
+                            x.pharmacistSelectionReason = result.pharmacistSelectionReason;
                             x.prescribedDrugCode = result.prescribedDrugCode;
                             x.pharmacistSubstitute = result.pharmacistSubstitute;
                             x.reasonPharmacistSubstitute = result.reasonPharmacistSubstitute;
@@ -1128,6 +1129,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             }
             this.RefershTotal();
         });
+        console.log("Items ",this.Items);
     }
 
     deleteItem(index: number) {
@@ -1994,7 +1996,7 @@ export class CreateClaimNphiesComponent implements OnInit {
                     model.diagnosisSequence = x.diagnosisSequence;
                     model.invoiceNo = x.invoiceNo;
 
-                    model.pharmacistSelectionReason = x.drugSelectionReason;
+                    model.pharmacistSelectionReason = x.pharmacistSelectionReason;
                     model.prescribedDrugCode = x.prescribedDrugCode;
                     model.pharmacistSubstitute = x.pharmacistSubstitute;
                     model.reasonPharmacistSubstitute = x.reasonPharmacistSubstitute;
@@ -3060,7 +3062,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             // tslint:disable-next-line:max-line-length
             model.subSiteName = this.sharedDataService.getSubSite(response.preAuthorizationInfo.type).filter(y => y.value === x.subSite)[0] ? this.sharedDataService.getSubSite(response.preAuthorizationInfo.type).filter(y => y.value === x.subSite)[0].name : '';
             if (x.itemDetails && x.itemDetails.length > 0) {
-                console.log("item details = "+JSON.stringify(x.itemDetails));
+                //console.log("item details = "+JSON.stringify(x.itemDetails));
                 x.itemDetails.forEach(y => {
                     y.typeName = this.sharedDataService.itemTypeList.filter(
                         z => z.value === y.type)[0]
