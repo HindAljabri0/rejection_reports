@@ -99,8 +99,9 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
             this.bodySiteList = this.sharedDataService.getBodySite(this.data.type);
             this.subSiteList = this.sharedDataService.getSubSite(this.data.type);
         }
-        console.log("data = "+JSON.stringify(this.data));
-        if (this.data.item) {
+        console.log("item = ", this.data.item);
+        console.log(this.data.item != null);
+        if (this.data.item && this.data.item != null) {
             this.FormItem.patchValue({
                 type: this.prescribedCode.filter(x => x.value === this.data.item.type)[0],
                 itemDescription: this.itemList.filter(x => x.code === this.data.item.itemDescription)[0],
@@ -112,6 +113,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
                 subSite: this.subSiteList.filter(x => x.value === this.data.item.subSite)[0],
                 quantity: this.data.item.quantity,
                 quantityCode: this.data.item.quantityCode != null ? this.data.item.quantityCode : "",
+                endDate: this.data.item.endDate ? new Date(this.data.item.endDate) : null,
                 strength: this.data.item.strength,
                 absenceScientificCode: this.absenceReasonList.filter(x => x.value === this.data.item.absenceScientificCode)[0],
             });
@@ -129,49 +131,48 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
                     diagnosisSequence: this.data.item.diagnosisSequence ? this.data.diagnosises.filter(x => this.data.item.diagnosisSequence.find(y => y === x.sequence) !== undefined) : []
                 });
             }
-            console.log("supporting info "+JSON.stringify(this.data.supportingInfos));
+            //console.log("supporting info "+JSON.stringify(this.data.supportingInfos));
             if (this.data.supportingInfos) {
                 this.FormItem.patchValue({
                     // tslint:disable-next-line:max-line-length
                     supportingInfoSequence: this.data.item.supportingInfoSequence ? this.data.supportingInfos.filter(x => this.data.item.supportingInfoSequence.find(y => y === x.sequence) !== undefined) : []
                 });
             }
-
+            //console.log("supporting info seq = "+JSON.stringify(this.FormItem.controls.supportingInfoSequence.value));
             this.getItemList();
         } else {
-
-            if (this.data.supportingInfos) {
-                this.filteredSupportingInfo.next(this.data.supportingInfos.slice());
-                this.FormItem.controls.supportingInfoFilter.valueChanges
-                    .pipe(takeUntil(this.onDestroy))
-                    .subscribe(() => {
-                        this.filterSupportingInfo();
-                    });
-            }
-
-            if (this.data.careTeams) {
-                this.filteredCareTeam.next(this.data.careTeams.slice());
-                this.FormItem.controls.careTeamFilter.valueChanges
-                    .pipe(takeUntil(this.onDestroy))
-                    .subscribe(() => {
-                        this.filterCareTeam();
-                    });
-            }
-
-            if (this.data.diagnosises) {
-                this.filteredDiagnosis.next(this.data.diagnosises.slice());
-                this.FormItem.controls.diagnosisFilter.valueChanges
-                    .pipe(takeUntil(this.onDestroy))
-                    .subscribe(() => {
-                        this.filterDiagnosis();
-                    });
-            }
 
             if (this.data.subType === 'op') {
                 this.FormItem.controls.quantityCode.setValue('{package}');
                 this.FormItem.controls.quantityCode.disable();
             }
-            this.FormItem.controls.factor.setValue(1);
+            //this.FormItem.controls.factor.setValue(1);
+        }
+        if (this.data.supportingInfos) {
+            this.filteredSupportingInfo.next(this.data.supportingInfos.slice());
+            this.FormItem.controls.supportingInfoFilter.valueChanges
+                .pipe(takeUntil(this.onDestroy))
+                .subscribe(() => {
+                    this.filterSupportingInfo();
+                });
+        }
+
+        if (this.data.careTeams) {
+            this.filteredCareTeam.next(this.data.careTeams.slice());
+            this.FormItem.controls.careTeamFilter.valueChanges
+                .pipe(takeUntil(this.onDestroy))
+                .subscribe(() => {
+                    this.filterCareTeam();
+                });
+        }
+
+        if (this.data.diagnosises) {
+            this.filteredDiagnosis.next(this.data.diagnosises.slice());
+            this.FormItem.controls.diagnosisFilter.valueChanges
+                .pipe(takeUntil(this.onDestroy))
+                .subscribe(() => {
+                    this.filterDiagnosis();
+                });
         }
 
     }

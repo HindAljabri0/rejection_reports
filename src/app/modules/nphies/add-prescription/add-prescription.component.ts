@@ -1126,6 +1126,8 @@ export class AddPrescriptionComponent implements OnInit {
                             x.careTeamSequence = result.careTeamSequence;
                             x.diagnosisSequence = result.diagnosisSequence;
                             x.prescribedDrugCode = result.prescribedDrugCode;
+                            x.strength = result.strength;
+                            x.absenceScientificCode = result.absenceScientificCode;
 
                             if (x.supportingInfoSequence) {
                                 x.supportingInfoNames = '';
