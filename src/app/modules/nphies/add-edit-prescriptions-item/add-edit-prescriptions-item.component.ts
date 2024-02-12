@@ -48,7 +48,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
         bodySite: [''],
         subSite: [''],
         quantity: ['', Validators.required],
-        strength: [''],
+        strength: ['',Validators.required],
         quantityCode: [''],
         supportingInfoSequence: [''],
         supportingInfoFilter: [''],
