@@ -31,6 +31,7 @@ export class AddEditItemDetailsModalComponent implements OnInit {
     prescribedMedicationList: any;
     IsItemLoading = false;
     showTextInput = false;
+    showEBPfeilds = false;
     otherReason = '';
     onDestroy = new Subject<void>();
 
@@ -75,6 +76,7 @@ export class AddEditItemDetailsModalComponent implements OnInit {
         }
 
         if (this.data.item && this.data.item.itemCode) {
+            this.showEBPfeilds = this.data.type === "pharmacy" && this.data.item.type === "medication-codes";
             this.FormItem.patchValue({
                 type: this.data.source === 'CNHI' ? this.cnhiTypeList.filter(x => x.value === this.data.item.type)[0] : this.typeList.filter(x => x.value === this.data.item.type)[0],
                 nonStandardCode: this.data.item.nonStandardCode,
@@ -197,6 +199,11 @@ export class AddEditItemDetailsModalComponent implements OnInit {
     getItemList(type = null) {
         this.IsItemLoading = true;
         this.FormItem.controls.item.disable();
+        if(this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes'){
+            this.showEBPfeilds = true;
+        }else{
+            this.showEBPfeilds = false;
+        }
         // tslint:disable-next-line:max-line-length
         this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, this.FormItem.controls.type.value.value).subscribe(event => {
             if (event instanceof HttpResponse) {
@@ -336,6 +343,11 @@ export class AddEditItemDetailsModalComponent implements OnInit {
                 pharmacistSubstitute: this.data.item.pharmacistSubstitute,
                 reasonPharmacistSubstitute: this.data.item.reasonPharmacistSubstitute,
             });
+            if (type.itemType && type.itemType === 'medication-codes') {
+                this.showEBPfeilds = true;
+            } else {
+                this.showEBPfeilds = false;
+            }
             this.getItemList(type);
         }
     }
