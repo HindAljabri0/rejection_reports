@@ -87,7 +87,7 @@ onOptionChange: string = '';
         note: this.data.item.note,
         patientInstruction: this.data.item.patientInstruction,
         route: this.data.item.route,
-        dosageType: this.data.item.dosageType,
+        dosageType: this.data.item.dosageCategory,
         doseType: this.data.item.doseType,
         min: this.data.item.min,
         max: this.data.item.max,
@@ -131,7 +131,6 @@ onOptionChange: string = '';
 
   onSubmit() {
     this.isSubmitted = true;
-    console.log(this.FormItem,"this.FormItem")
     if (this.FormItem) {
 
       const pattern = /(^\d*\.?\d*[1-9]+\d*$)|(^[1-9]+\d*\.\d*$)/;
@@ -147,7 +146,6 @@ onOptionChange: string = '';
       model.route = this.FormItem.controls.route.value.value;
       model.dosageCategory = this.FormItem.controls.dosageType.value;
       model.doseType = this.FormItem.controls.doseType.value;
-      console.log("dosetype = "+this.FormItem.controls.doseType.value);
       model.doseQuantityOrRangeMin = this.FormItem.controls.min.value || this.FormItem.controls.doseQuantity.value;
       model.doseRangeMax = this.FormItem.controls.max.value;
       model.doseUnit = this.FormItem.controls.doseUnit.value;
@@ -163,12 +161,13 @@ onOptionChange: string = '';
       model.refill = this.FormItem.controls.refill.value;
       model.duration = this.FormItem.controls.duration.value;
       model.frequency = this.FormItem.controls.frequency.value;
+      model.frequencyUnit = this.FormItem.controls.frequencyUnit.value;
       model.period = this.FormItem.controls.period.value;
       model.durationUnit = this.FormItem.controls.durationUnit.value;
       model.periodUnit = this.FormItem.controls.periodUnit.value;
 
-      model.claimItemDosageModel = [];
-console.log(model,"model")
+      //model.claimItemDosageModel = [];
+
       this.dialogRef.close(model);
     }
   }

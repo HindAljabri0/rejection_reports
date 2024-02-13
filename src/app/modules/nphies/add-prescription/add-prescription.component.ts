@@ -1126,6 +1126,8 @@ export class AddPrescriptionComponent implements OnInit {
                             x.careTeamSequence = result.careTeamSequence;
                             x.diagnosisSequence = result.diagnosisSequence;
                             x.prescribedDrugCode = result.prescribedDrugCode;
+                            x.strength = result.strength;
+                            x.absenceScientificCode = result.absenceScientificCode;
 
                             if (x.supportingInfoSequence) {
                                 x.supportingInfoNames = '';
@@ -1283,14 +1285,11 @@ export class AddPrescriptionComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                console.log(result, "result")
+                console.log("Result = "+JSON.stringify(result));
                 if (this.Items.find(x => x.sequence === itemSequence)) {
                     this.Items.map(x => {
-
                         if (x.sequence === itemSequence) {
                             x.claimItemDosageModel.push(result);
-                            console.log(x.claimItemDosageModel, " x.claimItemDosageModel")
-
 
                         } else {
                             x.claimItemDosageModel.push(result);
