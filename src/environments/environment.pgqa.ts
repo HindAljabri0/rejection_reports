@@ -1,4 +1,4 @@
-const host = 'https://dr-eclaims.waseel.com/api';
+const host = 'https://qa-eclaims.waseel.com/api';
 const apiDotHost = 'https://api.qa-eclaims.waseel.com';
 const hostFeedback = 'https://feedback.qa-eclaims.waseel.com/en/';
 const hostjisr = 'https://qa-jisr.waseel.com/signIn';
