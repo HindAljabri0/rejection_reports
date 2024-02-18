@@ -25,6 +25,7 @@
                     <label class="control-label">Route<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select placeholder="Select route" formControlName="route">
+                            <mat-option value="">Select route</mat-option>
                             <mat-option *ngFor="let route of routes" [value]="route">{{ route.name }}</mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -33,10 +34,11 @@
 
             <div class="col-4">
                 <div class="form-group"
-                    [ngClass]="{'has-error' : (isSubmitted || FormItem.get('doseType').touched) && FormItem.get('doseType').hasError('required')}">
+                    [ngClass]="{'has-error' : (isSubmitted || FormItem.get('dosageType').touched) && FormItem.get('dosageType').hasError('required')}">
                     <label class="control-label">Dosage Type<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select placeholder="Select dosage type" formControlName="dosageType">
+                            <mat-option value="">Select Type</mat-option>
                             <mat-option value="DoseType">Dose</mat-option>
                             <mat-option value="RateType">Rate</mat-option>
                         </mat-select>
@@ -50,6 +52,7 @@
                     <label class="control-label">Dose Type<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select placeholder="Select dose type" formControlName="doseType">
+                            <mat-option value="">Select Type</mat-option>
                             <mat-option value="Dose_Quantity_Range">Dose Quantity Range</mat-option>
                             <mat-option value="Dose_Quantity">Dose Quantity</mat-option>
                         </mat-select>
@@ -59,13 +62,13 @@
 
             <div class="col-4"
                 *ngIf="FormItem.get('dosageType').value === 'DoseType' && FormItem.get('doseType').value === 'Dose_Quantity_Range'">
-                <div class="form-group">
+                <div class="form-group"  [ngClass]="{'has-error' : ((isSubmitted || FormItem.get('max').touched) && FormItem.get('max').hasError('required')) || ((isSubmitted || FormItem.get('min').touched) && FormItem.get('min').hasError('required'))}">
                     <label class="control-label">Dose Quantity Range<span class="asterisk">*</span></label>
                     <div class="row small-gutter">
                         <div class="col-6">
                             <input class="form-control" placeholder="Min" formControlName="min">
                         </div>
-                        <div class="col-6">
+                        <div class="col-6" >
                             <input class="form-control" placeholder="Max" formControlName="max">
                         </div>
                     </div>
@@ -74,13 +77,13 @@
 
             <div class="col-4"
                 *ngIf="FormItem.get('dosageType').value === 'DoseType' && FormItem.get('doseType').value === 'Dose_Quantity'">
-                <div class="form-group">
+                <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('doseQuantity').touched) && FormItem.get('doseQuantity').hasError('required')}">
                     <label class="control-label">Dose Quantity<span class="asterisk">*</span></label>
                     <input class="form-control" placeholder="Enter the dose quantity" formControlName="doseQuantity">
                 </div>
             </div>
             <div class="col-4" *ngIf="FormItem.get('dosageType').value === 'DoseType'">
-                <div class="form-group">
+                <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('doseUnit').touched) && FormItem.get('doseUnit').hasError('required')}">
                     <label class="control-label">Dose Unit<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select placeholder="Select dose unit" formControlName="doseUnit">
@@ -97,10 +100,11 @@
             </div>
 
             <div class="col-4" *ngIf="FormItem.get('dosageType').value === 'RateType'">
-                <div class="form-group">
+                <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('rateType').touched) && FormItem.get('rateType').hasError('required')}">
                     <label class="control-label">Rate Type<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
-                        <mat-select placeholder="Select rate type" formControlName="rateType">
+                        <mat-select placeholder="Select type" formControlName="rateType">
+                            <mat-option value="">Select Type</mat-option>
                             <mat-option value="Rate_Ratio">Rate Ratio</mat-option>
                             <mat-option value="Rate_Range">Rate Range</mat-option>
                             <mat-option value="Rate_Quantity">Rate Quantity</mat-option>
@@ -111,13 +115,13 @@
 
             <div class="col-4"
                 *ngIf="FormItem.get('dosageType').value === 'RateType' && FormItem.get('rateType').value === 'Rate_Ratio'">
-                <div class="form-group">
+                <div class="form-group" >
                     <label class="control-label">Rate Ratio<span class="asterisk">*</span></label>
                     <div class="row small-gutter">
-                        <div class="col-6">
+                        <div class="col-6" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('numerator').touched) && FormItem.get('numerator').hasError('required')}">
                             <input class="form-control" placeholder="Numerator" formControlName="numerator">
                         </div>
-                        <div class="col-6">
+                        <div class="col-6" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('denominator').touched) && FormItem.get('denominator').hasError('required')}">
                             <input class="form-control" placeholder="Denominator" formControlName="denominator">
                         </div>
                     </div>
@@ -129,10 +133,10 @@
                 <div class="form-group">
                     <label class="control-label">Rate Range<span class="asterisk">*</span></label>
                     <div class="row small-gutter">
-                        <div class="col-6">
+                        <div class="col-6" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('ratemin').touched) && FormItem.get('ratemin').hasError('required')}">
                             <input class="form-control" placeholder="Min" formControlName="ratemin">
                         </div>
-                        <div class="col-6">
+                        <div class="col-6" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('ratemax').touched) && FormItem.get('ratemax').hasError('required')}">
                             <input class="form-control" placeholder="Max" formControlName="ratemax">
                         </div>
                     </div>
@@ -141,19 +145,20 @@
 
             <div class="col-4"
                 *ngIf="FormItem.get('dosageType').value === 'RateType' && FormItem.get('rateType').value === 'Rate_Quantity'">
-                <div class="form-group">
+                <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormItem.get('rateQuantity').touched) && FormItem.get('rateQuantity').hasError('required')}">
+
                     <label class="control-label">Rate Quantity<span class="asterisk">*</span></label>
                     <input class="form-control" placeholder="Enter the rate quantity" formControlName="rateQuantity">
                 </div>
             </div>
 
             <div class="col-4" *ngIf="FormItem.get('dosageType').value === 'RateType'">
-                <div class="form-group">
+                <div class="form-group"  [ngClass]="{'has-error' : (isSubmitted || FormItem.get('rateUnit').touched) && FormItem.get('rateUnit').hasError('required')}">
                     <label class="control-label">Rate Unit<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select placeholder="Select rate unit" formControlName="rateUnit">
-                            <mat-option value="">Select rate unit</mat-option>
-                            <mat-option value="sec">seconds</mat-option>
+                            <mat-option value="">Select unit</mat-option>
+                            <mat-option value="s">seconds</mat-option>
                             <mat-option value="min">minutes</mat-option>
                             <mat-option value="h">hours</mat-option>
                             <mat-option value="d">days</mat-option>
@@ -200,12 +205,7 @@
                 </div>
             </div>
 
-            <div class="col-4">
-                <div class="form-group">
-                    <label class="control-label">Refill</label>
-                    <input class="form-control" placeholder="Enter Refill" formControlName="refill">
-                </div>
-            </div>
+
 
             <div class="col-4">
                 <div class="form-group"
@@ -219,12 +219,14 @@
                         <div class="col-auto">
                             <mat-form-field class="form-control custom-select-control">
                                 <mat-select value="UCUM" formControlName="durationUnit">
-                                    <mat-option value="s">s</mat-option>
-                                    <mat-option value="min">min</mat-option>
-                                    <mat-option value="h">h</mat-option>
-                                    <mat-option value="d">d</mat-option>
-                                    <mat-option value="wk">wk</mat-option>
-                                    <mat-option value="mo">mo</mat-option>
+                                    <mat-option value="">Select unit</mat-option>
+                                    <mat-option value="s">seconds</mat-option>
+                                    <mat-option value="min">minutes</mat-option>
+                                    <mat-option value="h">hours</mat-option>
+                                    <mat-option value="d">days</mat-option>
+                                    <mat-option value="wk">week</mat-option>
+                                    <mat-option value="mo">month</mat-option>
+                                    <mat-option value="UCUM">a- unit of time (UCUM)</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
@@ -234,11 +236,16 @@
 
             <div class="col-4">
                 <div class="form-group">
-                    <label class="control-label">Frequency<span class="asterisk">*</span></label>
+                    <label class="control-label">Frequency</label>
                     <div class="row extra-small-gutter">
+                        <div class="col">
+                            <input type="text" class="form-control" formControlName="frequency"
+                                placeholder="Enter frequency">
+                        </div>
                         <div class="col-auto">
                             <mat-form-field class="form-control custom-select-control">
                                 <mat-select value="BID" formControlName="frequencyUnit">
+                                    <mat-option value="">Select unit</mat-option>
                                     <mat-option value="BID">BID</mat-option>
                                     <mat-option value="TID">TID</mat-option>
                                     <mat-option value="QID">QID</mat-option>
@@ -249,10 +256,7 @@
                                 </mat-select>
                             </mat-form-field>
                         </div>
-                        <div class="col">
-                            <input type="text" class="form-control" formControlName="frequency"
-                                placeholder="Enter frequency">
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -267,8 +271,8 @@
                         <div class="col-auto">
                             <mat-form-field class="form-control custom-select-control">
                                 <mat-select value="days" formControlName="periodUnit">
-                                    <mat-option value="">Select rate unit</mat-option>
-                                    <mat-option value="sec">seconds</mat-option>
+                                    <mat-option value="">Select unit</mat-option>
+                                    <mat-option value="s">seconds</mat-option>
                                     <mat-option value="min">minutes</mat-option>
                                     <mat-option value="h">hours</mat-option>
                                     <mat-option value="d">days</mat-option>
@@ -279,6 +283,12 @@
                             </mat-form-field>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label class="control-label">Refill</label>
+                    <input class="form-control" placeholder="Enter Refill" formControlName="refill">
                 </div>
             </div>
         </div>
