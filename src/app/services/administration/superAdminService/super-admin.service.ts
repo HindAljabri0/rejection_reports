@@ -187,3 +187,4 @@ export const RADIOLOGY_REPORT_KEY = 'RadiologyReport';
 export const NPHIES_MRE_APPROVAL_KEY = 'NphiesApprovalMREValidation';
 export const NET_AMOUNT_RESTRICTION_KEY = 'netAmountValidation';
 export const PROVIDER_TYPE_CONFIGURATION_KEY = 'providerTypeConfiguration';
+export const NPHIES_TRANSACTION_KEY = 'NphiesTransactions';

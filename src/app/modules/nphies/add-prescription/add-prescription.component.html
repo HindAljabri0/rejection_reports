@@ -746,100 +746,55 @@
                                         </div>
 
                                         <div class="box" *ngIf="item.itemDetails && item.itemDetails.length > 0">
-                                            <ng-container *ngFor="let d of item.itemDetails; let di = index">
-                                                <div class="box"
-                                                    *ngIf="item.itemDetails && item.itemDetails.length > 0">
-                                                    <h5 class="align-self-center medium pb-2">Item Detail</h5>
-                                                    <table class="primary-grid claim-view-table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Seq.</th>
-                                                                <th>Type</th>
-                                                                <th>Code - Description</th>
-                                                                <th>Non Standard Code</th>
-                                                                <th>Display</th>
-                                                                <th>Quantity</th>
-                                                                <th width="10"></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr *ngFor="let d of item.itemDetails; let di = index">
-                                                                <td class="row-click">{{d.sequence}}</td>
-                                                                <td class="row-click">{{d.typeName}}</td>
-                                                                <td class="row-click">{{d.itemCode}} -
-                                                                    {{d.itemDescription}}
-                                                                </td>
-                                                                <td class="row-click">{{d.nonStandardCode ?
-                                                                    d.nonStandardCode :
-                                                                    '-'}}</td>
-                                                                <td class="row-click">{{d.display ? d.display : '-'}}
-                                                                </td>
-                                                                <td class="row-click">{{d.quantity ? d.quantity +" "+
-                                                                    d.quantityCode : '-'}}</td>
-                                                                <td class="actions">
-                                                                    <mat-menu #itemsDetailsActionsMenu
-                                                                        xPosition="before">
-                                                                        <ng-template matMenuContent>
-                                                                            <button mat-menu-item type="button"
-                                                                                (click)="openAddEditItemDetailsDialog(item.sequence, d)">
-                                                                                <mat-icon
-                                                                                    class="material-icons-outlined">edit</mat-icon>
-                                                                                <span>Edit</span>
-                                                                            </button>
-                                                                            <button mat-menu-item type="button"
-                                                                                (click)="deleteItemDetails(item.sequence, di)">
-                                                                                <mat-icon
-                                                                                    class="material-icons-outlined">delete</mat-icon>
-                                                                                <span>Delete</span>
-                                                                            </button>
-                                                                        </ng-template>
-                                                                    </mat-menu>
-                                                                    <button type="button" mat-icon-button
-                                                                        [matMenuTriggerFor]="itemsDetailsActionsMenu">
-                                                                        <mat-icon>more_vert</mat-icon>
+                                            <h5 class="align-self-center medium pb-2">Item Detail</h5>
+                                            <table class="primary-grid claim-view-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Seq.</th>
+                                                        <th>Type</th>
+                                                        <th>Code - Description</th>
+                                                        <th>Non Standard Code</th>
+                                                        <th>Strength</th>
+                                                        <th>Quantity</th>
+                                                        <th width="10"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let d of item.itemDetails; let di = index">
+                                                        <td class="row-click">{{d.sequence}}</td>
+                                                        <td class="row-click">{{d.typeName}}</td>
+                                                        <td class="row-click">{{d.itemCode}} - {{d.itemDescription}}
+                                                        </td>
+                                                        <td class="row-click">{{d.nonStandardCode ? d.nonStandardCode :
+                                                            '-'}}</td>
+                                                        <td class="row-click">{{d.Strength ? d.Strength : '-'}}</td>
+                                                        <td class="row-click">{{d.quantity ? d.quantity +" "+
+                                                            d.quantityCode : '-'}}</td>
+                                                        <td class="actions">
+                                                            <mat-menu #itemsDetailsActionsMenu xPosition="before">
+                                                                <ng-template matMenuContent>
+                                                                    <button mat-menu-item type="button"
+                                                                        (click)="openAddEditItemDetailsDialog(item.sequence, d)">
+                                                                        <mat-icon
+                                                                            class="material-icons-outlined">edit</mat-icon>
+                                                                        <span>Edit</span>
                                                                     </button>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <div class="box mb-2">
-                                                    <div class="row">
-                                                        <div class="col-4">
-                                                            <table class="inline-label-table">
-                                                                <tbody>
-
-                                                                    <tr>
-                                                                        <td class="label">Non Standard Code</td>
-                                                                        <td>{{d.nonStandardCode}}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="label">Non Standard Desc.</td>
-                                                                        <td>{{d.display}}</td>
-                                                                    </tr>
-
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            <table class="inline-label-table">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td class="label">Quantity</td>
-                                                                        <td>{{item.quantity}} {{item.quantityCode}}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="label">Strength</td>
-                                                                        <td>{{item.strength}}</td>
-                                                                    </tr>
-
-
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </ng-container>
+                                                                    <button mat-menu-item type="button"
+                                                                        (click)="deleteItemDetails(item.sequence, di)">
+                                                                        <mat-icon
+                                                                            class="material-icons-outlined">delete</mat-icon>
+                                                                        <span>Delete</span>
+                                                                    </button>
+                                                                </ng-template>
+                                                            </mat-menu>
+                                                            <button type="button" mat-icon-button
+                                                                [matMenuTriggerFor]="itemsDetailsActionsMenu">
+                                                                <mat-icon>more_vert</mat-icon>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                         <div class="box"
                                             *ngIf="item.claimItemDosageModel && item.claimItemDosageModel.length > 0">
