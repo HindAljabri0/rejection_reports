@@ -35,7 +35,7 @@ export class AddEditItemDetailsPrescriptionComponent implements OnInit {
         nonStandardCode: [''],
         display: [''],
         absenceScientificCode:[],
-        strength:[],
+        strength:['', Validators.required],
         quantity: ['', Validators.required],
         quantityCode: [''],   
   });
@@ -290,7 +290,7 @@ SetSingleRecord(type = null) {
       model.itemCode = this.FormItem.controls.item.value.code;
       model.itemDescription = this.FormItem.controls.item.value.description;
       model.nonStandardCode = this.FormItem.controls.nonStandardCode.value;
-      model.display = this.FormItem.controls.display.value;
+      model.strength = this.FormItem.controls.strength.value;
       model.quantity = parseFloat(this.FormItem.controls.quantity.value);
       model.quantityCode = this.FormItem.controls.quantityCode.value;
 

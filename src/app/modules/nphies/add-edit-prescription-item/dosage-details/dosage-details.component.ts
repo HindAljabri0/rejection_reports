@@ -48,6 +48,7 @@ export class DosageDetailsComponent implements OnInit {
         refill: [''],
         duration: ['', Validators.required],
         frequency: [''],
+        frequencyType: ['code'],
         frequencyUnit: [''],
         period: [''],
         periodUnit: [''],
@@ -105,11 +106,15 @@ export class DosageDetailsComponent implements OnInit {
                 refill: this.data.item.refill,
                 duration: this.data.item.duration,
                 frequency: this.data.item.frequency,
+                frequencyType : this.data.item.frequencyType,
                 frequencyUnit: this.data.item.frequencyUnit,
                 period: this.data.item.period,
                 periodUnit: this.data.item.periodUnit,
                 durationUnit: this.data.item.durationUnit,
             });
+        }else{
+            this.FormItem.controls.dosageType.setValue("DoseType");
+            //
         }
 
     }
@@ -273,6 +278,7 @@ export class DosageDetailsComponent implements OnInit {
             model.refill = this.FormItem.controls.refill.value;
             model.duration = this.FormItem.controls.duration.value;
             model.frequency = this.FormItem.controls.frequency.value;
+            model.frequencyType = this.FormItem.controls.frequencyType.value;
             model.frequencyUnit = this.FormItem.controls.frequencyUnit.value;
             model.period = this.FormItem.controls.period.value;
             model.durationUnit = this.FormItem.controls.durationUnit.value;

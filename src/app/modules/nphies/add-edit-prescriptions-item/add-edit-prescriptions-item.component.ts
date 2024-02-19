@@ -99,7 +99,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
             this.bodySiteList = this.sharedDataService.getBodySite(this.data.type);
             this.subSiteList = this.sharedDataService.getSubSite(this.data.type);
         }
-        console.log("item = ", this.data.item);
+        //console.log("item = ", this.data.item);
         console.log(this.data.item != null);
         if (this.data.item && this.data.item != null) {
             this.FormItem.patchValue({

@@ -254,10 +254,24 @@ export class AddPrescriptionComponent implements OnInit {
             this.defualtPageMode = "";
         } else {
             this.getRefferalProviders();
-            this.defualtPageMode = "CREATE"
+            this.defualtPageMode = "CREATE";
+            this.subTypeList = this.sharedDataService.subTypeList.filter(x => x.value === "op");
+            this.SupportingInfo.push(this.SetDaysOfSupply());
+            this.FormPreAuthorization.controls.type.setValue(this.sharedDataService.claimPrescriberType.filter(x => x.value === "professional")[0]);
+            this.FormPreAuthorization.controls.subType.setValue(this.sharedDataService.subTypeList.filter(x => x.value === "op")[0]);
         }
+        console.log("sub types ",this.subTypeList);
         this.getProviderTypeConfiguration();
 
+    }
+    SetDaysOfSupply() {
+        const model: any = {};
+        model.sequence = this.SupportingInfo.length === 0 ? 1 : (this.SupportingInfo[this.SupportingInfo.length - 1].sequence + 1);
+        model.category = 'days-supply';
+        model.categoryName = 'Days supply';
+        model.IsValueRequired = true;
+        model.value = '';
+        return model;
     }
     selectedDefualtPrescriberChange($event) {
         this.PrescriberDefault = $event;
@@ -1238,7 +1252,7 @@ export class AddPrescriptionComponent implements OnInit {
                                             y.itemCode = result.itemCode;
                                         y.itemDescription = result.itemDescription;
                                         y.nonStandardCode = result.nonStandardCode;
-                                        y.display = result.display;
+                                        y.strength = result.strength;
                                         y.quantity = result.quantity;
                                         y.quantityCode = result.quantityCode;
 
@@ -1310,6 +1324,7 @@ export class AddPrescriptionComponent implements OnInit {
                                     val.refill = result.refill;
                                     val.duration = result.duration;
                                     val.frequency = result.frequency;
+                                    val.frequencyType =result.frequencyType;
                                     val.frequencyUnit = result.frequencyUnit;
                                     val.period = result.period;
                                     val.durationUnit = result.durationUnit;
