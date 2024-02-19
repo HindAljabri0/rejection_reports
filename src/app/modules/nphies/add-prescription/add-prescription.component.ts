@@ -1273,7 +1273,7 @@ export class AddPrescriptionComponent implements OnInit {
         dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
         dialogConfig.data = {
             // tslint:disable-next-line:max-line-length
-            Sequence: (itemModel !== null) ? itemModel.sequence : (item.itemDetails.length === 0 ? 1 : (item.itemDetails[item.itemDetails.length - 1].sequence + 1)),
+            Sequence: (itemModel !== null) ? itemModel.sequence : (item.claimItemDosageModel.length === 0 ? 1 : (item.claimItemDosageModel[item.claimItemDosageModel.length - 1].sequence + 1)),
             item: itemModel,
             type: this.FormPreAuthorization.controls.type.value.value,
             dateOrdered: this.FormPreAuthorization.controls.dateOrdered.value,
@@ -1285,18 +1285,41 @@ export class AddPrescriptionComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                console.log("Result = "+JSON.stringify(result));
+                console.log("Result = " + JSON.stringify(result));
                 if (this.Items.find(x => x.sequence === itemSequence)) {
-                    this.Items.map(x => {
-                        if (x.sequence === itemSequence) {
-                            x.claimItemDosageModel.push(result);
 
+                    this.Items.map(x => {
+                        if (x.claimItemDosageModel.find(y => y.sequence === result.sequence)) {
+                            x.claimItemDosageModel.map(val => {
+                                if (val.sequence === result.sequence) {
+                                    val.sequence = result.sequence;
+                                    val.note = result.note;
+                                    val.patientInstruction = result.patientInstruction;
+                                    val.route = result.route;
+                                    val.dosageCategory = result.dosageCategory;
+                                    val.doseType = result.doseType;
+                                    val.doseQuantityOrRangeMin = result.doseQuantityOrRangeMin;
+                                    val.doseRangeMax = result.doseRangeMax;
+                                    val.doseUnit = result.doseUnit;
+                                    val.rateType = result.rateType;
+                                    val.rateRatioNumeratorMin = result.rateRatioNumeratorMin;
+                                    val.rateRatioDenominatorMax = result.rateRatioDenominatorMax;
+                                    val.rateUnit = result.rateUnit;
+                                    val.startDate = result.startDate;
+                                    val.endDate = result.endDate;
+                                    val.refill = result.refill;
+                                    val.duration = result.duration;
+                                    val.frequency = result.frequency;
+                                    val.frequencyUnit = result.frequencyUnit;
+                                    val.period = result.period;
+                                    val.durationUnit = result.durationUnit;
+                                    val.periodUnit = result.periodUnit;
+                                }
+                            });
                         } else {
                             x.claimItemDosageModel.push(result);
                         }
-                        //   }
                     });
-
                 }
             }
         });
