@@ -141,7 +141,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
             //console.log("supporting info seq = "+JSON.stringify(this.FormItem.controls.supportingInfoSequence.value));
             this.getItemList();
         } else {
-
+            this.FormItem.controls.type.setValue(this.prescribedCode.filter(x=>x.value ==='scientific-codes')[0]);
             if (this.data.subType === 'op') {
                 this.FormItem.controls.quantityCode.setValue('{package}');
                 this.FormItem.controls.quantityCode.disable();

@@ -212,6 +212,7 @@ export class AddPrescriptionComponent implements OnInit {
     nationalities = nationalities;
     selectedCountry = '';
     currentOpenItem: number = null;
+    currentOpenItemDosage: number = null;
     claimType: string;
     defualtPageMode = "";
     selectedDefaultPlan = null;
@@ -260,7 +261,7 @@ export class AddPrescriptionComponent implements OnInit {
             this.FormPreAuthorization.controls.type.setValue(this.sharedDataService.claimPrescriberType.filter(x => x.value === "professional")[0]);
             this.FormPreAuthorization.controls.subType.setValue(this.sharedDataService.subTypeList.filter(x => x.value === "op")[0]);
         }
-        console.log("sub types ",this.subTypeList);
+        console.log("sub types ", this.subTypeList);
         this.getProviderTypeConfiguration();
 
     }
@@ -275,7 +276,7 @@ export class AddPrescriptionComponent implements OnInit {
     }
     selectedDefualtPrescriberChange($event) {
         this.PrescriberDefault = $event;
-        console.log("$event = " + $event);
+        //console.log("$event = " + $event);
     }
     setReuseValues() {
 
@@ -1255,10 +1256,11 @@ export class AddPrescriptionComponent implements OnInit {
                                         y.strength = result.strength;
                                         y.quantity = result.quantity;
                                         y.quantityCode = result.quantityCode;
-
+                                        y.claimItemDosageModel =[];
                                     }
                                 });
                             } else {
+                                result.claimItemDosageModel= [];
                                 x.itemDetails.push(result);
                             }
                         }
@@ -1278,7 +1280,76 @@ export class AddPrescriptionComponent implements OnInit {
             });
         }
     }
+    openDosageDetailsForItemDetailsDialog(itemSequence: number, itemDetailsSeq: number, itemModel: any = null) {
 
+        const item = this.Items.filter(x => x.sequence === itemSequence)[0];
+        const itemDetail = item.itemDetails.filter(d => d.sequence === itemDetailsSeq)[0];
+
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
+        dialogConfig.data = {
+            // tslint:disable-next-line:max-line-length
+            Sequence: (itemModel !== null) ? itemModel.sequence : (itemDetail.claimItemDosageModel.length === 0 ? 1 : (itemDetail.claimItemDosageModel[itemDetail.claimItemDosageModel.length - 1].sequence + 1)),
+            item: itemModel,
+            type: this.FormPreAuthorization.controls.type.value.value,
+            dateOrdered: this.FormPreAuthorization.controls.dateOrdered.value,
+            payerNphiesId: this.FormPreAuthorization.controls.insurancePayerNphiesId.value,
+            tpaNphiesId: this.FormPreAuthorization.controls.insurancePlanTpaNphiesId.value
+        };
+
+        const dialogRef = this.dialog.open(DosageDetailsComponent, dialogConfig);
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                console.log("Result Item details = " + JSON.stringify(result));
+                if (this.Items.filter(x => x.sequence === itemSequence)[0].itemDetails.find(x => x.sequence === itemDetailsSeq)) {
+
+                    this.Items.filter(x => x.sequence === itemSequence)[0].itemDetails.map(x => {
+                        if (x.claimItemDosageModel.find(y => y.sequence === result.sequence)) {
+                            x.claimItemDosageModel.map(val => {
+                                if (val.sequence === result.sequence) {
+                                    val.sequence = result.sequence;
+                                    val.note = result.note;
+                                    val.patientInstruction = result.patientInstruction;
+                                    val.route = result.route;
+                                    val.dosageCategory = result.dosageCategory;
+                                    val.doseType = result.doseType;
+                                    val.doseQuantityOrRangeMin = result.doseQuantityOrRangeMin;
+                                    val.doseRangeMax = result.doseRangeMax;
+                                    val.doseUnit = result.doseUnit;
+                                    val.rateType = result.rateType;
+                                    val.rateRatioNumeratorMin = result.rateRatioNumeratorMin;
+                                    val.rateRatioDenominatorMax = result.rateRatioDenominatorMax;
+                                    val.rateUnit = result.rateUnit;
+                                    val.startDate = result.startDate;
+                                    val.endDate = result.endDate;
+                                    val.refill = result.refill;
+                                    val.duration = result.duration;
+                                    val.frequency = result.frequency;
+                                    val.frequencyType = result.frequencyType;
+                                    val.frequencyUnit = result.frequencyUnit;
+                                    val.period = result.period;
+                                    val.durationUnit = result.durationUnit;
+                                    val.periodUnit = result.periodUnit;
+                                }
+                            });
+                        } else {
+                            x.claimItemDosageModel.push(result);
+                        }
+                    });
+                }
+            }
+        });
+    }
+    deleteDosageDetailsForItemDetails(itemSequence: number, itemDetailsSeq: number, index: number) {
+        if (this.Items.filter(x => x.sequence === itemSequence)[0].itemDetails.find(x => x.sequence === itemDetailsSeq)) {
+            this.Items.filter(x => x.sequence === itemSequence)[0].itemDetails.map(x => {
+                if (x.sequence === itemDetailsSeq) {
+                    x.claimItemDosageModel.splice(index, 1);
+                }
+            });
+        }
+    }
     openDosageDetailsDialog(itemSequence: number, itemModel: any = null) {
 
         const item = this.Items.filter(x => x.sequence === itemSequence)[0];
@@ -1324,7 +1395,7 @@ export class AddPrescriptionComponent implements OnInit {
                                     val.refill = result.refill;
                                     val.duration = result.duration;
                                     val.frequency = result.frequency;
-                                    val.frequencyType =result.frequencyType;
+                                    val.frequencyType = result.frequencyType;
                                     val.frequencyUnit = result.frequencyUnit;
                                     val.period = result.period;
                                     val.durationUnit = result.durationUnit;
