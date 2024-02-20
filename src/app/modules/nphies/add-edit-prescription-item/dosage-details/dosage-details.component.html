@@ -1,6 +1,6 @@
 <div class="primary-dialog-header has-border">
-    <h5 *ngIf="!data.item" class="primary-dialog-title">Dosage Detail</h5>
-    <h5 *ngIf="data.item" class="primary-dialog-title">Dosage Detail</h5>
+    <h5 *ngIf="!data.item" class="primary-dialog-title">Dosage administration</h5>
+    <h5 *ngIf="data.item" class="primary-dialog-title">Dosage administration</h5>
     <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
 <form [formGroup]="FormItem" (ngSubmit)="onSubmit()">
@@ -350,7 +350,7 @@
         </div>
     </div>
     <div class="primary-dialog-header has-border">
-        <h5 class="primary-dialog-title">Patient Instruction</h5>
+        <h5 class="primary-dialog-title">Dosage Instruction</h5>
         <button type="button" class="dialog-close" matRipple></button>
     </div>
     <div class="primary-dialog-body pb-0">

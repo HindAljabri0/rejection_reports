@@ -744,62 +744,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div class="box" *ngIf="item.itemDetails && item.itemDetails.length > 0">
-                                            <h5 class="align-self-center medium pb-2">Item Detail</h5>
-                                            <table class="primary-grid claim-view-table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Seq.</th>
-                                                        <th>Type</th>
-                                                        <th>Code - Description</th>
-                                                        <th>Non Standard Code</th>
-                                                        <th>Strength</th>
-                                                        <th>Quantity</th>
-                                                        <th width="10"></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr *ngFor="let d of item.itemDetails; let di = index">
-                                                        <td class="row-click">{{d.sequence}}</td>
-                                                        <td class="row-click">{{d.typeName}}</td>
-                                                        <td class="row-click">{{d.itemCode}} - {{d.itemDescription}}
-                                                        </td>
-                                                        <td class="row-click">{{d.nonStandardCode ? d.nonStandardCode :
-                                                            '-'}}</td>
-                                                        <td class="row-click">{{d.Strength ? d.Strength : '-'}}</td>
-                                                        <td class="row-click">{{d.quantity ? d.quantity +" "+
-                                                            d.quantityCode : '-'}}</td>
-                                                        <td class="actions">
-                                                            <mat-menu #itemsDetailsActionsMenu xPosition="before">
-                                                                <ng-template matMenuContent>
-                                                                    <button mat-menu-item type="button"
-                                                                        (click)="openAddEditItemDetailsDialog(item.sequence, d)">
-                                                                        <mat-icon
-                                                                            class="material-icons-outlined">edit</mat-icon>
-                                                                        <span>Edit</span>
-                                                                    </button>
-                                                                    <button mat-menu-item type="button"
-                                                                        (click)="deleteItemDetails(item.sequence, di)">
-                                                                        <mat-icon
-                                                                            class="material-icons-outlined">delete</mat-icon>
-                                                                        <span>Delete</span>
-                                                                    </button>
-                                                                </ng-template>
-                                                            </mat-menu>
-                                                            <button type="button" mat-icon-button
-                                                                [matMenuTriggerFor]="itemsDetailsActionsMenu">
-                                                                <mat-icon>more_vert</mat-icon>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="box"
-                                            *ngIf="item.claimItemDosageModel && item.claimItemDosageModel.length > 0">
-                                <tr>
-                                    <td colspan="27" *ngFor="let d1 of item.claimItemDosageModel; let di = index">
                                         <div class="box"
                                             *ngIf="item.claimItemDosageModel && item.claimItemDosageModel.length > 0">
                                             <h5 class="align-self-center medium pb-2">Dosage Detail</h5>
@@ -816,126 +760,267 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr *ngFor="let d1 of item.claimItemDosageModel; let di = index">
-                                                        <td class="row-click">{{d1.sequence}}</td>
-                                                        <td class="row-click">{{d1.note ? d1.note : '-'}}</td>
-                                                        <td class="row-click">{{d1.patientInstruction ?
-                                                            d1.patientInstruction :
-                                                            '-'}}</td>
-                                                        <td class="row-click">{{d1.route ? d1.route : '-'}}</td>
-                                                        <td class="row-click">{{d1.duration ? d1.duration : '-'}}</td>
-                                                        <td class="row-click">{{d1.period ? d1.period : '-'}}
-                                                        </td>
-                                                        <td class="actions">
-                                                            <mat-menu #itemsDetailsActionsMenu xPosition="before">
-                                                                <ng-template matMenuContent>
-                                                                    <button mat-menu-item type="button"
-                                                                        (click)="openDosageDetailsDialog(item.sequence, d1)">
-                                                                        <mat-icon
-                                                                            class="material-icons-outlined">edit</mat-icon>
-                                                                        <span>Edit</span>
-                                                                    </button>
-                                                                    <button mat-menu-item type="button"
-                                                                        (click)="deleteDosageDetails(item.sequence, di)">
-                                                                        <mat-icon
-                                                                            class="material-icons-outlined">delete</mat-icon>
-                                                                        <span>Delete</span>
-                                                                    </button>
-                                                                </ng-template>
-                                                            </mat-menu>
-                                                            <button type="button" mat-icon-button
-                                                                [matMenuTriggerFor]="itemsDetailsActionsMenu">
-                                                                <mat-icon>more_vert</mat-icon>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
+                                                    <ng-container
+                                                        *ngFor="let d1 of item.claimItemDosageModel; let di = index">
+                                                        <tr>
+                                                            <td class="row-click">
+                                                                {{d1.sequence}}</td>
+                                                            <td class="row-click">
+                                                                {{d1.note ? d1.note : '-'}}</td>
+                                                            <td class="row-click">
+                                                                {{d1.patientInstruction ?
+                                                                d1.patientInstruction :
+                                                                '-'}}</td>
+                                                            <td class="row-click">
+                                                                {{d1.route ? d1.route : '-'}}</td>
+                                                            <td class="row-click">
+                                                                {{d1.duration ? d1.duration : '-'}}
+                                                            </td>
+                                                            <td class="row-click">
+                                                                {{d1.period ? d1.period : '-'}}
+                                                            </td>
+                                                            <td class="actions">
+                                                                <mat-menu #itemsDetailsActionsMenu xPosition="before">
+                                                                    <ng-template matMenuContent>
+                                                                        <button mat-menu-item type="button"
+                                                                            (click)="openDosageDetailsDialog(item.sequence, d1)">
+                                                                            <mat-icon
+                                                                                class="material-icons-outlined">edit</mat-icon>
+                                                                            <span>Edit</span>
+                                                                        </button>
+                                                                        <button mat-menu-item type="button"
+                                                                            (click)="deleteDosageDetails(item.sequence, di)">
+                                                                            <mat-icon
+                                                                                class="material-icons-outlined">delete</mat-icon>
+                                                                            <span>Delete</span>
+                                                                        </button>
+                                                                    </ng-template>
+                                                                </mat-menu>
+                                                                <button type="button" mat-icon-button
+                                                                    [matMenuTriggerFor]="itemsDetailsActionsMenu">
+                                                                    <mat-icon>more_vert</mat-icon>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </ng-container>
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div class="box mb-2">
-                                            <div class="row">
-                                                <div class="col-4">
-                                                    <table class="inline-label-table">
-                                                        <tbody>
-
-                                                            <tr>
-                                                                <td class="label">Note</td>
-                                                                <td>{{d1.note}}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="label">Patient Instruction</td>
-                                                                <td>{{d1.patientInstruction}}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="label">Route</td>
-                                                                <td>{{d1.route}}</td>
-                                                            </tr>
-
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <div class="col-4">
-                                                    <table class="inline-label-table">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td class="label">Duration</td>
-                                                                <td>{{d1.duration}} {{ d1.durationUnit}}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="label">Period</td>
-                                                                <td>{{d1.period}}  {{ d1.periodUnit}}</td>
-                                                            </tr>
-
-
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
+                                        <div class="box" *ngIf="item.itemDetails && item.itemDetails.length > 0">
+                                            <h5 class="align-self-center medium pb-2">Item Detail</h5>
+                                            <table class="primary-grid claim-view-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="10"></th>
+                                                        <th>Seq.</th>
+                                                        <th>Type</th>
+                                                        <th>Code - Description</th>
+                                                        <th>Non Standard Code</th>
+                                                        <th>Strength</th>
+                                                        <th>Quantity</th>
+                                                        <th width="10"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <ng-container *ngFor="let d of item.itemDetails; let di = index">
+                                                        <tr>
+                                                            <td class="text-primary text-center row-click" width="10"
+                                                                (click)="currentOpenItemDosage = (i == currentOpenItemDosage) ? -1 : i">
+                                                                <mat-icon *ngIf="currentOpenItemDosage!=i"
+                                                                    class="size-21">add_circle_outline</mat-icon>
+                                                                <mat-icon *ngIf="currentOpenItemDosage==i"
+                                                                    class="size-21">remove_circle_outline</mat-icon>
+                                                            </td>
+                                                            <td class="row-click"
+                                                                (click)="currentOpenItemDosage = (i == currentOpenItemDosage) ? -1 : i">
+                                                                {{d.sequence}}</td>
+                                                            <td class="row-click"
+                                                                (click)="currentOpenItemDosage = (i == currentOpenItemDosage) ? -1 : i">
+                                                                {{d.typeName}}</td>
+                                                            <td class="row-click"
+                                                                (click)="currentOpenItemDosage = (i == currentOpenItemDosage) ? -1 : i">
+                                                                {{d.itemCode}} - {{d.itemDescription}}
+                                                            </td>
+                                                            <td class="row-click"
+                                                                (click)="currentOpenItemDosage = (i == currentOpenItemDosage) ? -1 : i">
+                                                                {{d.nonStandardCode ?
+                                                                d.nonStandardCode :
+                                                                '-'}}</td>
+                                                            <td class="row-click"
+                                                                (click)="currentOpenItemDosage = (i == currentOpenItemDosage) ? -1 : i">
+                                                                {{d.Strength ? d.Strength : '-'}}</td>
+                                                            <td class="row-click"
+                                                                (click)="currentOpenItemDosage = (i == currentOpenItemDosage) ? -1 : i">
+                                                                {{d.quantity ? d.quantity +" "+
+                                                                d.quantityCode : '-'}}</td>
+                                                            <td class="actions">
+                                                                <mat-menu #itemsDetailsActionsMenu xPosition="before">
+                                                                    <ng-template matMenuContent>
+                                                                        <button mat-menu-item type="button"
+                                                                            (click)="openDosageDetailsForItemDetailsDialog(item.sequence,d.sequence)">
+                                                                            <mat-icon
+                                                                                class="material-icons-outlined">Add</mat-icon>
+                                                                            <span>Add Dosage Details</span>
+                                                                        </button>
+                                                                        <button mat-menu-item type="button"
+                                                                            (click)="openAddEditItemDetailsDialog(item.sequence, d)">
+                                                                            <mat-icon
+                                                                                class="material-icons-outlined">edit</mat-icon>
+                                                                            <span>Edit</span>
+                                                                        </button>
+                                                                        <button mat-menu-item type="button"
+                                                                            (click)="deleteItemDetails(item.sequence, di)">
+                                                                            <mat-icon
+                                                                                class="material-icons-outlined">delete</mat-icon>
+                                                                            <span>Delete</span>
+                                                                        </button>
+                                                                    </ng-template>
+                                                                </mat-menu>
+                                                                <button type="button" mat-icon-button
+                                                                    [matMenuTriggerFor]="itemsDetailsActionsMenu">
+                                                                    <mat-icon>more_vert</mat-icon>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr *ngIf="currentOpenItemDosage==i">
+                                                            <td colspan="9">
+                                                                <div class="box mb-2">
+                                                                    <h5 class="align-self-center medium pb-2">Item
+                                                                        Details Dosage Info
+                                                                    </h5>
+                                                                    <div class="row">
+                                                                        <div class="col-8">
+                                                                            <div class="box mb-2"
+                                                                                *ngIf="d.claimItemDosageModel && d.claimItemDosageModel.length > 0">
+                                                                                <table
+                                                                                    class="primary-grid claim-view-table">
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th>Seq.</th>
+                                                                                            <th>Note</th>
+                                                                                            <th>Patient Instruction</th>
+                                                                                            <th>Route</th>
+                                                                                            <th>Duration</th>
+                                                                                            <th>Period</th>
+                                                                                            <th width="10"></th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <ng-container
+                                                                                            *ngFor="let d1 of d.claimItemDosageModel; let di = index">
+                                                                                            <tr>
+                                                                                                <td class="row-click">
+                                                                                                    {{d1.sequence}}</td>
+                                                                                                <td class="row-click">
+                                                                                                    {{d1.note ? d1.note
+                                                                                                    : '-'}}</td>
+                                                                                                <td class="row-click">
+                                                                                                    {{d1.patientInstruction
+                                                                                                    ?
+                                                                                                    d1.patientInstruction
+                                                                                                    :
+                                                                                                    '-'}}</td>
+                                                                                                <td class="row-click">
+                                                                                                    {{d1.route ?
+                                                                                                    d1.route : '-'}}
+                                                                                                </td>
+                                                                                                <td class="row-click">
+                                                                                                    {{d1.duration ?
+                                                                                                    d1.duration : '-'}}
+                                                                                                </td>
+                                                                                                <td class="row-click">
+                                                                                                    {{d1.period ?
+                                                                                                    d1.period : '-'}}
+                                                                                                </td>
+                                                                                                <td class="actions">
+                                                                                                    <mat-menu
+                                                                                                        #itemsDetailsActionsMenu
+                                                                                                        xPosition="before">
+                                                                                                        <ng-template
+                                                                                                            matMenuContent>
+                                                                                                            <button
+                                                                                                                mat-menu-item
+                                                                                                                type="button"
+                                                                                                                (click)="openDosageDetailsForItemDetailsDialog(item.sequence,d.sequence, d1)">
+                                                                                                                <mat-icon
+                                                                                                                    class="material-icons-outlined">edit</mat-icon>
+                                                                                                                <span>Edit</span>
+                                                                                                            </button>
+                                                                                                            <button
+                                                                                                                mat-menu-item
+                                                                                                                type="button"
+                                                                                                                (click)="deleteDosageDetailsForItemDetails(item.sequence,d.sequence, di)">
+                                                                                                                <mat-icon
+                                                                                                                    class="material-icons-outlined">delete</mat-icon>
+                                                                                                                <span>Delete</span>
+                                                                                                            </button>
+                                                                                                        </ng-template>
+                                                                                                    </mat-menu>
+                                                                                                    <button
+                                                                                                        type="button"
+                                                                                                        mat-icon-button
+                                                                                                        [matMenuTriggerFor]="itemsDetailsActionsMenu">
+                                                                                                        <mat-icon>more_vert</mat-icon>
+                                                                                                    </button>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </ng-container>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                            <div class="box"
+                                                                                *ngIf="d.claimItemDosageModel && d.claimItemDosageModel.length === 0">
+                                                                                No dosage Data
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </ng-container>
+                                                </tbody>
+                                            </table>
                                         </div>
 
                                     </td>
                                 </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
                 </div>
-                </td>
-                </tr>
+                <app-empty-state *ngIf="!IsItemRequired && Items.length === 0" message='No Item found!'>
+                </app-empty-state>
+                <app-empty-state *ngIf="IsItemRequired && Items.length === 0" message='Item required!'>
+                </app-empty-state>
 
+                <hr class="hr spaced" />
+
+                <div class="form-group text-right btn-list">
+                    <button type="submit" mat-flat-button color="primary" id="requestAuthorizationButton">
+                        <span>Request Prescription</span>
+                    </button>
+                </div>
+
+
+            </div>
+        </form>
     </ng-container>
-    </tbody>
-    </table>
-</div>
-<app-empty-state *ngIf="!IsItemRequired && Items.length === 0" message='No Item found!'>
-</app-empty-state>
-<app-empty-state *ngIf="IsItemRequired && Items.length === 0" message='Item required!'>
-</app-empty-state>
 
-<hr class="hr spaced" />
-
-<div class="form-group text-right btn-list">
-    <button type="submit" mat-flat-button color="primary" id="requestAuthorizationButton">
-        <span>Request Prescription</span>
-    </button>
-</div>
-
-
-</div>
-</form>
-</ng-container>
-
-<ng-container *ngIf="IsJSONPosted && detailsModel && !claimReuseId">
-    <div class="block-header">
-        <h5 class="primary-dialog-title">Prescription -
-            {{detailsModel.approvalRequestId}}<span *ngIf="detailsModel.transfer">[Referral]</span></h5>&nbsp;&nbsp;
-        <h5 class="primary-dialog-title ml-auto">Transaction -
-            {{detailsModel.providertransactionlogId}}</h5>
-    </div>
-    <div class="block-body">
-        <app-prescription-details *ngIf="detailsModel.providertransactionlogId" [data]="detailsModel">
-        </app-prescription-details>
-    </div>
-    <div class="text-right pt-14">
-        <button type="button" mat-flat-button color="primary" (click)="reset()">Request New
-            Prescription</button>
-    </div>
-</ng-container>
+    <ng-container *ngIf="IsJSONPosted && detailsModel && !claimReuseId">
+        <div class="block-header">
+            <h5 class="primary-dialog-title">Prescription -
+                {{detailsModel.approvalRequestId}}<span *ngIf="detailsModel.transfer">[Referral]</span></h5>&nbsp;&nbsp;
+            <h5 class="primary-dialog-title ml-auto">Transaction -
+                {{detailsModel.providertransactionlogId}}</h5>
+        </div>
+        <div class="block-body">
+            <app-prescription-details *ngIf="detailsModel.providertransactionlogId" [data]="detailsModel">
+            </app-prescription-details>
+        </div>
+        <div class="text-right pt-14">
+            <button type="button" mat-flat-button color="primary" (click)="reset()">Request New
+                Prescription</button>
+        </div>
+    </ng-container>
 
 </div>
