@@ -1256,7 +1256,7 @@ export class AddPrescriptionComponent implements OnInit {
                                         y.strength = result.strength;
                                         y.quantity = result.quantity;
                                         y.quantityCode = result.quantityCode;
-                                        y.claimItemDosageModel =[];
+                                        //y.claimItemDosageModel =[];
                                     }
                                 });
                             } else {
