@@ -1,6 +1,6 @@
 <div class="primary-dialog-header has-border">
-    <h5 *ngIf="!data.item" class="primary-dialog-title">Dosage administration</h5>
-    <h5 *ngIf="data.item" class="primary-dialog-title">Dosage administration</h5>
+    <h5 class="primary-dialog-title">Dosage administration<mat-icon class="material-icons-outlined size-20"
+            matTooltip="How to take medication">info</mat-icon></h5>
     <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
 <form [formGroup]="FormItem" (ngSubmit)="onSubmit()">
@@ -10,7 +10,12 @@
             <div class="col-3">
                 <div class="form-group"
                     [ngClass]="{'has-error' : (isSubmitted || FormItem.get('route').touched) && FormItem.get('route').hasError('required')}">
-                    <label class="control-label">Route<span class="asterisk">*</span></label>
+                    <span class="d-flex align-items-center">
+                        <span class="pr-1">Route<span class="asterisk">*</span></span>
+                        <mat-icon class="material-icons-outlined size-20"
+                            matTooltip="Route is defined as the body location from where medication need to be taken, such as oral or intravenous">info</mat-icon>
+                    </span>
+
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select placeholder="Select route" formControlName="route">
                             <mat-option value="">Select route</mat-option>
@@ -209,7 +214,8 @@
 
     <!-- Dosage Timing Section -->
     <div class="primary-dialog-header has-border">
-        <h5 class="primary-dialog-title">Dosage Timing</h5>
+        <h5 class="primary-dialog-title">Dosage Timing <mat-icon class="material-icons-outlined size-20"
+                matTooltip="When to take medication">info</mat-icon></h5>
         <button type="button" class="dialog-close" matRipple></button>
     </div>
     <div class="primary-dialog-body pb-0">
@@ -218,7 +224,11 @@
             <div class="col-4">
                 <div class="form-group"
                     [ngClass]="{'has-error' : (isSubmitted || FormItem.get('startDate').touched) && FormItem.get('startDate').hasError('required')}">
-                    <label class="control-label">Start Date<span class="asterisk">*</span></label>
+                    <label class="control-label"><span class="d-flex align-items-center">
+                            <span class="pr-1">Start Date<span class="asterisk">*</span></span>
+                            <mat-icon class="material-icons-outlined size-20"
+                                matTooltip="Bound Period Date from when patient need to start taking medication">info</mat-icon>
+                        </span></label>
                     <div class="date-picker">
                         <input [owlDateTime]="dosageTimingStartDate" formControlName="startDate" class="form-control"
                             placeholder="Select date">
@@ -231,7 +241,11 @@
             <div class="col-4">
                 <div class="form-group"
                     [ngClass]="{'has-error' : (isSubmitted || FormItem.get('endDate').touched) && FormItem.get('endDate').hasError('required')}">
-                    <label class="control-label">End Date<span class="asterisk">*</span></label>
+                    <label class="control-label"><span class="d-flex align-items-center">
+                            <span class="pr-1">End Date<span class="asterisk">*</span></span>
+                            <mat-icon class="material-icons-outlined size-20"
+                                matTooltip="Bound Period Date till when patient need to take medication">info</mat-icon>
+                        </span></label>
                     <div class="date-picker">
                         <input [owlDateTime]="dosageTimingEndDate" class="form-control" formControlName="endDate"
                             placeholder="Select date">
@@ -246,7 +260,11 @@
             <div class="col-4">
                 <div class="form-group"
                     [ngClass]="{'has-error' : (isSubmitted || FormItem.get('duration').touched) && FormItem.get('duration').hasError('required')}">
-                    <label class="control-label">Duration<span class="asterisk">*</span></label>
+                    <label class="control-label"><span class="d-flex align-items-center">
+                            <span class="pr-1">Duration<span class="asterisk">*</span></span>
+                            <mat-icon class="material-icons-outlined size-20"
+                                matTooltip="It is the total count of Bound Period, meaning the period for how long the medication will be administered. Example - 1 hour, 4 days, 1 week etc.">info</mat-icon>
+                        </span></label>
                     <div class="row extra-small-gutter">
                         <div class="col">
                             <input type="text" class="form-control" formControlName="duration"
@@ -271,7 +289,11 @@
             </div>
             <div class="col-4">
                 <div class="form-group">
-                    <label class="control-label">Frequency</label>
+                    <label class="control-label"><span class="d-flex align-items-center">
+                            <span class="pr-1">Frequency</span>
+                            <mat-icon class="material-icons-outlined size-20"
+                                matTooltip="Frequency times per period. Meaning how many times patient need to take medication for a defined Bound Period.">info</mat-icon>
+                        </span></label>
                     <mat-radio-group class="radio-group inline" formControlName="frequencyType">
                         <mat-radio-button color="primary" value="code">Code</mat-radio-button>
                         <mat-radio-button color="primary" value="custom">Custom</mat-radio-button>
@@ -280,7 +302,11 @@
             </div>
             <div class="col-4" *ngIf="FormItem.get('frequencyType').value === 'custom'">
                 <div class="form-group">
-                    <label class="control-label">Frequency</label>
+                    <label class="control-label"><span class="d-flex align-items-center">
+                            <span class="pr-1">Frequency</span>
+                            <mat-icon class="material-icons-outlined size-20"
+                                matTooltip="Code: (Dropdown) Event occurs frequency times per period via Standard Code. (BID- Twice a day)">info</mat-icon>
+                        </span></label>
                     <input type="text" class="form-control" formControlName="frequency" placeholder="Enter frequency">
                 </div>
 
@@ -319,7 +345,11 @@
 
             <div class="col-4">
                 <div class="form-group">
-                    <label class="control-label">Period</label>
+                    <label class="control-label"><span class="d-flex align-items-center">
+                            <span class="pr-1">Period</span>
+                            <mat-icon class="material-icons-outlined size-20"
+                                matTooltip="It is defined is unit of time for defined frequency. Example like a 1 day, 1 hour etc.">info</mat-icon>
+                        </span></label>
                     <div class="row extra-small-gutter">
                         <div class="col">
                             <input type="text" class="form-control" placeholder="Enter period" formControlName="period">
@@ -343,7 +373,11 @@
             </div>
             <div class="col-4">
                 <div class="form-group">
-                    <label class="control-label">Refill</label>
+                    <label class="control-label"><span class="d-flex align-items-center">
+                            <span class="pr-1">Refill</span>
+                            <mat-icon class="material-icons-outlined size-20"
+                                matTooltip="How many times same prescription can be continued.">info</mat-icon>
+                        </span></label>
                     <input class="form-control" placeholder="Enter Refill" formControlName="refill">
                 </div>
             </div>
@@ -357,14 +391,22 @@
         <div class="row small-gutter">
             <div class="col-4">
                 <div class="form-group">
-                    <label class="control-label">Patient Instruction</label>
+                    <label class="control-label"><span class="d-flex align-items-center">
+                        <span class="pr-1">Patient Instruction</span>
+                        <mat-icon class="material-icons-outlined size-20"
+                            matTooltip="How the medication should be taken">info</mat-icon>
+                    </span></label>
                     <input class="form-control" formControlName="patientInstruction"
                         placeholder="Enter Patient Instruction">
                 </div>
             </div>
             <div class="col-4">
                 <div class="form-group">
-                    <label class="control-label">Note</label>
+                    <label class="control-label"><span class="d-flex align-items-center">
+                        <span class="pr-1">Additional Notes</span>
+                        <mat-icon class="material-icons-outlined size-20"
+                            matTooltip="Information about the prescription">info</mat-icon>
+                    </span></label>
                     <input class="form-control" formControlName="note" placeholder="Enter Note">
                 </div>
             </div>
