@@ -50,7 +50,8 @@ export class CancelPreviousClaimComponent implements OnInit {
 
         this.CancellClaimForm = this.formBuilder.group({
            
-            providerId: !this.getPrivileges().ProviderPrivileges.NPHIES.isAdmin && this.sharedServices.providerId!='101'?[""]:['', Validators.required],
+            providerId: [""],
+            //!this.getPrivileges().ProviderPrivileges.NPHIES.isAdmin && this.sharedServices.providerId!='101'?[""]:['', Validators.required],
             claimIdentifier: null,
             requestBundleId: null,
             claimIdentifierUrl: null,
@@ -162,12 +163,12 @@ export class CancelPreviousClaimComponent implements OnInit {
     }
     cancellClaim() {
 
-        if(!this.getPrivileges().ProviderPrivileges.NPHIES.isAdmin && this.sharedServices.providerId!='101'){
+       // if(!this.getPrivileges().ProviderPrivileges.NPHIES.isAdmin && this.sharedServices.providerId!='101'){
 
            const provider = this.filteredProviders.filter(provider=>provider.providerId==this.sharedServices.providerId);
            this.selectProvider(provider[0].providerId , provider[0].cchi_ID, provider[0].providerCode);
 
-        }
+      //  }
         console.log(this.providerCHHI)
         this.submitted = true
         if (this.CancellClaimForm.valid && this.selectedPayer != null && this.isValidBundleIdAndClaimsIdentifierFiled() && this.isValidNumberListBundleIdAndClaimsIdentifier()) {

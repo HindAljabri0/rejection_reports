@@ -6,14 +6,12 @@
           <mat-slide-toggle  formControlName="cancelBy" color="primary" id="referral"  class="ml-auto">Cancel By {{isCancellByBundleIds?"Bundle ID":"Claim Identifier"}}
           </mat-slide-toggle>
         </div>
-       
-     
         <div style="margin-top: 15px;" class="row small-gutter">
-          <div class="col-md" *ngIf="getPrivileges().ProviderPrivileges.NPHIES.isAdmin && carrentProviderId=='101'">
+          <!-- <div class="col-md" *ngIf="getPrivileges().ProviderPrivileges.NPHIES.isAdmin && carrentProviderId=='101'">
             <div class="form-group"
               [class.has-error]="submitted && CancellClaimForm.get('providerId').hasError('required') && getPrivileges().ProviderPrivileges.NPHIES.isAdmin && carrentProviderId=='101'">
               <label class="control-label">Provider<span class="asterisk">*</span></label>
-              <!-- <input type="text" class="form-control" placeholder="Select provider" formControlName="providerId" /> -->
+              <input type="text" class="form-control" placeholder="Select provider" formControlName="providerId" />
               <input [readonly]="isLoading" type="text" class="form-control search-box" [matAutocomplete]="auto"
                 formControlName="providerId" (input)="updateFilter()" (keyup.enter)="selectProvider()"
                 placeholder="Select provider">
@@ -28,8 +26,8 @@
               <div *ngIf="submitted && CancellClaimForm.get('providerId').hasError('required')">
                 <span class="error-text">Please select a Provider</span>
               </div>
-            </div>
-          </div>
+            </div> -->
+          <!-- </div> -->
           <div class="col-md">
             <!-- selectedPayerError?.trim().length > 0 -->
             <div class="form-group" [class.has-error]="selectedPayer==null && submitted "
