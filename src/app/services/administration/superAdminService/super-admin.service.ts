@@ -82,6 +82,18 @@ export class SuperAdminService {
     const request = new HttpRequest('GET', environment.adminServiceHost + requestURL);
     return this.http.request(request);
   }
+  updateNphiesTransactionsFlageSettings(providerId: string, nphiesTransactionsEnabled: any  ) {
+    const requestURL = `/providers/${providerId}/nphiesTransactionsEnabled/${nphiesTransactionsEnabled}`;
+    const request = new HttpRequest('PUT', environment.adminServiceHost + requestURL, null);
+    return this.http.request(request);
+  }
+
+  getNphiesTransactionsFlageByProviderSettings(providerId: string  ) {
+    const requestURL = `/providers/${providerId}/nphiesTransactions`;
+    const request = new HttpRequest('GET', environment.adminServiceHost + requestURL);
+    return this.http.request(request);
+  }
+
   updatePriceListSettings(providerId: string, settings: { payerId: string, isServiceCodeEnable: string, isPriceListEnable: string }[]) {
     const requestURL = `/price-list/providers/${providerId}/config`;
     const request = new HttpRequest('POST', environment.adminServiceHost + requestURL, settings);
@@ -187,3 +199,4 @@ export const RADIOLOGY_REPORT_KEY = 'RadiologyReport';
 export const NPHIES_MRE_APPROVAL_KEY = 'NphiesApprovalMREValidation';
 export const NET_AMOUNT_RESTRICTION_KEY = 'netAmountValidation';
 export const PROVIDER_TYPE_CONFIGURATION_KEY = 'providerTypeConfiguration';
+//export const NPHIES_TRANSACTION_KEY = 'NphiesTransactions';

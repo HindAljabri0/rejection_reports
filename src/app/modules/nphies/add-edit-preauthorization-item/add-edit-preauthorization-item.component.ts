@@ -498,7 +498,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         this.FormItem.controls.item.setValue('');
         // this.itemList = [{ "code": type.code, "description": type.display }];
         const endDateStr = this.datePipe.transform(this.FormItem.controls.endDate.value, 'yyyy-MM-dd');
-        
+
         this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, type.itemType, endDateStr).subscribe(event => {
             if (event instanceof HttpResponse) {
                 this.itemList = event.body;
@@ -559,7 +559,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             this.IsItemLoading = true;
             this.FormItem.controls.item.disable();
             const endDateStr = this.datePipe.transform(this.FormItem.controls.endDate.value, 'yyyy-MM-dd');
-            
+
             this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, this.FormItem.controls.type.value.value, endDateStr).subscribe(event => {
                 if (event instanceof HttpResponse) {
                     this.itemList = event.body;
@@ -836,28 +836,32 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             });
         }
     }
-    validateDiagnosisInPharmacyForApproval() {
-        if(this.data.type === "pharmacy" && this.data.source === "APPROVAL"){
+    validateDiagnosisInPharmacy() {
+
+        if (this.data.type === "pharmacy" && this.FormItem.controls.pharmacistSelectionReason.value == null) {
             this.FormItem.controls.pharmacistSelectionReason.setValidators([Validators.required]);
             this.FormItem.controls.pharmacistSelectionReason.updateValueAndValidity();
-            //------------------------------------
-            this.FormItem.controls.prescribedDrugCode.setValidators([Validators.required]);
-            this.FormItem.controls.prescribedDrugCode.updateValueAndValidity();
-            
-        }else{
-            this.FormItem.controls.prescribedDrugCode.clearValidators();
-            this.FormItem.controls.prescribedDrugCode.updateValueAndValidity();
-            //--------------------------------------
+        } else {
             this.FormItem.controls.pharmacistSelectionReason.clearValidators();
             this.FormItem.controls.pharmacistSelectionReason.updateValueAndValidity();
         }
-        if (this.data.type === "pharmacy" && this.data.source === "APPROVAL" && this.FormItem.controls.diagnosisSequence.value.length == 0) {
+
+        //------------------------------------
+        if (this.data.source === 'APPROVAL' && this.data.type === "pharmacy" && this.FormItem.controls.prescribedDrugCode.value == null) {
+            this.FormItem.controls.prescribedDrugCode.setValidators([Validators.required]);
+            this.FormItem.controls.prescribedDrugCode.updateValueAndValidity();
+        }else{
+            this.FormItem.controls.prescribedDrugCode.clearValidators();
+            this.FormItem.controls.prescribedDrugCode.updateValueAndValidity();
+        }
+
+        if (this.data.type === "pharmacy" && this.FormItem.controls.diagnosisSequence.value.length == 0) {
             this.FormItem.controls.diagnosisSequence.setValidators([Validators.required]);
             this.FormItem.controls.diagnosisSequence.updateValueAndValidity();
             this.IsDiagnosisSequenceRequired = true;
             this.diagnosisError = 'Diagnosis is required in this item';
             return false;
-        }else{
+        } else {
             this.FormItem.controls.diagnosisSequence.clearValidators();
             this.FormItem.controls.diagnosisSequence.updateValueAndValidity();
             this.IsDiagnosisSequenceRequired = false;
@@ -981,7 +985,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         if (!this.checkItemsCodeForSupportingInfo()) {
             return;
         }
-        if (!this.validateDiagnosisInPharmacyForApproval()) {
+        if (!this.validateDiagnosisInPharmacy()) {
             return;
         }
         if (this.FormItem.valid) {
@@ -1042,8 +1046,8 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
             model.endDate = this.FormItem.controls.endDate.value; //this.datePipe.transform(this.FormItem.controls.endDate.value, 'yyyy-MM-dd hh:mm aa');
             model.endDateStr = this.datePipe.transform(this.FormItem.controls.endDate.value, 'dd-MM-yyyy hh:mm aa');
-            model.pharmacistSubstitute = this.FormItem.controls.pharmacistSubstitute.value;
-            model.reasonPharmacistSubstitute = this.FormItem.controls.reasonPharmacistSubstitute.value;
+
+
             if (this.FormItem.controls.supportingInfoSequence.value && this.FormItem.controls.supportingInfoSequence.value.length > 0) {
                 model.supportingInfoSequence = this.FormItem.controls.supportingInfoSequence.value.map((x) => { return x.sequence });
             }
@@ -1064,8 +1068,10 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
                 model.pharmacistSelectionReason = this.FormItem.controls.pharmacistSelectionReason.value.value;
                 model.prescribedDrugCode = this.FormItem.controls.prescribedDrugCode.value.descriptionCode;
                 model.pharmacistSelectionReasonName = this.FormItem.controls.pharmacistSelectionReason.value.name;
+                model.pharmacistSubstitute = this.FormItem.controls.pharmacistSubstitute.value;
+                model.reasonPharmacistSubstitute = this.FormItem.controls.reasonPharmacistSubstitute.value;
             }
-            // console.log("item model = " + JSON.stringify(model));
+            //console.log("item model = " + JSON.stringify(model));
             this.dialogRef.close(model);
         }
     }
