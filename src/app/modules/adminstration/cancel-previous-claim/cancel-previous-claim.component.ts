@@ -55,7 +55,7 @@ export class CancelPreviousClaimComponent implements OnInit {
             claimIdentifier: null,
             requestBundleId: null,
             claimIdentifierUrl: null,
-            cancelBy: false
+            cancelBy: "CancelByClaimIdentifier"
         });
 
     }
@@ -106,7 +106,7 @@ export class CancelPreviousClaimComponent implements OnInit {
 
     }
     get isCancellByBundleIds() {
-        return this.CancellClaimForm.controls.cancelBy.value;
+        return this.CancellClaimForm.controls.cancelBy.value=='CancelByBundleID';
 
 
     }
