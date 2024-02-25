@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gui
+  namespace: demo-waseel-connect
+  labels:
+    app: gui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gui
+  template:
+    metadata:
+      labels:
+        app: gui
+    spec:
+      containers:
+        - name: gui
+          image: me-jeddah-1.ocir.io/ax7dvcawpc84/demo-waseel-connect/gui:latest
+          ports:
+          - containerPort: 8080
+      imagePullSecrets:
+        - name: ocir-login-credentials
