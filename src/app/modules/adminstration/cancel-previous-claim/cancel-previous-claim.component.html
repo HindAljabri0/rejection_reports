@@ -2,7 +2,7 @@
     <div class="block-filter-panel">
       <form [formGroup]="CancellClaimForm" (ngSubmit)="cancellClaim()">
         <div class="block-header">
-          <p>Cancel Previous Claim - NPHIES</p>
+          <p>Cancel Previous Transaction</p>
           <mat-radio-group formControlName="cancelBy" color="primary" id="referral"  class="ml-auto">
             <mat-radio-button value="CancelByClaimIdentifier" style="padding-right: 16px">Cancel By Claim Identifier </mat-radio-button>
             <mat-radio-button value="CancelByBundleID">Cancel By Bundle ID</mat-radio-button>
