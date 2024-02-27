@@ -63,11 +63,11 @@ export class AddEditItemDetailsPrescriptionComponent implements OnInit {
     { value: 'medication-codes', name: 'GTIN Code' }];
   
 
-    if (this.data.item && this.data.item.itemCode) {
+    if (this.data.item && this.data.item.code) {
       this.FormItem.patchValue({
         type: this.prescribedCode.filter(x => x.value === this.data.item.type)[0],
-                itemDescription: this.itemList.filter(x => x.code === this.data.item.itemDescription)[0],
-                itemCode: this.itemList.filter(x => x.code === this.data.item.itemCode)[0],
+                description: this.itemList.filter(x => x.code === this.data.item.code)[0],
+                code: this.itemList.filter(x => x.code === this.data.item.code)[0],
                 nonStandardCode: this.data.item.nonStandardCode,
                 display: this.data.item.display,
                 quantity: this.data.item.quantity,
@@ -190,9 +190,9 @@ SetSingleRecord(type = null) {
     this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, this.FormItem.controls.type.value.value).subscribe(event => {
       if (event instanceof HttpResponse) {
         this.itemList = event.body;
-        if (this.data.item && this.data.item.itemCode) {
+        if (this.data.item && this.data.item.code) {
           this.FormItem.patchValue({
-            item: this.itemList.filter(x => x.code === this.data.item.itemCode)[0]
+            item: this.itemList.filter(x => x.code === this.data.item.code)[0]
           });
         } else {
           if (type) {
@@ -287,8 +287,8 @@ SetSingleRecord(type = null) {
       model.sequence = this.data.Sequence;
       model.type = this.FormItem.controls.type.value.value;
       model.typeName = this.FormItem.controls.type.value.name;
-      model.itemCode = this.FormItem.controls.item.value.code;
-      model.itemDescription = this.FormItem.controls.item.value.description;
+      model.code = this.FormItem.controls.item.value.code;
+      model.description = this.FormItem.controls.item.value.description;
       model.nonStandardCode = this.FormItem.controls.nonStandardCode.value;
       model.strength = this.FormItem.controls.strength.value;
       model.quantity = parseFloat(this.FormItem.controls.quantity.value);

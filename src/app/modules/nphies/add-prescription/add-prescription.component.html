@@ -474,7 +474,7 @@
 
 
                 <h5 class="form-title">
-                    <span>Supporting Info</span>
+                    <span>Supporting Info <span class="asterisk">*</span></span>
                 </h5>
                 <app-manage-supporting-info [(isSubmitted)]="isSubmitted" [(supportingInfoList)]="SupportingInfo">
                 </app-manage-supporting-info>
@@ -839,7 +839,7 @@
                                                                 {{d.typeName}}</td>
                                                             <td class="row-click"
                                                                 (click)="currentOpenItemDosage = (i == currentOpenItemDosage) ? -1 : i">
-                                                                {{d.itemCode}} - {{d.itemDescription}}
+                                                                {{d.code}} - {{d.itemDescription}}
                                                             </td>
                                                             <td class="row-click"
                                                                 (click)="currentOpenItemDosage = (i == currentOpenItemDosage) ? -1 : i">

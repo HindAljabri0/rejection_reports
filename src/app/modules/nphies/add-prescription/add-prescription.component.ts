@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { MatDialog, MatDialogConfig, ErrorStateMatcher } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 import { AddEditPrescriptionsItemComponent } from '../add-edit-prescriptions-item/add-edit-prescriptions-item.component';
 import { DosageDetailsComponent } from '../add-edit-prescription-item/dosage-details/dosage-details.component';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -15,7 +15,6 @@ import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSear
 import { nationalities } from 'src/app/claim-module-components/store/claim.reducer';
 import { ReplaySubject, Subject } from 'rxjs';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
-import { AddEditItemDetailsModalComponent } from '../add-edit-item-details-modal/add-edit-item-details-modal.component';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
@@ -24,9 +23,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { takeUntil } from 'rxjs/operators';
 import { DbMappingService } from 'src/app/services/administration/dbMappingService/db-mapping.service';
-import { PbmValidationResponseSummaryDialogComponent } from 'src/app/components/dialogs/pbm-validation-response-summary-dialog/pbm-validation-response-summary-dialog.component';
 import { AdminService } from 'src/app/services/adminService/admin.service';
-import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { AddEditVisionLensSpecificationsComponent } from '../add-preauthorization/add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
 import { AddEditCareTeamModalComponent } from '../add-preauthorization/add-edit-care-team-modal/add-edit-care-team-modal.component';
 import { AddEditDiagnosisModalComponent } from '../add-preauthorization/add-edit-diagnosis-modal/add-edit-diagnosis-modal.component';
@@ -199,7 +196,7 @@ export class AddPrescriptionComponent implements OnInit {
     isSubmitted = false;
     IsLensSpecificationRequired = false;
     IsDiagnosisRequired = false;
-    // IsCareTeamRequired = false;
+    //IsCareTeamRequired_ = true;
     IsItemRequired = false;
     IsDateWrittenRequired = false;
     IsPrescriberRequired = false;
@@ -1249,9 +1246,9 @@ export class AddPrescriptionComponent implements OnInit {
                                 x.itemDetails.map(y => {
                                     if (y.sequence === result.sequence) {
                                         y.type = result.type;
-                                        y.typeName = result.typeName,
-                                            y.itemCode = result.itemCode;
-                                        y.itemDescription = result.itemDescription;
+                                        y.typeName = result.typeName;
+                                        y.code = result.code;
+                                        y.description = result.description;
                                         y.nonStandardCode = result.nonStandardCode;
                                         y.strength = result.strength;
                                         y.quantity = result.quantity;
@@ -1260,7 +1257,7 @@ export class AddPrescriptionComponent implements OnInit {
                                     }
                                 });
                             } else {
-                                result.claimItemDosageModel= [];
+                                result.claimItemDosageModel = [];
                                 x.itemDetails.push(result);
                             }
                         }

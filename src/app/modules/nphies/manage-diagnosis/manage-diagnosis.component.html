@@ -1,5 +1,5 @@
 <h5 class="form-title" [ngClass]="{'text-danger': IsDiagnosisRequired}">
-  <span>Diagnosis</span>
+  <span>Diagnosis<span class="asterisk">*</span></span>
   <div class="ml-auto" matTooltip="Select Claim Type to enable adding Diagnosis" [matTooltipDisabled]="(claimType)?true:false">
     <button type="button" class="btn-icon btn-primary" (click)="addDiagnosis()" [disabled]="!claimType">
       <mat-icon>add</mat-icon>

@@ -100,7 +100,7 @@
                 </div>
             </div>
             <div class="col-4 col-lg-3" *ngIf="FormItem.get('type').value.value === 'medication-codes'">
-                <div class="form-group">
+                <div class="form-group" [ngClass]="{'has-error': (isSubmitted || FormItem.get('absenceScientificCode').touched) && FormItem.get('absenceScientificCode').hasError('required')}">
                     <label class="control-label">Absence of Scientific Code<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select formControlName="absenceScientificCode">
