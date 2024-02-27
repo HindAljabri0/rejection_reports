@@ -46,7 +46,7 @@
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select placeholder="Select dose type" formControlName="doseType">
                             <mat-option value="">Select Type</mat-option>
-                            <mat-option value="Dose_Quantity_Range">Dose Quantity Range</mat-option>
+                            <mat-option value="Dose_Range">Dose Quantity Range</mat-option>
                             <mat-option value="Dose_Quantity">Dose Quantity</mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -54,7 +54,7 @@
             </div>
 
             <div class="col-2"
-                *ngIf="FormItem.get('dosageType').value === 'DoseType' && FormItem.get('doseType').value === 'Dose_Quantity_Range'">
+                *ngIf="FormItem.get('dosageType').value === 'DoseType' && FormItem.get('doseType').value === 'Dose_Range'">
                 <div class="form-group"
                     [ngClass]="{'has-error' : ((isSubmitted || FormItem.get('max').touched) && FormItem.get('max').hasError('required')) || ((isSubmitted || FormItem.get('min').touched) && FormItem.get('min').hasError('required'))}">
                     <label class="control-label">Dose Quantity Range<span class="asterisk">*</span></label>
@@ -305,7 +305,7 @@
                     <label class="control-label"><span class="d-flex align-items-center">
                             <span class="pr-1">Frequency</span>
                             <mat-icon class="material-icons-outlined size-20"
-                                matTooltip="Code: (Dropdown) Event occurs frequency times per period via Standard Code. (BID- Twice a day)">info</mat-icon>
+                                matTooltip="(Textbox – Int only) Event occurs frequency times per period manually. Example, 3 times a day; please enter 3.">info</mat-icon>
                         </span></label>
                     <input type="text" class="form-control" formControlName="frequency" placeholder="Enter frequency">
                 </div>
@@ -314,7 +314,11 @@
 
             <div class="col-4" *ngIf="FormItem.get('frequencyType').value === 'code'">
                 <div class="form-group">
-                    <label class="control-label">Frequency Unit</label>
+                    <label class="control-label"><span class="d-flex align-items-center">
+                        <span class="pr-1">Frequency Unit</span>
+                        <mat-icon class="material-icons-outlined size-20"
+                            matTooltip="Code: (Dropdown) Event occurs frequency times per period via Standard Code. (BID- Twice a day)">info</mat-icon>
+                    </span></label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select value="BID" formControlName="frequencyUnit">
                             <mat-option value="">Select unit</mat-option>

@@ -84,29 +84,26 @@
                 </div>
 
 
-                <div class="row" *ngIf="selectedBeneficiary && selectedBeneficiary.plans">
-                    <div class="col-md-4">
-                        <div class="form-group" [matTooltip]="selectedPlanIdError"
-                            [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('insurancePlanId').touched) && FormPreAuthorization.get('insurancePlanId').hasError('required')}">
-                            <label class="control-label">Insurance Plan<span class="asterisk">*</span></label>
-                            <mat-form-field class="form-control custom-select-control">
-                                <mat-select formControlName="insurancePlanId">
-                                    <mat-option value="">Select Insurance Plan</mat-option>
-                                    <mat-option *ngFor="let plan of selectedBeneficiary.plans"
-                                        [value]="plan.payerNphiesId" (click)="selectedPlan(plan)">
-                                        <h5 class="menu-opt-group" style="padding: 0px 0px">
-                                            {{getTPAName(plan.tpaNphiesId)}}</h5>
-                                        {{plan.primary? '(Primary) ':''}}Member ID: {{plan.memberCardId}}
-                                        ({{plan.payerName}}){{isPlanExpired(plan.expiryDate)}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                            <div
-                                *ngIf="(isSubmitted || FormPreAuthorization.get('insurancePlanId').touched) && FormPreAuthorization.get('insurancePlanId').hasError('required')">
-                                <span class="error-text">Please select an Insurance Plan</span>
-                            </div>
-                        </div>
-                    </div>
+        <div class="row" *ngIf="selectedBeneficiary && selectedBeneficiary.plans">
+          <div class="col-md-4">
+            <div class="form-group" [matTooltip]="selectedPlanIdError"
+              [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('insurancePlanId').touched) && FormPreAuthorization.get('insurancePlanId').hasError('required')}">
+              <label class="control-label">Insurance Plan<span class="asterisk">*</span></label>
+              <mat-form-field class="form-control custom-select-control">
+                <mat-select formControlName="insurancePlanId">
+                  <mat-option value="">Select Insurance Plan</mat-option>
+                  <mat-option *ngFor="let plan of primaryPlan" [value]="plan.payerNphiesId" (click)="selectedPlan(plan)">
+                    <h5 class="menu-opt-group" style="padding: 0px 0px">{{getTPAName(plan.tpaNphiesId)}}</h5>
+                    {{plan.primary? '(Primary) ':''}}Member ID: {{plan.memberCardId}}
+                    ({{plan.payerName}}){{isPlanExpired(plan.expiryDate)}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div *ngIf="(isSubmitted || FormPreAuthorization.get('insurancePlanId').touched) && FormPreAuthorization.get('insurancePlanId').hasError('required')">
+                <span class="error-text">Please select an Insurance Plan</span>
+              </div>
+            </div>
+          </div>
 
                 </div>
 

@@ -104,7 +104,7 @@
             <label class="control-label">Insurance Plan<span class="asterisk">*</span></label>
             <mat-form-field class="form-control custom-select-control">
               <mat-select id="insurancePlan" [value]="selectedPlanId" (selectionChange)="selectedPlanId = $event.value">
-                <mat-option *ngFor="let plan of selectedBeneficiary.plans" [value]="plan.planId">
+                <mat-option *ngFor="let plan of primaryPlan" [value]="plan.planId">
                   {{plan.primary ? '(Primary) ' : ''}}Member ID: {{plan.memberCardId}} ({{plan.payerName}}){{isPlanExpired(plan.expiryDate)}}
                 </mat-option>
               </mat-select>

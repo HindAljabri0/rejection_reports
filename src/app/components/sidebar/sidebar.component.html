@@ -456,6 +456,12 @@
                                 <span class="text">Attachments Report</span>
                             </a>
                         </li>
+
+                        <!-- <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim || userPrivileges.ProviderPrivileges.NPHIES.isHeadOffice" i18n="@@cancelPreviousClaim">
+                            <a routerLink="/administration/config/cancelPreviousClaim" routerLinkActive="is-active" #createProvider="routerLinkActive">
+                                <span class="text">Cancel Previous Claim</span>
+                            </a>
+                        </li> -->
                     </ul>
                 </mat-expansion-panel>
             </mat-accordion>

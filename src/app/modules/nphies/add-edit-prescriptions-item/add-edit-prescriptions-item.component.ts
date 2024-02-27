@@ -48,7 +48,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
         bodySite: [''],
         subSite: [''],
         quantity: ['', Validators.required],
-        strength: ['',Validators.required],
+        strength: ['', Validators.required],
         quantityCode: [''],
         supportingInfoSequence: [''],
         supportingInfoFilter: [''],
@@ -115,7 +115,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
                 quantityCode: this.data.item.quantityCode != null ? this.data.item.quantityCode : "",
                 endDate: this.data.item.endDate ? new Date(this.data.item.endDate) : null,
                 strength: this.data.item.strength,
-                absenceScientificCode: this.absenceReasonList.filter(x => x.value === this.data.item.absenceScientificCode)[0],
+                absenceScientificCode: (this.absenceReasonList.filter(x => x.value === this.data.item.absenceScientificCode).length > 0 ? this.absenceReasonList.filter(x => x.value === this.data.item.absenceScientificCode)[0] : "")
             });
 
             if (this.data.careTeams) {
@@ -141,7 +141,8 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
             //console.log("supporting info seq = "+JSON.stringify(this.FormItem.controls.supportingInfoSequence.value));
             this.getItemList();
         } else {
-            this.FormItem.controls.type.setValue(this.prescribedCode.filter(x=>x.value ==='scientific-codes')[0]);
+            this.FormItem.controls.type.setValue(this.prescribedCode.filter(x => x.value === 'scientific-codes')[0]);
+            this.typeChange('scientific-codes');
             if (this.data.subType === 'op') {
                 this.FormItem.controls.quantityCode.setValue('{package}');
                 this.FormItem.controls.quantityCode.disable();
@@ -202,6 +203,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
         }
     }
     typeChange(type = null) {
+        console.log("type changed");
         if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'scientific-codes') {
             this.sharedServices.loadingChanged.next(true);
             this.FormItem.controls.item.disable();
@@ -543,7 +545,14 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
 
 
             const pattern = /(^\d*\.?\d*[1-9]+\d*$)|(^[1-9]+\d*\.\d*$)/;
-
+            if ((this.FormItem.controls.absenceScientificCode.value == null || this.FormItem.controls.absenceScientificCode.value == '') && this.FormItem.controls.type.value && (this.FormItem.controls.type.value.value === 'medication-codes')) {
+                this.FormItem.controls.absenceScientificCode.setValidators([Validators.required]);
+                this.FormItem.controls.absenceScientificCode.updateValueAndValidity();
+                return;
+            }else{
+                this.FormItem.controls.absenceScientificCode.clearValidators();
+                this.FormItem.controls.absenceScientificCode.updateValueAndValidity();
+            }
             if (!pattern.test(parseFloat(this.FormItem.controls.quantity.value).toString())) {
                 return;
             }

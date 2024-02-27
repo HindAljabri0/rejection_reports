@@ -161,7 +161,7 @@ export class DosageDetailsComponent implements OnInit {
             this.FormItem.controls.doseQuantity.updateValueAndValidity();
         }
         
-        if (this.FormItem.controls.doseType.value === 'Dose_Quantity_Range' && this.FormItem.controls.min !== undefined &&this.FormItem.controls.max !== undefined && (this.FormItem.controls.min.value === null || this.FormItem.controls.min.value <= 0 || this.FormItem.controls.max.value === null || this.FormItem.controls.max.value <= 0)) {
+        if (this.FormItem.controls.doseType.value === 'Dose_Range' && this.FormItem.controls.min !== undefined &&this.FormItem.controls.max !== undefined && (this.FormItem.controls.min.value === null || this.FormItem.controls.min.value <= 0 || this.FormItem.controls.max.value === null || this.FormItem.controls.max.value <= 0)) {
             this.FormItem.controls.min.setValidators([Validators.required]);
             this.FormItem.controls.min.updateValueAndValidity();
 
