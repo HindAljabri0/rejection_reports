@@ -458,9 +458,9 @@
                         </li>
 
                         <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin || userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim || userPrivileges.ProviderPrivileges.NPHIES.isHeadOffice" i18n="@@cancelPreviousClaim">
-                            <a routerLink="/administration/config/cancelPreviousClaim" routerLinkActive="is-active" #createProvider="routerLinkActive">
-                                <img src="assets/cancel.svg" alt="Cloud" class="default-icon" />
-                                <img src="assets/cancel.svg" alt="Cloud" class="active-icon" />
+                            <a routerLink="/nphies/cancelPreviousClaim" routerLinkActive="is-active" #cancelPreviousTransaction="routerLinkActive">
+                                <img src="assets/cancel.svg" alt="Cancel" class="default-icon" />
+                                <img src="assets/cancel.svg" alt="Cancel" class="active-icon" />
                                 <span class="text">Cancel Previous Transaction </span>
                             </a>
                         </li>
