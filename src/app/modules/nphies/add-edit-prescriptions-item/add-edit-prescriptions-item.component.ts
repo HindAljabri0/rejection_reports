@@ -99,12 +99,17 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
             this.bodySiteList = this.sharedDataService.getBodySite(this.data.type);
             this.subSiteList = this.sharedDataService.getSubSite(this.data.type);
         }
-        //console.log("item = ", this.data.item);
-        console.log(this.data.item != null);
+        console.log("item = ", this.data.item);
+        //console.log(this.data.item != null);
+        
         if (this.data.item && this.data.item != null) {
+            if(this.data.item.type ==='scientific-codes'){
+                this.FormItem.controls.type.setValue(this.prescribedCode.filter(x => x.value === 'scientific-codes')[0]);
+                this.typeChange('scientific-codes');
+            }
             this.FormItem.patchValue({
                 type: this.prescribedCode.filter(x => x.value === this.data.item.type)[0],
-                itemDescription: this.itemList.filter(x => x.code === this.data.item.itemDescription)[0],
+                itemDescription: this.itemList.filter(x => x.code === this.data.item.itemCode)[0],
                 itemCode: this.itemList.filter(x => x.code === this.data.item.itemCode)[0],
                 nonStandardCode: this.data.item.nonStandardCode,
                 display: this.data.item.display,
@@ -140,6 +145,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
             }
             //console.log("supporting info seq = "+JSON.stringify(this.FormItem.controls.supportingInfoSequence.value));
             this.getItemList();
+            
         } else {
             this.FormItem.controls.type.setValue(this.prescribedCode.filter(x => x.value === 'scientific-codes')[0]);
             this.typeChange('scientific-codes');
@@ -215,10 +221,10 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
                         this.prescribedMedicationList = body;
                         this.filteredPescribedMedicationItem.next(body);
                         if (this.data.item) {
-                            const res = this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.prescribedDrugCode)[0] ? this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.prescribedDrugCode)[0] : '';
+                            const res = this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.itemCode)[0] ? this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.itemCode)[0] : '';
                             if (res) {
                                 this.FormItem.patchValue({
-                                    prescribedDrugCode: res
+                                    item: res
                                 });
                             }
                             this.filteredPescribedMedicationItem.next(this.prescribedMedicationList.slice());
