@@ -504,11 +504,11 @@ export class SharedDataService {
     ];
 
   itemAbsenceReasonList = [
-    { value: "Unresponsive", name: 'Unresponsive' },
-    { value: "Adverse Effect", name: 'Adverse Effect' },
-    { value: "Irreplaceable", name: 'Irreplaceable' },
-    { value: "Allergy" , name: 'Allergy' },
-    { value: "Others", name: 'Others' },
+    { value: "unresponsive", name: 'Unresponsive' },
+    { value: "adverse Effect", name: 'Adverse Effect' },
+    { value: "irreplaceable", name: 'Irreplaceable' },
+    { value: "allergy" , name: 'Allergy' },
+    { value: "others", name: 'Others' },
   ];
 
   cancelReasonList = [
