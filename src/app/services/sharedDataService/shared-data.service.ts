@@ -505,7 +505,7 @@ export class SharedDataService {
 
   itemAbsenceReasonList = [
     { value: "unresponsive", name: 'Unresponsive' },
-    { value: "adverse Effect", name: 'Adverse Effect' },
+    { value: "adverse-effect", name: 'Adverse Effect' },
     { value: "irreplaceable", name: 'Irreplaceable' },
     { value: "allergy" , name: 'Allergy' },
     { value: "others", name: 'Others' },

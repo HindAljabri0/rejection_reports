@@ -1,907 +1,1039 @@
 <div class="mb-2">
-  <div class="inline-value-badge" *ngIf="data.requestBundleId">
-    Request Bundle ID: <span>{{data.requestBundleId}}</span>
-  </div>
-  <div class="inline-value-badge">
-    Response Bundle ID: <span>{{data.responseBundleId}}</span>
-  </div>
+    <div class="inline-value-badge" *ngIf="data.requestBundleId">
+        Request Bundle ID: <span>{{data.requestBundleId}}</span>
+    </div>
+    <div class="inline-value-badge">
+        Response Bundle ID: <span>{{data.responseBundleId}}</span>
+    </div>
 </div>
 <div class="row small-gutter">
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Transaction Date</div>
-      <p class="form-control-static text-primary">{{data.transactionLogDate | date : 'dd-MM-yyyy hh:mm aa'}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Transaction Date</div>
+            <p class="form-control-static text-primary">{{data.transactionLogDate | date : 'dd-MM-yyyy hh:mm aa'}}</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Date Ordered</div>
-      <p class="form-control-static text-primary">{{data.preAuthorizationInfo.dateOrdered | date : 'dd-MM-yyyy hh:mm
-        aa'}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Date Ordered</div>
+            <p class="form-control-static text-primary">{{data.preAuthorizationInfo.dateOrdered | date : 'dd-MM-yyyy
+                hh:mm
+                aa'}}</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Outcome</div>
-      <p class="form-control-static text-primary">{{data.outcome}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Outcome</div>
+            <p class="form-control-static text-primary">{{data.outcome}}</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Status</div>
-      <p class="form-control-static text-primary">{{data.status}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Status</div>
+            <p class="form-control-static text-primary">{{data.status}}</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Type</div>
-      <p class="form-control-static text-primary">{{data.preAuthorizationInfo.typeName}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Type</div>
+            <p class="form-control-static text-primary">{{data.preAuthorizationInfo.typeName}}</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Sub Type</div>
-      <p class="form-control-static text-primary">
-        <span
-          *ngIf="data.preAuthorizationInfo && data.preAuthorizationInfo.subType">{{data.preAuthorizationInfo.subTypeName}}</span>
-        <span *ngIf="data.preAuthorizationInfo && !data.preAuthorizationInfo.subType">-</span>
-      </p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Sub Type</div>
+            <p class="form-control-static text-primary">
+                <span
+                    *ngIf="data.preAuthorizationInfo && data.preAuthorizationInfo.subType">{{data.preAuthorizationInfo.subTypeName}}</span>
+                <span *ngIf="data.preAuthorizationInfo && !data.preAuthorizationInfo.subType">-</span>
+            </p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Insurer</div>
-      <p class="form-control-static text-primary">{{data.insurer}} ({{data.payerNphiesId}})</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Insurer</div>
+            <p class="form-control-static text-primary">{{data.insurer}} ({{data.payerNphiesId}})</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">TPA Name</div>
-      <p class="form-control-static text-primary">{{data.tpaName!=null?data.tpaName:'-'}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">TPA Name</div>
+            <p class="form-control-static text-primary">{{data.tpaName!=null?data.tpaName:'-'}}</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Prescription Reference No.</div>
-      <p class="form-control-static text-primary">{{data.preAuthRefNo?data.preAuthRefNo:'-'}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Prescription Reference No.</div>
+            <p class="form-control-static text-primary">{{data.preAuthRefNo?data.preAuthRefNo:'-'}}</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Prescription Response Identifier</div>
-      <p class="form-control-static text-primary">{{data.claimRefNo ? data.claimRefNo : '-'}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Prescription Response Identifier</div>
+            <p class="form-control-static text-primary">{{data.claimRefNo ? data.claimRefNo : '-'}}</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Prescription Period</div>
-      <p class="form-control-static text-primary">{{data.prescriptionStartDate | date:'dd/MM/yyyy'}} {{data.prescriptionStartDate
-        &&
-        data.prescriptionEndDate ? "-":""}} {{data.prescriptionEndDate |
-        date:'dd/MM/yyyy'}} <span *ngIf="period">[{{period}}]</span> </p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Prescription Period</div>
+            <p class="form-control-static text-primary">{{data.prescriptionStartDate | date:'dd/MM/yyyy'}}
+                {{data.prescriptionStartDate
+                &&
+                data.prescriptionEndDate ? "-":""}} {{data.prescriptionEndDate |
+                date:'dd/MM/yyyy'}} <span *ngIf="period">[{{period}}]</span> </p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Related Prescription Request Identifier</div>
-      <p class="form-control-static text-primary" matTooltip="Useful for extending a transferred prescription">
-        <span *ngIf="data.claimReuseId && data.claimReuseRelation">{{data.claimReuseId}}
-          ({{data.claimReuseRelation}})</span>
-        <span *ngIf="!data.claimReuseId || !data.claimReuseRelation">-</span>
-      </p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Related Prescription Request Identifier</div>
+            <p class="form-control-static text-primary" matTooltip="Useful for extending a transferred prescription">
+                <span *ngIf="data.claimReuseId && data.claimReuseRelation">{{data.claimReuseId}}
+                    ({{data.claimReuseRelation}})</span>
+                <span *ngIf="!data.claimReuseId || !data.claimReuseRelation">-</span>
+            </p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Offline Eligibility ID</div>
-      <p class="form-control-static text-primary">
-        {{data.preAuthorizationInfo.eligibilityOfflineId?data.preAuthorizationInfo.eligibilityOfflineId:'-'}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Offline Eligibility ID</div>
+            <p class="form-control-static text-primary">
+                {{data.preAuthorizationInfo.eligibilityOfflineId?data.preAuthorizationInfo.eligibilityOfflineId:'-'}}
+            </p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Offline Eligibility Date</div>
-      <p class="form-control-static text-primary">
-        {{data.preAuthorizationInfo.eligibilityOfflineDate?(data.preAuthorizationInfo.eligibilityOfflineDate | date:
-        'dd-MM-yyyy'):'-'}}
-      </p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Offline Eligibility Date</div>
+            <p class="form-control-static text-primary">
+                {{data.preAuthorizationInfo.eligibilityOfflineDate?(data.preAuthorizationInfo.eligibilityOfflineDate |
+                date:
+                'dd-MM-yyyy'):'-'}}
+            </p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Eligibility Response Identifier (Value)</div>
-      <p class="form-control-static text-primary">
-        {{data.preAuthorizationInfo.eligibilityResponseId?data.preAuthorizationInfo.eligibilityResponseId:'-'}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Eligibility Response Identifier (Value)</div>
+            <p class="form-control-static text-primary">
+                {{data.preAuthorizationInfo.eligibilityResponseId?data.preAuthorizationInfo.eligibilityResponseId:'-'}}
+            </p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Eligibility Response Identifier (URL)</div>
-      <p class="form-control-static text-primary">
-        {{data.preAuthorizationInfo.eligibilityResponseUrl?data.preAuthorizationInfo.eligibilityResponseUrl:'-'}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Eligibility Response Identifier (URL)</div>
+            <p class="form-control-static text-primary">
+                {{data.preAuthorizationInfo.eligibilityResponseUrl?data.preAuthorizationInfo.eligibilityResponseUrl:'-'}}
+            </p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Disposition</div>
-      <p class="form-control-static text-primary">{{data.disposition?data.disposition:'-'}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Disposition</div>
+            <p class="form-control-static text-primary">{{data.disposition?data.disposition:'-'}}</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Is Referral ?</div>
-      <p class="form-control-static text-primary">{{data.transfer ? 'Yes' : 'No'}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Is Referral ?</div>
+            <p class="form-control-static text-primary">{{data.transfer ? 'Yes' : 'No'}}</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Is New Born ?</div>
-      <p class="form-control-static text-primary">{{data.isNewBorn ? 'Yes' : 'No'}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Is New Born ?</div>
+            <p class="form-control-static text-primary">{{data.isNewBorn ? 'Yes' : 'No'}}</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Related Prescription Reference No(s).
-        <mat-icon class="material-icons-outlined size-20"
-          matTooltip="Useful for extending a transferred prescription">
-          info</mat-icon>
-      </div>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Related Prescription Reference No(s).
+                <mat-icon class="material-icons-outlined size-20"
+                    matTooltip="Useful for extending a transferred prescription">
+                    info</mat-icon>
+            </div>
 
-      <p class="form-control-static text-primary">{{data.prescriptionDetails ? data.prescriptionDetails : '-'}}</p>
+            <p class="form-control-static text-primary">{{data.prescriptionDetails ? data.prescriptionDetails : '-'}}
+            </p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Cancellation Status</div>
-      <p class="form-control-static text-primary">{{data.cancelStatus ? data.cancelStatus : '-'}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Cancellation Status</div>
+            <p class="form-control-static text-primary">{{data.cancelStatus ? data.cancelStatus : '-'}}</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Cancellation Status Reason</div>
-      <p class="form-control-static text-primary">{{data.cancelResponseReason ? data.cancelResponseReason : '-'}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Cancellation Status Reason</div>
+            <p class="form-control-static text-primary">{{data.cancelResponseReason ? data.cancelResponseReason : '-'}}
+            </p>
+        </div>
     </div>
-  </div>
 
-  <div *ngIf="data.transferPrescriptionProvider" class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Referral Prescription Provider</div>
-      <p class="form-control-static text-primary">{{data.transferPrescriptionProvider}}</p>
+    <div *ngIf="data.transferPrescriptionProvider" class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Referral Prescription Provider</div>
+            <p class="form-control-static text-primary">{{data.transferPrescriptionProvider}}</p>
+        </div>
     </div>
-  </div>
-  <div *ngIf="data.transferPrescriptionNumber" class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Referral Prescription Reference No.</div>
-      <p class="form-control-static text-primary">{{data.transferPrescriptionNumber}}</p>
+    <div *ngIf="data.transferPrescriptionNumber" class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Referral Prescription Reference No.</div>
+            <p class="form-control-static text-primary">{{data.transferPrescriptionNumber}}</p>
+        </div>
     </div>
-  </div>
-  <div *ngIf="data.transferPrescriptionStartDate && data.transferPrescriptionEndDate" class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Referral Prescription Period</div>
-      <p class="form-control-static text-primary">{{data.transferPrescriptionStartDate | date: 'dd/MM/yyyy'}} -
-        {{data.transferPrescriptionEndDate | date: 'dd/MM/yyyy'}}</p>
+    <div *ngIf="data.transferPrescriptionStartDate && data.transferPrescriptionEndDate" class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Referral Prescription Period</div>
+            <p class="form-control-static text-primary">{{data.transferPrescriptionStartDate | date: 'dd/MM/yyyy'}} -
+                {{data.transferPrescriptionEndDate | date: 'dd/MM/yyyy'}}</p>
+        </div>
     </div>
-  </div>
-  <div *ngIf="data.reIssueReasonName||data.reIssueReason" class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Reissue Reason</div>
-      <p class="form-control-static text-primary">{{data.reIssueReasonName? data.reIssueReasonName:data.reIssueReason}}</p>
+    <div *ngIf="data.reIssueReasonName||data.reIssueReason" class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Reissue Reason</div>
+            <p class="form-control-static text-primary">{{data.reIssueReasonName?
+                data.reIssueReasonName:data.reIssueReason}}</p>
+        </div>
     </div>
-  </div>
-  
-  <div *ngIf="data.provClaimNos" class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Converted To ProvClaimNos</div>
-      <p class="form-control-static text-primary">{{data.provClaimNos}}</p>
+
+    <div *ngIf="data.provClaimNos" class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Converted To ProvClaimNos</div>
+            <p class="form-control-static text-primary">{{data.provClaimNos}}</p>
+        </div>
     </div>
-  </div>
 
 </div>
 
 <!-- payment info start -->
 <!-- Benefit, Submitted, Eligible, Eligible %, Patient Copay, Deductible, -->
 <div class="p-14 bg-off-white ml-n14 mr-n14 mt-14"
-  *ngIf="data.responseDecision && data.responseDecision.claimResDecisionCategories">
-  <h5 class="align-self-center medium pb-2 text-primary">Total</h5>
-  <div class="row small-gutter">
+    *ngIf="data.responseDecision && data.responseDecision.claimResDecisionCategories">
 
-    <div class="col-auto" *ngFor="let res of data.responseDecision.claimResDecisionCategories">
-      <div class="inline-label-table auto-width">
-        <label>{{res.category}}:</label>
-        <p class="text-primary">
-          <span>{{res.categoryValue}} <span class="currency">SR</span></span>
-        </p>
-      </div>
+    <div class="row small-gutter">
+
+        <div class="col-auto" *ngFor="let res of data.responseDecision.claimResDecisionCategories">
+            <div class="inline-label-table auto-width">
+                <label>{{res.category}}:</label>
+                <p class="text-primary">
+                    <span>{{res.categoryValue}} <span class="currency">SR</span></span>
+                </p>
+            </div>
+        </div>
+
     </div>
-
-  </div>
 </div>
 <!-- payment info end -->
 
 <!-- error section start -->
 <h5 class="form-title" *ngIf="data.errors">
-  Errors
+    Errors
 </h5>
 <div class="table-responsive" *ngIf="data.errors">
-  <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-    <thead>
-      <tr>
-        <th class="light-bg-danger text-danger">Code</th>
-        <th class="light-bg-danger text-danger">Message</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let err of data.errors">
-        <td>{{err.code}}</td>
-        <td>{{err.error}}</td>
-      </tr>
-    </tbody>
-  </table>
+    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+            <tr>
+                <th class="light-bg-danger text-danger">Code</th>
+                <th class="light-bg-danger text-danger">Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let err of data.errors">
+                <td>{{err.code}}</td>
+                <td>{{err.error}}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 <!-- error section end -->
 
 <!-- beneficiary section start -->
 <h5 class="form-title" *ngIf="data.beneficiary">
-  Beneficiary Details
+    Beneficiary Details
 </h5>
 <div class="row small-gutter" *ngIf="data.beneficiary">
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Name</div>
-      <p class="form-control-static">{{data.beneficiary.beneficiaryName}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Name</div>
+            <p class="form-control-static">{{data.beneficiary.beneficiaryName}}</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Document</div>
-      <p class="form-control-static">{{data.beneficiary.documentTypeName}} ({{data.beneficiary.documentId}})</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Document</div>
+            <p class="form-control-static">{{data.beneficiary.documentTypeName}} ({{data.beneficiary.documentId}})</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Gender</div>
-      <p class="form-control-static">{{data.beneficiary.gender}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Gender</div>
+            <p class="form-control-static">{{data.beneficiary.gender}}</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Date of Birth</div>
-      <p class="form-control-static">{{data.beneficiary.dob | date: 'dd-MM-yyyy'}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Date of Birth</div>
+            <p class="form-control-static">{{data.beneficiary.dob | date: 'dd-MM-yyyy'}}</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Contact No.</div>
-      <p class="form-control-static">{{data.beneficiary.contactNumber?data.beneficiary.contactNumber:'-'}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Contact No.</div>
+            <p class="form-control-static">{{data.beneficiary.contactNumber?data.beneficiary.contactNumber:'-'}}</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Email</div>
-      <p class="form-control-static">{{data.beneficiary.email?data.beneficiary.email:'-'}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Email</div>
+            <p class="form-control-static">{{data.beneficiary.email?data.beneficiary.email:'-'}}</p>
+        </div>
     </div>
-  </div>
 </div>
 <!-- beneficiary details end -->
 
 <h5 class="form-title" *ngIf="data.beneficiary">
-  Insurance Plan
+    Insurance Plan
 </h5>
 <div class="row small-gutter" *ngIf="data.beneficiary && data.beneficiary.insurancePlan">
-  <div class="table-responsive">
-    <table class="primary-grid claim-view-table">
-      <thead>
-        <tr>
-          <th>Payer</th>
-          <th>Expiry Date</th>
-          <th>Member Card ID</th>
-          <th>Policy Number</th>
-          <th>Relation with Subscriber</th>
-          <th>Coverage Type</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="align-middle">
-          <td>
-            {{data.beneficiary.insurancePlan.payerName}}
-          </td>
-          <td>
-            {{data.beneficiary.insurancePlan.expiryDate}}
-          </td>
-          <td>
-            {{data.beneficiary.insurancePlan.memberCardId}}
-          </td>
-          <td>
-            {{data.beneficiary.insurancePlan.policyNumber}}
-          </td>
-          <td>
-            {{data.beneficiary.insurancePlan.relationWithSubscriberName}}
-          </td>
-          <td>
-            {{data.beneficiary.insurancePlan.coverageTypeName}}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    <div class="table-responsive">
+        <table class="primary-grid claim-view-table">
+            <thead>
+                <tr>
+                    <th>Payer</th>
+                    <th>Expiry Date</th>
+                    <th>Member Card ID</th>
+                    <th>Policy Number</th>
+                    <th>Relation with Subscriber</th>
+                    <th>Coverage Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="align-middle">
+                    <td>
+                        {{data.beneficiary.insurancePlan.payerName}}
+                    </td>
+                    <td>
+                        {{data.beneficiary.insurancePlan.expiryDate}}
+                    </td>
+                    <td>
+                        {{data.beneficiary.insurancePlan.memberCardId}}
+                    </td>
+                    <td>
+                        {{data.beneficiary.insurancePlan.policyNumber}}
+                    </td>
+                    <td>
+                        {{data.beneficiary.insurancePlan.relationWithSubscriberName}}
+                    </td>
+                    <td>
+                        {{data.beneficiary.insurancePlan.coverageTypeName}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <!-- subscriber section start -->
 <h5 class="form-title" *ngIf="data.subscriber">
-  Subscriber Details
+    Subscriber Details
 </h5>
 <div class="row small-gutter" *ngIf="data.subscriber">
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Name</div>
-      <p class="form-control-static">{{data.subscriber.beneficiaryName}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Name</div>
+            <p class="form-control-static">{{data.subscriber.beneficiaryName}}</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Document</div>
-      <p class="form-control-static">{{data.subscriber.documentTypeName}} ({{data.subscriber.documentId}})</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Document</div>
+            <p class="form-control-static">{{data.subscriber.documentTypeName}} ({{data.subscriber.documentId}})</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Gender</div>
-      <p class="form-control-static">{{data.subscriber.gender}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Gender</div>
+            <p class="form-control-static">{{data.subscriber.gender}}</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Date of Birth</div>
-      <p class="form-control-static">{{data.subscriber.dob | date: 'dd-MM-yyyy'}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Date of Birth</div>
+            <p class="form-control-static">{{data.subscriber.dob | date: 'dd-MM-yyyy'}}</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Contact No.</div>
-      <p class="form-control-static">{{data.subscriber.contactNumber}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Contact No.</div>
+            <p class="form-control-static">{{data.subscriber.contactNumber}}</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Email</div>
-      <p class="form-control-static">{{data.subscriber.email}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Email</div>
+            <p class="form-control-static">{{data.subscriber.email}}</p>
+        </div>
     </div>
-  </div>
 </div>
 <!-- beneficiary details end -->
 
 <!-- Cancellation Errors start -->
 <h5 class="form-title" *ngIf="data.inquiryError">
-  Inquiry Errors
+    Inquiry Errors
 </h5>
 <div class="table-responsive" *ngIf="data.inquiryError">
-  <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-    <thead>
-      <tr>
-        <th>Code</th>
-        <th>Message</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let error of data.inquiryError">
-        <td class="light-bg-danger text-danger">{{error.code}}</td>
-        <td class="light-bg-danger text-danger">{{error.error}}</td>
-      </tr>
-    </tbody>
-  </table>
+    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let error of data.inquiryError">
+                <td class="light-bg-danger text-danger">{{error.code}}</td>
+                <td class="light-bg-danger text-danger">{{error.error}}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 <!-- Cancellation Errors end -->
 
 <!-- Cancellation Errors start -->
 <h5 class="form-title" *ngIf="data.cancelErrors">
-  Cancellation Errors
+    Cancellation Errors
 </h5>
 <div class="table-responsive" *ngIf="data.cancelErrors">
-  <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-    <thead>
-      <tr>
-        <th>Code</th>
-        <th>Message</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let error of data.cancelErrors">
-        <td>{{error.code}}</td>
-        <td>{{error.error}}</td>
-      </tr>
-    </tbody>
-  </table>
+    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let error of data.cancelErrors">
+                <td>{{error.code}}</td>
+                <td>{{error.error}}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 <!-- Cancellation Errors end -->
 
 <!-- process notes start -->
 <h5 class="form-title" *ngIf="data.processNotes">
-  Process Notes
+    Process Notes
 </h5>
 <div class="table-responsive" *ngIf="data.processNotes">
-  <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-    <thead>
-      <tr>
-        <th>Number</th>
-        <th>Type</th>
-        <th>Text</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let note of data.processNotes">
-        <td>{{note.number}}</td>
-        <td>{{note.type}}</td>
-        <td>{{note.text}}</td>
-      </tr>
-    </tbody>
-  </table>
+    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+            <tr>
+                <th>Number</th>
+                <th>Type</th>
+                <th>Text</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let note of data.processNotes">
+                <td>{{note.number}}</td>
+                <td>{{note.type}}</td>
+                <td>{{note.text}}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 <!-- process notes end -->
 
 <!-- Items start -->
 <h5 class="form-title">
-  Items
+    Items
 </h5>
 <div class="table-responsive">
-  <table class="primary-grid">
-    <thead>
-      <tr>
-        <th width="10"></th>
-        <th>Sequence No.</th>
-        <th>Type</th>
-        <th>Code - Description</th>
-        <th>
-          <div class="d-flex align-items-center">
-            <span class="pr-1">Net</span>
-            <mat-icon class="material-icons-outlined size-20" matTooltip="Unit Price * Quantity * Factor + TAX">
-              info</mat-icon>
-            <span class="pr-1">/Tax</span>
-            <mat-icon class="material-icons-outlined size-20" matTooltip="Payer share Tax only">
-              info</mat-icon>
-          </div>
-        </th>
-        <th>Benefit/Tax</th>
-        <th>Status</th>
-        <th>Adjudication Reason Code</th>
-        <th>Note No.</th>
-      </tr>
-    </thead>
-    <tbody>
-      <ng-container *ngFor="let item of data.items; let i = index">
-        <tr>
-          <td class="text-primary text-center row-click" (click)="toggleItem(i)" width="10">
-            <mat-icon *ngIf="currentSelectedItem!=i" class="size-21">add_circle_outline</mat-icon>
-            <mat-icon *ngIf="currentSelectedItem==i" class="size-21">remove_circle_outline</mat-icon>
-          </td>
-          <td class="row-click" (click)="toggleItem(i)">
-            {{item.sequence}}</td>
-          <td class="row-click" (click)="toggleItem(i)">{{item.typeName}}</td>
-          <td class="row-click" (click)="toggleItem(i)">{{item.itemCode}} - {{item.itemDescription}}</td>
-          <td class="text-nowrap row-click" (click)="toggleItem(i)"> {{item.net}} <span class="currency">SR</span> /
-            {{item.tax}} <span class="currency">SR</span></td>
-
-          <td class="text-nowrap row-click" (click)="toggleItem(i)">
-            <ng-container *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
-              <ng-container *ngFor="let x of item.itemDecision.claimItemDecisionCategories">
-                <span *ngIf="x.category === 'benefit'">{{x.categoryValue}} <span class="currency">SR</span></span>
-                <span *ngIf="x.category === 'tax'"> / {{x.categoryValue}} <span class="currency">SR</span></span>
-              </ng-container>
-            </ng-container>
-          </td>
-          <td
-            class="row-click text-capitalize text-{{sharedServices.getItemRowAccentColor(!item.itemDecision ? 'all' :item.itemDecision.status)}}"
-            (click)="toggleItem(i)">
-            <span *ngIf="item.itemDecision">{{item.itemDecision.status}}</span>
-            <span *ngIf="!item.itemDecision">-</span>
-          </td>
-          <td class="row-click" (click)="toggleItem(i)">
-            <ng-container *ngFor="let res of item.reasonsMap;let i=index">
-              <span class="abbr" matTooltip="{{res.reason}}">{{ res.code }}</span>
-              <ng-container *ngIf="i!=item.reasonsMap.length-1">, </ng-container>
-            </ng-container>
-            <span *ngIf="!item.reasonsMap">-</span>
-            <!--span >{{item.reasonCodes}}</span-->
-          </td>
-          <td class="row-click" (click)="toggleItem(i)">
-            <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo : '-'}}</span>
-            <span *ngIf="!item.itemDecision">-</span>
-          </td>
-        </tr>
-        <tr *ngIf="currentSelectedItem == i">
-          <td colspan="9">
-            <div class="box mb-2" *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
-              <h5 class="align-self-center medium pb-2">Adjudication</h5>
-              <!-- Benefit, Submitted, Eligible, Eligible %, Patient Copay, Deductible, Unallocated Deductible, Tax (display '-' when null)  -->
-
-              <table class="primary-grid">
-                <thead>
-                  <tr>
-                    <th>Category</th>
-                    <th>Value</th>
-                    <th>Reason</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let res of item.itemDecision.claimItemDecisionCategories">
-                    <td class="text-capitalize">{{res.category}}</td>
-                    <td>{{res.categoryValue}} <span class="currency">SR</span></td>
-                    <td><span *ngIf="res.reasonCode">{{res.reasonCode}} : {{res.reasonDescription}}</span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div class="box mb-2">
-              <h5 class="align-self-center medium pb-2">Item Info</h5>
-              <div class="row small-gutter">
-                <div class="col-4">
-                  <table class="inline-label-table">
-                    <tbody>
-
-                      <tr>
-                        <td class="label">Non Standard Code</td>
-                        <td>{{item.nonStandardCode}}</td>
-                      </tr>
-                      <tr>
-                        <td class="label">Non Standard Desc.</td>
-                        <td>{{item.nonStandardDesc}}</td>
-                      </tr>
-                      <tr>
-                        <td class="label">Serviced Date/Period</td>
-                        <td><span *ngIf="item.startDate">{{item.startDate | date : 'dd/MM/yyyy hh:mm aa'}} -
-                          </span>{{item.endDate | date : 'dd/MM/yyyy hh:mm aa'}}</td>
-                      </tr>
-                      <tr>
-                        <td class="label">Is Package?</td>
-                        <td>
-                          <span *ngIf="item.isPackage === 1">Yes</span>
-                          <span *ngIf="item.isPackage === 2">No</span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="label">Body Site</td>
-                        <td>{{item.bodySiteName}}</td>
-                      </tr>
-                      <tr>
-                        <td class="label">Sub Site</td>
-                        <td>{{item.subSiteName}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="col-4">
-                  <table class="inline-label-table">
-                    <tbody>
-                      <tr>
-                        <td class="label">Quantity</td>
-                        <td>{{item.quantity}} {{item.quantityCode}}</td>
-                      </tr>
-                     </tbody>
-                  </table>
-                </div>
-                <div class="col-4">
-                  <table class="inline-label-table">
-                    <tbody>
-                       <tr>
-                        <td class="label">Supporting Info</td>
-                        <td>{{item.supportingInfoNames}}</td>
-                      </tr>
-                      <tr>
-                        <td class="label">Diagnosis</td>
-                        <td>{{item.diagnosisNames}}</td>
-                      </tr>
-                      <tr>
-                        <td class="label">Care Teams</td>
-                        <td>{{item.careTeamNames}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-            <div class="box" *ngIf="item.itemDetails && item.itemDetails.length > 0">
-              <h5 class="align-self-center medium pb-2">Item Detail</h5>
-              <table class="primary-grid claim-view-table">
-                <thead>
-                  <tr>
-                    <th>Seq.</th>
-                    <th>Type</th>
-                    <th>Code - Description</th>
-                    <th>Non Standard Code</th>
-                    <th>Display</th>
-                    <th>Quantity</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let d of item.itemDetails; let di = index">
-                    <td class="row-click">{{d.sequence}}</td>
-                    <td class="row-click">{{d.typeName}}</td>
-                    <td class="row-click">{{d.code}} - {{d.description}}</td>
-                    <td class="row-click">{{d.nonStandardCode ? d.nonStandardCode : '-'}}</td>
-                    <td class="row-click">{{d.nonStandardDesc ? d.nonStandardDesc : '-'}}</td>
-                    <td class="row-click">{{d.quantity ? d.quantity +" "+ (d.quantityCode ? d.quantityCode : '') : '-'}}
+    <table class="primary-grid">
+        <thead>
+            <tr>
+                <th width="10"></th>
+                <th>Sequence No.</th>
+                <th>Type</th>
+                <th>Code - Description</th>
+                <th>
+                    <div class="d-flex align-items-center">
+                        <span class="pr-1">Net</span>
+                        <mat-icon class="material-icons-outlined size-20"
+                            matTooltip="Unit Price * Quantity * Factor + TAX">
+                            info</mat-icon>
+                        <span class="pr-1">/Tax</span>
+                        <mat-icon class="material-icons-outlined size-20" matTooltip="Payer share Tax only">
+                            info</mat-icon>
+                    </div>
+                </th>
+                <th>Benefit/Tax</th>
+                <th>Status</th>
+                <th>Adjudication Reason Code</th>
+                <th>Note No.</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let item of data.items; let i = index">
+                <tr>
+                    <td class="text-primary text-center row-click" (click)="toggleItem(i)" width="10">
+                        <mat-icon *ngIf="currentSelectedItem!=i" class="size-21">add_circle_outline</mat-icon>
+                        <mat-icon *ngIf="currentSelectedItem==i" class="size-21">remove_circle_outline</mat-icon>
                     </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </td>
-        </tr>
-      </ng-container>
+                    <td class="row-click" (click)="toggleItem(i)">
+                        {{item.sequence}}</td>
+                    <td class="row-click" (click)="toggleItem(i)">{{item.typeName}}</td>
+                    <td class="row-click" (click)="toggleItem(i)">{{item.itemCode}} - {{item.itemDescription}}</td>
+                    <td class="text-nowrap row-click" (click)="toggleItem(i)"> {{item.net}} <span
+                            class="currency">SR</span> /
+                        {{item.tax}} <span class="currency">SR</span></td>
 
-    </tbody>
-  </table>
+                    <td class="text-nowrap row-click" (click)="toggleItem(i)">
+                        <ng-container *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
+                            <ng-container *ngFor="let x of item.itemDecision.claimItemDecisionCategories">
+                                <span *ngIf="x.category === 'benefit'">{{x.categoryValue}} <span
+                                        class="currency">SR</span></span>
+                                <span *ngIf="x.category === 'tax'"> / {{x.categoryValue}} <span
+                                        class="currency">SR</span></span>
+                            </ng-container>
+                        </ng-container>
+                    </td>
+                    <td class="row-click text-capitalize text-{{sharedServices.getItemRowAccentColor(!item.itemDecision ? 'all' :item.itemDecision.status)}}"
+                        (click)="toggleItem(i)">
+                        <span *ngIf="item.itemDecision">{{item.itemDecision.status}}</span>
+                        <span *ngIf="!item.itemDecision">-</span>
+                    </td>
+                    <td class="row-click" (click)="toggleItem(i)">
+                        <ng-container *ngFor="let res of item.reasonsMap;let i=index">
+                            <span class="abbr" matTooltip="{{res.reason}}">{{ res.code }}</span>
+                            <ng-container *ngIf="i!=item.reasonsMap.length-1">, </ng-container>
+                        </ng-container>
+                        <span *ngIf="!item.reasonsMap">-</span>
+                        <!--span >{{item.reasonCodes}}</span-->
+                    </td>
+                    <td class="row-click" (click)="toggleItem(i)">
+                        <span *ngIf="item.itemDecision">{{item.itemDecision.noteNo ? item.itemDecision.noteNo :
+                            '-'}}</span>
+                        <span *ngIf="!item.itemDecision">-</span>
+                    </td>
+                </tr>
+                <tr *ngIf="currentSelectedItem == i">
+                    <td colspan="9">
+                        <div class="box mb-2"
+                            *ngIf="item.itemDecision && item.itemDecision.claimItemDecisionCategories">
+                            <h5 class="align-self-center medium pb-2">Adjudication</h5>
+                            <!-- Benefit, Submitted, Eligible, Eligible %, Patient Copay, Deductible, Unallocated Deductible, Tax (display '-' when null)  -->
+
+                            <table class="primary-grid">
+                                <thead>
+                                    <tr>
+                                        <th>Category</th>
+                                        <th>Value</th>
+                                        <th>Reason</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let res of item.itemDecision.claimItemDecisionCategories">
+                                        <td class="text-capitalize">{{res.category}}</td>
+                                        <td>{{res.categoryValue}} <span class="currency">SR</span></td>
+                                        <td><span *ngIf="res.reasonCode">{{res.reasonCode}} :
+                                                {{res.reasonDescription}}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="box mb-2">
+                            <h5 class="align-self-center medium pb-2">Item Info</h5>
+                            <div class="row small-gutter">
+                                <div class="col-4">
+                                    <table class="inline-label-table">
+                                        <tbody>
+
+                                            <tr>
+                                                <td class="label">Non Standard Code</td>
+                                                <td>{{item.nonStandardCode}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label">Non Standard Desc.</td>
+                                                <td>{{item.nonStandardDesc}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label">Serviced Date/Period</td>
+                                                <td><span *ngIf="item.startDate">{{item.startDate | date : 'dd/MM/yyyy
+                                                        hh:mm aa'}} -
+                                                    </span>{{item.endDate | date : 'dd/MM/yyyy hh:mm aa'}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label">Is Package?</td>
+                                                <td>
+                                                    <span *ngIf="item.isPackage === 1">Yes</span>
+                                                    <span *ngIf="item.isPackage === 2">No</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label">Body Site</td>
+                                                <td>{{item.bodySiteName}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label">Sub Site</td>
+                                                <td>{{item.subSiteName}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-4">
+                                    <table class="inline-label-table">
+                                        <tbody>
+                                            <tr>
+                                                <td class="label">Quantity</td>
+                                                <td>{{item.quantity}} {{item.quantityCode}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-4">
+                                    <table class="inline-label-table">
+                                        <tbody>
+                                            <tr>
+                                                <td class="label">Supporting Info</td>
+                                                <td>{{item.supportingInfoNames}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label">Diagnosis</td>
+                                                <td>{{item.diagnosisNames}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="label">Care Teams</td>
+                                                <td>{{item.careTeamNames}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box" *ngIf="item.claimItemDosageModel && item.claimItemDosageModel.length > 0">
+                            <h5 class="align-self-center medium pb-2">Dosage Detail</h5>
+                            <table class="primary-grid claim-view-table">
+                                <thead>
+                                    <tr>
+                                        <th>Seq.</th>
+                                        <th>Note</th>
+                                        <th>Patient Instruction</th>
+                                        <th>Route</th>
+                                        <th>Duration</th>
+                                        <th>Period</th>
+                                        <th width="10"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let d1 of item.claimItemDosageModel; let di = index">
+                                        <tr>
+                                            <td class="row-click">
+                                                {{d1.sequence}}</td>
+                                            <td class="row-click">
+                                                {{d1.note ? d1.note : '-'}}</td>
+                                            <td class="row-click">
+                                                {{d1.patientInstruction ?
+                                                d1.patientInstruction :
+                                                '-'}}</td>
+                                            <td class="row-click">
+                                                {{d1.route ? d1.route : '-'}}</td>
+                                            <td class="row-click">
+                                                {{d1.duration ? d1.duration : '-'}}
+                                            </td>
+                                            <td class="row-click">
+                                                {{d1.period ? d1.period : '-'}}
+                                            </td>
+                                            <td class="actions">
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="box" *ngIf="item.itemDetails && item.itemDetails.length > 0">
+                            <h5 class="align-self-center medium pb-2">Item Detail</h5>
+                            <table class="primary-grid claim-view-table">
+                                <thead>
+                                    <tr>
+                                        <th with="10"></th>
+                                        <th>Seq.</th>
+                                        <th>Type</th>
+                                        <th>Code - Description</th>
+                                        <th>Non Standard Code</th>
+                                        <th>Display</th>
+                                        <th>Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let d of item.itemDetails; let di = index">
+
+                                        <tr>
+                                            <td class="text-primary text-center row-click" width="10"
+                                                (click)="currentOpenItemDosage = (i == currentOpenItemDosage) ? -1 : i">
+                                                <mat-icon *ngIf="currentOpenItemDosage!=i"
+                                                    class="size-21">add_circle_outline</mat-icon>
+                                                <mat-icon *ngIf="currentOpenItemDosage==i"
+                                                    class="size-21">remove_circle_outline</mat-icon>
+                                            </td>
+                                            <td class="row-click">{{d.sequence}}</td>
+                                            <td class="row-click">{{d.typeName}}</td>
+                                            <td class="row-click">{{d.code}} - {{d.description}}</td>
+                                            <td class="row-click">{{d.nonStandardCode ? d.nonStandardCode : '-'}}</td>
+                                            <td class="row-click">{{d.nonStandardDesc ? d.nonStandardDesc : '-'}}</td>
+                                            <td class="row-click">{{d.quantity ? d.quantity +" "+ (d.quantityCode ?
+                                                d.quantityCode : '') : '-'}}
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="currentOpenItemDosage==i">
+                                            <td colspan="9">
+                                                <div class="box mb-2">
+                                                    <h5 class="align-self-center medium pb-2">Item
+                                                        Details Dosage Info
+                                                    </h5>
+                                                    <div class="row">
+                                                        <div class="col-auto">
+                                                            <div class="box mb-2"
+                                                                *ngIf="d.claimItemDosageModel && d.claimItemDosageModel.length > 0">
+                                                                <table class="primary-grid claim-view-table">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Seq.</th>
+                                                                            <th>Note</th>
+                                                                            <th>Patient Instruction</th>
+                                                                            <th>Route</th>
+                                                                            <th>Duration</th>
+                                                                            <th>Period</th>
+                                                                            <th width="10"></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <ng-container
+                                                                            *ngFor="let d1 of d.claimItemDosageModel; let di = index">
+                                                                            <tr>
+                                                                                <td class="row-click">
+                                                                                    {{d1.sequence}}</td>
+                                                                                <td class="row-click">
+                                                                                    {{d1.note ? d1.note
+                                                                                    : '-'}}</td>
+                                                                                <td class="row-click">
+                                                                                    {{d1.patientInstruction
+                                                                                    ?
+                                                                                    d1.patientInstruction
+                                                                                    :
+                                                                                    '-'}}</td>
+                                                                                <td class="row-click">
+                                                                                    {{d1.route ?
+                                                                                    d1.route : '-'}}
+                                                                                </td>
+                                                                                <td class="row-click">
+                                                                                    {{d1.duration ?
+                                                                                    d1.duration : '-'}}
+                                                                                </td>
+                                                                                <td class="row-click">
+                                                                                    {{d1.period ?
+                                                                                    d1.period : '-'}}
+                                                                                </td>
+                                                                            </tr>
+                                                                        </ng-container>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="box mb-2"
+                                                                *ngIf="d.claimItemDosageModel && d.claimItemDosageModel.length === 0">
+                                                                No dosage Data
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </ng-container>
+
+        </tbody>
+    </table>
 </div>
 <!-- Items end -->
 
 <!-- Care Teams start -->
 <h5 class="form-title" *ngIf="data.careTeam.length!=0">
-  Care Teams
+    Care Teams
 </h5>
 <div class="table-responsive" *ngIf="data.careTeam.length!=0">
-  <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-    <thead>
-      <tr>
-        <th>Sequence</th>
-        <th>Practitioner</th>
-        <th>Practitioner Role</th>
-        <th>Care Team Role</th>
-        <th>Speciality</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let careTeam of data.careTeam">
-        <td>{{careTeam.sequence}}</td>
-        <td>{{careTeam.practitionerName}}</td>
-        <td>{{careTeam.practitionerRoleName}}</td>
-        <td>{{careTeam.careTeamRoleName}}</td>
-        <td>{{careTeam.speciality}}</td>
-      </tr>
-    </tbody>
-  </table>
+    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+            <tr>
+                <th>Sequence</th>
+                <th>Practitioner</th>
+                <th>Practitioner Role</th>
+                <th>Care Team Role</th>
+                <th>Speciality</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let careTeam of data.careTeam">
+                <td>{{careTeam.sequence}}</td>
+                <td>{{careTeam.practitionerName}}</td>
+                <td>{{careTeam.practitionerRoleName}}</td>
+                <td>{{careTeam.careTeamRoleName}}</td>
+                <td>{{careTeam.speciality}}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 <!-- Care Teams end -->
 
 <!-- Diagnosis start -->
 <h5 class="form-title">
-  Diagnosis
+    Diagnosis
 </h5>
 <div class="table-responsive">
-  <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-    <thead>
-      <tr>
-        <th>Sequence</th>
-        <th>Type</th>
-        <th>Code - Description</th>
-        <th>On Admission</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngIf="data.diagnosis.length === 0">
-        <td colspan="5">
-          <app-empty-state message='No Diagnosis found!'></app-empty-state>
-        </td>
-      </tr>
-      <ng-container *ngIf="data.diagnosis.length > 0">
-        <tr *ngFor="let diagnosis of data.diagnosis">
-          <td>{{diagnosis.sequence}}</td>
-          <td>{{diagnosis.typeName}}</td>
-          <td>{{diagnosis.diagnosisCode}} - {{diagnosis.diagnosisDescription}}</td>
-          <td>{{diagnosis.onAdmissionName}}</td>
-        </tr>
-      </ng-container>
-    </tbody>
-  </table>
+    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+            <tr>
+                <th>Sequence</th>
+                <th>Type</th>
+                <th>Code - Description</th>
+                <th>On Admission</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="data.diagnosis.length === 0">
+                <td colspan="5">
+                    <app-empty-state message='No Diagnosis found!'></app-empty-state>
+                </td>
+            </tr>
+            <ng-container *ngIf="data.diagnosis.length > 0">
+                <tr *ngFor="let diagnosis of data.diagnosis">
+                    <td>{{diagnosis.sequence}}</td>
+                    <td>{{diagnosis.typeName}}</td>
+                    <td>{{diagnosis.diagnosisCode}} - {{diagnosis.diagnosisDescription}}</td>
+                    <td>{{diagnosis.onAdmissionName}}</td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
 </div>
 <!-- Diagnosis end -->
 
 <!-- Vision prescription start -->
 <h5 class="form-title" *ngIf="data.visionPrescription">
-  Vision Prescription
+    Vision Prescription
 </h5>
 <div class="row small-gutter" *ngIf="data.visionPrescription">
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Date Written</div>
-      <p class="form-control-static">{{data.visionPrescription.dateWritten | date : 'dd-MM-yyyy hh:mm aa'}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Date Written</div>
+            <p class="form-control-static">{{data.visionPrescription.dateWritten | date : 'dd-MM-yyyy hh:mm aa'}}</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Prescriber</div>
-      <p class="form-control-static">{{data.visionPrescription.prescriberName}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Prescriber</div>
+            <p class="form-control-static">{{data.visionPrescription.prescriberName}}</p>
+        </div>
     </div>
-  </div>
 </div>
 <div class="box" *ngIf="data.visionPrescription">
-  <h5 class="d-flex align-items-center mb-3">
-    <strong class="medium">Lens Specifications</strong>
-  </h5>
-  <div class="table-responsive">
-    <table class="primary-grid">
-      <thead>
-        <tr>
-          <th class="border-bottom" colspan="2" width="10%"></th>
-          <th class="border-left border-right border-bottom text-center" colspan="9">Right Eye</th>
-          <th class="border-left border-right border-bottom text-center" colspan="9">Left Eye</th>
-          <th></th>
-        </tr>
-        <tr>
-          <th>No.</th>
-          <th>Product</th>
-          <th class="border-left">SPH</th>
-          <th>Power</th>
-          <th>CYL</th>
-          <th>Axis</th>
-          <th>Add</th>
-          <th>Prism</th>
-          <th>B. Curve</th>
-          <th>Diameter</th>
-          <th>Duration</th>
+    <h5 class="d-flex align-items-center mb-3">
+        <strong class="medium">Lens Specifications</strong>
+    </h5>
+    <div class="table-responsive">
+        <table class="primary-grid">
+            <thead>
+                <tr>
+                    <th class="border-bottom" colspan="2" width="10%"></th>
+                    <th class="border-left border-right border-bottom text-center" colspan="9">Right Eye</th>
+                    <th class="border-left border-right border-bottom text-center" colspan="9">Left Eye</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th>No.</th>
+                    <th>Product</th>
+                    <th class="border-left">SPH</th>
+                    <th>Power</th>
+                    <th>CYL</th>
+                    <th>Axis</th>
+                    <th>Add</th>
+                    <th>Prism</th>
+                    <th>B. Curve</th>
+                    <th>Diameter</th>
+                    <th>Duration</th>
 
-          <th class="border-left">SPH</th>
-          <th>Power</th>
-          <th>CYL</th>
-          <th>Axis</th>
-          <th>Add</th>
-          <th>Prism</th>
-          <th>B. Curve</th>
-          <th>Diameter</th>
-          <th>Duration</th>
-          <th width="10">Notes</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngIf="data.visionPrescription.lensSpecifications.length === 0">
-          <td colspan="5">
-            <app-empty-state message='No Lens Specifications found!'></app-empty-state>
-          </td>
-        </tr>
-        <ng-container *ngIf="data.visionPrescription.lensSpecifications.length > 0">
-          <tr *ngFor="let visionSpecification of data.visionPrescription.lensSpecifications;let i=index;">
-            <td width="5%">{{i+1}}</td>
-            <td width="5%">{{visionSpecification.productName}}</td>
-            <td>{{visionSpecification.sphere}}</td>
-            <td>{{visionSpecification.lensPower}}</td>
-            <td>{{visionSpecification.cylinder}}</td>
-            <td>{{visionSpecification.axis}}</td>
-            <td>{{visionSpecification.multifocalPower}}</td>
-            <td>{{visionSpecification.prismAmount}}<span
-                *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}</td>
-            <td>{{visionSpecification.lensBackCurve}}</td>
-            <td>{{visionSpecification.lensDiameter}}</td>
-            <td>{{visionSpecification.lensDuration}}
-              <span *ngIf="visionSpecification.lensDuration">
-                {{visionSpecification.lensDurationUnitName}}(s)</span>
-            </td>
+                    <th class="border-left">SPH</th>
+                    <th>Power</th>
+                    <th>CYL</th>
+                    <th>Axis</th>
+                    <th>Add</th>
+                    <th>Prism</th>
+                    <th>B. Curve</th>
+                    <th>Diameter</th>
+                    <th>Duration</th>
+                    <th width="10">Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngIf="data.visionPrescription.lensSpecifications.length === 0">
+                    <td colspan="5">
+                        <app-empty-state message='No Lens Specifications found!'></app-empty-state>
+                    </td>
+                </tr>
+                <ng-container *ngIf="data.visionPrescription.lensSpecifications.length > 0">
+                    <tr *ngFor="let visionSpecification of data.visionPrescription.lensSpecifications;let i=index;">
+                        <td width="5%">{{i+1}}</td>
+                        <td width="5%">{{visionSpecification.productName}}</td>
+                        <td>{{visionSpecification.sphere}}</td>
+                        <td>{{visionSpecification.lensPower}}</td>
+                        <td>{{visionSpecification.cylinder}}</td>
+                        <td>{{visionSpecification.axis}}</td>
+                        <td>{{visionSpecification.multifocalPower}}</td>
+                        <td>{{visionSpecification.prismAmount}}<span
+                                *ngIf="visionSpecification.prismAmount">/</span>{{visionSpecification.prismBaseName}}
+                        </td>
+                        <td>{{visionSpecification.lensBackCurve}}</td>
+                        <td>{{visionSpecification.lensDiameter}}</td>
+                        <td>{{visionSpecification.lensDuration}}
+                            <span *ngIf="visionSpecification.lensDuration">
+                                {{visionSpecification.lensDurationUnitName}}(s)</span>
+                        </td>
 
-            <td class="border-left">{{visionSpecification.left_sphere}}</td>
-            <td>{{visionSpecification.left_lensPower}}</td>
-            <td>{{visionSpecification.left_cylinder}}</td>
-            <td>{{visionSpecification.left_axis}}</td>
-            <td>{{visionSpecification.left_multifocalPower}}</td>
-            <td>{{visionSpecification.left_prismAmount}}<span
-                *ngIf="visionSpecification.left_prismAmount">/</span>{{visionSpecification.left_prismBaseName}}
-            </td>
-            <td>{{visionSpecification.left_lensBackCurve}}</td>
-            <td>{{visionSpecification.left_lensDiameter}}</td>
-            <td>{{visionSpecification.left_lensDuration}}
-              <span *ngIf="visionSpecification.left_lensDuration">
-                {{visionSpecification.left_lensDurationUnitName}}(s)</span>
-            </td>
-            <td class="actions text-center">
-              <mat-menu #notesMenu="matMenu" class="primary-menu">
-                <span *ngIf="visionSpecification.lensNote">{{visionSpecification.lensNote}}</span>
-                <span *ngIf="!visionSpecification.lensNote">-</span>
-              </mat-menu>
-              <button mat-icon-button type="button" matTooltip="View Notes" class="text-primary"
-                [matMenuTriggerFor]="notesMenu">
-                <mat-icon class="material-icons-outlined">description</mat-icon>
-              </button>
-            </td>
-          </tr>
-        </ng-container>
-      </tbody>
-    </table>
-  </div>
+                        <td class="border-left">{{visionSpecification.left_sphere}}</td>
+                        <td>{{visionSpecification.left_lensPower}}</td>
+                        <td>{{visionSpecification.left_cylinder}}</td>
+                        <td>{{visionSpecification.left_axis}}</td>
+                        <td>{{visionSpecification.left_multifocalPower}}</td>
+                        <td>{{visionSpecification.left_prismAmount}}<span
+                                *ngIf="visionSpecification.left_prismAmount">/</span>{{visionSpecification.left_prismBaseName}}
+                        </td>
+                        <td>{{visionSpecification.left_lensBackCurve}}</td>
+                        <td>{{visionSpecification.left_lensDiameter}}</td>
+                        <td>{{visionSpecification.left_lensDuration}}
+                            <span *ngIf="visionSpecification.left_lensDuration">
+                                {{visionSpecification.left_lensDurationUnitName}}(s)</span>
+                        </td>
+                        <td class="actions text-center">
+                            <mat-menu #notesMenu="matMenu" class="primary-menu">
+                                <span *ngIf="visionSpecification.lensNote">{{visionSpecification.lensNote}}</span>
+                                <span *ngIf="!visionSpecification.lensNote">-</span>
+                            </mat-menu>
+                            <button mat-icon-button type="button" matTooltip="View Notes" class="text-primary"
+                                [matMenuTriggerFor]="notesMenu">
+                                <mat-icon class="material-icons-outlined">description</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
 </div>
 <!-- Vision prescription end -->
 
 <!-- Supporting Info start -->
 <h5 class="form-title" *ngIf="data.supportingInfo.length > 0">
-  Supporting Info
+    Supporting Info
 </h5>
 <div class="table-responsive" *ngIf="data.supportingInfo.length > 0">
-  <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
-    <thead>
-      <tr>
-        <th>Sequence</th>
-        <th>Category</th>
-        <th>Code</th>
-        <th>Timing</th>
-        <th>Value</th>
-        <th>Reason</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngIf="data.supportingInfo.length === 0">
-        <td colspan="6">
-          <app-empty-state message='No supporting info found!'></app-empty-state>
-        </td>
-      </tr>
-      <ng-container *ngIf="data.supportingInfo.length > 0">
-        <tr *ngFor="let s of data.supportingInfo">
-          <td>
-            {{s.sequence}}
-          </td>
-          <td>
-            {{s.categoryName}}
-          </td>
-          <td>
-            {{s.codeName}}
-          </td>
-          <td>
-            <span *ngIf="!s.toDate">{{s.fromDateStr}}</span>
-            <span *ngIf="s.toDate">{{s.fromDateStr}} - {{s.toDateStr}}</span>
-          </td>
-          <td>
-            <span *ngIf="s.category=='attachment'">
-              <a href="#" title="View" class="primary-link" (click)="viewAttachment($event,s)">View</a>
-            </span>
-            <span *ngIf="s.category!='attachment'">
-              {{s.value}} <span *ngIf="s.unit">{{s.unit}}</span>
-            </span>
-          </td>
-          <td>
-            {{s.reasonName}}
-          </td>
-        </tr>
-      </ng-container>
-    </tbody>
-  </table>
+    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+        <thead>
+            <tr>
+                <th>Sequence</th>
+                <th>Category</th>
+                <th>Code</th>
+                <th>Timing</th>
+                <th>Value</th>
+                <th>Reason</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="data.supportingInfo.length === 0">
+                <td colspan="6">
+                    <app-empty-state message='No supporting info found!'></app-empty-state>
+                </td>
+            </tr>
+            <ng-container *ngIf="data.supportingInfo.length > 0">
+                <tr *ngFor="let s of data.supportingInfo">
+                    <td>
+                        {{s.sequence}}
+                    </td>
+                    <td>
+                        {{s.categoryName}}
+                    </td>
+                    <td>
+                        {{s.codeName}}
+                    </td>
+                    <td>
+                        <span *ngIf="!s.toDate">{{s.fromDateStr}}</span>
+                        <span *ngIf="s.toDate">{{s.fromDateStr}} - {{s.toDateStr}}</span>
+                    </td>
+                    <td>
+                        <span *ngIf="s.category=='attachment'">
+                            <a href="#" title="View" class="primary-link" (click)="viewAttachment($event,s)">View</a>
+                        </span>
+                        <span *ngIf="s.category!='attachment'">
+                            {{s.value}} <span *ngIf="s.unit">{{s.unit}}</span>
+                        </span>
+                    </td>
+                    <td>
+                        {{s.reasonName}}
+                    </td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
 </div>
 <!-- Supporting Info end -->
 
 <!-- accident start -->
 <h5 class="form-title" *ngIf="data.accident && data.accident.accidentTypeName && data.accident.date">
-  Accident
+    Accident
 </h5>
 <div class="row small-gutter" *ngIf="data.accident && data.accident.accidentTypeName && data.accident.date">
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Accident Type</div>
-      <p class="form-control-static">{{data.accident.accidentTypeName}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Accident Type</div>
+            <p class="form-control-static">{{data.accident.accidentTypeName}}</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Street Name</div>
-      <p class="form-control-static">{{data.accident.streetName}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Street Name</div>
+            <p class="form-control-static">{{data.accident.streetName}}</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">City</div>
-      <p class="form-control-static">{{data.accident.city}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">City</div>
+            <p class="form-control-static">{{data.accident.city}}</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">State/Province</div>
-      <p class="form-control-static">{{data.accident.state}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">State/Province</div>
+            <p class="form-control-static">{{data.accident.state}}</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Country</div>
-      <p class="form-control-static">{{data.accident.country}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Country</div>
+            <p class="form-control-static">{{data.accident.country}}</p>
+        </div>
     </div>
-  </div>
-  <div class="col-4 col-xxl-3">
-    <div class="form-group form-group-static">
-      <div class="control-label">Date</div>
-      <p class="form-control-static">{{data.accident.date}}</p>
+    <div class="col-4 col-xxl-3">
+        <div class="form-group form-group-static">
+            <div class="control-label">Date</div>
+            <p class="form-control-static">{{data.accident.date}}</p>
+        </div>
     </div>
-  </div>
 </div>
 <!-- accident end -->
