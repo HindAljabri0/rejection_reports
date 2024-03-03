@@ -276,7 +276,7 @@ export class SharedServices {
 
   getPrescriberProcessedCount() {
     // tslint:disable-next-line:max-line-length
-    this.notifications.getNotificationsCountByWeek(this.providerId, 'approval-notifications', 'unread').subscribe((event: any) => {
+    this.notifications.getNotificationsCountByWeek(this.providerId, 'prescriber-notifications', 'unread').subscribe((event: any) => {
       if (event instanceof HttpResponse) {
         const count = Number.parseInt(`${event.body}`, 10);
         if (!Number.isNaN(count)) {
