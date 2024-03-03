@@ -40,7 +40,7 @@ export class ViewPrescriptionDetailsComponent implements OnInit {
         dialogConfig.panelClass = ['primary-dialog', 'dialog-lg'];
         dialogConfig.data = {
             // tslint:disable-next-line:max-line-length
-            claimResponseId: this.data.detailsModel.approvalResponseId,
+            claimResponseId: this.data.detailsModel.prescriberResponseId,
             // tslint:disable-next-line:radix
             communicationRequestId: commRequestId ? parseInt(commRequestId) : '',
             items: this.data.detailsModel.items,
