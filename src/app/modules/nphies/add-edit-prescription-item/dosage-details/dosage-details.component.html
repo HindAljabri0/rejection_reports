@@ -84,7 +84,14 @@
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select placeholder="Select dose unit" formControlName="doseUnit">
                             <mat-option value="">Select dose unit</mat-option>
-                            <mat-option value="CARTRIDGE">CARTRIDGE</mat-option>
+                            <mat-option>
+                                <ngx-mat-select-search placeholderLabel="Search Unit" formControlName="doseUnit"
+                                    noEntriesFoundLabel="No Units found" name='searchedUnit'></ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option *ngFor="let unit of filteredUnits | async" [value]="unit">
+                                 {{unit.ucumCode}} | {{unit.description }}
+                            </mat-option>
+                            <!--mat-option value="CARTRIDGE">CARTRIDGE</mat-option>
                             <mat-option value="ORAL LYOPHILISATE">ORAL LYOPHILISATE</mat-option>
                             <mat-option value="IMPLANT">IMPLANT</mat-option>
                             <mat-option value="PLASTER">PLASTER</mat-option>
@@ -125,7 +132,7 @@
                             <mat-option value="PREFILLED SYRINGE">PREFILLED SYRINGE</mat-option>
                             <mat-option value="SUPPOSITORY">SUPPOSITORY</mat-option>
                             <mat-option value="APPLICATOR">APPLICATOR</mat-option>
-                            <mat-option value="STRIP">STRIP</mat-option>
+                            <mat-option value="STRIP">STRIP</mat-option-->
 
                         </mat-select>
                     </mat-form-field>
@@ -315,10 +322,10 @@
             <div class="col-4" *ngIf="FormItem.get('frequencyType').value === 'code'">
                 <div class="form-group">
                     <label class="control-label"><span class="d-flex align-items-center">
-                        <span class="pr-1">Frequency Unit</span>
-                        <mat-icon class="material-icons-outlined size-20"
-                            matTooltip="Event occurs frequency times per period via Standard Code. (BID- Twice a day)">info</mat-icon>
-                    </span></label>
+                            <span class="pr-1">Frequency Unit</span>
+                            <mat-icon class="material-icons-outlined size-20"
+                                matTooltip="Event occurs frequency times per period via Standard Code. (BID- Twice a day)">info</mat-icon>
+                        </span></label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select value="BID" formControlName="frequencyUnit">
                             <mat-option value="">Select unit</mat-option>
@@ -396,10 +403,10 @@
             <div class="col-4">
                 <div class="form-group">
                     <label class="control-label"><span class="d-flex align-items-center">
-                        <span class="pr-1">Patient Instruction</span>
-                        <mat-icon class="material-icons-outlined size-20"
-                            matTooltip="How the medication should be taken">info</mat-icon>
-                    </span></label>
+                            <span class="pr-1">Patient Instruction</span>
+                            <mat-icon class="material-icons-outlined size-20"
+                                matTooltip="How the medication should be taken">info</mat-icon>
+                        </span></label>
                     <input class="form-control" formControlName="patientInstruction"
                         placeholder="Enter Patient Instruction">
                 </div>
@@ -407,10 +414,10 @@
             <div class="col-4">
                 <div class="form-group">
                     <label class="control-label"><span class="d-flex align-items-center">
-                        <span class="pr-1">Additional Notes</span>
-                        <mat-icon class="material-icons-outlined size-20"
-                            matTooltip="Information about the prescription">info</mat-icon>
-                    </span></label>
+                            <span class="pr-1">Additional Notes</span>
+                            <mat-icon class="material-icons-outlined size-20"
+                                matTooltip="Information about the prescription">info</mat-icon>
+                        </span></label>
                     <input class="form-control" formControlName="note" placeholder="Enter Note">
                 </div>
             </div>
