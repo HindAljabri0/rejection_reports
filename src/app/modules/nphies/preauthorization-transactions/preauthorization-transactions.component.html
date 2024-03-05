@@ -224,8 +224,9 @@
                         <span>Nullify/Soft Delete</span>
                       </button> -->
                                             <!-- <button mat-menu-item><span>Add New Related Claim</span></button> -->
+                                            <!-- *ngIf="transaction.status !== 'Error'" -->
                                         </mat-menu>
-                                        <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" *ngIf="transaction.status !== 'Error'">
+                                        <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="moreMenu" >
                                             <mat-icon>more_vert</mat-icon>
                                         </button>
                                     </ng-container>

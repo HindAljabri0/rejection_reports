@@ -104,6 +104,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     showQuantityCode = true;
     serviceDataError = '';
 
+    showEBPfeilds = false;
     today: Date;
     loadSearchItem = false;
     renderer: any;
@@ -141,12 +142,13 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             this.FormItem.controls.invoiceNo.updateValueAndValidity();
             this.FormItem.controls.invoiceNo.setValue('');
         }
-
+       
         if (this.data.type) {
             this.setTypes(this.data.type);
             this.bodySiteList = this.sharedDataService.getBodySite(this.data.type);
             this.subSiteList = this.sharedDataService.getSubSite(this.data.type);
         }
+        
         if (this.data.type === "pharmacy") {
             this.providerNphiesSearchService.getPrescribedMedicationList(this.sharedServices.providerId).subscribe(event => {
                 if (event instanceof HttpResponse) {
@@ -178,6 +180,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
                 });
         }
         if (this.data.item) {
+            this.showEBPfeilds = this.data.type === "pharmacy" && this.data.item.type === "medication-codes";
             if (this.data.source === 'APPROVAL' || this.data.source === 'CNHI') {
                 if (this.data.item.itemDecision && this.data.item.itemDecision.status && (this.data.item.itemDecision.status.toLowerCase() === 'approved' || this.data.item.itemDecision.status.toLowerCase() === 'partial')) {
                     this.FormItem.controls.startDate.disable();
@@ -408,12 +411,14 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
                 this.FormItem.controls.quantityCode.setValidators([Validators.required]);
                 this.FormItem.controls.quantityCode.updateValueAndValidity();
                 this.FormItem.controls.quantityCode.setValue('{package}');
+                this.showEBPfeilds = true;
             } else {
                 this.FormItem.controls.quantityCode.clearValidators();
                 this.FormItem.controls.quantityCode.updateValueAndValidity();
                 this.FormItem.controls.quantityCode.setValue('');
                 this.FormItem.controls.quantityCode.disable();
                 this.showQuantityCode = false;
+                this.showEBPfeilds = false;
             }
 
             this.FormItem.patchValue({
@@ -527,6 +532,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             this.FormItem.controls.quantityCode.setValidators([Validators.required]);
             this.FormItem.controls.quantityCode.updateValueAndValidity();
             this.FormItem.controls.quantityCode.setValue('{package}');
+            this.showEBPfeilds = true;
             this.subSiteList = (this.data.source === 'CNHI' && !this.FormItem.controls.isDentalBodySite.value)
                 ? this.sharedDataService.getSubSite('oral')
                 : this.sharedDataService.getSubSite(this.data.type);
@@ -536,6 +542,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             this.FormItem.controls.quantityCode.setValue('');
             this.FormItem.controls.quantityCode.disable();
             this.showQuantityCode = false;
+            this.showEBPfeilds = false;
         }
         this.FormItem.controls.item.setValue('');
         if (type) {
@@ -837,7 +844,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         }
     }
     validateDiagnosisInPharmacyForApproval() {
-        if(this.data.type === "pharmacy" && this.data.source === "APPROVAL"){
+        if(this.data.type === "pharmacy" && this.data.source === "APPROVAL" && this.FormItem.controls.type.value.value === 'medication-codes'){
             this.FormItem.controls.pharmacistSelectionReason.setValidators([Validators.required]);
             this.FormItem.controls.pharmacistSelectionReason.updateValueAndValidity();
             //------------------------------------
@@ -851,7 +858,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             this.FormItem.controls.pharmacistSelectionReason.clearValidators();
             this.FormItem.controls.pharmacistSelectionReason.updateValueAndValidity();
         }
-        if (this.data.type === "pharmacy" && this.data.source === "APPROVAL" && this.FormItem.controls.diagnosisSequence.value.length == 0) {
+        if (this.data.type === "pharmacy" && this.data.source === "APPROVAL" && this.FormItem.controls.diagnosisSequence.value.length == 0 && this.FormItem.controls.type.value.value === 'medication-codes') {
             this.FormItem.controls.diagnosisSequence.setValidators([Validators.required]);
             this.FormItem.controls.diagnosisSequence.updateValueAndValidity();
             this.IsDiagnosisSequenceRequired = true;
