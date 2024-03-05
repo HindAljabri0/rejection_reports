@@ -99,7 +99,7 @@
                     <table class="internal-table">
                         <tr>
                             <td width="10">
-                                <p>ID. Card No.:</p>
+                                <p>Member Card ID No.:</p>
                             </td>
                             <td>
                                 <p class="value-holder">{{ DCAF.beneficiary.memberCardId }}</p>
@@ -127,7 +127,7 @@
                                 <p>Policy Holder:</p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder">{{DCAF.beneficiary.policyHolder}}</p>
                             </td>
                             <td width="10">
                                 <p>Policy No.:</p>
@@ -153,7 +153,7 @@
                                 <p>Class:</p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder">{{DCAF.beneficiary.className}}</p>
                             </td>
                         </tr>
                     </table>
@@ -395,24 +395,44 @@
                             <tr>
                                 <th>Code</th>
                                 <th>Dental Service</th>
+                                <th>Type</th>
                                 <th>Tooth No.</th>
+                                <th>Total Quantity</th>
                                 <th>Cost</th>
+                                <th>approved Quantity</th>
+                                <th>approved Cost</th>
+                                <th>Status
+                                <th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let i of DCAF.items;">
                                 <td>{{i.itemCode}}</td>
+                                <!-- <td>{{i.nonStandardCod}}</td> -->
                                 <td>{{i.itemDescription}}</td>
+                                <td>{{i.type}}</td>
                                 <td>{{i.bodySite}}</td>
+                                <td>{{i.quantity}}</td>
                                 <td>{{i.netAmount}}</td>
+                                <td>{{i.approvedQuantity}}</td>
+                                <td>{{i.benfit}}</td>
+                                <td>{{i.status}}</td>
                             </tr>
 
                             <tr>
                                 <td class="border-left-0 border-bottom-0 border-right-0"></td>
                                 <td class="border-left-0 border-bottom-0"></td>
+                                <td class="border-left-0 border-bottom-0"></td>
                                 <td><strong>Total</strong></td>
-                                <td><strong>{{ countTotal() }}</strong></td>
+                                <td><strong>{{ totalQuantity }}</strong></td>
+                                <td><strong>{{ totalAmount }}</strong></td>
+                                <td><strong>{{ approvedQuantity }}</strong></td>
+                                <td><strong>{{ totalApprovedAmount }}</strong></td>
+                            
+                                <!-- <td><strong>{{ countTotal() }}</strong></td> -->
                             </tr>
+
+                            
                         </tbody>
                     </table>
                     <p><strong>Providers Approval/Coding Staff must review/code the recommended service(s) and allocate
