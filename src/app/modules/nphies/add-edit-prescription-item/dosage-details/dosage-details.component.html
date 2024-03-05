@@ -10,16 +10,22 @@
             <div class="col-3">
                 <div class="form-group"
                     [ngClass]="{'has-error' : (isSubmitted || FormItem.get('route').touched) && FormItem.get('route').hasError('required')}">
-                    <span class="d-flex align-items-center">
-                        <span class="pr-1">Route<span class="asterisk">*</span></span>
-                        <mat-icon class="material-icons-outlined size-20"
-                            matTooltip="Route is defined as the body location from where medication need to be taken, such as oral or intravenous">info</mat-icon>
-                    </span>
+                    <label class="control-label"><span class="d-flex align-items-center">
+                            <span class="pr-1">Route<span class="asterisk">*</span></span>
+                            <mat-icon class="material-icons-outlined size-20"
+                                matTooltip="Route is defined as the body location from where medication need to be taken, such as oral or intravenous">info</mat-icon>
+                        </span></label>
 
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select placeholder="Select route" formControlName="route">
-                            <mat-option value="">Select route</mat-option>
-                            <mat-option *ngFor="let route of routes" [value]="route">{{ route.name }}</mat-option>
+                            <mat-option>
+                                <ngx-mat-select-search placeholderLabel="Search Route" formControlName="routeFilter"
+                                    noEntriesFoundLabel="No Routes found" (ngModelChange)="filterRoute($event)"
+                                    name='searchedItem'></ngx-mat-select-search>
+                            </mat-option>
+                            <ng-container>
+                                <mat-option *ngFor="let route of filteredRoutes | async" [value]="route">{{ route.name }}</mat-option>
+                            </ng-container>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -28,12 +34,16 @@
             <div class="col-2">
                 <div class="form-group"
                     [ngClass]="{'has-error' : (isSubmitted || FormItem.get('dosageType').touched) && FormItem.get('dosageType').hasError('required')}">
-                    <label class="control-label">Dosage Type<span class="asterisk">*</span></label>
+                    <label class="control-label"><span class="d-flex align-items-center">
+                            <span class="pr-1">Dosage Type<span class="asterisk">*</span></span>
+                            <mat-icon class="material-icons-outlined size-20"
+                                matTooltip="Dose- Amount of medication per dose / Rate - Amount of medication per unit of time ">info</mat-icon>
+                        </span></label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select placeholder="Select dosage type" formControlName="dosageType">
                             <mat-option value="">Select Type</mat-option>
                             <mat-option value="DoseType">Dose</mat-option>
-                            <mat-option value="RateType">Rate</mat-option>
+                            <!--mat-option value="RateType">Rate</mat-option-->
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -83,14 +93,17 @@
                     <label class="control-label">Dose Unit<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select placeholder="Select dose unit" formControlName="doseUnit">
-                            <mat-option value="">Select dose unit</mat-option>
+                            <!--mat-option value="">Select dose unit</mat-option-->
                             <mat-option>
-                                <ngx-mat-select-search placeholderLabel="Search Unit" formControlName="doseUnit"
-                                    noEntriesFoundLabel="No Units found" name='searchedUnit'></ngx-mat-select-search>
+                                <ngx-mat-select-search placeholderLabel="Search Unit" formControlName="unitFilter"
+                                    noEntriesFoundLabel="No Units found" (ngModelChange)="filterUnits($event)"
+                                    name='searchedItem'></ngx-mat-select-search>
                             </mat-option>
-                            <mat-option *ngFor="let unit of filteredUnits | async" [value]="unit">
-                                 {{unit.ucumCode}} | {{unit.description }}
-                            </mat-option>
+                            <ng-container>
+                                <mat-option *ngFor="let unit of filteredUnits | async" [value]="unit">
+                                    {{unit.ucumCode}} | {{unit.description }}
+                                </mat-option>
+                            </ng-container>
                             <!--mat-option value="CARTRIDGE">CARTRIDGE</mat-option>
                             <mat-option value="ORAL LYOPHILISATE">ORAL LYOPHILISATE</mat-option>
                             <mat-option value="IMPLANT">IMPLANT</mat-option>
@@ -211,7 +224,7 @@
                             <mat-option value="d">days</mat-option>
                             <mat-option value="wk">week</mat-option>
                             <mat-option value="mo">month</mat-option>
-                            <mat-option value="UCUM">a- unit of time (UCUM)</mat-option>
+                            <mat-option value="UCUM">Year</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -223,7 +236,7 @@
     <div class="primary-dialog-header has-border">
         <h5 class="primary-dialog-title">Dosage Timing <mat-icon class="material-icons-outlined size-20"
                 matTooltip="When to take medication">info</mat-icon></h5>
-        <button type="button" class="dialog-close" matRipple></button>
+
     </div>
     <div class="primary-dialog-body pb-0">
         <div class="row small-gutter">
@@ -287,7 +300,7 @@
                                     <mat-option value="d">days</mat-option>
                                     <mat-option value="wk">week</mat-option>
                                     <mat-option value="mo">month</mat-option>
-                                    <mat-option value="UCUM">a- unit of time (UCUM)</mat-option>
+                                    <mat-option value="UCUM">Year</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
@@ -385,7 +398,7 @@
             <div class="col-4">
                 <div class="form-group">
                     <label class="control-label"><span class="d-flex align-items-center">
-                            <span class="pr-1">Refill</span>
+                            <span class="pr-1">Refill Count</span>
                             <mat-icon class="material-icons-outlined size-20"
                                 matTooltip="How many times same prescription can be continued.">info</mat-icon>
                         </span></label>
@@ -396,7 +409,7 @@
     </div>
     <div class="primary-dialog-header has-border">
         <h5 class="primary-dialog-title">Dosage Instruction</h5>
-        <button type="button" class="dialog-close" matRipple></button>
+
     </div>
     <div class="primary-dialog-body pb-0">
         <div class="row small-gutter">

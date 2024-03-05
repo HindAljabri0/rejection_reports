@@ -30,7 +30,7 @@
     <div class="col-4 col-xxl-3">
         <div class="form-group form-group-static">
             <div class="control-label">Status</div>
-            <p class="form-control-static text-primary">{{data.status}}</p>
+            <p class="form-control-static text-primary" [ngClass]="data.status === 'Queued' ? 'text-orange' : (data.status === 'Error' ? 'text-danger' : (data.status === 'approved' ? 'text-success' : (data.status === 'rejected' ? 'text-danger' : (data.status === 'partial' ? 'text-light-blue' : (data.status === 'not-required' ? 'text-purple' : (data.status === 'pended' ? 'text-deep-red' : ''))))))">{{(data.status ? data.status : data.outcome) | titlecase}}</p>
         </div>
     </div>
     <div class="col-4 col-xxl-3">
@@ -626,6 +626,7 @@
                                         <th>Route</th>
                                         <th>Duration</th>
                                         <th>Period</th>
+                                        <th>Refill Count</th>
                                         <th width="10"></th>
                                     </tr>
                                 </thead>
@@ -647,6 +648,9 @@
                                             </td>
                                             <td class="row-click">
                                                 {{d1.period ? d1.period : '-'}}
+                                            </td>
+                                            <td class="row-click">
+                                                {{d1.refill ? d1.refill : '-'}}
                                             </td>
                                             <td class="actions">
                                             </td>
@@ -708,6 +712,7 @@
                                                                             <th>Route</th>
                                                                             <th>Duration</th>
                                                                             <th>Period</th>
+                                                                            <th>Refill Count</th>
                                                                             <th width="10"></th>
                                                                         </tr>
                                                                     </thead>
@@ -737,6 +742,9 @@
                                                                                 <td class="row-click">
                                                                                     {{d1.period ?
                                                                                     d1.period : '-'}}
+                                                                                </td>
+                                                                                <td class="row-click">
+                                                                                    {{d1.refill ? d1.refill : '-'}}
                                                                                 </td>
                                                                             </tr>
                                                                         </ng-container>

@@ -756,6 +756,7 @@
                                                         <th>Route</th>
                                                         <th>Duration</th>
                                                         <th>Period</th>
+                                                        <th>Refill Count</th>
                                                         <th width="10"></th>
                                                     </tr>
                                                 </thead>
@@ -778,6 +779,9 @@
                                                             </td>
                                                             <td class="row-click">
                                                                 {{d1.period ? d1.period : '-'}}
+                                                            </td>
+                                                            <td class="row-click">
+                                                                {{d1.refill ? d1.refill : '-'}}
                                                             </td>
                                                             <td class="actions">
                                                                 <mat-menu #itemsDetailsActionsMenu xPosition="before">
@@ -902,6 +906,7 @@
                                                                                             <th>Route</th>
                                                                                             <th>Duration</th>
                                                                                             <th>Period</th>
+                                                                                            <th>Refill Count</th>
                                                                                             <th width="10"></th>
                                                                                         </tr>
                                                                                     </thead>
@@ -931,6 +936,9 @@
                                                                                                 <td class="row-click">
                                                                                                     {{d1.period ?
                                                                                                     d1.period : '-'}}
+                                                                                                </td>
+                                                                                                <td class="row-click">
+                                                                                                    {{d1.refill ? d1.refill : '-'}}
                                                                                                 </td>
                                                                                                 <td class="actions">
                                                                                                     <mat-menu

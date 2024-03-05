@@ -102,7 +102,11 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
         console.log("item = ", this.data.item);
         //console.log(this.data.item != null);
         
+        this.FormItem.controls.quantityCode.setValue('{package}');
+        this.FormItem.controls.quantityCode.disable();
+    
         if (this.data.item && this.data.item != null) {
+            
             if(this.data.item.type ==='scientific-codes'){
                 this.FormItem.controls.type.setValue(this.prescribedCode.filter(x => x.value === 'scientific-codes')[0]);
                 this.typeChange('scientific-codes');
@@ -149,10 +153,6 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
         } else {
             this.FormItem.controls.type.setValue(this.prescribedCode.filter(x => x.value === 'scientific-codes')[0]);
             this.typeChange('scientific-codes');
-            if (this.data.subType === 'op') {
-                this.FormItem.controls.quantityCode.setValue('{package}');
-                this.FormItem.controls.quantityCode.disable();
-            }
             //this.FormItem.controls.factor.setValue(1);
         }
         if (this.data.supportingInfos) {
