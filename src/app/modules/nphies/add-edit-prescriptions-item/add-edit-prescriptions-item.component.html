@@ -35,7 +35,7 @@
                         <mat-select panelClass="custom-dropdown" formControlName="item" [disabled]="IsItemLoading"
                             placeholder="Select Code-Description">
                             <mat-option>
-                                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="item"
+                                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="itemFilter" (ngModelChange)="filterItem()"
                                     noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
                             </mat-option>
                             <cdk-virtual-scroll-viewport itemSize="100" minBufferPx="{{itemList.length}}"
@@ -62,10 +62,10 @@
                         <mat-select panelClass="custom-dropdown" formControlName="item" [disabled]="IsItemLoading"
                             placeholder="Select Code-Description">
                             <mat-option>
-                                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="item"
+                                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="prescribedMedicationItemFilter" (ngModelChange)="filterPrescribedMedicationItem()"
                                     noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
                             </mat-option>
-                            <cdk-virtual-scroll-viewport itemSize="100" minBufferPx="100"
+                            <cdk-virtual-scroll-viewport itemSize="100" minBufferPx="1"
                                 maxBufferPx="{{itemList.length * 10}}" class="viewport">
                                 <mat-option *cdkVirtualFor="let type of filteredPescribedMedicationItem | async"
                                     [value]="type">

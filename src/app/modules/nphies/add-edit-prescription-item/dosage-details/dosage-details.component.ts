@@ -23,6 +23,7 @@ export class DosageDetailsComponent implements OnInit {
     filteredItem: ReplaySubject<any> = new ReplaySubject<any[]>(1);
     filteredPescribedMedicationItem: ReplaySubject<any> = new ReplaySubject<any[]>(1);
     filteredUnits: ReplaySubject<any> = new ReplaySubject<any[]>(1);
+    filteredRoutes: ReplaySubject<any> = new ReplaySubject<any[]>(1);
     IsItemLoading = false;
 
     onDestroy = new Subject<void>();
@@ -31,13 +32,14 @@ export class DosageDetailsComponent implements OnInit {
         note: [''],
         patientInstruction: [''],
         route: ['', Validators.required],
+        routeFilter:[''],
         dosageType: ['', Validators.required],
         doseType: [''],
         min: [''],
         max: [''],
         doseQuantity: [''],
         doseUnit: [''],
-        unitFilter:[''],
+        unitFilter: [''],
         rateType: [''],
         numerator: [''],
         denominator: [''],
@@ -70,13 +72,12 @@ export class DosageDetailsComponent implements OnInit {
 
     routes = this.sharedDataService.prescriberRoutes;
     units = [];
-    filteredRoutes: string[] = [];
     selectedOption: string = '';
     selectedAbsenceOption: string = '';
     onOptionChange: string = '';
 
     constructor(
-        private sharedDataService: SharedDataService,private sharedServices:SharedServices, private providerNphiesSearchService: ProviderNphiesSearchService,
+        private sharedDataService: SharedDataService, private sharedServices: SharedServices, private providerNphiesSearchService: ProviderNphiesSearchService,
         private dialogRef: MatDialogRef<DosageDetailsComponent>, @Inject(MAT_DIALOG_DATA) public data,
         private formBuilder: FormBuilder) {
         this.today = new Date();
@@ -119,6 +120,7 @@ export class DosageDetailsComponent implements OnInit {
             //
         }
         this.getUnits();
+        this.filterRoute('');
     }
 
 
@@ -127,18 +129,18 @@ export class DosageDetailsComponent implements OnInit {
             if (event instanceof HttpResponse) {
 
                 if (event.body != null && event.body instanceof Array) {
-                    
+
                     this.units = event.body;
-                    this.filteredUnits.next(this.units);
+                    //this.filteredUnits.next(this.units);
                     // tslint:disable-next-line:max-line-length
-                    if (this.data.item.doseUnit) {
+                    if (this.data.item && this.data.item.doseUnit) {
                         this.FormItem.controls.doseUnit.setValue(this.units.filter(x => x.ucumCode === this.data.item.doseUnit)[0]);
                     }
-                    if( this.data.item.rateUnit){
+                    if (this.data.item && this.data.item.rateUnit) {
                         this.FormItem.controls.rateUnit.setValue(this.units.filter(x => x.ucumCode === this.data.item.rateUnit)[0]);
                     }
                     this.filteredUnits.next(this.units.slice());
-                    this.filterUnits();
+                    //this.filterUnits();
                 }
             }
         }, err => {
@@ -147,11 +149,11 @@ export class DosageDetailsComponent implements OnInit {
             }
         });
     }
-    filterUnits() {
+    filterUnits(val) {
         if (!this.units) {
             return;
         }
-        let search = this.FormItem.controls.unitFilter.value;
+        let search = this.FormItem.controls.unitFilter.value ? this.FormItem.controls.unitFilter.value : val;
         if (!search) {
             this.filteredUnits.next(this.units.slice());
             return;
@@ -159,7 +161,22 @@ export class DosageDetailsComponent implements OnInit {
             search = search.toLowerCase();
         }
         this.filteredUnits.next(
-            this.units.filter(item => (item.ucumCode && item.ucumCode.toLowerCase().indexOf(search) > -1) || (item.description && item.description.toString().toLowerCase().indexOf(search) > -1) )
+            this.units.filter(item => (item.ucumCode && item.ucumCode.toLowerCase().indexOf(search) > -1) || (item.description && item.description.toString().toLowerCase().indexOf(search) > -1))
+        );
+    }
+    filterRoute(val) {
+        if (!this.routes) {
+            return;
+        }
+        let search = this.FormItem.controls.routeFilter.value ? this.FormItem.controls.routeFilter.value : val;
+        if (!search) {
+            this.filteredRoutes.next(this.routes.slice());
+            return;
+        } else {
+            search = search.toLowerCase();
+        }
+        this.filteredRoutes.next(
+            this.routes.filter(item => (item.value && item.value.toLowerCase().indexOf(search) > -1) || (item.name && item.name.toString().toLowerCase().indexOf(search) > -1))
         );
     }
     selectItem(type) {
@@ -305,7 +322,7 @@ export class DosageDetailsComponent implements OnInit {
             model.doseQuantityOrRangeMin = this.FormItem.controls.min.value || this.FormItem.controls.doseQuantity.value;
             model.doseRangeMax = this.FormItem.controls.max.value;
             model.doseUnit = this.FormItem.controls.doseUnit.value ? this.FormItem.controls.doseUnit.value.ucumCode : null;
-            
+
             model.rateType = this.FormItem.controls.rateType !== undefined ? this.FormItem.controls.rateType.value : "";
             model.rateRatioNumeratorMin = this.FormItem.controls.numerator.value || this.FormItem.controls.ratemin.value || this.FormItem.controls.rateQuantity.value;
             model.rateRatioDenominatorMax = this.FormItem.controls.denominator.value || this.FormItem.controls.ratemax.value;
