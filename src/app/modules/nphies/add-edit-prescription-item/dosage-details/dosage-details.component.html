@@ -56,7 +56,7 @@
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select placeholder="Select dose type" formControlName="doseType">
                             <mat-option value="">Select Type</mat-option>
-                            <mat-option value="Dose_Range">Dose Quantity Range</mat-option>
+                            <mat-option value="Dose_Range">Dose Range</mat-option>
                             <mat-option value="Dose_Quantity">Dose Quantity</mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -367,7 +367,7 @@
                 </div>
             </div>
 
-            <div class="col-4">
+            <div class="col-4" *ngIf="FormItem.get('frequencyType').value === 'custom'">
                 <div class="form-group">
                     <label class="control-label"><span class="d-flex align-items-center">
                             <span class="pr-1">Period</span>
@@ -388,7 +388,7 @@
                                     <mat-option value="d">days</mat-option>
                                     <mat-option value="wk">week</mat-option>
                                     <mat-option value="mo">month</mat-option>
-                                    <mat-option value="UCUM">a- unit of time (UCUM)</mat-option>
+                                    <mat-option value="UCUM">Year</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
