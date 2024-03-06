@@ -1219,16 +1219,17 @@ export class AddPrescriptionComponent implements OnInit {
         this.checkItemValidation();
     }
 
-    openAddEditItemDetailsDialog(itemSequence: number, itemModel: any = null) {
+    openAddEditItemDetailsDialog(itemSequence: number, itemDetailsSeq: number, itemModel: any = null) {
 
         const item = this.Items.filter(x => x.sequence === itemSequence)[0];
-
+        const itemDetail = item.itemDetails.filter(d => d.sequence === itemDetailsSeq)[0];
+        console.log("item details",itemDetail);
         const dialogConfig = new MatDialogConfig();
         dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
         dialogConfig.data = {
             // tslint:disable-next-line:max-line-length
-            Sequence: (itemModel !== null) ? itemModel.sequence : (item.itemDetails.length === 0 ? 1 : (item.itemDetails[item.itemDetails.length - 1].sequence + 1)),
-            item: itemModel,
+            Sequence: (itemDetail !== null && itemDetail !== undefined) ? itemDetail.sequence : (item.itemDetails.length === 0 ? 1 : (item.itemDetails[item.itemDetails.length - 1].sequence + 1)),
+            item: itemDetail,
             type: this.FormPreAuthorization.controls.type.value.value,
             dateOrdered: this.FormPreAuthorization.controls.dateOrdered.value,
             payerNphiesId: this.FormPreAuthorization.controls.insurancePayerNphiesId.value,
@@ -1258,7 +1259,7 @@ export class AddPrescriptionComponent implements OnInit {
                                     }
                                 });
                             } else {
-                                result.claimItemDosageModel = [];
+                                result.claimItemDetailsDosage = [];
                                 x.itemDetails.push(result);
                             }
                         }
@@ -1287,7 +1288,7 @@ export class AddPrescriptionComponent implements OnInit {
         dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
         dialogConfig.data = {
             // tslint:disable-next-line:max-line-length
-            Sequence: (itemModel !== null) ? itemModel.sequence : (itemDetail.claimItemDosageModel.length === 0 ? 1 : (itemDetail.claimItemDosageModel[itemDetail.claimItemDosageModel.length - 1].sequence + 1)),
+            Sequence: (itemModel !== null) ? itemModel.sequence : (itemDetail.claimItemDetailsDosage.length === 0 ? 1 : (itemDetail.claimItemDetailsDosage[itemDetail.claimItemDetailsDosage.length - 1].sequence + 1)),
             item: itemModel,
             type: this.FormPreAuthorization.controls.type.value.value,
             dateOrdered: this.FormPreAuthorization.controls.dateOrdered.value,
@@ -1303,8 +1304,8 @@ export class AddPrescriptionComponent implements OnInit {
                 if (this.Items.filter(x => x.sequence === itemSequence)[0].itemDetails.find(x => x.sequence === itemDetailsSeq)) {
 
                     this.Items.filter(x => x.sequence === itemSequence)[0].itemDetails.map(x => {
-                        if (x.claimItemDosageModel.find(y => y.sequence === result.sequence)) {
-                            x.claimItemDosageModel.map(val => {
+                        if (x.claimItemDetailsDosage.find(y => y.sequence === result.sequence)) {
+                            x.claimItemDetailsDosage.map(val => {
                                 if (val.sequence === result.sequence) {
                                     val.sequence = result.sequence;
                                     val.note = result.note;
@@ -1332,7 +1333,7 @@ export class AddPrescriptionComponent implements OnInit {
                                 }
                             });
                         } else {
-                            x.claimItemDosageModel.push(result);
+                            x.claimItemDetailsDosage.push(result);
                         }
                     });
                 }
@@ -1343,7 +1344,7 @@ export class AddPrescriptionComponent implements OnInit {
         if (this.Items.filter(x => x.sequence === itemSequence)[0].itemDetails.find(x => x.sequence === itemDetailsSeq)) {
             this.Items.filter(x => x.sequence === itemSequence)[0].itemDetails.map(x => {
                 if (x.sequence === itemDetailsSeq) {
-                    x.claimItemDosageModel.splice(index, 1);
+                    x.claimItemDetailsDosage.splice(index, 1);
                 }
             });
         }

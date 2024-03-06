@@ -107,10 +107,10 @@ export class AddEditItemDetailsPrescriptionComponent implements OnInit {
                         this.prescribedMedicationList = body;
                         this.filteredPescribedMedicationItem.next(body);
                         if (this.data.item) {
-                            const res = this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.prescribedDrugCode)[0] ? this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.prescribedDrugCode)[0] : '';
+                            const res = this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.code)[0] ? this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.code)[0] : '';
                             if (res) {
                                 this.FormItem.patchValue({
-                                    prescribedDrugCode: res
+                                    item: res
                                 });
                             }
                             this.filteredPescribedMedicationItem.next(this.prescribedMedicationList.slice());
@@ -294,13 +294,14 @@ export class AddEditItemDetailsPrescriptionComponent implements OnInit {
             model.sequence = this.data.Sequence;
             model.type = this.FormItem.controls.type.value.value;
             model.typeName = this.FormItem.controls.type.value.name;
-            model.code = this.FormItem.controls.item.value.code;
-            model.description = this.FormItem.controls.item.value.description;
+            model.code = this.FormItem.controls.item.value.code || this.FormItem.controls.item.value.descriptionCode;
+            model.description = this.FormItem.controls.item.value.description || this.FormItem.controls.item.value.tradeName;
             model.nonStandardCode = this.FormItem.controls.nonStandardCode.value;
             model.strength = this.FormItem.controls.strength.value;
             model.quantity = parseFloat(this.FormItem.controls.quantity.value);
             model.quantityCode = this.FormItem.controls.quantityCode.value;
-
+            model.absenceScientificCode = this.FormItem.controls.absenceScientificCode.value.value;
+            
             this.dialogRef.close(model);
         }
     }
