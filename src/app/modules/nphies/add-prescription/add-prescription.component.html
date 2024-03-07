@@ -895,7 +895,7 @@
                                                                     <div class="row">
                                                                         <div class="col-auto">
                                                                             <div class="box mb-2"
-                                                                                *ngIf="d.claimItemDosageModel && d.claimItemDosageModel.length > 0">
+                                                                                *ngIf="d.claimItemDetailsDosage && d.claimItemDetailsDosage.length > 0">
                                                                                 <table
                                                                                     class="primary-grid claim-view-table">
                                                                                     <thead>
@@ -912,7 +912,7 @@
                                                                                     </thead>
                                                                                     <tbody>
                                                                                         <ng-container
-                                                                                            *ngFor="let d1 of d.claimItemDosageModel; let di = index">
+                                                                                            *ngFor="let d1 of d.claimItemDetailsDosage; let di = index">
                                                                                             <tr>
                                                                                                 <td class="row-click">
                                                                                                     {{d1.sequence}}</td>
@@ -977,7 +977,7 @@
                                                                                 </table>
                                                                             </div>
                                                                             <div class="box mb-2"
-                                                                                *ngIf="d.claimItemDosageModel && d.claimItemDosageModel.length === 0">
+                                                                                *ngIf="d.claimItemDetailsDosage && d.claimItemDetailsDosage.length === 0">
                                                                                 No dosage Data
                                                                             </div>
                                                                         </div>
