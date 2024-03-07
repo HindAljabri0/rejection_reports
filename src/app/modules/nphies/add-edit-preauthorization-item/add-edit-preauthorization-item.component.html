@@ -345,7 +345,7 @@
           </div> -->
             </div>
 
-            <div class="col-4 col-lg-3" *ngIf="data.type === 'pharmacy'">
+            <div class="col-4 col-lg-3" *ngIf="showEBPfeilds && data.type === 'pharmacy'">
                 <div class="form-group"
                     [ngClass]="{'has-error': (isSubmitted || FormItem.get('pharmacistSelectionReason').touched) && FormItem.get('pharmacistSelectionReason').hasError('required')}">
                     <label class="control-label">Pharmacist Selection Reason<span class="asterisk">*</span></label>
@@ -363,7 +363,8 @@
                 </div>
             </div>
 
-            <div class="col-4 col-lg-3" *ngIf="data.type === 'pharmacy'">
+            <div class="col-4 col-lg-6" *ngIf="showEBPfeilds && data.type === 'pharmacy'">
+
                 <div class="form-group" [ngClass]="{'has-error': (isSubmitted || FormItem.get('prescribedDrugCode').touched) && FormItem.get('prescribedDrugCode').hasError('required')}">
                     <label class="control-label">Prescribed Medication</label>
                     <mat-form-field class="form-control custom-select-control">
@@ -392,7 +393,8 @@
                 </div>
 
             </div>
-            <div class="col-4 col-lg-3" *ngIf="data.type === 'pharmacy'">
+            <div class="col-4 col-lg-3" *ngIf="showEBPfeilds && data.type === 'pharmacy' &&  data.source === 'APPROVAL' ">
+
                 <div class="form-group">
                     <label class="control-label">Pharmacist Substitute Reason</label>
                     <mat-form-field class="form-control custom-select-control">
