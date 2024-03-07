@@ -300,7 +300,7 @@ export class AddEditItemDetailsPrescriptionComponent implements OnInit {
             model.strength = this.FormItem.controls.strength.value;
             model.quantity = parseFloat(this.FormItem.controls.quantity.value);
             model.quantityCode = this.FormItem.controls.quantityCode.value;
-            model.absenceScientificCode = this.FormItem.controls.absenceScientificCode.value.value;
+            model.absenceScientificCode = this.FormItem.controls.absenceScientificCode.value? this.FormItem.controls.absenceScientificCode.value.value : null;
             
             this.dialogRef.close(model);
         }
