@@ -66,6 +66,7 @@ export class AddPreauthorizationComponent implements OnInit {
     isOnline: boolean = false;
     isOffline: boolean = false;
     AllTPA: any[] = [];
+    primaryPlan=[];
     filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
 
     beneficiaryPatientShare = 0;
@@ -787,6 +788,7 @@ export class AddPreauthorizationComponent implements OnInit {
             postalCode: beneficiary.postalCode ? beneficiary.postalCode : '',
         });
 
+        this.primaryPlan = beneficiary.plans.filter(plan => plan.primary==true);
         if (beneficiary.plans.filter(x => x.primary)[0].payerNphiesId === '0000000163') {
 
             this.dialogService.showMessage('Error', 'Selected Payer is not valid for Pre-Auth Request Transaction ', 'alert', true, 'OK');

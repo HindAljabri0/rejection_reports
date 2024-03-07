@@ -48,7 +48,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
         bodySite: [''],
         subSite: [''],
         quantity: ['', Validators.required],
-        strength: [''],
+        strength: ['', Validators.required],
         quantityCode: [''],
         supportingInfoSequence: [''],
         supportingInfoFilter: [''],
@@ -99,11 +99,21 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
             this.bodySiteList = this.sharedDataService.getBodySite(this.data.type);
             this.subSiteList = this.sharedDataService.getSubSite(this.data.type);
         }
-        console.log("data = "+JSON.stringify(this.data));
-        if (this.data.item) {
+        console.log("item = ", this.data.item);
+        //console.log(this.data.item != null);
+        
+        this.FormItem.controls.quantityCode.setValue('{package}');
+        this.FormItem.controls.quantityCode.disable();
+    
+        if (this.data.item && this.data.item != null) {
+            
+            if(this.data.item.type ==='scientific-codes'){
+                this.FormItem.controls.type.setValue(this.prescribedCode.filter(x => x.value === 'scientific-codes')[0]);
+                this.typeChange('scientific-codes');
+            }
             this.FormItem.patchValue({
                 type: this.prescribedCode.filter(x => x.value === this.data.item.type)[0],
-                itemDescription: this.itemList.filter(x => x.code === this.data.item.itemDescription)[0],
+                itemDescription: this.itemList.filter(x => x.code === this.data.item.itemCode)[0],
                 itemCode: this.itemList.filter(x => x.code === this.data.item.itemCode)[0],
                 nonStandardCode: this.data.item.nonStandardCode,
                 display: this.data.item.display,
@@ -112,8 +122,9 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
                 subSite: this.subSiteList.filter(x => x.value === this.data.item.subSite)[0],
                 quantity: this.data.item.quantity,
                 quantityCode: this.data.item.quantityCode != null ? this.data.item.quantityCode : "",
+                endDate: this.data.item.endDate ? new Date(this.data.item.endDate) : null,
                 strength: this.data.item.strength,
-                absenceScientificCode: this.absenceReasonList.filter(x => x.value === this.data.item.absenceScientificCode)[0],
+                absenceScientificCode: (this.absenceReasonList.filter(x => x.value === this.data.item.absenceScientificCode).length > 0 ? this.absenceReasonList.filter(x => x.value === this.data.item.absenceScientificCode)[0] : "")
             });
 
             if (this.data.careTeams) {
@@ -129,49 +140,46 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
                     diagnosisSequence: this.data.item.diagnosisSequence ? this.data.diagnosises.filter(x => this.data.item.diagnosisSequence.find(y => y === x.sequence) !== undefined) : []
                 });
             }
-            console.log("supporting info "+JSON.stringify(this.data.supportingInfos));
+            //console.log("supporting info "+JSON.stringify(this.data.supportingInfos));
             if (this.data.supportingInfos) {
                 this.FormItem.patchValue({
                     // tslint:disable-next-line:max-line-length
                     supportingInfoSequence: this.data.item.supportingInfoSequence ? this.data.supportingInfos.filter(x => this.data.item.supportingInfoSequence.find(y => y === x.sequence) !== undefined) : []
                 });
             }
-
+            //console.log("supporting info seq = "+JSON.stringify(this.FormItem.controls.supportingInfoSequence.value));
             this.getItemList();
+            
         } else {
+            this.FormItem.controls.type.setValue(this.prescribedCode.filter(x => x.value === 'scientific-codes')[0]);
+            this.typeChange('scientific-codes');
+            //this.FormItem.controls.factor.setValue(1);
+        }
+        if (this.data.supportingInfos) {
+            this.filteredSupportingInfo.next(this.data.supportingInfos.slice());
+            this.FormItem.controls.supportingInfoFilter.valueChanges
+                .pipe(takeUntil(this.onDestroy))
+                .subscribe(() => {
+                    this.filterSupportingInfo();
+                });
+        }
 
-            if (this.data.supportingInfos) {
-                this.filteredSupportingInfo.next(this.data.supportingInfos.slice());
-                this.FormItem.controls.supportingInfoFilter.valueChanges
-                    .pipe(takeUntil(this.onDestroy))
-                    .subscribe(() => {
-                        this.filterSupportingInfo();
-                    });
-            }
+        if (this.data.careTeams) {
+            this.filteredCareTeam.next(this.data.careTeams.slice());
+            this.FormItem.controls.careTeamFilter.valueChanges
+                .pipe(takeUntil(this.onDestroy))
+                .subscribe(() => {
+                    this.filterCareTeam();
+                });
+        }
 
-            if (this.data.careTeams) {
-                this.filteredCareTeam.next(this.data.careTeams.slice());
-                this.FormItem.controls.careTeamFilter.valueChanges
-                    .pipe(takeUntil(this.onDestroy))
-                    .subscribe(() => {
-                        this.filterCareTeam();
-                    });
-            }
-
-            if (this.data.diagnosises) {
-                this.filteredDiagnosis.next(this.data.diagnosises.slice());
-                this.FormItem.controls.diagnosisFilter.valueChanges
-                    .pipe(takeUntil(this.onDestroy))
-                    .subscribe(() => {
-                        this.filterDiagnosis();
-                    });
-            }
-
-            if (this.data.subType === 'op') {
-                this.FormItem.controls.quantityCode.setValue('{package}');
-                this.FormItem.controls.quantityCode.disable();
-            }
-            this.FormItem.controls.factor.setValue(1);
+        if (this.data.diagnosises) {
+            this.filteredDiagnosis.next(this.data.diagnosises.slice());
+            this.FormItem.controls.diagnosisFilter.valueChanges
+                .pipe(takeUntil(this.onDestroy))
+                .subscribe(() => {
+                    this.filterDiagnosis();
+                });
         }
 
     }
@@ -201,6 +209,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
         }
     }
     typeChange(type = null) {
+        console.log("type changed");
         if (this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'scientific-codes') {
             this.sharedServices.loadingChanged.next(true);
             this.FormItem.controls.item.disable();
@@ -212,10 +221,10 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
                         this.prescribedMedicationList = body;
                         this.filteredPescribedMedicationItem.next(body);
                         if (this.data.item) {
-                            const res = this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.prescribedDrugCode)[0] ? this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.prescribedDrugCode)[0] : '';
+                            const res = this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.itemCode)[0] ? this.prescribedMedicationList.filter(x => x.descriptionCode === this.data.item.itemCode)[0] : '';
                             if (res) {
                                 this.FormItem.patchValue({
-                                    prescribedDrugCode: res
+                                    item: res
                                 });
                             }
                             this.filteredPescribedMedicationItem.next(this.prescribedMedicationList.slice());
@@ -542,7 +551,14 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
 
 
             const pattern = /(^\d*\.?\d*[1-9]+\d*$)|(^[1-9]+\d*\.\d*$)/;
-
+            if ((this.FormItem.controls.absenceScientificCode.value == null || this.FormItem.controls.absenceScientificCode.value == '') && this.FormItem.controls.type.value && (this.FormItem.controls.type.value.value === 'medication-codes')) {
+                this.FormItem.controls.absenceScientificCode.setValidators([Validators.required]);
+                this.FormItem.controls.absenceScientificCode.updateValueAndValidity();
+                return;
+            }else{
+                this.FormItem.controls.absenceScientificCode.clearValidators();
+                this.FormItem.controls.absenceScientificCode.updateValueAndValidity();
+            }
             if (!pattern.test(parseFloat(this.FormItem.controls.quantity.value).toString())) {
                 return;
             }

@@ -846,6 +846,67 @@
             <mat-spinner diameter="48"></mat-spinner>
         </div>
     </mat-expansion-panel>
+
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                NPHIES Transaction Configuration
+                <mat-menu #nphiesTransactionSuccessConfigurationMenu xPosition="before">
+                    <ng-template matMenuContent>
+                        <div class="pt-7 pb-7 pr-14 pl-14">
+                            <ng-container
+                                *ngIf="success.nphiesTransactionConfigurationSaveSuccess != null">{{success.nphiesTransactionConfigurationSaveSuccess}}</ng-container>
+                        </div>
+                    </ng-template>
+                </mat-menu>
+                <mat-menu #nphiesTransactionErrorConfigurationMenu xPosition="before">
+                    <ng-template matMenuContent>
+                        <div class="pt-7 pb-7 pr-14 pl-14">
+                            <ng-container
+                                *ngIf="errors.nphiesTransactionConfigurationSaveError != null">{{errors.nphiesTransactionConfigurationSaveError}}</ng-container>
+                        </div>
+                    </ng-template>
+                </mat-menu>
+                <button type="button" *ngIf="errors.nphiesTransactionConfigurationSaveError != null" class="text-danger"
+                    (click)="$event.stopPropagation()" mat-icon-button
+                    [matMenuTriggerFor]="nphiesTransactionErrorConfigurationMenu">
+                    <mat-icon>error</mat-icon>
+                </button>
+                <button type="button" *ngIf="success.nphiesTransactionConfigurationSaveSuccess != null" class="text-success"
+                    (click)="$event.stopPropagation()" mat-icon-button
+                    [class.ml-2]="errors.nphiesTransactionConfigurationSaveError != null"
+                    [matMenuTriggerFor]="nphiesTransactionSuccessConfigurationMenu">
+                    <mat-icon>check_circle</mat-icon>
+                </button>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <ng-container
+            *ngIf="((errors.nphiesTransactionConfigurationError == null || errors.nphiesTransactionConfigurationError == '') && !componentLoading.nphiesTransactionConfiguration)">
+            <div class="provider-config-container">
+                <div class="row small-gutter">
+                    <div class="col-6">
+                        <div class="form-group form-group-static">
+                            <p class="form-control-static">NPHIES Transactions</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group pt-2">
+                            <mat-slide-toggle color="primary"
+                                [(ngModel)]="newNphiesTransactionValidationSettings['101']">Enable</mat-slide-toggle>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <div *ngIf="componentLoading.nphiesTransactionConfiguration" class="inline-loader">
+            <mat-spinner diameter="48"></mat-spinner>
+        </div>
+    </mat-expansion-panel>
+
+
+
+
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>

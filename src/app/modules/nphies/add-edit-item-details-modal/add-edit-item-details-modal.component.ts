@@ -45,8 +45,8 @@ export class AddEditItemDetailsModalComponent implements OnInit {
         quantityCode: [''],
         searchQuery: [''],
         prescribedMedicationItemFilter: [''],
-        pharmacistSelectionReason: ['', Validators.required],
-        prescribedDrugCode: ['', Validators.required],
+        pharmacistSelectionReason: [''],
+        prescribedDrugCode: [''],
         reasonPharmacistSubstitute: [''],
         pharmacistSubstitute: ['']
     });
@@ -298,7 +298,6 @@ export class AddEditItemDetailsModalComponent implements OnInit {
         this.itemListFiltered = [];
         this.itemList.forEach(x => {
             if (x.code === StanderCode) {
-
                 this.itemListFiltered.unshift(x);
             } else {
                 this.itemListFiltered.push(x);
@@ -312,7 +311,6 @@ export class AddEditItemDetailsModalComponent implements OnInit {
         this.FormItem.patchValue({
             item: this.itemList.filter(x => x.code === gtinNumber)[0]
         });
-
         if (this.data.type === "pharmacy") {
             //this.itemList.filter(x => x.code === this.data.item.itemCode)[0];
             this.filteredPescribedMedicationItem.next(this.prescribedMedicationList);
@@ -352,21 +350,21 @@ export class AddEditItemDetailsModalComponent implements OnInit {
         }
     }
     validateCodesInPharmacy() {
-        if (this.data.source === "APPROVAL" && this.data.type === "pharmacy" && this.FormItem.controls.pharmacistSelectionReason.value == null) {
+        if (this.data.type === "pharmacy" && this.FormItem.controls.pharmacistSelectionReason.value == null) {
             this.FormItem.controls.pharmacistSelectionReason.setValidators([Validators.required]);
             this.FormItem.controls.pharmacistSelectionReason.updateValueAndValidity();
             return false;
         } else {
             this.FormItem.controls.pharmacistSelectionReason.clearValidators();
             this.FormItem.controls.pharmacistSelectionReason.updateValueAndValidity();
-
         }
         //------------------------------------
-        if (this.data.source === "APPROVAL" && this.data.type === "pharmacy" && this.FormItem.controls.prescribedDrugCode.value == null) {
+        if (this.data.type === "pharmacy" && this.FormItem.controls.prescribedDrugCode.value == null) {
             this.FormItem.controls.prescribedDrugCode.setValidators([Validators.required]);
             this.FormItem.controls.prescribedDrugCode.updateValueAndValidity();
             return false;
-        } else {
+        }else{
+
             this.FormItem.controls.prescribedDrugCode.clearValidators();
             this.FormItem.controls.prescribedDrugCode.updateValueAndValidity();
         }
@@ -404,7 +402,6 @@ export class AddEditItemDetailsModalComponent implements OnInit {
                 model.reasonPharmacistSubstitute = this.FormItem.controls.reasonPharmacistSubstitute.value;
                 model.pharmacistSubstitute = this.FormItem.controls.pharmacistSubstitute.value;
             }
-            //console.log(model,"modelll")
             this.dialogRef.close(model);
         }
     }
