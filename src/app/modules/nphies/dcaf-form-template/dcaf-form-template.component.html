@@ -47,6 +47,11 @@
                     </table>
                     <p>Date of visit: <span class="value-holder">{{DCAF.dateOrdered | date: 'dd / MM / yyyy'}}</span>
                     </p>
+
+                    <p >Date of follow up: <span class="value-holder">  {{DCAF.followUp==true?DCAF.createdDate:"" | date: 'dd / MM / yyyy'}}</span>
+                    </p>
+                    <p>Preauthorization Period: <span class="value-holder">{{DCAF.preAuthStartDate | date: 'dd / MM / yyyy'}}  - {{DCAF.preAuthEndDate | date: 'dd / MM / yyyy'}} </span>
+                    </p>
                     <table class="internal-table">
                         <tr>
                             <td width="10">
@@ -55,12 +60,15 @@
                             <td width="6"></td>
                             <td width="10">
                                 <p>New visit (<img src="./assets/form-check.svg" class="check"
-                                        [class.checked]="getVisitReason('new-visit')" />)</p>
+                                        [class.checked]="(DCAF.followUp==false)" />)</p>
+                                        <!-- getVisitReason('new-visit')" -->
                             </td>
                             <td width="6"></td>
                             <td width="10">
                                 <p>Follow Up (<img src="./assets/form-check.svg" class="check"
-                                        [class.checked]="getVisitReason('follow-up')" />)</p>
+                                        [class.checked]="DCAF.followUp" />)</p>
+
+                                        <!-- "getVisitReason('follow-up')" -->
                             </td>
                             <td></td>
                         </tr>
