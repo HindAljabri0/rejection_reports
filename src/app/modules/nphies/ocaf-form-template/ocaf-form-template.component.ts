@@ -15,6 +15,11 @@ export class OcafFormTemplateComponent implements OnInit {
   @Input() printFor: any;
   lensData: any = {};
   contactData: any = {};
+
+  totalAmount=0;
+  totalApprovedAmount=0;
+  totalQuantity=0;
+  approvedQuantity=0;
   constructor(private providerNphiesSearchService: ProviderNphiesSearchService, private sharedServices: SharedServices, public datepipe: DatePipe) {
     this.lensData.left = [];
     this.lensData.right = [];
@@ -31,6 +36,7 @@ export class OcafFormTemplateComponent implements OnInit {
         if (body) {
           this.OCAF = body;
           this.getLensSpecifications();
+          this.countTotal();
           this.sharedServices.loadingChanged.next(false);
         }
       }
@@ -50,7 +56,8 @@ export class OcafFormTemplateComponent implements OnInit {
   }
 
   getLensSpecifications() {
-    if (this.OCAF.visionPrescription.lensSpecifications != null) {
+    if(this.OCAF.visionPrescription!=null ){
+    if ( this.OCAF.visionPrescription.lensSpecifications != null) {
       this.OCAF.visionPrescription.lensSpecifications.filter(x => x.product === 'lens').forEach((x, index) => {
         x.sequence = index + 1;
         x.isDistance = x.sphere < 0 ? true : false;
@@ -207,6 +214,7 @@ export class OcafFormTemplateComponent implements OnInit {
 
       });
     }
+}
   }
 
   getVisitReason(code: string) {
@@ -216,5 +224,14 @@ export class OcafFormTemplateComponent implements OnInit {
       return this.OCAF.supportingInfo[index].code === code;
     } else return false
   }
-
+  countTotal(){
+    let total = 0;
+     this.OCAF.items.forEach(i => {
+        this.totalAmount += i.netAmount;
+        this.totalApprovedAmount+=i.benfit!=null?Number(i.benfit):0;
+        this.totalQuantity+=i.quantity;
+        this.approvedQuantity+=i.approvedQuantity!=null?Number(i.approvedQuantity):0;
+        
+    });
+  }
 }
