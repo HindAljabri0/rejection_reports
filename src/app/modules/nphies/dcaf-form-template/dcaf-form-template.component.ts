@@ -15,14 +15,22 @@ export class DcafFormTemplateComponent implements OnInit {
   @Input() printFor:any;
   constructor(private providerNphiesSearchService: ProviderNphiesSearchService,private sharedServices: SharedServices,) { }
 
+  totalAmount=0;
+   totalApprovedAmount=0;
+   totalQuantity=0;
+   approvedQuantity=0;
+
   ngOnInit() {
+    
     this.sharedServices.loadingChanged.next(true);
+   
     this.providerNphiesSearchService.getJsonFormData(this.sharedServices.providerId,this.preAuthId,this.printFor).subscribe((res:any)=>{
       if (res instanceof HttpResponse) {
         const body = res.body;
         if (body) {
           this.DCAF = body;
         this.sharedServices.loadingChanged.next(false);
+        this.countTotal();
         }
       }
     }, errorEvent => {
@@ -55,10 +63,16 @@ export class DcafFormTemplateComponent implements OnInit {
     } else return Math.abs(ageDate.getUTCFullYear() - 1970);
   }
 
+
+   
   countTotal(){
     let total = 0;
      this.DCAF.items.forEach(i => {
-       total += i.netAmount;
+        this.totalAmount += i.netAmount;
+        this.totalApprovedAmount+=i.benfit!=null?Number(i.benfit):0;
+        this.totalQuantity+=i.quantity;
+        this.approvedQuantity+=i.approvedQuantity!=null?Number(i.approvedQuantity):0;
+        
     });
     return total;
   }
