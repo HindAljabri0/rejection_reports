@@ -30,6 +30,7 @@ import { ExtractClaimsComponent } from './extract-claims/extract-claims.componen
 import { UploadBeneficiaryInquireCchiComponent } from './upload-beneficiary-inquire-cchi/upload-beneficiary-inquire-cchi.component';
 import { BeneficiaryUploadsSummaryComponent } from './beneficiary-uploads-summary/beneficiary-uploads-summary.component';
 import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth-cnhi.component';
+import { CancelPreviousClaimComponent } from '../adminstration/cancel-previous-claim/cancel-previous-claim.component';
 
 const routes: Routes = [
     { path: 'eligibility', component: EligibilityComponent },
@@ -64,7 +65,8 @@ const routes: Routes = [
     { path: 'medication-days-upload', component: MedicationDaysUploadComponent },
     { path: 'switch-group-provider', component: SwitchGroupProviderComponent },
     { path: 'attachments-report', component: AttachmentsReportComponent },
-    { path: 'extract-claims', component: ExtractClaimsComponent }
+    { path: 'extract-claims', component: ExtractClaimsComponent },
+    { path: 'cancelPreviousClaim', component: CancelPreviousClaimComponent }
 ];
 
 @NgModule({
