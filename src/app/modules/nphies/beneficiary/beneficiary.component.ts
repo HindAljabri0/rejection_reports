@@ -562,12 +562,12 @@ export class BeneficiaryComponent implements OnInit {
         if (this.insurancePlans != null && this.insurancePlans.length != 0) {
             for (const plan of this.insurancePlans) {
                 plan.isPrimary = false;
-
             }
-
-            this.insurancePlans[Number.parseInt(this.setPrimary, 10)].isPrimary = true;
-
+            if (this.setPrimary != "-1")
+                this.insurancePlans[Number.parseInt(this.setPrimary, 10)].isPrimary = true;
         }
+
+        
 
         if (this.checkError()) { return; }
         this.sharedServices.loadingChanged.next(true);
