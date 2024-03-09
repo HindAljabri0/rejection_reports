@@ -32,6 +32,7 @@ export class CancelPreviousClaimComponent implements OnInit {
     cancelResponse: any = [];
     listOfRequestBundleIds = [];
     listClaimIdentifierIds = []
+    carrentProviderId=null;
 
 
 
@@ -44,15 +45,17 @@ export class CancelPreviousClaimComponent implements OnInit {
     ngOnInit() {
 
 
-
+        this.carrentProviderId=this.sharedServices.providerId;
         this.getProviders();
 
         this.CancellClaimForm = this.formBuilder.group({
-            providerId: ['', Validators.required],
+           
+            providerId: [""],
+            //!this.getPrivileges().ProviderPrivileges.NPHIES.isAdmin && this.sharedServices.providerId!='101'?[""]:['', Validators.required],
             claimIdentifier: null,
             requestBundleId: null,
             claimIdentifierUrl: null,
-            cancelBy: false
+            cancelBy: "CancelByClaimIdentifier"
         });
 
     }
@@ -72,6 +75,11 @@ export class CancelPreviousClaimComponent implements OnInit {
         }
 
         return true
+    }
+
+    getPrivileges(){
+      
+        return this.sharedServices.getPrivileges();
     }
 
     isValidNumberListBundleIdAndClaimsIdentifier() {
@@ -98,7 +106,7 @@ export class CancelPreviousClaimComponent implements OnInit {
 
     }
     get isCancellByBundleIds() {
-        return this.CancellClaimForm.controls.cancelBy.value;
+        return this.CancellClaimForm.controls.cancelBy.value=='CancelByBundleID';
 
 
     }
@@ -154,6 +162,13 @@ export class CancelPreviousClaimComponent implements OnInit {
         return message.includes('Failed') ? { 'color': 'red' } : { 'color': '#00ff00' };
     }
     cancellClaim() {
+
+       // if(!this.getPrivileges().ProviderPrivileges.NPHIES.isAdmin && this.sharedServices.providerId!='101'){
+
+           const provider = this.filteredProviders.filter(provider=>provider.providerId==this.sharedServices.providerId);
+           this.selectProvider(provider[0].providerId , provider[0].cchi_ID, provider[0].providerCode);
+
+      //  }
         console.log(this.providerCHHI)
         this.submitted = true
         if (this.CancellClaimForm.valid && this.selectedPayer != null && this.isValidBundleIdAndClaimsIdentifierFiled() && this.isValidNumberListBundleIdAndClaimsIdentifier()) {

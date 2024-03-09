@@ -2,18 +2,20 @@
     <div class="block-filter-panel">
       <form [formGroup]="CancellClaimForm" (ngSubmit)="cancellClaim()">
         <div class="block-header">
-          <p>Cancel Previous Claim - NPHIES</p>
-          <mat-slide-toggle  formControlName="cancelBy" color="primary" id="referral"  class="ml-auto">Cancel By {{isCancellByBundleIds?"Bundle ID":"Claim Identifier"}}
-          </mat-slide-toggle>
+          <p>Cancel Previous Transaction</p>
+          <mat-radio-group formControlName="cancelBy" color="primary" id="referral"  class="ml-auto">
+            <mat-radio-button value="CancelByClaimIdentifier" style="padding-right: 16px">Cancel By Claim Identifier </mat-radio-button>
+            <mat-radio-button value="CancelByBundleID">Cancel By Bundle ID</mat-radio-button>
+          </mat-radio-group>
+          <!-- <mat-slide-toggle  formControlName="cancelBy" color="primary" id="referral"  class="ml-auto">Cancel By {{isCancellByBundleIds?"Bundle ID":"Claim Identifier"}}
+          </mat-slide-toggle> -->
         </div>
-       
-     
         <div style="margin-top: 15px;" class="row small-gutter">
-          <div class="col-md">
+          <!-- <div class="col-md" *ngIf="getPrivileges().ProviderPrivileges.NPHIES.isAdmin && carrentProviderId=='101'">
             <div class="form-group"
-              [class.has-error]="submitted && CancellClaimForm.get('providerId').hasError('required')">
+              [class.has-error]="submitted && CancellClaimForm.get('providerId').hasError('required') && getPrivileges().ProviderPrivileges.NPHIES.isAdmin && carrentProviderId=='101'">
               <label class="control-label">Provider<span class="asterisk">*</span></label>
-              <!-- <input type="text" class="form-control" placeholder="Select provider" formControlName="providerId" /> -->
+              <input type="text" class="form-control" placeholder="Select provider" formControlName="providerId" />
               <input [readonly]="isLoading" type="text" class="form-control search-box" [matAutocomplete]="auto"
                 formControlName="providerId" (input)="updateFilter()" (keyup.enter)="selectProvider()"
                 placeholder="Select provider">
@@ -28,8 +30,8 @@
               <div *ngIf="submitted && CancellClaimForm.get('providerId').hasError('required')">
                 <span class="error-text">Please select a Provider</span>
               </div>
-            </div>
-          </div>
+            </div> -->
+          <!-- </div> -->
           <div class="col-md">
             <!-- selectedPayerError?.trim().length > 0 -->
             <div class="form-group" [class.has-error]="selectedPayer==null && submitted "
@@ -52,7 +54,7 @@
   
             </div>
           </div>
-          <div class="col-lg-4" *ngIf="isCancellByBundleIds">
+          <div class="col-md" *ngIf="isCancellByBundleIds">
             <div class="form-group"
             [class.has-error]="submitted && isCancellByBundleIds&& !isValidBundleIdAndClaimsIdentifierFiled()">
             <label class="control-label">Request Bundle ID<span class="asterisk">*</span></label>
@@ -62,14 +64,16 @@
             <span class="error-text">Please Enter Request Bundle ID</span>
           </div>
          </div>
-        </div>
-        <div class="row small-gutter">
-          <div class="col-lg-4">
+
+         <div class="col-lg-4">
             <div class="form-group">
               <label class="control-label">Claim Identifier Url - System</label>
               <input placeholder="Enter Claim Identifier Url" class="form-control" formControlName='claimIdentifierUrl'>
             </div>
           </div>
+        </div>
+        <div class="row small-gutter">
+      
           <div class="col-md">
             <div class="form-group">
               <button style="margin-top: 21px;" type="submit" mat-flat-button color="primary">Cancel</button>
