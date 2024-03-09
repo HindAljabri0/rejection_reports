@@ -318,7 +318,7 @@
                         </li>
                     </ul>
                 </mat-expansion-panel>
-                <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin && !envProd">
+                <mat-expansion-panel hideToggle *ngIf="userPrivileges.ProviderPrivileges.NPHIES.isAdmin">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Prescription Verification</mat-panel-title>
                         <span *ngIf="NewPrescriberTransactions > 0" class="alert-marker ml-auto alert-count">{{NewPrescriberTransactions}}</span>
