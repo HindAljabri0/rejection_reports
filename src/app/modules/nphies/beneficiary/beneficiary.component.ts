@@ -568,6 +568,8 @@ export class BeneficiaryComponent implements OnInit {
                 this.insurancePlans[Number.parseInt(this.setPrimary, 10)].isPrimary = true;
         }
 
+        
+
         if (this.checkError()) { return; }
         this.sharedServices.loadingChanged.next(true);
         this.setDateforSaveBeneficiary();

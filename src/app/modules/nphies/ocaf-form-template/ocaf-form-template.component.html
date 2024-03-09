@@ -46,6 +46,10 @@
                         </tr>
                     </table>
                     <p>Date of visit: <span class="value-holder"> {{OCAF.dateOrdered | date: 'dd / MM / yyyy'}}</span></p>
+                    <p >Date of follow up: <span class="value-holder">  {{OCAF.followUp==true?OCAF.createdDate:"" | date: 'dd / MM / yyyy'}}</span>
+                    </p>
+                    <p>Preauthorization Period: <span class="value-holder">{{OCAF.preAuthStartDate | date: 'dd / MM / yyyy'}}  - {{OCAF.preAuthEndDate | date: 'dd / MM / yyyy'}} </span>
+                    </p>
                     <table class="internal-table">
                         <tr>
                             <td width="10">
@@ -53,11 +57,11 @@
                             </td>
                             <td width="6"></td>
                             <td width="10">
-                                <p>New visit (<img src="./assets/form-check.svg" class="check" [class.checked] ="getVisitReason('new-visit')"/>)</p>
+                                <p>New visit (<img src="./assets/form-check.svg" class="check" [class.checked] ="(OCAF.followUp==false)"/>)</p>
                             </td>
                             <td width="6"></td>
                             <td width="10">
-                                <p>Follow Up (<img src="./assets/form-check.svg" class="check" [class.checked] ="getVisitReason('follow-up')"/>)</p>
+                                <p>Follow Up (<img src="./assets/form-check.svg" class="check" [class.checked] ="(OCAF.followUp==true)"/>)</p>
                             </td>
                             <td></td>
                         </tr>
@@ -80,7 +84,7 @@
                     <table class="internal-table">
                         <tr>
                             <td width="10">
-                                <p>ID. Card No.:</p>
+                                <p>Member Card ID No.:</p>
                             </td>
                             <td>
                                 <p class="value-holder">{{OCAF.beneficiary.memberCardId}}</p>
@@ -108,7 +112,7 @@
                                 <p>Policy Holder:</p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder">{{OCAF.policyHolder!=null?OCAF.policyHolder:OCAF.beneficiary.policyHolder}}</p>
                             </td>
                             <td width="10">
                                 <p>Policy No.:</p>
@@ -121,26 +125,56 @@
                     <table class="internal-table">
                         <tr>
                             <td width="10">
-                                <p>Expiry Date:</p>
+                                <p>Expiry Date:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{OCAF.beneficiary.expiryDate | date: 'dd / MM / yyyy'}}</p>
+                                <p class="value-holder">{{printFor !=='eligibility' ?OCAF.beneficiary.expiryDate:OCAF.expiryDate | date: 'dd / MM / yyyy'}}</p>
+                            </td>
+                            <td width="10">
+                                <p>Class:&nbsp;</p>
+                            </td>
+                            <td>
+                                <p class="value-holder">{{OCAF.classValue!=null?OCAF.classValue:OCAF.beneficiary.className}}</p>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="internal-table" *ngIf="OCAF.elgibilityReferenceNumber ==null">
+                        <tr>
+                            <td width="10">
+                                <p>Approval:&nbsp;</p>
+                            </td>
+                            <td>
+                                <p class="value-holder">{{OCAF.approvalReferenceNumber}}&nbsp;</p>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="internal-table" *ngIf="OCAF.elgibilityReferenceNumber ==null">
+                        <tr>
+                            <td width="10">
+                                <p>Approval Status:</p>
+                            </td>
+                            <td>
+                                <p class="value-holder"> {{printFor !=='eligibility' ? OCAF.status : ''}}</p>
                             </td>
                         </tr>
                     </table>
                     <table class="internal-table">
                         <tr>
                             <td width="10">
-                                <p>Class:</p>
+                                <p>Patient Share Percentage:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder"></p>
+                                <p class="value-holder" >{{OCAF.patientSharePercentage}}&nbsp;</p>
                             </td>
+                        </tr>
+                    </table>
+                    <table class="internal-table">
+                        <tr>
                             <td width="10">
-                                <p>Approval:</p>
+                                <p>Max Patient Share:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{OCAF.approvalReferenceNumber}}</p>
+                                <p class="value-holder">{{OCAF.maxPatientShare}}&nbsp;</p>
                             </td>
                         </tr>
                     </table>
@@ -409,7 +443,8 @@
                             <td></td>
                         </tr>
                     </table>
-                    <p><strong>Estimated Cost:</strong> {{OCAF.totalNet}}</p>
+                    <p><strong>Estimated Cost:</strong> {{totalAmount}}</p>
+                    <p><strong>Approved Cost:</strong> {{totalApprovedAmount}}</p>
                     <table class="internal-table">
                         <tr>
                             <td width="10">

@@ -31,6 +31,7 @@ export class AddEditItemDetailsModalComponent implements OnInit {
     prescribedMedicationList: any;
     IsItemLoading = false;
     showTextInput = false;
+    showEBPfeilds = false;
     otherReason = '';
     onDestroy = new Subject<void>();
 
@@ -75,6 +76,7 @@ export class AddEditItemDetailsModalComponent implements OnInit {
         }
 
         if (this.data.item && this.data.item.itemCode) {
+            this.showEBPfeilds = this.data.type === "pharmacy" && this.data.item.type === "medication-codes";
             this.FormItem.patchValue({
                 type: this.data.source === 'CNHI' ? this.cnhiTypeList.filter(x => x.value === this.data.item.type)[0] : this.typeList.filter(x => x.value === this.data.item.type)[0],
                 nonStandardCode: this.data.item.nonStandardCode,
@@ -197,6 +199,11 @@ export class AddEditItemDetailsModalComponent implements OnInit {
     getItemList(type = null) {
         this.IsItemLoading = true;
         this.FormItem.controls.item.disable();
+        if(this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes'){
+            this.showEBPfeilds = true;
+        }else{
+            this.showEBPfeilds = false;
+        }
         // tslint:disable-next-line:max-line-length
         this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, this.FormItem.controls.type.value.value).subscribe(event => {
             if (event instanceof HttpResponse) {
@@ -291,7 +298,6 @@ export class AddEditItemDetailsModalComponent implements OnInit {
         this.itemListFiltered = [];
         this.itemList.forEach(x => {
             if (x.code === StanderCode) {
-
                 this.itemListFiltered.unshift(x);
             } else {
                 this.itemListFiltered.push(x);
@@ -305,7 +311,6 @@ export class AddEditItemDetailsModalComponent implements OnInit {
         this.FormItem.patchValue({
             item: this.itemList.filter(x => x.code === gtinNumber)[0]
         });
-
         if (this.data.type === "pharmacy") {
             //this.itemList.filter(x => x.code === this.data.item.itemCode)[0];
             this.filteredPescribedMedicationItem.next(this.prescribedMedicationList);
@@ -336,6 +341,11 @@ export class AddEditItemDetailsModalComponent implements OnInit {
                 pharmacistSubstitute: this.data.item.pharmacistSubstitute,
                 reasonPharmacistSubstitute: this.data.item.reasonPharmacistSubstitute,
             });
+            if (type.itemType && type.itemType === 'medication-codes') {
+                this.showEBPfeilds = true;
+            } else {
+                this.showEBPfeilds = false;
+            }
             this.getItemList(type);
         }
     }
@@ -347,7 +357,6 @@ export class AddEditItemDetailsModalComponent implements OnInit {
         } else {
             this.FormItem.controls.pharmacistSelectionReason.clearValidators();
             this.FormItem.controls.pharmacistSelectionReason.updateValueAndValidity();
-            
         }
         //------------------------------------
         if (this.data.type === "pharmacy" && this.FormItem.controls.prescribedDrugCode.value == null) {
@@ -355,6 +364,7 @@ export class AddEditItemDetailsModalComponent implements OnInit {
             this.FormItem.controls.prescribedDrugCode.updateValueAndValidity();
             return false;
         }else{
+
             this.FormItem.controls.prescribedDrugCode.clearValidators();
             this.FormItem.controls.prescribedDrugCode.updateValueAndValidity();
         }
@@ -392,7 +402,6 @@ export class AddEditItemDetailsModalComponent implements OnInit {
                 model.reasonPharmacistSubstitute = this.FormItem.controls.reasonPharmacistSubstitute.value;
                 model.pharmacistSubstitute = this.FormItem.controls.pharmacistSubstitute.value;
             }
-            console.log(model, "details model")
             this.dialogRef.close(model);
         }
     }

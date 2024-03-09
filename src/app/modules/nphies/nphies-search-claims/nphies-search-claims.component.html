@@ -25,7 +25,7 @@
                             class="primary-card abstract-card summary-card">
                             <div class="summary">
                                 <div>
-                                    <span class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">{{summary.value.totalClaims}}</span>
+                                    <span class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">{{summary.value.inActiveClaimCount?summary.value.totalClaims - summary.value.inActiveClaimCount:summary.value.totalClaims }}</span>
                                     <p>Active</p>
                                 </div>
                                 <span *ngIf="summary.value.inActiveClaimCount" class="separator"></span>
@@ -43,7 +43,7 @@
                 <ng-container *ngFor="let summary of statusesSummaries | keyvalue; let i = index"  (click)="$event.stopPropagation()">
                     <ng-template carouselSlide [width]="summary.value.statuses[0] == 'partially_paid'?320:0">
                         <app-abstractcard [clickable]="cardsClickAble" [title]="commen.statusToName(i == 0?'all':summary.value.statuses[0])"
-                            [totalCount]="summary.value.totalClaims" [inactiveCount]="summary.value.inActiveClaimCount"
+                            [totalCount]="summary.value.inActiveClaimCount?summary.value.totalClaims - summary.value.inActiveClaimCount:summary.value.totalClaims" [inactiveCount]="summary.value.inActiveClaimCount"
                             [accentColor]="commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])" (action)="getResultsOfStatus(summary.key)"
                             class="primary-card abstract-card">
                             <span class="label total">Totals</span>
