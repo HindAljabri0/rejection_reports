@@ -411,7 +411,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
                 this.FormItem.controls.quantityCode.setValidators([Validators.required]);
                 this.FormItem.controls.quantityCode.updateValueAndValidity();
                 this.FormItem.controls.quantityCode.setValue('{package}');
-                this.showEBPfeilds = true;
+                this.showEBPfeilds = true && this.data.type === "pharmacy";
             } else {
                 this.FormItem.controls.quantityCode.clearValidators();
                 this.FormItem.controls.quantityCode.updateValueAndValidity();
@@ -532,7 +532,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             this.FormItem.controls.quantityCode.setValidators([Validators.required]);
             this.FormItem.controls.quantityCode.updateValueAndValidity();
             this.FormItem.controls.quantityCode.setValue('{package}');
-            this.showEBPfeilds = true;
+            this.showEBPfeilds = true && this.data.type === "pharmacy";
             this.subSiteList = (this.data.source === 'CNHI' && !this.FormItem.controls.isDentalBodySite.value)
                 ? this.sharedDataService.getSubSite('oral')
                 : this.sharedDataService.getSubSite(this.data.type);
