@@ -294,7 +294,6 @@ export class BeneficiaryComponent implements OnInit {
                 return blodType.Name;
             }
         }
-
     }
 
     getPayerName(PayerId: string) {
@@ -314,6 +313,7 @@ export class BeneficiaryComponent implements OnInit {
         }
 
     }
+
 
     getNationalitiesName(NationalitiesName: string) {
         for (const nationality of this.nationalities) {
@@ -482,11 +482,17 @@ export class BeneficiaryComponent implements OnInit {
 
         } else {
             this.fullNameController.enable();
+
         }
     }
 
+    deleteInsurancePlan(i: number) {
 
-
+        if (this.setPrimary == String(i)) {
+            this.setPrimary = '-1';
+        }
+        this.insurancePlans.splice(i, 1);
+    }
 
     addInsurancePlan() {
 
@@ -560,6 +566,7 @@ export class BeneficiaryComponent implements OnInit {
 
     updateDate() {
         if (this.insurancePlans != null && this.insurancePlans.length != 0) {
+
             for (const plan of this.insurancePlans) {
                 plan.isPrimary = false;
             }
@@ -748,7 +755,9 @@ export class BeneficiaryComponent implements OnInit {
         this.errors.documentType = '';
         this.errors.documentId = '';
         this.errors.gender = '';
-        if (this.setPrimary == "-1") {
+
+        if (this.insurancePlans != null && this.insurancePlans.length != 0 && this.setPrimary == "-1") {
+
             this.dialogService.showMessage("Should set one insurance plan as a primary", '', 'alert', true, 'OK');
             thereIsError = true;
         }

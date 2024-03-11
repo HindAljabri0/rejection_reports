@@ -46,6 +46,10 @@
                         </tr>
                     </table>
                     <p>Date of visit: <span class="value-holder"> {{OCAF.dateOrdered | date: 'dd / MM / yyyy'}}</span></p>
+                    <p >Date of follow up: <span class="value-holder">  {{OCAF.followUp==true?OCAF.createdDate:"" | date: 'dd / MM / yyyy'}}</span>
+                    </p>
+                    <p>Preauthorization Period: <span class="value-holder">{{OCAF.preAuthStartDate | date: 'dd / MM / yyyy'}}  - {{OCAF.preAuthEndDate | date: 'dd / MM / yyyy'}} </span>
+                    </p>
                     <table class="internal-table">
                         <tr>
                             <td width="10">
@@ -53,11 +57,11 @@
                             </td>
                             <td width="6"></td>
                             <td width="10">
-                                <p>New visit (<img src="./assets/form-check.svg" class="check" [class.checked] ="getVisitReason('new-visit')"/>)</p>
+                                <p>New visit (<img src="./assets/form-check.svg" class="check" [class.checked] ="(OCAF.followUp==false)"/>)</p>
                             </td>
                             <td width="6"></td>
                             <td width="10">
-                                <p>Follow Up (<img src="./assets/form-check.svg" class="check" [class.checked] ="getVisitReason('follow-up')"/>)</p>
+                                <p>Follow Up (<img src="./assets/form-check.svg" class="check" [class.checked] ="(OCAF.followUp==true)"/>)</p>
                             </td>
                             <td></td>
                         </tr>
@@ -80,7 +84,7 @@
                     <table class="internal-table">
                         <tr>
                             <td width="10">
-                                <p>ID. Card No.:</p>
+                                <p>Member Card ID No.:</p>
                             </td>
                             <td>
                                 <p class="value-holder">{{OCAF.beneficiary.memberCardId}}</p>
@@ -108,7 +112,7 @@
                                 <p>Policy Holder:</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{OCAF.policyHolder}}</p>
+                                <p class="value-holder">{{OCAF.policyHolder!=null?OCAF.policyHolder:OCAF.beneficiary.policyHolder}}</p>
                             </td>
                             <td width="10">
                                 <p>Policy No.:</p>
@@ -130,7 +134,7 @@
                                 <p>Class:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{OCAF.classValue}}</p>
+                                <p class="value-holder">{{OCAF.classValue!=null?OCAF.classValue:OCAF.beneficiary.className}}</p>
                             </td>
                         </tr>
                     </table>
@@ -439,7 +443,8 @@
                             <td></td>
                         </tr>
                     </table>
-                    <p><strong>Estimated Cost:</strong> {{OCAF.totalNet}}</p>
+                    <p><strong>Estimated Cost:</strong> {{totalAmount}}</p>
+                    <p><strong>Approved Cost:</strong> {{totalApprovedAmount}}</p>
                     <table class="internal-table">
                         <tr>
                             <td width="10">

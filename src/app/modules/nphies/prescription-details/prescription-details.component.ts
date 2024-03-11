@@ -38,6 +38,7 @@ export class PrescriptionDetailsComponent implements OnInit {
     { Code: 'EHCPOL', Name: 'Extended healthcare' },
     { Code: 'PUBLICPOL', Name: 'Public healthcare' }
   ];
+  currentOpenItemDosage: number = null;
 
   constructor(
     private sharedDataService: SharedDataService,
