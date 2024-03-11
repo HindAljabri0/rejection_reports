@@ -23,6 +23,8 @@ export class DosageDetailsComponent implements OnInit {
     filteredItem: ReplaySubject<any> = new ReplaySubject<any[]>(1);
     filteredPescribedMedicationItem: ReplaySubject<any> = new ReplaySubject<any[]>(1);
     filteredUnits: ReplaySubject<any> = new ReplaySubject<any[]>(1);
+    filteredRateUnits: ReplaySubject<any> = new ReplaySubject<any[]>(1);
+    filteredDenominatorUnits: ReplaySubject<any> = new ReplaySubject<any[]>(1);
     filteredRoutes: ReplaySubject<any> = new ReplaySubject<any[]>(1);
     IsItemLoading = false;
 
@@ -43,10 +45,13 @@ export class DosageDetailsComponent implements OnInit {
         rateType: [''],
         numerator: [''],
         denominator: [''],
+        denominatorFilter: [''],
+        rateDenominatorUnit:[''],
         ratemin: [''],
         ratemax: [''],
         rateQuantity: [''],
         rateUnit: [''],
+        rateUnitFilter:[''],
         startDate: ['', Validators.required],
         endDate: ['', Validators.required],
         refill: [''],
@@ -131,7 +136,7 @@ export class DosageDetailsComponent implements OnInit {
                 if (event.body != null && event.body instanceof Array) {
 
                     this.units = event.body;
-                    //this.filteredUnits.next(this.units);
+                    
                     // tslint:disable-next-line:max-line-length
                     if (this.data.item && this.data.item.doseUnit) {
                         this.FormItem.controls.doseUnit.setValue(this.units.filter(x => x.ucumCode === this.data.item.doseUnit)[0]);
@@ -140,6 +145,8 @@ export class DosageDetailsComponent implements OnInit {
                         this.FormItem.controls.rateUnit.setValue(this.units.filter(x => x.ucumCode === this.data.item.rateUnit)[0]);
                     }
                     this.filteredUnits.next(this.units.slice());
+                    this.filteredRateUnits.next(this.units.slice());
+                    this.filteredDenominatorUnits.next(this.units.slice());
                     //this.filterUnits();
                 }
             }
@@ -149,6 +156,38 @@ export class DosageDetailsComponent implements OnInit {
             }
         });
     }
+    
+    filterRateUnits(val) {
+        if (!this.units) {
+            return;
+        }
+        let search = this.FormItem.controls.rateUnitFilter.value ? this.FormItem.controls.rateUnitFilter.value : val;
+        if (!search) {
+            this.filteredRateUnits.next(this.units.slice());
+            return;
+        } else {
+            search = search.toLowerCase();
+        }
+        this.filteredRateUnits.next(
+            this.units.filter(item => (item.ucumCode && item.ucumCode.toLowerCase().indexOf(search) > -1) || (item.description && item.description.toString().toLowerCase().indexOf(search) > -1))
+        );
+    }
+    filterDenominatorUnits(val) {
+        if (!this.units) {
+            return;
+        }
+        let search = this.FormItem.controls.denominatorFilter.value ? this.FormItem.controls.denominatorFilter.value : val;
+        if (!search) {
+            this.filteredDenominatorUnits.next(this.units.slice());
+            return;
+        } else {
+            search = search.toLowerCase();
+        }
+        this.filteredDenominatorUnits.next(
+            this.units.filter(item => (item.ucumCode && item.ucumCode.toLowerCase().indexOf(search) > -1) || (item.description && item.description.toString().toLowerCase().indexOf(search) > -1))
+        );
+    }
+    
     filterUnits(val) {
         if (!this.units) {
             return;
