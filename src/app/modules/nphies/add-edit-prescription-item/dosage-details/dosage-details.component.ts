@@ -34,7 +34,7 @@ export class DosageDetailsComponent implements OnInit {
         note: [''],
         patientInstruction: [''],
         route: ['', Validators.required],
-        routeFilter:[''],
+        routeFilter: [''],
         dosageType: ['', Validators.required],
         doseType: [''],
         min: [''],
@@ -46,12 +46,12 @@ export class DosageDetailsComponent implements OnInit {
         numerator: [''],
         denominator: [''],
         denominatorFilter: [''],
-        rateDenominatorUnit:[''],
+        rateDenominatorUnit: [''],
         ratemin: [''],
         ratemax: [''],
         rateQuantity: [''],
         rateUnit: [''],
-        rateUnitFilter:[''],
+        rateUnitFilter: [''],
         startDate: ['', Validators.required],
         endDate: ['', Validators.required],
         refill: [''],
@@ -109,6 +109,7 @@ export class DosageDetailsComponent implements OnInit {
                 ratemax: this.data.item.rateRatioDenominatorMax,
                 rateQuantity: this.data.item.rateRatioNumeratorMin,
                 rateUnit: this.data.item.rateUnit,
+                rateDenominatorUnit: this.data.item.rateDenominatorUnit,
                 startDate: this.data.item.startDate,
                 endDate: this.data.item.endDate,
                 refill: this.data.item.refill,
@@ -136,7 +137,7 @@ export class DosageDetailsComponent implements OnInit {
                 if (event.body != null && event.body instanceof Array) {
 
                     this.units = event.body;
-                    
+
                     // tslint:disable-next-line:max-line-length
                     if (this.data.item && this.data.item.doseUnit) {
                         this.FormItem.controls.doseUnit.setValue(this.units.filter(x => x.ucumCode === this.data.item.doseUnit)[0]);
@@ -144,6 +145,10 @@ export class DosageDetailsComponent implements OnInit {
                     if (this.data.item && this.data.item.rateUnit) {
                         this.FormItem.controls.rateUnit.setValue(this.units.filter(x => x.ucumCode === this.data.item.rateUnit)[0]);
                     }
+                    if (this.data.item && this.data.item.rateDenominatorUnit) {
+                        this.FormItem.controls.rateDenominatorUnit.setValue(this.units.filter(x => x.ucumCode === this.data.item.rateDenominatorUnit)[0]);
+                    }
+
                     this.filteredUnits.next(this.units.slice());
                     this.filteredRateUnits.next(this.units.slice());
                     this.filteredDenominatorUnits.next(this.units.slice());
@@ -156,7 +161,7 @@ export class DosageDetailsComponent implements OnInit {
             }
         });
     }
-    
+
     filterRateUnits(val) {
         if (!this.units) {
             return;
@@ -187,7 +192,7 @@ export class DosageDetailsComponent implements OnInit {
             this.units.filter(item => (item.ucumCode && item.ucumCode.toLowerCase().indexOf(search) > -1) || (item.description && item.description.toString().toLowerCase().indexOf(search) > -1))
         );
     }
-    
+
     filterUnits(val) {
         if (!this.units) {
             return;
@@ -292,6 +297,15 @@ export class DosageDetailsComponent implements OnInit {
             this.FormItem.controls.rateUnit.clearValidators();
             this.FormItem.controls.rateUnit.updateValueAndValidity();
         }
+        if (this.FormItem.controls.dosageType.value === 'RateType' && this.FormItem.controls.rateType.value === 'Rate_Ratio' && (this.FormItem.controls.rateDenominatorUnit.value === '' || this.FormItem.controls.rateDenominatorUnit.value === null)) {
+            this.FormItem.controls.rateDenominatorUnit.setValidators([Validators.required]);
+            this.FormItem.controls.rateDenominatorUnit.updateValueAndValidity();
+            return false;
+        } else {
+            this.FormItem.controls.rateDenominatorUnit.clearValidators();
+            this.FormItem.controls.rateDenominatorUnit.updateValueAndValidity();
+        }
+
         //console.log("validation 2 passed");
         if (this.FormItem.controls.rateType.value === 'Rate_Quantity' && this.FormItem.controls.rateQuantity !== undefined && (this.FormItem.controls.rateQuantity.value === null || this.FormItem.controls.rateQuantity.value <= 0)) {
             this.FormItem.controls.rateQuantity.setValidators([Validators.required]);
@@ -365,7 +379,9 @@ export class DosageDetailsComponent implements OnInit {
             model.rateType = this.FormItem.controls.rateType !== undefined ? this.FormItem.controls.rateType.value : "";
             model.rateRatioNumeratorMin = this.FormItem.controls.numerator.value || this.FormItem.controls.ratemin.value || this.FormItem.controls.rateQuantity.value;
             model.rateRatioDenominatorMax = this.FormItem.controls.denominator.value || this.FormItem.controls.ratemax.value;
-            model.rateUnit = this.FormItem.controls.rateUnit ? this.FormItem.controls.rateUnit.value : "";
+            model.rateUnit = this.FormItem.controls.rateUnit && this.FormItem.controls.rateUnit.value ? this.FormItem.controls.rateUnit.value.ucumCode : "";
+            model.rateDenominatorUnit = this.FormItem.controls.rateDenominatorUnit && this.FormItem.controls.rateDenominatorUnit.value ? this.FormItem.controls.rateDenominatorUnit.value.ucumCode : "";
+
             model.startDate = this.FormItem.controls.startDate.value;
             // model.startDateStr = this.datePipe.transform(this.FormItem.controls.startDate.value, 'dd-MM-yyyy hh:mm aa');
 
