@@ -1319,6 +1319,7 @@ export class AddPrescriptionComponent implements OnInit {
                                     val.rateType = result.rateType;
                                     val.rateRatioNumeratorMin = result.rateRatioNumeratorMin;
                                     val.rateRatioDenominatorMax = result.rateRatioDenominatorMax;
+                                    val.rateDenominatorUnit = result.rateDenominatorUnit;
                                     val.rateUnit = result.rateUnit;
                                     val.startDate = result.startDate;
                                     val.endDate = result.endDate;
@@ -1388,6 +1389,7 @@ export class AddPrescriptionComponent implements OnInit {
                                     val.rateType = result.rateType;
                                     val.rateRatioNumeratorMin = result.rateRatioNumeratorMin;
                                     val.rateRatioDenominatorMax = result.rateRatioDenominatorMax;
+                                    val.rateDenominatorUnit = result.rateDenominatorUnit;
                                     val.rateUnit = result.rateUnit;
                                     val.startDate = result.startDate;
                                     val.endDate = result.endDate;
