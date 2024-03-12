@@ -486,13 +486,7 @@ export class BeneficiaryComponent implements OnInit {
         }
     }
 
-    deleteInsurancePlan(i: number) {
-
-        if (this.setPrimary == String(i)) {
-            this.setPrimary = '-1';
-        }
-        this.insurancePlans.splice(i, 1);
-    }
+   
 
     addInsurancePlan() {
 
