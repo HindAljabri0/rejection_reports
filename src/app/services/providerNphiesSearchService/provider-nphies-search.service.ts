@@ -259,7 +259,7 @@ getItemList(
 
 
 getPrescriberCommunications(providerId: string, responseId: number) {
-    const requestUrl = `/providers/${providerId}/prescriber?responseId=${responseId}`;
+    const requestUrl = `/providers/${providerId}/communications?responseId=${responseId}`;;
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
     return this.http.request(request);
 }

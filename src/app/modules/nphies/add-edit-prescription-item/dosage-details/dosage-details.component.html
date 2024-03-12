@@ -1,5 +1,5 @@
 <div class="primary-dialog-header has-border">
-    <h5 class="primary-dialog-title">Dosage administration<mat-icon class="material-icons-outlined size-20"
+    <h5 class="primary-dialog-title">Dosage Administration<mat-icon class="material-icons-outlined size-20"
             matTooltip="How to take medication">info</mat-icon></h5>
     <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
@@ -24,7 +24,8 @@
                                     name='searchedItem'></ngx-mat-select-search>
                             </mat-option>
                             <ng-container>
-                                <mat-option *ngFor="let route of filteredRoutes | async" [value]="route">{{ route.name }}</mat-option>
+                                <mat-option *ngFor="let route of filteredRoutes | async" [value]="route">{{ route.name
+                                    }}</mat-option>
                             </ng-container>
                         </mat-select>
                     </mat-form-field>
@@ -43,7 +44,7 @@
                         <mat-select placeholder="Select dosage type" formControlName="dosageType">
                             <mat-option value="">Select Type</mat-option>
                             <mat-option value="DoseType">Dose</mat-option>
-                            <!--mat-option value="RateType">Rate</mat-option-->
+                            <!-- <mat-option value="RateType">Rate</mat-option> -->
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -152,7 +153,7 @@
                 </div>
             </div>
 
-            <div class="col-4" *ngIf="FormItem.get('dosageType').value === 'RateType'">
+            <div class="col-2" *ngIf="FormItem.get('dosageType').value === 'RateType'">
                 <div class="form-group"
                     [ngClass]="{'has-error' : (isSubmitted || FormItem.get('rateType').touched) && FormItem.get('rateType').hasError('required')}">
                     <label class="control-label">Rate Type<span class="asterisk">*</span></label>
@@ -167,24 +168,9 @@
                 </div>
             </div>
 
-            <div class="col-4"
-                *ngIf="FormItem.get('dosageType').value === 'RateType' && FormItem.get('rateType').value === 'Rate_Ratio'">
-                <div class="form-group">
-                    <label class="control-label">Rate Ratio<span class="asterisk">*</span></label>
-                    <div class="row small-gutter">
-                        <div class="col-6"
-                            [ngClass]="{'has-error' : (isSubmitted || FormItem.get('numerator').touched) && FormItem.get('numerator').hasError('required')}">
-                            <input class="form-control" placeholder="Numerator" formControlName="numerator">
-                        </div>
-                        <div class="col-6"
-                            [ngClass]="{'has-error' : (isSubmitted || FormItem.get('denominator').touched) && FormItem.get('denominator').hasError('required')}">
-                            <input class="form-control" placeholder="Denominator" formControlName="denominator">
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="col-4"
+
+            <div class="col-2"
                 *ngIf="FormItem.get('dosageType').value === 'RateType' && FormItem.get('rateType').value === 'Rate_Range'">
                 <div class="form-group">
                     <label class="control-label">Rate Range<span class="asterisk">*</span></label>
@@ -201,7 +187,7 @@
                 </div>
             </div>
 
-            <div class="col-4"
+            <div class="col-2"
                 *ngIf="FormItem.get('dosageType').value === 'RateType' && FormItem.get('rateType').value === 'Rate_Quantity'">
                 <div class="form-group"
                     [ngClass]="{'has-error' : (isSubmitted || FormItem.get('rateQuantity').touched) && FormItem.get('rateQuantity').hasError('required')}">
@@ -210,21 +196,67 @@
                     <input class="form-control" placeholder="Enter the rate quantity" formControlName="rateQuantity">
                 </div>
             </div>
-
-            <div class="col-4" *ngIf="FormItem.get('dosageType').value === 'RateType'">
+            <div class="col-2"
+                *ngIf="FormItem.get('dosageType').value === 'RateType' && FormItem.get('rateType').value === 'Rate_Ratio'">
+                <div class="form-group">
+                    <label class="control-label">Rate Ratio<span class="asterisk">*</span></label>
+                    <div class="row small-gutter">
+                        <div class="col-12"
+                            [ngClass]="{'has-error' : (isSubmitted || FormItem.get('numerator').touched) && FormItem.get('numerator').hasError('required')}">
+                            <input class="form-control" placeholder="Numerator" formControlName="numerator">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3" *ngIf="FormItem.get('dosageType').value === 'RateType' ">
                 <div class="form-group"
                     [ngClass]="{'has-error' : (isSubmitted || FormItem.get('rateUnit').touched) && FormItem.get('rateUnit').hasError('required')}">
-                    <label class="control-label">Rate Unit<span class="asterisk">*</span></label>
+                    <label class="control-label" *ngIf="FormItem.get('rateType').value === 'Rate_Ratio'">Numerator Unit<span class="asterisk">*</span></label>
+                    <label class="control-label" *ngIf="FormItem.get('rateType').value !== 'Rate_Ratio'">Rate Unit<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select placeholder="Select rate unit" formControlName="rateUnit">
-                            <mat-option value="">Select unit</mat-option>
-                            <mat-option value="s">seconds</mat-option>
-                            <mat-option value="min">minutes</mat-option>
-                            <mat-option value="h">hours</mat-option>
-                            <mat-option value="d">days</mat-option>
-                            <mat-option value="wk">week</mat-option>
-                            <mat-option value="mo">month</mat-option>
-                            <mat-option value="UCUM">Year</mat-option>
+                            <mat-option>
+                                <ngx-mat-select-search placeholderLabel="Search Unit" formControlName="rateUnitFilter"
+                                    noEntriesFoundLabel="No Units found" (ngModelChange)="filterRateUnits($event)"
+                                    name='searchedItem'></ngx-mat-select-search>
+                            </mat-option>
+                            <ng-container>
+                                <mat-option *ngFor="let unit of filteredRateUnits | async" [value]="unit">
+                                    {{unit.ucumCode}} | {{unit.description }}
+                                </mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-2"
+                *ngIf="FormItem.get('dosageType').value === 'RateType' && FormItem.get('rateType').value === 'Rate_Ratio'">
+                <div class="form-group">
+                    <label class="control-label">Rate Ratio<span class="asterisk">*</span></label>
+                    <div class="row small-gutter">
+                        <div class="col-12"
+                            [ngClass]="{'has-error' : (isSubmitted || FormItem.get('denominator').touched) && FormItem.get('denominator').hasError('required')}">
+                            <input class="form-control" placeholder="Denominator" formControlName="denominator">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3" *ngIf="FormItem.get('dosageType').value === 'RateType'&& FormItem.get('rateType').value === 'Rate_Ratio'">
+                <div class="form-group"
+                    [ngClass]="{'has-error' : (isSubmitted || FormItem.get('rateDenominatorUnit').touched) && FormItem.get('rateDenominatorUnit').hasError('required')}">
+                    <label class="control-label">Denominator Unit<span class="asterisk">*</span></label>
+                    <mat-form-field class="form-control custom-select-control">
+                        <mat-select placeholder="Select rate unit" formControlName="rateDenominatorUnit">
+                            <mat-option>
+                                <ngx-mat-select-search placeholderLabel="Search Unit" formControlName="denominatorFilter"
+                                    noEntriesFoundLabel="No Units found" (ngModelChange)="filterDenominatorUnits($event)"
+                                    name='searchedItem'></ngx-mat-select-search>
+                            </mat-option>
+                            <ng-container>
+                                <mat-option *ngFor="let unit of filteredDenominatorUnits | async" [value]="unit">
+                                    {{unit.ucumCode}} | {{unit.description }}
+                                </mat-option>
+                            </ng-container>
                         </mat-select>
                     </mat-form-field>
                 </div>
