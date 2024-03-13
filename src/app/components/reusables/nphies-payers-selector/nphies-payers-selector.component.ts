@@ -153,6 +153,7 @@ export class NphiesPayersSelectorComponent implements OnInit {
         }
       }
       this.selectionChange.emit({ value: { payerNphiesId: payerNphiesIdValue, organizationNphiesId: organizationNphiesIdValue } });
+
     } else {
       this.selectionChange.emit({ value: '' });
     }
