@@ -246,6 +246,7 @@ export class AddPrescriptionComponent implements OnInit {
         this.getTPA();
         this.FormPreAuthorization.controls.dateOrdered.setValue(this.removeSecondsFromDate(new Date()));
         this.filteredNations.next(this.nationalities.slice());
+        
         if (this.claimReuseId) {
             this.FormPreAuthorization.controls.transfer.setValue(this.data.transfer)
             this.getRefferalProviders();
@@ -257,8 +258,9 @@ export class AddPrescriptionComponent implements OnInit {
             this.SupportingInfo.push(this.SetDaysOfSupply());
             this.FormPreAuthorization.controls.type.setValue(this.sharedDataService.claimPrescriberType.filter(x => x.value === "professional")[0]);
             this.FormPreAuthorization.controls.subType.setValue(this.sharedDataService.subTypeList.filter(x => x.value === "op")[0]);
+            this.claimType = "professional";
         }
-        console.log("sub types ", this.subTypeList);
+        //console.log("sub types ", this.subTypeList);
         this.getProviderTypeConfiguration();
 
     }

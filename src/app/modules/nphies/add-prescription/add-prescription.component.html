@@ -302,13 +302,72 @@
                     </div>
 
                 </div>
+                <h5 class="form-title" *ngIf="claimReuseId">
+                    Care Teams
+                </h5>
+                <div class="table-responsive" *ngIf="CareTeams.length!=0 && claimReuseId">
+                    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+                        <thead>
+                            <tr>
+                                <th>Sequence</th>
+                                <th>Practitioner</th>
+                                <th>Practitioner Role</th>
+                                <th>Care Team Role</th>
+                                <th>Speciality</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            <tr *ngFor="let careTeam of CareTeams">
+                                <td>{{careTeam.sequence}}</td>
+                                <td>{{careTeam.practitionerName}}</td>
+                                <td>{{careTeam.practitionerRoleName}}</td>
+                                <td>{{careTeam.careTeamRoleName}}</td>
+                                <td>{{careTeam.speciality}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Care Teams end -->
+                
+                <!-- Diagnosis start -->
+                <h5 class="form-title" *ngIf="claimReuseId">
+                    Diagnosis
+                </h5>
+                <div class="table-responsive" *ngIf="claimReuseId">
+                    <table class="primary-grid" cellpadding="0" cellspacing="0" border="0">
+                        <thead>
+                            <tr>
+                                <th>Sequence</th>
+                                <th>Type</th>
+                                <th>Code - Description</th>
+                                <th>On Admission</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="Diagnosises.length === 0">
+                                <td colspan="5">
+                                    <app-empty-state message='No Diagnosis found!'></app-empty-state>
+                                </td>
+                            </tr>
+                            <ng-container *ngIf="Diagnosises.length > 0">
+                                <tr *ngFor="let diagnosis of Diagnosises">
+                                    <td>{{diagnosis.sequence}}</td>
+                                    <td>{{diagnosis.typeName}}</td>
+                                    <td>{{diagnosis.diagnosisCode}} - {{diagnosis.diagnosisDescription}}</td>
+                                    <td>{{diagnosis.onAdmissionName}}</td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Diagnosis end -->
 
-
-                <app-manage-care-team [(isSubmitted)]="isSubmitted"
+                <app-manage-care-team *ngIf="!claimReuseId" [(isSubmitted)]="isSubmitted"
                     (PrescriberDefault)="selectedDefualtPrescriberChange($event)" [(CareTeams)]="CareTeams">
                 </app-manage-care-team>
 
-                <app-manage-diagnosis class="pt-4 d-block" [(isSubmitted)]="isSubmitted"
+                <app-manage-diagnosis *ngIf="!claimReuseId" class="pt-4 d-block" [(isSubmitted)]="isSubmitted"
                     [(IsDiagnosisRequired)]="IsDiagnosisRequired" [(diagnosisList)]="Diagnosises"
                     [(claimType)]="claimType" [(pageMode)]="defualtPageMode">
                 </app-manage-diagnosis>
@@ -565,7 +624,7 @@
                     <div class="ml-auto" [matTooltip]="ItemsAddButtonToolTip()"
                         [matTooltipDisabled]="!disableItemsButton()">
                         <button type="button" (click)="openAddEditItemDialog()" class="btn-icon btn-primary"
-                            [disabled]="disableItemsButton()">
+                            [disabled]="claimReuseId">
                             <mat-icon>add</mat-icon>
                         </button>
                     </div>
@@ -655,8 +714,8 @@
                       {{item.unitPrice}} <span class="currency">SR</span></td>
                     <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
                       {{item.nonStandardCode}}</td> -->
-                                    <td class="actions">
-                                        <mat-menu #itemsActionsMenu xPosition="before">
+                                    <td class="actions" *ngIf="!claimReuseId">
+                                        <mat-menu #itemsActionsMenu xPosition="before" >
                                             <ng-template matMenuContent>
                                                 <button mat-menu-item type="button" *ngIf="item.isPackage === true"
                                                     (click)="openAddEditItemDetailsDialog(item.sequence,0)">
@@ -783,7 +842,7 @@
                                                             <td class="row-click">
                                                                 {{d1.refill ? d1.refill : '-'}}
                                                             </td>
-                                                            <td class="actions">
+                                                            <td class="actions" *ngIf="!claimReuseId">
                                                                 <mat-menu #itemsDetailsActionsMenu xPosition="before">
                                                                     <ng-template matMenuContent>
                                                                         <button mat-menu-item type="button"
@@ -857,7 +916,7 @@
                                                                 (click)="currentOpenItemDosage = (i == currentOpenItemDosage) ? -1 : i">
                                                                 {{d.quantity ? d.quantity +" "+
                                                                 d.quantityCode : '-'}}</td>
-                                                            <td class="actions">
+                                                            <td class="actions" *ngIf="!claimReuseId">
                                                                 <mat-menu #itemsDetailsActionsMenu xPosition="before">
                                                                     <ng-template matMenuContent>
                                                                         <button mat-menu-item type="button"
@@ -940,7 +999,7 @@
                                                                                                 <td class="row-click">
                                                                                                     {{d1.refill ? d1.refill : '-'}}
                                                                                                 </td>
-                                                                                                <td class="actions">
+                                                                                                <td class="actions" *ngIf="!claimReuseId">
                                                                                                     <mat-menu
                                                                                                         #itemsDetailsActionsMenu
                                                                                                         xPosition="before">
