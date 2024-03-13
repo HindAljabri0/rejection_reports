@@ -511,7 +511,7 @@ export class BeneficiaryTabComponent implements OnInit, OnChanges {
 
   getPayerName(PayerId: string) {
     for (const payer of this.payersList) {
-      if (payer.payerId == PayerId) {
+      if (payer.nphiesId == PayerId) {
         return payer.englistName;
       }
     }
@@ -520,7 +520,7 @@ export class BeneficiaryTabComponent implements OnInit, OnChanges {
 
   selectedPayer(payerId: string) {
     for (const payer of this.payersList) {
-      if (payer.payerId == payerId) {
+      if (payer.nphiesId == payerId) {
         return payer.englistName + '(' + payer.arabicName + ')';
       }
     }
