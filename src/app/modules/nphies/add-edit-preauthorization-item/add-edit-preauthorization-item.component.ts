@@ -427,7 +427,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
                 display: type.nonStandardDescription,
                 unitPrice: type.unitPrice,
                 factor: type.factor ? type.factor : 1,
-                tax: 0
+               // tax: 0
             });
             if (this.data.providerType === 'vision' && this.data.source === 'APPROVAL') {
                 this.FormItem.controls.factor.setValue(1);
@@ -740,10 +740,10 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         // tslint:disable-next-line:max-line-length
         if (this.FormItem.controls.quantity.value && this.FormItem.controls.unitPrice.value && (this.FormItem.controls.tax.value != null && this.FormItem.controls.tax.value !== undefined)) {
             let tax = parseFloat(this.FormItem.controls.tax.value);
-            // if (tax < 0) {
-            //     this.FormItem.controls.tax.setValue(0);
-            //     tax = 0;
-            // }
+            if (tax < 0) {
+                this.FormItem.controls.tax.setValue(0);
+                tax = 0;
+            }
             // tslint:disable-next-line:max-line-length
             const netValue = (parseFloat(this.FormItem.controls.quantity.value) * parseFloat(this.FormItem.controls.unitPrice.value) * parseFloat(this.FormItem.controls.factor.value)) + tax;
             // console.log("Quntity = " + parseFloat(this.FormItem.controls.quantity.value) + " * Unit Price = " + parseFloat(this.FormItem.controls.unitPrice.value) + " * factor = " + parseFloat(this.FormItem.controls.factor.value) + " + tax = " + tax)
