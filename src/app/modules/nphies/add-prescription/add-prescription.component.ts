@@ -536,6 +536,9 @@ export class AddPrescriptionComponent implements OnInit {
                         this.FormPreAuthorization.controls.country.disable();
                         this.FormPreAuthorization.controls.countryName.disable();
                         this.FormPreAuthorization.controls.date.disable();
+                        this.FormPreAuthorization.controls.otherReferral.disable();
+                        this.FormPreAuthorization.controls.referral.disable();
+                        this.FormPreAuthorization.controls.eligibilityType.disable();
                     }
                 }
 
