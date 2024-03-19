@@ -107,7 +107,7 @@ export class DosageDetailsComponent implements OnInit {
                 denominator: this.data.item.rateRatioDenominatorMax,
                 ratemin: this.data.item.rateRatioNumeratorMin,
                 ratemax: this.data.item.rateRatioDenominatorMax,
-                rateQuantity: this.data.item.rateRatioNumeratorMin,
+                rateQuantity: this.data.item.rateQuantity,
                 rateUnit: this.data.item.rateUnit,
                 rateDenominatorUnit: this.data.item.rateDenominatorUnit,
                 startDate: this.data.item.startDate,
@@ -377,7 +377,8 @@ export class DosageDetailsComponent implements OnInit {
             model.doseUnit = this.FormItem.controls.doseUnit.value ? this.FormItem.controls.doseUnit.value.ucumCode : null;
 
             model.rateType = this.FormItem.controls.rateType !== undefined ? this.FormItem.controls.rateType.value : "";
-            model.rateRatioNumeratorMin = this.FormItem.controls.numerator.value || this.FormItem.controls.ratemin.value || this.FormItem.controls.rateQuantity.value;
+            model.rateQuantity = this.FormItem.controls.rateQuantity.value;
+            model.rateRatioNumeratorMin = this.FormItem.controls.numerator.value || this.FormItem.controls.ratemin.value;
             model.rateRatioDenominatorMax = this.FormItem.controls.denominator.value || this.FormItem.controls.ratemax.value;
             model.rateUnit = this.FormItem.controls.rateUnit && this.FormItem.controls.rateUnit.value ? this.FormItem.controls.rateUnit.value.ucumCode : "";
             model.rateDenominatorUnit = this.FormItem.controls.rateDenominatorUnit && this.FormItem.controls.rateDenominatorUnit.value ? this.FormItem.controls.rateDenominatorUnit.value.ucumCode : "";

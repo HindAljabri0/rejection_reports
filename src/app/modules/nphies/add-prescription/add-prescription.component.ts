@@ -1322,6 +1322,7 @@ export class AddPrescriptionComponent implements OnInit {
                                     val.doseRangeMax = result.doseRangeMax;
                                     val.doseUnit = result.doseUnit;
                                     val.rateType = result.rateType;
+                                    val.rateQuantity = result.rateQuantity;
                                     val.rateRatioNumeratorMin = result.rateRatioNumeratorMin;
                                     val.rateRatioDenominatorMax = result.rateRatioDenominatorMax;
                                     val.rateDenominatorUnit = result.rateDenominatorUnit;
@@ -1392,6 +1393,7 @@ export class AddPrescriptionComponent implements OnInit {
                                     val.doseRangeMax = result.doseRangeMax;
                                     val.doseUnit = result.doseUnit;
                                     val.rateType = result.rateType;
+                                    val.rateQuantity = result.rateQuantity;
                                     val.rateRatioNumeratorMin = result.rateRatioNumeratorMin;
                                     val.rateRatioDenominatorMax = result.rateRatioDenominatorMax;
                                     val.rateDenominatorUnit = result.rateDenominatorUnit;
