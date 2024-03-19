@@ -239,7 +239,7 @@
                                                 *ngIf="transaction.status === 'approved' || transaction.status === 'rejected' || transaction.status === 'partial'  || transaction.status === 'not-required'"
                                                 (click)="OpenReuseApprovalModal(transaction.requestId, transaction.responseId)">
                                                 <mat-icon class="material-icons-outlined">replay</mat-icon>
-                                                <span>Follow Up/Add Related</span>
+                                                <span>Appealing (Follow Up)</span>
                                             </button>
                                             <button mat-menu-item
                                                 (click)="openReasonModal(transaction.requestId, transaction.responseId, 'cancel')">
