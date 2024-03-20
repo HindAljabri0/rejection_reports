@@ -203,6 +203,7 @@ export class ManageSupportingInfoComponent implements OnInit {
         model.attachmentType = '';
         model.attachmentDate = '';
         model.unit = '';
+        model.otherUnit ='';
         model.fileError = '';
         model.uploadContainerClass = '';
 
