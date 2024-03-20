@@ -1539,7 +1539,7 @@ export class AddPreauthorizationComponent implements OnInit {
                 }
             }
             if (x.category === 'lab-test') {
-                if (!x.code || !x.value || (x.isUnitsRequired && !x.unit)) {
+                if (!x.code || !x.value) {
                     hasError = true;
                 }
             }
@@ -2031,7 +2031,7 @@ export class AddPreauthorizationComponent implements OnInit {
                 model.attachment = x.attachment;
                 model.attachmentName = x.attachmentName;
                 model.attachmentType = x.attachmentType;
-                model.unit = x.unit;
+                
                 if (x.attachmentDate) {
                     x.attachmentDate = this.datePipe.transform(x.attachmentDate, 'yyyy-MM-dd');
                 }

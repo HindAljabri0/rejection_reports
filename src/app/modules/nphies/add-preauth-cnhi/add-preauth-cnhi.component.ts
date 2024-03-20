@@ -1601,7 +1601,7 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
         }
       }
       if (x.category === 'lab-test') {
-        if (!x.code || !x.value || (!x.unit && x.isUnitsRequired)) {
+        if (!x.code || !x.value) {
           hasError = true;
         }
       }
@@ -2103,7 +2103,6 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
         model.attachment = x.attachment;
         model.attachmentName = x.attachmentName;
         model.attachmentType = x.attachmentType;
-        model.unit = x.unit;
         if (x.attachmentDate) {
           x.attachmentDate = this.datePipe.transform(x.attachmentDate, 'yyyy-MM-dd');
         }

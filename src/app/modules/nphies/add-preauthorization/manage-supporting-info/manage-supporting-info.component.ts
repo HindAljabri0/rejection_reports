@@ -101,20 +101,6 @@ export class ManageSupportingInfoComponent implements OnInit {
     addLoink(data: any, i: number) {
         this.supportingInfoList[i].code = data.loincNum;
         this.supportingInfoList[i].description = data.loincNum + ' - ' + data.shortName;
-        this.supportingInfoList[i].isUnitsRequired = data.unitsRequired === 'Y';
-        if (this.supportingInfoList[i].isUnitsRequired) {
-            this.ucumCodes = [];
-            this.fillUcumCodes(i, data.exampleUcumUnits);
-        }
-    }
-    fillUcumCodes(i: number, exampleUcumUnits: string) {
-        if (exampleUcumUnits) {
-            exampleUcumUnits.split(";").forEach(code => {
-                this.ucumCodes.push({ "code": code, "name": code });
-            });
-            this.ucumCodes.push({ "code": "others", "name": "others" });
-            //console.log(JSON.stringify(this.ucumCodes));
-        }
     }
     addICDDiagnosis(diag: ICDDiagnosis, i: number) {
         this.supportingInfoList[i].code = diag.diagnosisCode;
@@ -202,7 +188,6 @@ export class ManageSupportingInfoComponent implements OnInit {
         model.attachmentName = '';
         model.attachmentType = '';
         model.attachmentDate = '';
-        model.unit = '';
         model.fileError = '';
         model.uploadContainerClass = '';
 
