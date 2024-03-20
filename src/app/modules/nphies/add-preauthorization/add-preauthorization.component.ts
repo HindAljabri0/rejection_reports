@@ -66,7 +66,7 @@ export class AddPreauthorizationComponent implements OnInit {
     isOnline: boolean = false;
     isOffline: boolean = false;
     AllTPA: any[] = [];
-    primaryPlan=[];
+    primaryPlan = [];
     filteredNations: ReplaySubject<{ Code: string, Name: string }[]> = new ReplaySubject<{ Code: string, Name: string }[]>(1);
 
     beneficiaryPatientShare = 0;
@@ -788,7 +788,7 @@ export class AddPreauthorizationComponent implements OnInit {
             postalCode: beneficiary.postalCode ? beneficiary.postalCode : '',
         });
 
-        this.primaryPlan = beneficiary.plans.filter(plan => plan.primary==true);
+        this.primaryPlan = beneficiary.plans.filter(plan => plan.primary == true);
         if (beneficiary.plans.filter(x => x.primary)[0].payerNphiesId === '0000000163') {
 
             this.dialogService.showMessage('Error', 'Selected Payer is not valid for Pre-Auth Request Transaction ', 'alert', true, 'OK');
@@ -1173,7 +1173,7 @@ export class AddPreauthorizationComponent implements OnInit {
                             x.prescribedDrugCode = result.prescribedDrugCode;
                             x.pharmacistSubstitute = result.pharmacistSubstitute;
                             x.reasonPharmacistSubstitute = result.reasonPharmacistSubstitute;
-                           
+
                             if (x.supportingInfoSequence) {
                                 x.supportingInfoNames = '';
                                 x.supportingInfoSequence.forEach(s => {
@@ -2031,6 +2031,7 @@ export class AddPreauthorizationComponent implements OnInit {
                 model.attachment = x.attachment;
                 model.attachmentName = x.attachmentName;
                 model.attachmentType = x.attachmentType;
+                
                 if (x.attachmentDate) {
                     x.attachmentDate = this.datePipe.transform(x.attachmentDate, 'yyyy-MM-dd');
                 }
@@ -2171,7 +2172,7 @@ export class AddPreauthorizationComponent implements OnInit {
                         dmodel.pharmacistSelectionReason = y.pharmacistSelectionReason;
                         dmodel.prescribedDrugCode = y.prescribedDrugCode;
                         dmodel.pharmacistSubstitute = y.pharmacistSubstitute;
-                        dmodel.reasonPharmacistSubstitute = y.reasonPharmacistSubstitute;    
+                        dmodel.reasonPharmacistSubstitute = y.reasonPharmacistSubstitute;
                         return dmodel;
                     });
 
@@ -2221,7 +2222,7 @@ export class AddPreauthorizationComponent implements OnInit {
                         dmodel.pharmacistSelectionReason = y.pharmacistSelectionReason;
                         dmodel.prescribedDrugCode = y.prescribedDrugCode;
                         dmodel.pharmacistSubstitute = y.pharmacistSubstitute;
-                        dmodel.reasonPharmacistSubstitute = y.reasonPharmacistSubstitute;    
+                        dmodel.reasonPharmacistSubstitute = y.reasonPharmacistSubstitute;
                         return dmodel;
                     });
 

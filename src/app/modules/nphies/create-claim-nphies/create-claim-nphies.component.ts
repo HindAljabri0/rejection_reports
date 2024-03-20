@@ -253,7 +253,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     routeMode;
     selectedTab = 0;
-    PrescriberDefault = 0;
+    PrescriberDefault = "";
     claimType: string;
     isPBMValidationVisible = false;
     isMREValidationVisible = false;

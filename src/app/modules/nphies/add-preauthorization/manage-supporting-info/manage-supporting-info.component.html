@@ -1,117 +1,119 @@
 <div class="button-chips">
 
-  <button *ngFor="let category of categoryList" type="button" class="chip-button" title="{{category.name}}"
-    (click)="addSupportingInfo(category)">
-    <span>{{category.name}}</span>
-    <img src="./assets/ic-add-primary.svg" alt="Add" />
-  </button>
+    <button *ngFor="let category of categoryList" type="button" class="chip-button" title="{{category.name}}"
+        (click)="addSupportingInfo(category)">
+        <span>{{category.name}}</span>
+        <img src="./assets/ic-add-primary.svg" alt="Add" />
+    </button>
 
 </div>
 <div class="table-responsive" *ngIf="supportingInfoList.length > 0">
-  <table class="primary-grid claim-view-table">
-    <thead>
-      <tr>
-        <th>No.</th>
-        <th>Category</th>
-        <th>Code</th>
-        <th>Timing</th>
-        <th>Value</th>
-        <th>Attachment</th>
-        <th>Reason</th>
-        <th width="10"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let supportingInfo of supportingInfoList; let i = index">
-        <td>{{supportingInfo.sequence}}</td>
-        <td>
-          {{supportingInfo.categoryName}}
-        </td>
-        <td>
-          <ng-container *ngIf="
+    <table class="primary-grid claim-view-table">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Category</th>
+                <th>Code</th>
+                <th>Timing</th>
+                <th>Value</th>
+                <th>Attachment</th>
+                <th>Reason</th>
+                <th width="10"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let supportingInfo of supportingInfoList; let i = index">
+                <td>{{supportingInfo.sequence}}</td>
+                <td>
+                    {{supportingInfo.categoryName}}
+                </td>
+                <td>
+                    <ng-container *ngIf="
           supportingInfo.category === 'reason-for-visit' ||
           supportingInfo.category === 'missingtooth'">
 
-            <div class="form-group mb-n1 mt-n1"
-              [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsCodeRequired && !supportingInfo.code}">
-              <!-- <label class="control-label">Code<span class="asterisk">*</span></label> -->
+                        <div class="form-group mb-n1 mt-n1"
+                            [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsCodeRequired && !supportingInfo.code}">
+                            <!-- <label class="control-label">Code<span class="asterisk">*</span></label> -->
 
-              <!-- <input *ngIf="supportingInfo.category === 'lab-test'" type="text" class="form-control"
+                            <!-- <input *ngIf="supportingInfo.category === 'lab-test'" type="text" class="form-control"
                 placeholder="Enter code" [(ngModel)]="supportingInfo.code" formControlName="code" /> -->
 
 
-              <div class="input-group" *ngIf=" supportingInfo.category === 'missingtooth'">
-                <input class="form-control" placeholder="Select tooth number" [(ngModel)]="supportingInfo.code">
-                <span class="input-group-append">
-                  <span class="input-group-text medium" (click)="SetCurrent(i);"
-                    [matMenuTriggerFor]="SelectToothMenu">Select</span>
-                </span>
-              </div>
+                            <div class="input-group" *ngIf=" supportingInfo.category === 'missingtooth'">
+                                <input class="form-control" placeholder="Select tooth number"
+                                    [(ngModel)]="supportingInfo.code">
+                                <span class="input-group-append">
+                                    <span class="input-group-text medium" (click)="SetCurrent(i);"
+                                        [matMenuTriggerFor]="SelectToothMenu">Select</span>
+                                </span>
+                            </div>
 
 
-              <mat-form-field *ngIf=" supportingInfo.category === 'reason-for-visit'"
-                class="form-control custom-select-control">
-                <mat-select [(ngModel)]="supportingInfo.code" id="selectReasonVisit">
-                  <mat-option value="">Select Code</mat-option>
-                  <mat-option *ngFor="let code of reasonForVisitCodeList" [value]="code.value">{{code.name}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <div *ngIf="isSubmitted && supportingInfo.IsCodeRequired && !supportingInfo.code">
-                <span class="error-text">Please select a Code</span>
-              </div>
-            </div>
+                            <mat-form-field *ngIf=" supportingInfo.category === 'reason-for-visit'"
+                                class="form-control custom-select-control">
+                                <mat-select [(ngModel)]="supportingInfo.code" id="selectReasonVisit">
+                                    <mat-option value="">Select Code</mat-option>
+                                    <mat-option *ngFor="let code of reasonForVisitCodeList"
+                                        [value]="code.value">{{code.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div *ngIf="isSubmitted && supportingInfo.IsCodeRequired && !supportingInfo.code">
+                                <span class="error-text">Please select a Code</span>
+                            </div>
+                        </div>
 
-          </ng-container>
+                    </ng-container>
 
-          <ng-container *ngIf="
-          supportingInfo.category === 'lab-test'">
+                    <ng-container *ngIf="supportingInfo.category === 'lab-test'">
 
-            <div class="form-group mb-n1 mt-n1"
-              [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsCodeRequired && !supportingInfo.code}">
-              <!-- <label class="control-label">Code<span *ngIf="!(FormSupportingInfo.controls.category.value && supportingInfo.category === 'chief-complaint' && FormSupportingInfo.controls.value.value)" class="asterisk">*</span></label> -->
-              <input type="text" class="form-control search-box" placeholder="Select LOINC Code"
-                [(ngModel)]="supportingInfo.description" [matAutocomplete]="auto"
-                (keyup)="searchLOINK(supportingInfo.description, i)" id="labTestSearchCode">
-              <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let option of loinkList" (click)="addLoink(option, i);">
-                  {{option.loincNum}} | {{option.shortName}}
-                </mat-option>
-              </mat-autocomplete>
-              <div *ngIf="isSubmitted && supportingInfo.IsCodeRequired && !supportingInfo.code">
-                <span class="error-text">Please select a Code</span>
-              </div>
-            </div>
-          </ng-container>
+                        <div class="form-group mb-n1 mt-n1"
+                            [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsCodeRequired && !supportingInfo.code}">
+                            <!-- <label class="control-label">Code<span *ngIf="!(FormSupportingInfo.controls.category.value && supportingInfo.category === 'chief-complaint' && FormSupportingInfo.controls.value.value)" class="asterisk">*</span></label> -->
+                            <input type="text" class="form-control search-box" placeholder="Select LOINC Code"
+                                [(ngModel)]="supportingInfo.description" [matAutocomplete]="auto"
+                                (keyup)="searchLOINK(supportingInfo.description, i)" id="labTestSearchCode">
+                            <mat-autocomplete #auto="matAutocomplete">
+                                <mat-option *ngFor="let option of loinkList" (click)="addLoink(option, i);">
+                                    {{option.loincNum}} | {{option.shortName}}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <div *ngIf="isSubmitted && supportingInfo.IsCodeRequired && !supportingInfo.code">
+                                <span class="error-text">Please select a Code</span>
+                            </div>
+                        </div>
+                    </ng-container>
 
-          <ng-container *ngIf="
+                    <ng-container *ngIf="
           supportingInfo.category === 'onset' ||
           supportingInfo.category === 'chief-complaint'">
 
-            <div class="form-group mb-n1 mt-n1"
-              [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsCodeRequired && !supportingInfo.code}">
-              <!-- <label class="control-label">Code<span *ngIf="!(FormSupportingInfo.controls.category.value && supportingInfo.category === 'chief-complaint' && FormSupportingInfo.controls.value.value)" class="asterisk">*</span></label> -->
-              <input type="text" class="form-control search-box" placeholder="Select ICD-10 Code"
-                [(ngModel)]="supportingInfo.description" [matAutocomplete]="auto"
-                (keyup)="searchICDCodes(supportingInfo.description, i)" id="chiefComplSearchBox">
-              <p class="control-hint" *ngIf="diagnosisHasErrorForAllList()">{{getDiagnosisErrorForAllList()}}</p>
-              <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let option of icedOptions"
-                  (click)="addICDDiagnosis(option, i); chiefComplainBlurValidation(i)">
-                  {{option.diagnosisCode}} | {{option.diagnosisDescription}}
-                </mat-option>
-              </mat-autocomplete>
-              <div *ngIf="isSubmitted && supportingInfo.IsCodeRequired && !supportingInfo.code">
-                <span class="error-text">Please select a Code</span>
-              </div>
-            </div>
-          </ng-container>
-          <!-- <div class="form-group mb-n1 mt-n1">
+                        <div class="form-group mb-n1 mt-n1"
+                            [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsCodeRequired && !supportingInfo.code}">
+                            <!-- <label class="control-label">Code<span *ngIf="!(FormSupportingInfo.controls.category.value && supportingInfo.category === 'chief-complaint' && FormSupportingInfo.controls.value.value)" class="asterisk">*</span></label> -->
+                            <input type="text" class="form-control search-box" placeholder="Select ICD-10 Code"
+                                [(ngModel)]="supportingInfo.description" [matAutocomplete]="auto"
+                                (keyup)="searchICDCodes(supportingInfo.description, i)" id="chiefComplSearchBox">
+                            <p class="control-hint" *ngIf="diagnosisHasErrorForAllList()">
+                                {{getDiagnosisErrorForAllList()}}</p>
+                            <mat-autocomplete #auto="matAutocomplete">
+                                <mat-option *ngFor="let option of icedOptions"
+                                    (click)="addICDDiagnosis(option, i); chiefComplainBlurValidation(i)">
+                                    {{option.diagnosisCode}} | {{option.diagnosisDescription}}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <div *ngIf="isSubmitted && supportingInfo.IsCodeRequired && !supportingInfo.code">
+                                <span class="error-text">Please select a Code</span>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <!-- <div class="form-group mb-n1 mt-n1">
             <input type="text" class="form-control" placeholder="Enter code here" />
           </div> -->
-        </td>
-        <td>
-          <ng-container *ngIf="
+                </td>
+                <td>
+                    <ng-container *ngIf="
           supportingInfo.category === 'lab-test' ||
           supportingInfo.category === 'vital-sign-weight' ||
           supportingInfo.category === 'vital-sign-systolic' ||
@@ -123,104 +125,110 @@
           supportingInfo.category === 'pulse' ||
           supportingInfo.category === 'oxygen-saturation' ||
           supportingInfo.category === 'respiratory-rate'">
-            <div class="row small-gutter">
-              <div class="col-6">
-                <div class="form-group mb-n1 mt-n1"
-                  [ngClass]="{'has-error' : isSubmitted && supportingInfo.toDate && !supportingInfo.fromDate}">
-                  <div class="date-picker">
-                    <input [matDatepicker]="timingPeriodFromCtrl" class="form-control" placeholder="Select Start Date"
-                      [(ngModel)]="supportingInfo.fromDate" [max]="supportingInfo.toDate" id="startDate">
-                    <mat-datepicker-toggle [for]="timingPeriodFromCtrl"></mat-datepicker-toggle>
-                    <mat-datepicker #timingPeriodFromCtrl></mat-datepicker>
-                  </div>
-                  <div *ngIf="isSubmitted && supportingInfo.toDate && !supportingInfo.fromDate">
-                    <span class="error-text">Please enter Start Date</span>
-                  </div>
-                </div>
-              </div>
+                        <div class="row small-gutter">
+                            <div class="col-6">
+                                <div class="form-group mb-n1 mt-n1"
+                                    [ngClass]="{'has-error' : isSubmitted && supportingInfo.toDate && !supportingInfo.fromDate}">
+                                    <div class="date-picker">
+                                        <input [matDatepicker]="timingPeriodFromCtrl" class="form-control"
+                                            placeholder="Select Start Date" [(ngModel)]="supportingInfo.fromDate"
+                                            [max]="supportingInfo.toDate" id="startDate">
+                                        <mat-datepicker-toggle [for]="timingPeriodFromCtrl"></mat-datepicker-toggle>
+                                        <mat-datepicker #timingPeriodFromCtrl></mat-datepicker>
+                                    </div>
+                                    <div *ngIf="isSubmitted && supportingInfo.toDate && !supportingInfo.fromDate">
+                                        <span class="error-text">Please enter Start Date</span>
+                                    </div>
+                                </div>
+                            </div>
 
-              <div class="col-6">
-                <div class="form-group mb-n1 mt-n1">
-                  <div class="date-picker">
-                    <input [matDatepicker]="timingPeriodToCtrl" class="form-control" placeholder="Select End Date"
-                      [(ngModel)]="supportingInfo.toDate" [min]="supportingInfo.fromDate"  id="endDate">
-                    <mat-datepicker-toggle [for]="timingPeriodToCtrl"></mat-datepicker-toggle>
-                    <mat-datepicker #timingPeriodToCtrl></mat-datepicker>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ng-container>
+                            <div class="col-6">
+                                <div class="form-group mb-n1 mt-n1">
+                                    <div class="date-picker">
+                                        <input [matDatepicker]="timingPeriodToCtrl" class="form-control"
+                                            placeholder="Select End Date" [(ngModel)]="supportingInfo.toDate"
+                                            [min]="supportingInfo.fromDate" id="endDate">
+                                        <mat-datepicker-toggle [for]="timingPeriodToCtrl"></mat-datepicker-toggle>
+                                        <mat-datepicker #timingPeriodToCtrl></mat-datepicker>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
 
-          <ng-container *ngIf="
+                    <ng-container *ngIf="
            supportingInfo.category === 'onset' ||
            supportingInfo.category === 'last-menstrual-period' ||
            supportingInfo.category === 'missingtooth'">
 
-            <div class="form-group mb-n1 mt-n1"
-              [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsFromDateRequired && !supportingInfo.fromDate}">
-              <!-- <label class="control-label">Timing<span class="asterisk"
+                        <div class="form-group mb-n1 mt-n1"
+                            [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsFromDateRequired && !supportingInfo.fromDate}">
+                            <!-- <label class="control-label">Timing<span class="asterisk"
                   *ngIf="supportingInfo.category !== 'lab-test' && supportingInfo.category !== 'vital-sign-weight' && supportingInfo.category !== 'vital-sign-systolic' && supportingInfo.category !== 'vital-sign-diastolic' && supportingInfo.category !== 'icu-hours' && supportingInfo.category !== 'ventilation-hours' && supportingInfo.category !== 'vital-sign-height' && supportingInfo.category !== 'temperature' && supportingInfo.category !== 'pulse' && supportingInfo.category !== 'oxygen-saturation' && supportingInfo.category !== 'respiratory-rate'">*</span></label> -->
-              <div class="date-picker">
-                <input [matDatepicker]="timingDateCtrl" class="form-control" placeholder="Select Date"
-                  [(ngModel)]="supportingInfo.fromDate" id="selectDate">
-                <mat-datepicker-toggle [for]="timingDateCtrl"></mat-datepicker-toggle>
-                <mat-datepicker #timingDateCtrl></mat-datepicker>
-              </div>
-              <div *ngIf="isSubmitted && supportingInfo.IsFromDateRequired && !supportingInfo.fromDate">
-                <span class="error-text">Please enter Timing</span>
-              </div>
-            </div>
+                            <div class="date-picker">
+                                <input [matDatepicker]="timingDateCtrl" class="form-control" placeholder="Select Date"
+                                    [(ngModel)]="supportingInfo.fromDate" id="selectDate">
+                                <mat-datepicker-toggle [for]="timingDateCtrl"></mat-datepicker-toggle>
+                                <mat-datepicker #timingDateCtrl></mat-datepicker>
+                            </div>
+                            <div *ngIf="isSubmitted && supportingInfo.IsFromDateRequired && !supportingInfo.fromDate">
+                                <span class="error-text">Please enter Timing</span>
+                            </div>
+                        </div>
 
-          </ng-container>
+                    </ng-container>
 
-          <ng-container *ngIf="
+                    <ng-container *ngIf="
           supportingInfo.category === 'hospitalized' ||
           supportingInfo.category === 'employmentImpacted'">
-            <div class="row small-gutter">
-              <div class="col-6">
-                <div class="form-group mb-n1 mt-n1"
-                  [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsFromDateRequired && !supportingInfo.fromDate}">
-                  <!-- <label class="control-label">Timing Period From<span class="asterisk">*</span></label> -->
-                  <div class="date-picker">
-                    <input [matDatepicker]="timingPeriodFromCtrl" class="form-control" placeholder="Select Start Date"
-                      [(ngModel)]="supportingInfo.fromDate" [max]="supportingInfo.toDate" id="selectStartDate">
-                    <mat-datepicker-toggle [for]="timingPeriodFromCtrl"></mat-datepicker-toggle>
-                    <mat-datepicker #timingPeriodFromCtrl></mat-datepicker>
-                  </div>
-                  <div *ngIf="isSubmitted && supportingInfo.IsFromDateRequired && !supportingInfo.fromDate">
-                    <span class="error-text">Please enter Timing Period From</span>
-                  </div>
-                </div>
-              </div>
+                        <div class="row small-gutter">
+                            <div class="col-6">
+                                <div class="form-group mb-n1 mt-n1"
+                                    [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsFromDateRequired && !supportingInfo.fromDate}">
+                                    <!-- <label class="control-label">Timing Period From<span class="asterisk">*</span></label> -->
+                                    <div class="date-picker">
+                                        <input [matDatepicker]="timingPeriodFromCtrl" class="form-control"
+                                            placeholder="Select Start Date" [(ngModel)]="supportingInfo.fromDate"
+                                            [max]="supportingInfo.toDate" id="selectStartDate">
+                                        <mat-datepicker-toggle [for]="timingPeriodFromCtrl"></mat-datepicker-toggle>
+                                        <mat-datepicker #timingPeriodFromCtrl></mat-datepicker>
+                                    </div>
+                                    <div
+                                        *ngIf="isSubmitted && supportingInfo.IsFromDateRequired && !supportingInfo.fromDate">
+                                        <span class="error-text">Please enter Timing Period From</span>
+                                    </div>
+                                </div>
+                            </div>
 
-              <div class="col-6">
-                <div class="form-group mb-n1 mt-n1"
-                  [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsToDateRequired && !supportingInfo.toDate}">
-                  <!-- <label class="control-label">Timing Period To<span class="asterisk">*</span></label> -->
-                  <div class="date-picker">
-                    <input [matDatepicker]="timingPeriodToCtrl" class="form-control" placeholder="Select End Date"
-                      [(ngModel)]="supportingInfo.toDate" [min]="supportingInfo.fromDate" id="selectEndDate">
-                    <mat-datepicker-toggle [for]="timingPeriodToCtrl"></mat-datepicker-toggle>
-                    <mat-datepicker #timingPeriodToCtrl></mat-datepicker>
-                  </div>
-                  <div *ngIf="isSubmitted && supportingInfo.IsToDateRequired && !supportingInfo.toDate">
-                    <span class="error-text">Please enter Timing</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ng-container>
-          <!-- <div class="form-group mb-n1 mt-n1">
+                            <div class="col-6">
+                                <div class="form-group mb-n1 mt-n1"
+                                    [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsToDateRequired && !supportingInfo.toDate}">
+                                    <!-- <label class="control-label">Timing Period To<span class="asterisk">*</span></label> -->
+                                    <div class="date-picker">
+                                        <input [matDatepicker]="timingPeriodToCtrl" class="form-control"
+                                            placeholder="Select End Date" [(ngModel)]="supportingInfo.toDate"
+                                            [min]="supportingInfo.fromDate" id="selectEndDate">
+                                        <mat-datepicker-toggle [for]="timingPeriodToCtrl"></mat-datepicker-toggle>
+                                        <mat-datepicker #timingPeriodToCtrl></mat-datepicker>
+                                    </div>
+                                    <div
+                                        *ngIf="isSubmitted && supportingInfo.IsToDateRequired && !supportingInfo.toDate">
+                                        <span class="error-text">Please enter Timing</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <!-- <div class="form-group mb-n1 mt-n1">
             <div class="date-picker">
               <input [matDatepicker]="supportingInfoDatePicker1" class="form-control" placeholder="Select timing">
               <mat-datepicker-toggle [for]="supportingInfoDatePicker1"></mat-datepicker-toggle>
               <mat-datepicker #supportingInfoDatePicker1></mat-datepicker>
             </div>
           </div> -->
-        </td>
-        <td>
-          <ng-container *ngIf="
+                </td>
+                <td>
+                    <ng-container *ngIf="
           supportingInfo.category === 'info' ||
           supportingInfo.category === 'lab-test' ||
           supportingInfo.category === 'days-supply' ||
@@ -237,278 +245,292 @@
           supportingInfo.category === 'respiratory-rate' ||
           supportingInfo.category === 'birth-weight'">
 
-            <div class="form-group mb-n1 mt-n1"
-              [ngClass]="{'has-error' : isSubmitted && !supportingInfo.value && supportingInfo.IsValueRequired}">
-              <!-- <label class="control-label">Value<span
+                        <div class="form-group mb-n1 mt-n1"
+                            [ngClass]="{'has-error' : isSubmitted && !supportingInfo.value && supportingInfo.IsValueRequired}">
+                            <!-- <label class="control-label">Value<span
                   *ngIf="!(FormSupportingInfo.controls.category.value && supportingInfo.category === 'chief-complaint' && FormSupportingInfo.controls.code.value)"
                   class="asterisk">*</span></label> -->
-              <div class="input-group">
-                <input
-                  *ngIf="supportingInfo.category === 'info' || supportingInfo.category === 'chief-complaint' || supportingInfo.category === 'lab-test'"
-                  type="text" class="form-control" placeholder="Enter value" [(ngModel)]="supportingInfo.value"
-                  (keyup)="chiefComplainBlurValidation(i)" id="enterValue" />
-                <input
-                  *ngIf="supportingInfo.category !== 'info' && supportingInfo.category !== 'chief-complaint' && supportingInfo.category !== 'lab-test'"
-                  type="number" class="form-control" placeholder="Enter value" [(ngModel)]="supportingInfo.value" id="enterLabValue"/>
+                            <div class="input-group">
+                                <input
+                                    *ngIf="supportingInfo.category === 'info' || supportingInfo.category === 'chief-complaint' || supportingInfo.category === 'lab-test'"
+                                    type="text" class="form-control" placeholder="Enter value"
+                                    [(ngModel)]="supportingInfo.value" (keyup)="chiefComplainBlurValidation(i)"
+                                    id="enterValue" />
+                                
+                                <input
+                                    *ngIf="supportingInfo.category !== 'info' && supportingInfo.category !== 'chief-complaint' && supportingInfo.category !== 'lab-test'"
+                                    type="number" class="form-control" placeholder="Enter value"
+                                    [(ngModel)]="supportingInfo.value" id="enterLabValue" />
 
-                <span
-                  *ngIf="supportingInfo.category !== 'info' && supportingInfo.category !== 'chief-complaint' && supportingInfo.category !== 'lab-test' && supportingInfo.category !== 'days-supply'"
-                  class="input-group-append" id="enterDaysSupplyValue">
-                  <span
-                    *ngIf="supportingInfo.category === 'vital-sign-weight'|| supportingInfo.category === 'birth-weight'"
-                    class="input-group-text" id="birthVitalWeight">kg</span>
-                  <span
-                    *ngIf="supportingInfo.category === 'vital-sign-systolic' || supportingInfo.category === 'vital-sign-diastolic'"
-                    class="input-group-text" id="vitalSignSysDys">mm[Hg]</span>
-                  <span
-                    *ngIf="supportingInfo.category === 'icu-hours' || supportingInfo.category === 'ventilation-hours'"
-                    class="input-group-text" id="ventilationIcuHoursValue">h</span>
-                  <span *ngIf="supportingInfo.category === 'vital-sign-height'" class="input-group-text" id="vitalSignHeight">cm</span>
-                  <span *ngIf="supportingInfo.category === 'temperature'" class="input-group-text" id="temperature">Cel</span>
-                  <span *ngIf="supportingInfo.category === 'oxygen-saturation'" class="input-group-text" id="oxygenSaturation">%</span>
-                  <span *ngIf="supportingInfo.category === 'pulse' || supportingInfo.category === 'respiratory-rate'"
-                    class="input-group-text" id="respRatePulseValue">Min</span>
-                </span>
-              </div>
-              <div *ngIf="isSubmitted && !supportingInfo.value && supportingInfo.IsValueRequired">
-                <span class="error-text">Please enter Value</span>
-              </div>
-            </div>
+                                <span
+                                    *ngIf="supportingInfo.category !== 'info' && supportingInfo.category !== 'chief-complaint' && supportingInfo.category !== 'lab-test' && supportingInfo.category !== 'days-supply'"
+                                    class="input-group-append" id="enterDaysSupplyValue">
+                                    <span
+                                        *ngIf="supportingInfo.category === 'vital-sign-weight'|| supportingInfo.category === 'birth-weight'"
+                                        class="input-group-text" id="birthVitalWeight">kg</span>
+                                    <span
+                                        *ngIf="supportingInfo.category === 'vital-sign-systolic' || supportingInfo.category === 'vital-sign-diastolic'"
+                                        class="input-group-text" id="vitalSignSysDys">mm[Hg]</span>
+                                    <span
+                                        *ngIf="supportingInfo.category === 'icu-hours' || supportingInfo.category === 'ventilation-hours'"
+                                        class="input-group-text" id="ventilationIcuHoursValue">h</span>
+                                    <span *ngIf="supportingInfo.category === 'vital-sign-height'"
+                                        class="input-group-text" id="vitalSignHeight">cm</span>
+                                    <span *ngIf="supportingInfo.category === 'temperature'" class="input-group-text"
+                                        id="temperature">Cel</span>
+                                    <span *ngIf="supportingInfo.category === 'oxygen-saturation'"
+                                        class="input-group-text" id="oxygenSaturation">%</span>
+                                    <span
+                                        *ngIf="supportingInfo.category === 'pulse' || supportingInfo.category === 'respiratory-rate'"
+                                        class="input-group-text" id="respRatePulseValue">Min</span>
+                                </span>
+                            </div>
+                            <div *ngIf="isSubmitted && !supportingInfo.value && supportingInfo.IsValueRequired">
+                                <span class="error-text">Please enter Value</span>
+                            </div>
+                        </div>
 
-          </ng-container>
-          <!-- <div class="form-group mb-n1 mt-n1">
+                    </ng-container>
+                    <!-- <div class="form-group mb-n1 mt-n1">
             <input type="text" class="form-control" placeholder="Enter value" />
           </div> -->
-        </td>
-        <td>
-          <ng-container *ngIf="supportingInfo.category === 'attachment'">
-            <div class="form-group mb-n1 mt-n1">
-              <!-- <label class="control-label">{{supportingInfo.currentFileUploadName?'Selected Attachment':'Upload Attachment'}} <span class="asterisk">*</span></label> -->
-              <div class="file-upload-wrapper">
-                <div class="content">
-                  <button mat-flat-button color="primary" type="button" *ngIf="!supportingInfo.attachment" id="chooseFileButton">
-                    Choose File
-                  </button>
-                  <div class="uploaded-file-name" *ngIf="supportingInfo.attachment">
-                    <span>{{supportingInfo.attachmentName}}</span>
-                    <button type="button" class="icon" (click)="deleteFile(i)" matRipple title="Delete File?" id="deleteFileButton">
-                      <mat-icon class="size-20">close</mat-icon>
-                    </button>
-                  </div>
-                  <p class="error-text pt-1" *ngIf="supportingInfo.fileError">{{supportingInfo.fileError}}</p>
-                </div>
-                <ng-container *ngIf="!supportingInfo.attachment">
-                  <input type="file" accept="application/pdf,image/jpeg,image/jpg" name="attachmentFile"
-                    class="file-upload-control" (change)="selectFile($event, i)" required />
-                  <div *ngIf="isSubmitted && supportingInfo.IsAttachmentRequired && !supportingInfo.attachment">
-                    <span class="error-text">Please select a file</span>
-                  </div>
-                </ng-container>
-              </div>
-            </div>
-          </ng-container>
-        </td>
-        <td>
-          <ng-container *ngIf="supportingInfo.category === 'missingtooth'">
-            <div class="form-group mb-n1 mt-n1"
-              [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsReasonRequired && !supportingInfo.reason}">
-              <!-- <label class="control-label">Reason<span class="asterisk">*</span></label> -->
-              <mat-form-field class="form-control custom-select-control">
-                <mat-select [(ngModel)]="supportingInfo.reason" id="selectReason">
-                  <mat-option value="">Select Reason</mat-option>
-                  <mat-option *ngFor="let reason of reasonList" [value]="reason.value">{{reason.name}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <div *ngIf="isSubmitted && supportingInfo.IsReasonRequired && !supportingInfo.reason">
-                <span class="error-text">Please select a Reason</span>
-              </div>
-            </div>
-          </ng-container>
-          <!-- <div class="form-group mb-n1 mt-n1">
+                </td>
+                <td>
+                    <ng-container *ngIf="supportingInfo.category === 'attachment'">
+                        <div class="form-group mb-n1 mt-n1">
+                            <!-- <label class="control-label">{{supportingInfo.currentFileUploadName?'Selected Attachment':'Upload Attachment'}} <span class="asterisk">*</span></label> -->
+                            <div class="file-upload-wrapper">
+                                <div class="content">
+                                    <button mat-flat-button color="primary" type="button"
+                                        *ngIf="!supportingInfo.attachment" id="chooseFileButton">
+                                        Choose File
+                                    </button>
+                                    <div class="uploaded-file-name" *ngIf="supportingInfo.attachment">
+                                        <span>{{supportingInfo.attachmentName}}</span>
+                                        <button type="button" class="icon" (click)="deleteFile(i)" matRipple
+                                            title="Delete File?" id="deleteFileButton">
+                                            <mat-icon class="size-20">close</mat-icon>
+                                        </button>
+                                    </div>
+                                    <p class="error-text pt-1" *ngIf="supportingInfo.fileError">
+                                        {{supportingInfo.fileError}}</p>
+                                </div>
+                                <ng-container *ngIf="!supportingInfo.attachment">
+                                    <input type="file" accept="application/pdf,image/jpeg,image/jpg"
+                                        name="attachmentFile" class="file-upload-control"
+                                        (change)="selectFile($event, i)" required />
+                                    <div
+                                        *ngIf="isSubmitted && supportingInfo.IsAttachmentRequired && !supportingInfo.attachment">
+                                        <span class="error-text">Please select a file</span>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </ng-container>
+                </td>
+                <td>
+                    <ng-container *ngIf="supportingInfo.category === 'missingtooth'">
+                        <div class="form-group mb-n1 mt-n1"
+                            [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsReasonRequired && !supportingInfo.reason}">
+                            <!-- <label class="control-label">Reason<span class="asterisk">*</span></label> -->
+                            <mat-form-field class="form-control custom-select-control">
+                                <mat-select [(ngModel)]="supportingInfo.reason" id="selectReason">
+                                    <mat-option value="">Select Reason</mat-option>
+                                    <mat-option *ngFor="let reason of reasonList"
+                                        [value]="reason.value">{{reason.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div *ngIf="isSubmitted && supportingInfo.IsReasonRequired && !supportingInfo.reason">
+                                <span class="error-text">Please select a Reason</span>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <!-- <div class="form-group mb-n1 mt-n1">
             <input type="text" class="form-control" placeholder="Enter reason" />
           </div> -->
-        </td>
-        <td class="actions vertical-middle">
-          <mat-menu #supportingInfoActionsMenu1 xPosition="before">
-            <ng-template matMenuContent>
-              <button id="deleteSupportingInfo" mat-menu-item type="button" (click)="removeSupportingInfo(i)">
-                <mat-icon class="material-icons-outlined">delete</mat-icon>
-                <span>Delete</span>
-              </button>
-            </ng-template>
-          </mat-menu>
-          <button type="button" mat-icon-button [matMenuTriggerFor]="supportingInfoActionsMenu1">
-            <mat-icon>more_vert</mat-icon>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+                </td>
+                <td class="actions vertical-middle">
+                    <mat-menu #supportingInfoActionsMenu1 xPosition="before">
+                        <ng-template matMenuContent>
+                            <button id="deleteSupportingInfo" mat-menu-item type="button"
+                                (click)="removeSupportingInfo(i)">
+                                <mat-icon class="material-icons-outlined">delete</mat-icon>
+                                <span>Delete</span>
+                            </button>
+                        </ng-template>
+                    </mat-menu>
+                    <button type="button" mat-icon-button [matMenuTriggerFor]="supportingInfoActionsMenu1">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 <app-empty-state *ngIf="supportingInfoList.length === 0" message='No Supporting Info found!'>
 </app-empty-state>
 
 <mat-menu #SelectToothMenu class="primary-menu" xPosition="before">
-  <div class="tooth-picker">
-    <h4 class="title">Click on the tooth to select</h4>
-    <div class="tooth-btn-wrapper">
-      <img src="assets/toothsList.jpg" alt="Tooths" class="image" />
-      <button type="button" class="tooth-btn tooth-11" matTooltip="Select Tooth 11"
-        style="width: 24px;height: 18px;top: 19px;left: 101px;" (click)="selectTooth(11)" id="toothButton11">
-      </button>
-      <button type="button" class="tooth-btn tooth-12" matTooltip="Select Tooth 12"
-        style="width: 22px;height: 19px;top: 25px;left: 81px;" (click)="selectTooth(12)" id="toothButton12">
-      </button>
-      <button type="button" class="tooth-btn tooth-13" matTooltip="Select Tooth 13"
-        style="width: 21px;height: 18px;top: 36px;left: 66px;" (click)="selectTooth(13)" id="toothButton13">
-      </button>
-      <button type="button" class="tooth-btn tooth-14" matTooltip="Select Tooth 14"
-        style="width: 27px;height: 19px;top: 51px;left: 50px;" (click)="selectTooth(14)" id="toothButton14">
-      </button>
-      <button type="button" class="tooth-btn tooth-15" matTooltip="Select Tooth 15"
-        style="width: 29px;height: 22px;top: 67px;left: 38px;" (click)="selectTooth(15)" id="toothButton15">
-      </button>
-      <button type="button" class="tooth-btn tooth-16" matTooltip="Select Tooth 16"
-        style="width: 34px;height: 32px;top: 86px;left: 28px;" (click)="selectTooth(16)" id="toothButton16">
-      </button>
-      <button type="button" class="tooth-btn tooth-17" matTooltip="Select Tooth 17"
-        style="width: 33px;height: 29px;top: 116px;left: 23px;" (click)="selectTooth(17)" id="toothButton17">
-      </button>
-      <button type="button" class="tooth-btn tooth-18" matTooltip="Select Tooth 18"
-        style="width: 35px;height: 28px;top: 143px;left: 17px;" (click)="selectTooth(18)" id="toothButton18">
-      </button>
-      <button type="button" class="tooth-btn tooth-21" matTooltip="Select Tooth 21"
-        style="width: 28px;height: 18px;top: 20px;left: 124px;" (click)="selectTooth(21)" id="toothButton21">
-      </button>
-      <button type="button" class="tooth-btn tooth-22" matTooltip="Select Tooth 22"
-        style="width: 21px;height: 19px;top: 24px;left: 151px;" (click)="selectTooth(22)" id="toothButton22">
-      </button>
-      <button type="button" class="tooth-btn tooth-23" matTooltip="Select Tooth 23"
-        style="width: 22px;height: 19px;top: 34px;left: 168px;" (click)="selectTooth(23)" id="toothButton23">
-      </button>
-      <button type="button" class="tooth-btn tooth-24" matTooltip="Select Tooth 24"
-        style="width: 24px;height: 23px;top: 47px;left: 180px;" (click)="selectTooth(24)" id="toothButton24">
-      </button>
-      <button type="button" class="tooth-btn tooth-25" matTooltip="Select Tooth 25"
-        style="width: 26px;height: 24px;top: 67px;left: 189px;" (click)="selectTooth(25)" id="toothButton25">
-      </button>
-      <button type="button" class="tooth-btn tooth-26" matTooltip="Select Tooth 26"
-        style="width: 36px;height: 35px;top: 88px;left: 192px;" (click)="selectTooth(26)" id="toothButton26">
-      </button>
-      <button type="button" class="tooth-btn tooth-27" matTooltip="Select Tooth 27"
-        style="width: 35px;height: 26px;top: 121px;left: 195px;" (click)="selectTooth(27)" id="toothButton27">
-      </button>
-      <button type="button" class="tooth-btn tooth-28" matTooltip="Select Tooth 28"
-        style="width: 33px;height: 29px;top: 146px;left: 200px;" (click)="selectTooth(28)" id="toothButton28">
-      </button>
-      <button type="button" class="tooth-btn tooth-31" matTooltip="Select Tooth 31"
-        style="width: 19px;height: 20px;top: 368px;left: 126px;" (click)="selectTooth(31)" id="toothButton31">
-      </button>
-      <button type="button" class="tooth-btn tooth-32" matTooltip="Select Tooth 32"
-        style="width: 20px;height: 21px;top: 364px;left: 145px;" (click)="selectTooth(32)" id="toothButton32"> 
-      </button>
-      <button type="button" class="tooth-btn tooth-33" matTooltip="Select Tooth 33"
-        style="width: 23px;height: 24px;top: 355px;left: 164px;" (click)="selectTooth(33)" id="toothButton33">
-      </button>
-      <button type="button" class="tooth-btn tooth-34" matTooltip="Select Tooth 34"
-        style="width: 26px;height: 24px;top: 340px;left: 180px;" (click)="selectTooth(34)" id="toothButton34">
-      </button>
-      <button type="button" class="tooth-btn tooth-35" matTooltip="Select Tooth 35"
-        style="width: 27px;height: 25px;top: 317px;left: 190px;" (click)="selectTooth(35)" id="toothButton35">
-      </button>
-      <button type="button" class="tooth-btn tooth-36" matTooltip="Select Tooth 36"
-        style="width: 32px;height: 29px;top: 289px;left: 194px;" (click)="selectTooth(36)" id="toothButton36">
-      </button>
-      <button type="button" class="tooth-btn tooth-37" matTooltip="Select Tooth 37"
-        style="width: 30px;height: 26px;top: 263px;left: 198px;" (click)="selectTooth(37)" id="toothButton37">
-      </button>
-      <button type="button" class="tooth-btn tooth-38" matTooltip="Select Tooth 38"
-        style="width: 30px;height: 26px;top: 240px;left: 198px;" (click)="selectTooth(38)" id="toothButton38">
-      </button>
-      <button type="button" class="tooth-btn tooth-41" matTooltip="Select Tooth 41"
-        style="width: 18px;height: 20px;top: 368px;left: 109px;" (click)="selectTooth(41)" id="toothButton41">
-      </button>
-      <button type="button" class="tooth-btn tooth-42" matTooltip="Select Tooth 42"
-        style="width: 20px;height: 21px;top: 364px;left: 90px;" (click)="selectTooth(42)" id="toothButton42">
-      </button>
-      <button type="button" class="tooth-btn tooth-43" matTooltip="Select Tooth 43"
-        style="width: 24px;height: 21px;top: 355px;left: 72px;" (click)="selectTooth(43)" id="toothButton43">
-      </button>
-      <button type="button" class="tooth-btn tooth-44" matTooltip="Select Tooth 44"
-        style="width: 29px;height: 22px;top: 338px;left: 53px;" (click)="selectTooth(44)" id="toothButton44">
-      </button>
-      <button type="button" class="tooth-btn tooth-45" matTooltip="Select Tooth 45"
-        style="width: 29px;height: 24px;top: 319px;left: 45px;" (click)="selectTooth(45)" id="toothButton45">
-      </button>
-      <button type="button" class="tooth-btn tooth-46" matTooltip="Select Tooth 46"
-        style="width: 33px;height: 32px;top: 289px;left: 33px;" (click)="selectTooth(46)" id="toothButton46">
-      </button>
-      <button type="button" class="tooth-btn tooth-47" matTooltip="Select Tooth 47"
-        style="width: 30px;height: 28px;top: 264px;left: 28px;" (click)="selectTooth(47)" id="toothButton47">
-      </button>
-      <button type="button" class="tooth-btn tooth-48" matTooltip="Select Tooth 48"
-        style="width: 30px;height: 28px;top: 238px;left: 25px;" (click)="selectTooth(48)" id="toothButton48">
-      </button>
-      <button type="button" class="tooth-btn tooth-51" matTooltip="Select Tooth 51"
-        style="width: 19px;height: 17px;top: 44px;left: 110px;" (click)="selectTooth(51)" id="toothButton51">
-      </button>
-      <button type="button" class="tooth-btn tooth-52" matTooltip="Select Tooth 52"
-        style="width: 19px;height: 16px;top: 51px;left: 97px;" (click)="selectTooth(52)" id="toothButton52">
-      </button>
-      <button type="button" class="tooth-btn tooth-53" matTooltip="Select Tooth 53"
-        style="width: 20px;height: 16px;top: 62px;left: 86px;" (click)="selectTooth(53)" id="toothButton53">
-      </button>
-      <button type="button" class="tooth-btn tooth-54" matTooltip="Select Tooth 54"
-        style="width: 22px;height: 19px;top: 74px;left: 75px;" (click)="selectTooth(54)" id="toothButton54">
-      </button>
-      <button type="button" class="tooth-btn tooth-55" matTooltip="Select Tooth 55"
-        style="width: 22px;height: 19px;top: 92px;left: 70px;" (click)="selectTooth(55)" id="toothButton55">
-      </button>
-      <button type="button" class="tooth-btn tooth-61" matTooltip="Select Tooth 61"
-        style="width: 19px;height: 16px;top: 45px;left: 129px;" (click)="selectTooth(61)" id="toothButton61">
-      </button>
-      <button type="button" class="tooth-btn tooth-62" matTooltip="Select Tooth 62"
-        style="width: 18px;height: 17px;top: 50px;left: 145px;" (click)="selectTooth(62)" id="toothButton62">
-      </button>
-      <button type="button" class="tooth-btn tooth-63" matTooltip="Select Tooth 63"
-        style="width: 22px;height: 15px;top: 62px;left: 154px;" (click)="selectTooth(63)" id="toothButton63">
-      </button>
-      <button type="button" class="tooth-btn tooth-64" matTooltip="Select Tooth 64"
-        style="width: 20px;height: 18px;top: 73px;left: 163px;" (click)="selectTooth(64)" id="toothButton64">
-      </button>
-      <button type="button" class="tooth-btn tooth-65" matTooltip="Select Tooth 65"
-        style="width: 22px;height: 21px;top: 89px;left: 167px;" (click)="selectTooth(65)" id="toothButton65">
-      </button>
-      <button type="button" class="tooth-btn tooth-71" matTooltip="Select Tooth 71"
-        style="width: 15px;height: 20px;top: 340px;left: 128px;" (click)="selectTooth(71)" id="toothButton71">
-      </button>
-      <button type="button" class="tooth-btn tooth-72" matTooltip="Select Tooth 72"
-        style="width: 18px;height: 17px;top: 339px;left: 142px;" (click)="selectTooth(72)" id="toothButton72">
-      </button>
-      <button type="button" class="tooth-btn tooth-73" matTooltip="Select Tooth 73"
-        style="width: 21px;height: 18px;top: 328px;left: 151px;" (click)="selectTooth(73)" id="toothButton73">
-      </button>
-      <button type="button" class="tooth-btn tooth-74" matTooltip="Select Tooth 74"
-        style="width: 22px;height: 19px;top: 312px;left: 159px;" (click)="selectTooth(74)" id="toothButton74">
-      </button>
-      <button type="button" class="tooth-btn tooth-75" matTooltip="Select Tooth 75"
-        style="width: 20px;height: 21px;top: 292px;left: 166px;" (click)="selectTooth(75)" id="toothButton75">
-      </button>
-      <button type="button" class="tooth-btn tooth-81" matTooltip="Select Tooth 81"
-        style="width: 14px;height: 19px;top: 341px;left: 114px;" (click)="selectTooth(81)" id="toothButton81">
-      </button>
-      <button type="button" class="tooth-btn tooth-82" matTooltip="Select Tooth 82"
-        style="width: 15px;height: 17px;top: 340px;left: 99px;" (click)="selectTooth(82)" id="toothButton82">
-      </button>
-      <button type="button" class="tooth-btn tooth-83" matTooltip="Select Tooth 83"
-        style="width: 20px;height: 17px;top: 328px;left: 88px;" (click)="selectTooth(83)" id="toothButton83">
-      </button>
-      <button type="button" class="tooth-btn tooth-84" matTooltip="Select Tooth 84"
-        style="width: 24px;height: 18px;top: 313px;left: 79px;" (click)="selectTooth(84)" id="toothButton84">
-      </button>
-      <button type="button" class="tooth-btn tooth-85" matTooltip="Select Tooth 85"
-        style="width: 23px;height: 23px;top: 293px;left: 73px;" (click)="selectTooth(85)" id="toothButton85">
-      </button>
+    <div class="tooth-picker">
+        <h4 class="title">Click on the tooth to select</h4>
+        <div class="tooth-btn-wrapper">
+            <img src="assets/toothsList.jpg" alt="Tooths" class="image" />
+            <button type="button" class="tooth-btn tooth-11" matTooltip="Select Tooth 11"
+                style="width: 24px;height: 18px;top: 19px;left: 101px;" (click)="selectTooth(11)" id="toothButton11">
+            </button>
+            <button type="button" class="tooth-btn tooth-12" matTooltip="Select Tooth 12"
+                style="width: 22px;height: 19px;top: 25px;left: 81px;" (click)="selectTooth(12)" id="toothButton12">
+            </button>
+            <button type="button" class="tooth-btn tooth-13" matTooltip="Select Tooth 13"
+                style="width: 21px;height: 18px;top: 36px;left: 66px;" (click)="selectTooth(13)" id="toothButton13">
+            </button>
+            <button type="button" class="tooth-btn tooth-14" matTooltip="Select Tooth 14"
+                style="width: 27px;height: 19px;top: 51px;left: 50px;" (click)="selectTooth(14)" id="toothButton14">
+            </button>
+            <button type="button" class="tooth-btn tooth-15" matTooltip="Select Tooth 15"
+                style="width: 29px;height: 22px;top: 67px;left: 38px;" (click)="selectTooth(15)" id="toothButton15">
+            </button>
+            <button type="button" class="tooth-btn tooth-16" matTooltip="Select Tooth 16"
+                style="width: 34px;height: 32px;top: 86px;left: 28px;" (click)="selectTooth(16)" id="toothButton16">
+            </button>
+            <button type="button" class="tooth-btn tooth-17" matTooltip="Select Tooth 17"
+                style="width: 33px;height: 29px;top: 116px;left: 23px;" (click)="selectTooth(17)" id="toothButton17">
+            </button>
+            <button type="button" class="tooth-btn tooth-18" matTooltip="Select Tooth 18"
+                style="width: 35px;height: 28px;top: 143px;left: 17px;" (click)="selectTooth(18)" id="toothButton18">
+            </button>
+            <button type="button" class="tooth-btn tooth-21" matTooltip="Select Tooth 21"
+                style="width: 28px;height: 18px;top: 20px;left: 124px;" (click)="selectTooth(21)" id="toothButton21">
+            </button>
+            <button type="button" class="tooth-btn tooth-22" matTooltip="Select Tooth 22"
+                style="width: 21px;height: 19px;top: 24px;left: 151px;" (click)="selectTooth(22)" id="toothButton22">
+            </button>
+            <button type="button" class="tooth-btn tooth-23" matTooltip="Select Tooth 23"
+                style="width: 22px;height: 19px;top: 34px;left: 168px;" (click)="selectTooth(23)" id="toothButton23">
+            </button>
+            <button type="button" class="tooth-btn tooth-24" matTooltip="Select Tooth 24"
+                style="width: 24px;height: 23px;top: 47px;left: 180px;" (click)="selectTooth(24)" id="toothButton24">
+            </button>
+            <button type="button" class="tooth-btn tooth-25" matTooltip="Select Tooth 25"
+                style="width: 26px;height: 24px;top: 67px;left: 189px;" (click)="selectTooth(25)" id="toothButton25">
+            </button>
+            <button type="button" class="tooth-btn tooth-26" matTooltip="Select Tooth 26"
+                style="width: 36px;height: 35px;top: 88px;left: 192px;" (click)="selectTooth(26)" id="toothButton26">
+            </button>
+            <button type="button" class="tooth-btn tooth-27" matTooltip="Select Tooth 27"
+                style="width: 35px;height: 26px;top: 121px;left: 195px;" (click)="selectTooth(27)" id="toothButton27">
+            </button>
+            <button type="button" class="tooth-btn tooth-28" matTooltip="Select Tooth 28"
+                style="width: 33px;height: 29px;top: 146px;left: 200px;" (click)="selectTooth(28)" id="toothButton28">
+            </button>
+            <button type="button" class="tooth-btn tooth-31" matTooltip="Select Tooth 31"
+                style="width: 19px;height: 20px;top: 368px;left: 126px;" (click)="selectTooth(31)" id="toothButton31">
+            </button>
+            <button type="button" class="tooth-btn tooth-32" matTooltip="Select Tooth 32"
+                style="width: 20px;height: 21px;top: 364px;left: 145px;" (click)="selectTooth(32)" id="toothButton32">
+            </button>
+            <button type="button" class="tooth-btn tooth-33" matTooltip="Select Tooth 33"
+                style="width: 23px;height: 24px;top: 355px;left: 164px;" (click)="selectTooth(33)" id="toothButton33">
+            </button>
+            <button type="button" class="tooth-btn tooth-34" matTooltip="Select Tooth 34"
+                style="width: 26px;height: 24px;top: 340px;left: 180px;" (click)="selectTooth(34)" id="toothButton34">
+            </button>
+            <button type="button" class="tooth-btn tooth-35" matTooltip="Select Tooth 35"
+                style="width: 27px;height: 25px;top: 317px;left: 190px;" (click)="selectTooth(35)" id="toothButton35">
+            </button>
+            <button type="button" class="tooth-btn tooth-36" matTooltip="Select Tooth 36"
+                style="width: 32px;height: 29px;top: 289px;left: 194px;" (click)="selectTooth(36)" id="toothButton36">
+            </button>
+            <button type="button" class="tooth-btn tooth-37" matTooltip="Select Tooth 37"
+                style="width: 30px;height: 26px;top: 263px;left: 198px;" (click)="selectTooth(37)" id="toothButton37">
+            </button>
+            <button type="button" class="tooth-btn tooth-38" matTooltip="Select Tooth 38"
+                style="width: 30px;height: 26px;top: 240px;left: 198px;" (click)="selectTooth(38)" id="toothButton38">
+            </button>
+            <button type="button" class="tooth-btn tooth-41" matTooltip="Select Tooth 41"
+                style="width: 18px;height: 20px;top: 368px;left: 109px;" (click)="selectTooth(41)" id="toothButton41">
+            </button>
+            <button type="button" class="tooth-btn tooth-42" matTooltip="Select Tooth 42"
+                style="width: 20px;height: 21px;top: 364px;left: 90px;" (click)="selectTooth(42)" id="toothButton42">
+            </button>
+            <button type="button" class="tooth-btn tooth-43" matTooltip="Select Tooth 43"
+                style="width: 24px;height: 21px;top: 355px;left: 72px;" (click)="selectTooth(43)" id="toothButton43">
+            </button>
+            <button type="button" class="tooth-btn tooth-44" matTooltip="Select Tooth 44"
+                style="width: 29px;height: 22px;top: 338px;left: 53px;" (click)="selectTooth(44)" id="toothButton44">
+            </button>
+            <button type="button" class="tooth-btn tooth-45" matTooltip="Select Tooth 45"
+                style="width: 29px;height: 24px;top: 319px;left: 45px;" (click)="selectTooth(45)" id="toothButton45">
+            </button>
+            <button type="button" class="tooth-btn tooth-46" matTooltip="Select Tooth 46"
+                style="width: 33px;height: 32px;top: 289px;left: 33px;" (click)="selectTooth(46)" id="toothButton46">
+            </button>
+            <button type="button" class="tooth-btn tooth-47" matTooltip="Select Tooth 47"
+                style="width: 30px;height: 28px;top: 264px;left: 28px;" (click)="selectTooth(47)" id="toothButton47">
+            </button>
+            <button type="button" class="tooth-btn tooth-48" matTooltip="Select Tooth 48"
+                style="width: 30px;height: 28px;top: 238px;left: 25px;" (click)="selectTooth(48)" id="toothButton48">
+            </button>
+            <button type="button" class="tooth-btn tooth-51" matTooltip="Select Tooth 51"
+                style="width: 19px;height: 17px;top: 44px;left: 110px;" (click)="selectTooth(51)" id="toothButton51">
+            </button>
+            <button type="button" class="tooth-btn tooth-52" matTooltip="Select Tooth 52"
+                style="width: 19px;height: 16px;top: 51px;left: 97px;" (click)="selectTooth(52)" id="toothButton52">
+            </button>
+            <button type="button" class="tooth-btn tooth-53" matTooltip="Select Tooth 53"
+                style="width: 20px;height: 16px;top: 62px;left: 86px;" (click)="selectTooth(53)" id="toothButton53">
+            </button>
+            <button type="button" class="tooth-btn tooth-54" matTooltip="Select Tooth 54"
+                style="width: 22px;height: 19px;top: 74px;left: 75px;" (click)="selectTooth(54)" id="toothButton54">
+            </button>
+            <button type="button" class="tooth-btn tooth-55" matTooltip="Select Tooth 55"
+                style="width: 22px;height: 19px;top: 92px;left: 70px;" (click)="selectTooth(55)" id="toothButton55">
+            </button>
+            <button type="button" class="tooth-btn tooth-61" matTooltip="Select Tooth 61"
+                style="width: 19px;height: 16px;top: 45px;left: 129px;" (click)="selectTooth(61)" id="toothButton61">
+            </button>
+            <button type="button" class="tooth-btn tooth-62" matTooltip="Select Tooth 62"
+                style="width: 18px;height: 17px;top: 50px;left: 145px;" (click)="selectTooth(62)" id="toothButton62">
+            </button>
+            <button type="button" class="tooth-btn tooth-63" matTooltip="Select Tooth 63"
+                style="width: 22px;height: 15px;top: 62px;left: 154px;" (click)="selectTooth(63)" id="toothButton63">
+            </button>
+            <button type="button" class="tooth-btn tooth-64" matTooltip="Select Tooth 64"
+                style="width: 20px;height: 18px;top: 73px;left: 163px;" (click)="selectTooth(64)" id="toothButton64">
+            </button>
+            <button type="button" class="tooth-btn tooth-65" matTooltip="Select Tooth 65"
+                style="width: 22px;height: 21px;top: 89px;left: 167px;" (click)="selectTooth(65)" id="toothButton65">
+            </button>
+            <button type="button" class="tooth-btn tooth-71" matTooltip="Select Tooth 71"
+                style="width: 15px;height: 20px;top: 340px;left: 128px;" (click)="selectTooth(71)" id="toothButton71">
+            </button>
+            <button type="button" class="tooth-btn tooth-72" matTooltip="Select Tooth 72"
+                style="width: 18px;height: 17px;top: 339px;left: 142px;" (click)="selectTooth(72)" id="toothButton72">
+            </button>
+            <button type="button" class="tooth-btn tooth-73" matTooltip="Select Tooth 73"
+                style="width: 21px;height: 18px;top: 328px;left: 151px;" (click)="selectTooth(73)" id="toothButton73">
+            </button>
+            <button type="button" class="tooth-btn tooth-74" matTooltip="Select Tooth 74"
+                style="width: 22px;height: 19px;top: 312px;left: 159px;" (click)="selectTooth(74)" id="toothButton74">
+            </button>
+            <button type="button" class="tooth-btn tooth-75" matTooltip="Select Tooth 75"
+                style="width: 20px;height: 21px;top: 292px;left: 166px;" (click)="selectTooth(75)" id="toothButton75">
+            </button>
+            <button type="button" class="tooth-btn tooth-81" matTooltip="Select Tooth 81"
+                style="width: 14px;height: 19px;top: 341px;left: 114px;" (click)="selectTooth(81)" id="toothButton81">
+            </button>
+            <button type="button" class="tooth-btn tooth-82" matTooltip="Select Tooth 82"
+                style="width: 15px;height: 17px;top: 340px;left: 99px;" (click)="selectTooth(82)" id="toothButton82">
+            </button>
+            <button type="button" class="tooth-btn tooth-83" matTooltip="Select Tooth 83"
+                style="width: 20px;height: 17px;top: 328px;left: 88px;" (click)="selectTooth(83)" id="toothButton83">
+            </button>
+            <button type="button" class="tooth-btn tooth-84" matTooltip="Select Tooth 84"
+                style="width: 24px;height: 18px;top: 313px;left: 79px;" (click)="selectTooth(84)" id="toothButton84">
+            </button>
+            <button type="button" class="tooth-btn tooth-85" matTooltip="Select Tooth 85"
+                style="width: 23px;height: 23px;top: 293px;left: 73px;" (click)="selectTooth(85)" id="toothButton85">
+            </button>
+        </div>
     </div>
-  </div>
 </mat-menu>
