@@ -253,7 +253,7 @@ export class CreateClaimNphiesComponent implements OnInit {
 
     routeMode;
     selectedTab = 0;
-    PrescriberDefault = 0;
+    PrescriberDefault = "";
     claimType: string;
     isPBMValidationVisible = false;
     isMREValidationVisible = false;
@@ -1868,10 +1868,9 @@ export class CreateClaimNphiesComponent implements OnInit {
             });
             if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') {
                 this.model.visionPrescription = {};
-
                 // tslint:disable-next-line:max-line-length
-                this.model.visionPrescription.dateWritten = moment(this.removeSecondsFromDate(this.FormNphiesClaim.controls.dateWritten.value)).utc();
-                this.model.visionPrescription.prescriber = this.FormNphiesClaim.controls.prescriber.value;
+                this.model.visionPrescription.dateWritten = this.FormNphiesClaim.controls.dateWritten.value!=null?moment(this.removeSecondsFromDate(this.FormNphiesClaim.controls.dateWritten.value)).utc():null;
+                this.model.visionPrescription.prescriber = this.FormNphiesClaim.controls.prescriber.value!=0? this.FormNphiesClaim.controls.prescriber.value:null;
                 let sequence = 1; let index = 0;
                 let lens_model: any = [];
                 this.VisionSpecifications.forEach(x => {

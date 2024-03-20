@@ -246,6 +246,7 @@ export class AddPrescriptionComponent implements OnInit {
         this.getTPA();
         this.FormPreAuthorization.controls.dateOrdered.setValue(this.removeSecondsFromDate(new Date()));
         this.filteredNations.next(this.nationalities.slice());
+        
         if (this.claimReuseId) {
             this.FormPreAuthorization.controls.transfer.setValue(this.data.transfer)
             this.getRefferalProviders();
@@ -257,8 +258,9 @@ export class AddPrescriptionComponent implements OnInit {
             this.SupportingInfo.push(this.SetDaysOfSupply());
             this.FormPreAuthorization.controls.type.setValue(this.sharedDataService.claimPrescriberType.filter(x => x.value === "professional")[0]);
             this.FormPreAuthorization.controls.subType.setValue(this.sharedDataService.subTypeList.filter(x => x.value === "op")[0]);
+            this.claimType = "professional";
         }
-        console.log("sub types ", this.subTypeList);
+        //console.log("sub types ", this.subTypeList);
         this.getProviderTypeConfiguration();
 
     }
@@ -534,6 +536,9 @@ export class AddPrescriptionComponent implements OnInit {
                         this.FormPreAuthorization.controls.country.disable();
                         this.FormPreAuthorization.controls.countryName.disable();
                         this.FormPreAuthorization.controls.date.disable();
+                        this.FormPreAuthorization.controls.otherReferral.disable();
+                        this.FormPreAuthorization.controls.referral.disable();
+                        this.FormPreAuthorization.controls.eligibilityType.disable();
                     }
                 }
 
@@ -1317,8 +1322,10 @@ export class AddPrescriptionComponent implements OnInit {
                                     val.doseRangeMax = result.doseRangeMax;
                                     val.doseUnit = result.doseUnit;
                                     val.rateType = result.rateType;
+                                    val.rateQuantity = result.rateQuantity;
                                     val.rateRatioNumeratorMin = result.rateRatioNumeratorMin;
                                     val.rateRatioDenominatorMax = result.rateRatioDenominatorMax;
+                                    val.rateDenominatorUnit = result.rateDenominatorUnit;
                                     val.rateUnit = result.rateUnit;
                                     val.startDate = result.startDate;
                                     val.endDate = result.endDate;
@@ -1386,8 +1393,10 @@ export class AddPrescriptionComponent implements OnInit {
                                     val.doseRangeMax = result.doseRangeMax;
                                     val.doseUnit = result.doseUnit;
                                     val.rateType = result.rateType;
+                                    val.rateQuantity = result.rateQuantity;
                                     val.rateRatioNumeratorMin = result.rateRatioNumeratorMin;
                                     val.rateRatioDenominatorMax = result.rateRatioDenominatorMax;
+                                    val.rateDenominatorUnit = result.rateDenominatorUnit;
                                     val.rateUnit = result.rateUnit;
                                     val.startDate = result.startDate;
                                     val.endDate = result.endDate;
