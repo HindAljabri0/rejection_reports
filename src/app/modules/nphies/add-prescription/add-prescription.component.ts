@@ -1622,7 +1622,7 @@ export class AddPrescriptionComponent implements OnInit {
                 }
             }
             if (x.category === 'lab-test') {
-                if (!x.code || !x.value) {
+                if (!x.code || !x.value|| (!x.unit && x.isUnitsRequired)) {
                     hasError = true;
                 }
             }
