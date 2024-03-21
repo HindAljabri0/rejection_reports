@@ -1622,7 +1622,7 @@ export class AddPrescriptionComponent implements OnInit {
                 }
             }
             if (x.category === 'lab-test') {
-                if (!x.code || !x.value) {
+                if (!x.code || !x.value|| (!x.unit && x.isUnitsRequired)) {
                     hasError = true;
                 }
             }
@@ -1965,6 +1965,7 @@ export class AddPrescriptionComponent implements OnInit {
                 model.attachment = x.attachment;
                 model.attachmentName = x.attachmentName;
                 model.attachmentType = x.attachmentType;
+                model.unit = x.unit === 'others' ? x.otherUnit:x.unit;
                 if (x.attachmentDate) {
                     x.attachmentDate = this.datePipe.transform(x.attachmentDate, 'yyyy-MM-dd');
                 }

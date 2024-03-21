@@ -427,7 +427,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
                 display: type.nonStandardDescription,
                 unitPrice: type.unitPrice,
                 factor: type.factor ? type.factor : 1,
-                tax: 0
+               // tax: 0
             });
             if (this.data.providerType === 'vision' && this.data.source === 'APPROVAL') {
                 this.FormItem.controls.factor.setValue(1);
