@@ -2031,7 +2031,7 @@ export class AddPreauthorizationComponent implements OnInit {
                 model.attachment = x.attachment;
                 model.attachmentName = x.attachmentName;
                 model.attachmentType = x.attachmentType;
-                
+                model.unit = x.unit === 'others' ? x.otherUnit:x.unit;
                 if (x.attachmentDate) {
                     x.attachmentDate = this.datePipe.transform(x.attachmentDate, 'yyyy-MM-dd');
                 }
