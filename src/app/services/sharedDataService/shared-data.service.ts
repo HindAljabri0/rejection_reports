@@ -508,7 +508,7 @@ export class SharedDataService {
     { value: "adverse-effect", name: 'Adverse Effect' },
     { value: "irreplaceable", name: 'Irreplaceable' },
     { value: "allergy" , name: 'Allergy' },
-    { value: "others", name: 'Others' },
+    //{ value: "others", name: 'Others' },
   ];
 
   cancelReasonList = [
