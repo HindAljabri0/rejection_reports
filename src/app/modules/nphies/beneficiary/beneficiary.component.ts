@@ -411,7 +411,7 @@ export class BeneficiaryComponent implements OnInit {
 
         for (const insurancePlans of beneficiaryinfo.insurancePlans) {
             if (insurancePlans.payerNphiesId == this.tawuniyaNphiesId) {
-                if (this.systemTypeFormControl.value == '5') {
+                if (this.systemTypeFormControl.value == '5' ||  insurancePlans.tpaNphiesId==this.totalCareNphiesId) {
                     insurancePlans.tpaNphiesId = this.totalCareNphiesId;
                 } else {
                     insurancePlans.tpaNphiesId = '-1';
