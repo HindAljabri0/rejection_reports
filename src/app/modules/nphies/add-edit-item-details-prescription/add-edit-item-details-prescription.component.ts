@@ -35,6 +35,7 @@ export class AddEditItemDetailsPrescriptionComponent implements OnInit {
         nonStandardCode: [''],
         display: [''],
         absenceScientificCode: [],
+        reasonAbsenceScientificCode:[],
         strength: ['', Validators.required],
         quantity: ['', Validators.required],
         quantityCode: [''],
@@ -74,7 +75,8 @@ export class AddEditItemDetailsPrescriptionComponent implements OnInit {
                 quantity: this.data.item.quantity,
                 quantityCode: this.data.item.quantityCode != null ? this.data.item.quantityCode : "",
                 strength: this.data.item.strength,
-                absenceScientificCode: (this.absenceReasonList.filter(x => x.value === this.data.item.absenceScientificCode).length > 0 ? this.absenceReasonList.filter(x => x.value === this.data.item.absenceScientificCode)[0] : "")
+                absenceScientificCode: (this.absenceReasonList.filter(x => x.value === this.data.item.absenceScientificCode).length > 0 ? this.absenceReasonList.filter(x => x.value === this.data.item.absenceScientificCode)[0] : ""),
+                reasonAbsenceScientificCode : this.data.item.reasonAbsenceScientificCode
 
             });
 
@@ -301,7 +303,7 @@ export class AddEditItemDetailsPrescriptionComponent implements OnInit {
             model.quantity = parseFloat(this.FormItem.controls.quantity.value);
             model.quantityCode = this.FormItem.controls.quantityCode.value;
             model.absenceScientificCode = this.FormItem.controls.absenceScientificCode.value? this.FormItem.controls.absenceScientificCode.value.value : null;
-            
+            model.reasonAbsenceScientificCode = this.FormItem.controls.reasonAbsenceScientificCode.value;
             this.dialogRef.close(model);
         }
     }

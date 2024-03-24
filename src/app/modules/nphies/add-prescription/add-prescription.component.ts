@@ -1145,7 +1145,7 @@ export class AddPrescriptionComponent implements OnInit {
                             x.prescribedDrugCode = result.prescribedDrugCode;
                             x.strength = result.strength;
                             x.absenceScientificCode = result.absenceScientificCode;
-
+                            x.reasonAbsenceScientificCode = result.reasonAbsenceScientificCode;
                             if (x.supportingInfoSequence) {
                                 x.supportingInfoNames = '';
                                 x.supportingInfoSequence.forEach(s => {
@@ -1260,6 +1260,7 @@ export class AddPrescriptionComponent implements OnInit {
                                         y.quantity = result.quantity;
                                         y.quantityCode = result.quantityCode;
                                         y.absenceScientificCode = result.absenceScientificCode;
+                                        y.reasonAbsenceScientificCode = result.reasonAbsenceScientificCode;
                                         //y.claimItemDosageModel =[];
                                     }
                                 });

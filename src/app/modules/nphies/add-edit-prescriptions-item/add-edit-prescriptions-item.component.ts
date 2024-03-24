@@ -57,6 +57,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
         diagnosisSequence: [''],
         diagnosisFilter: [''],
         absenceScientificCode: [''],
+        reasonAbsenceScientificCode : [''],
         endDate: [''],
         prescribedDrugCode: ['']
     });
@@ -124,7 +125,8 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
                 quantityCode: this.data.item.quantityCode != null ? this.data.item.quantityCode : "",
                 endDate: this.data.item.endDate ? new Date(this.data.item.endDate) : null,
                 strength: this.data.item.strength,
-                absenceScientificCode: (this.absenceReasonList.filter(x => x.value === this.data.item.absenceScientificCode).length > 0 ? this.absenceReasonList.filter(x => x.value === this.data.item.absenceScientificCode)[0] : "")
+                absenceScientificCode: (this.absenceReasonList.filter(x => x.value === this.data.item.absenceScientificCode).length > 0 ? this.absenceReasonList.filter(x => x.value === this.data.item.absenceScientificCode)[0] : ""),
+                reasonAbsenceScientificCode : this.data.item.reasonAbsenceScientificCode
             });
 
             if (this.data.careTeams) {
@@ -585,6 +587,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
             model.strength = this.FormItem.controls.strength.value;
             model.endDate = this.FormItem.controls.endDate.value;
             model.absenceScientificCode = this.FormItem.controls.absenceScientificCode.value.value;
+            model.reasonAbsenceScientificCode = this.FormItem.controls.reasonAbsenceScientificCode ? this.FormItem.controls.reasonAbsenceScientificCode.value : null;
             //   model.authoredOnStr = this.datePipe.transform(this.FormItem.controls.authoredOn.value, 'dd-MM-yyyy hh:mm aa');
 
             if (this.FormItem.controls.supportingInfoSequence.value && this.FormItem.controls.supportingInfoSequence.value.length > 0) {
