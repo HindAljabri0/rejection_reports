@@ -269,7 +269,7 @@
                                 <div *ngIf="isSubmitted && supportingInfo.isUnitsRequired && !supportingInfo.unit">
                                     <span class="error-text">Please select a Code</span>
                                 </div>
-                                <div *ngIf="supportingInfo.unit === 'others'">
+                                <div *ngIf="supportingInfo.unit === 'others-specify'">
                                     <mat-form-field>
                                         <input matInput [(ngModel)]="supportingInfo.otherUnit" placeholder="Other ucum Code">
                                     </mat-form-field>
