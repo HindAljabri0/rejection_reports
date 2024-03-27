@@ -39,7 +39,7 @@ export class ManageSupportingInfoComponent implements OnInit {
 
     ngOnInit() {
         this.currentIndex = 0;
-        console.log(" check code ->" + this.supportingInfoList[5].code);
+        
         let i = 0;
         if (this.supportingInfoList.length > 0) {
             this.supportingInfoList.forEach(info => {
