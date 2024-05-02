@@ -173,7 +173,8 @@
                                 <p>Policy No.:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{printFor !=='eligibility' ?UCAFData.beneficiary.policyNumber:UCAFData.policyNumber}}</p>
+                                <p class="value-holder">{{printFor !=='eligibility'
+                                    ?UCAFData.beneficiary.policyNumber:UCAFData.policyNumber}}</p>
                             </td>
                         </tr>
                     </table>
@@ -183,7 +184,8 @@
                                 <p>Expiry Date:&nbsp;</p>
                             </td>
                             <td>
-                                <p class="value-holder">{{printFor !=='eligibility' ?UCAFData.beneficiary.expiryDate:UCAFData.expiryDate | date: 'dd / MM / yyyy'}}</p>
+                                <p class="value-holder">{{printFor !=='eligibility'
+                                    ?UCAFData.beneficiary.expiryDate:UCAFData.expiryDate | date: 'dd / MM / yyyy'}}</p>
                             </td>
                             <td width="10">
                                 <p>Class:&nbsp;</p>
@@ -235,7 +237,7 @@
                                     <p>Patient Share Percentage:&nbsp;</p>
                                 </td>
                                 <td>
-                                    <p class="value-holder" >{{UCAFData.patientSharePercentage}}&nbsp;</p>
+                                    <p class="value-holder">{{UCAFData.patientSharePercentage}}&nbsp;</p>
                                 </td>
                             </tr>
                         </table>
@@ -753,9 +755,11 @@
                                 <p><strong>Comments (include approved days/services if different from the
                                         requested):&nbsp;</strong></p>
                             </td>
-                            <td>
-                                <p class="value-holder"></p>
-                            </td>
+                            <div *ngFor="let note of UCAFData.processNote">
+                                <td>
+                                    <p class="value-holder">{{note.processNoteNumber}} - {{note.text}}</p>
+                                </td>
+                            </div>
                         </tr>
                     </table>
                     <hr>
