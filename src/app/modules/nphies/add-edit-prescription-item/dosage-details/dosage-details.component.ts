@@ -234,6 +234,30 @@ export class DosageDetailsComponent implements OnInit {
             });
         }
     }
+    selectDosageType(type) {
+        if (type === "DoseType") {
+            this.FormItem.patchValue({
+                rateType: "",
+                ratemin: "",
+                ratemax: "",
+                rateQuantity: "",
+                rateUnit: "",
+                numerator: "",
+                denominator: "",
+                rateDenominatorUnit: "",
+            });
+        }else{
+            this.FormItem.patchValue({
+                doseType: "",
+                min: "",
+                max: "",
+                doseQuantity: "",
+                doseUnit: "",
+                rateType: "",
+
+            });
+        }
+    }
     validateDosageDetails() {
         if (this.FormItem.controls.dosageType.value === 'DoseType' && (this.FormItem.controls.doseType.value === '' || this.FormItem.controls.doseType.value === null)) {
             this.FormItem.controls.doseType.setValidators([Validators.required]);
