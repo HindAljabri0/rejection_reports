@@ -235,6 +235,7 @@ export class DosageDetailsComponent implements OnInit {
         }
     }
     selectDosageType(type) {
+        console.log("type {}",type);
         if (type === "DoseType") {
             this.FormItem.patchValue({
                 rateType: "",

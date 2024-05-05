@@ -41,7 +41,7 @@
                                 matTooltip="Dose- Amount of medication per dose / Rate - Amount of medication per unit of time ">info</mat-icon>
                         </span></label>
                     <mat-form-field class="form-control custom-select-control">
-                        <mat-select placeholder="Select dosage type" formControlName="dosageType">
+                        <mat-select placeholder="Select dosage type" formControlName="dosageType" (ngModelChange)="selectDosageType($event)">
                             <mat-option value="">Select Type</mat-option>
                             <mat-option value="DoseType">Dose</mat-option>
                             <mat-option value="RateType">Rate</mat-option>
@@ -55,7 +55,7 @@
                     [ngClass]="{'has-error' : (isSubmitted || FormItem.get('doseType').touched) && FormItem.get('doseType').hasError('required')}">
                     <label class="control-label">Dose Type<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
-                        <mat-select placeholder="Select dose type" formControlName="doseType" (ngModelChange)="selectDosageType($event)">
+                        <mat-select placeholder="Select dose type" formControlName="doseType" >
                             <mat-option value="">Select Type</mat-option>
                             <mat-option value="Dose_Range">Dose Range</mat-option>
                             <mat-option value="Dose_Quantity">Dose Quantity</mat-option>
