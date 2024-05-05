@@ -383,7 +383,7 @@ export class AddCNHIPreauthorizationComponent implements OnInit {
         }
   
         if (this.data.encounter.encounterClass != null) {
-          this.FormPreAuthorization.controls.encounterClass.setValue(this.sharedDataService.encounterCnhiClassList[0].value);
+          this.FormPreAuthorization.controls.encounterClass.setValue(this.data.encounter.encounterClass);
          }
   
         if (this.data.encounter.serviceType != null) {
