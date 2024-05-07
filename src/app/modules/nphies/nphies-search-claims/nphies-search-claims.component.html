@@ -785,6 +785,9 @@
                     <button mat-flat-button color="primary" (click)="moveToReadyState()">{{selectedClaims.length==0?"Move All to
                         Ready State":"Move Selected ("+this.selectedClaims.length+") to Ready State"}}</button>
                 </ng-container>
+                <ng-container *ngIf="showInquireCancelMoveAll === true && selectedCardKey != 0">
+                    <button mat-flat-button color="primary" (click)="InquireCancelMoveAll()">{{selectedClaims.length==0?"Inquire-Cancel-Move All":"Inquire-Cancel-Move Selected ("+this.selectedClaims.length+")"}}</button>
+                </ng-container>
             </div>
         </div>
     </div>
