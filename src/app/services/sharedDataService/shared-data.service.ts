@@ -508,7 +508,6 @@ export class SharedDataService {
         { value: 'Irreplaceable', name: '	SFDA Irreplaceable drugs' },
         { value: 'Others', name: 'Others : specify' }
     ];
-
     itemAbsenceReasonList = [
         { value: "unresponsive", name: 'Unresponsive' },
         { value: "adverse-effect", name: 'Adverse Effect' },
