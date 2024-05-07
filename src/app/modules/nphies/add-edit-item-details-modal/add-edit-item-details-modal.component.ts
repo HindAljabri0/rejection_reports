@@ -198,6 +198,7 @@ export class AddEditItemDetailsModalComponent implements OnInit {
 
     getItemList(type = null) {
         this.IsItemLoading = true;
+        this.sharedServices.loadingChanged.next(true);
         this.FormItem.controls.item.disable();
         if(this.FormItem.controls.type.value && this.FormItem.controls.type.value.value === 'medication-codes'){
             this.showEBPfeilds = true;
@@ -212,11 +213,13 @@ export class AddEditItemDetailsModalComponent implements OnInit {
                     this.FormItem.patchValue({
                         item: this.itemList.filter(x => x.code === this.data.item.itemCode)[0]
                     });
+                    this.sharedServices.loadingChanged.next(false);
                 } else {
                     if (type) {
                         this.FormItem.patchValue({
                             item: this.itemList.filter(x => x.code === type.code)[0]
                         });
+                        this.sharedServices.loadingChanged.next(false);
                     }
                 }
                 this.filteredItem.next(this.itemList.slice());
@@ -274,7 +277,7 @@ export class AddEditItemDetailsModalComponent implements OnInit {
         const itemType = this.FormItem.controls.itemType == null ? null : this.FormItem.controls.itemType.value;
         const searchStr = this.FormItem.controls.searchQuery.value;
         const claimType = this.data.type;
-        const RequestDate = this.data.dateOrdered;
+        const RequestDate = this.datePipe.transform(this.data.dateOrdered, 'yyyy-MM-dd');
         const payerNphiesId = this.data.payerNphiesId;
         const tpaNphiesId = this.data.tpaNphiesId;
 
@@ -331,15 +334,19 @@ export class AddEditItemDetailsModalComponent implements OnInit {
 
     selectItem(type) {
         if (type) {
+            console.log("OOO "   +JSON.stringify(this.data))
+            console.log("this.typeList "   +JSON.stringify(this.typeList))
+            console.log("this.cnhiTypeList "   +JSON.stringify(this.cnhiTypeList))
+            console.log("this.itemType "   +JSON.stringify(type.itemType))
             this.FormItem.patchValue({
-                type: this.data.source === 'CNHI' ? this.cnhiTypeList.filter(x => x.value === this.data.item.type)[0] : this.typeList.filter(x => x.value === this.data.item.type)[0],
+                type: this.data.source === 'CNHI' ? this.cnhiTypeList.filter(x => x.value === type.itemType)[0] : this.typeList.filter(x => x.value === type.itemType)[0],
                 nonStandardCode: type.nonStandardCode,
                 display: type.nonStandardDescription,
                 unitPrice: type.unitPrice,
                 discount: type.discount,
-                pharmacistSelectionReason: this.medicationReasonList.filter(x => x.value === this.data.item.pharmacistSelectionReason)[0] ? this.medicationReasonList.filter(x => x.value === this.data.item.pharmacistSelectionReason)[0] : '',
-                pharmacistSubstitute: this.data.item.pharmacistSubstitute,
-                reasonPharmacistSubstitute: this.data.item.reasonPharmacistSubstitute,
+                pharmacistSelectionReason:this.data.type === 'pharmacy' ?this.medicationReasonList.filter(x => x.value === this.data.item.pharmacistSelectionReason)[0] ? this.medicationReasonList.filter(x => x.value === this.data.item.pharmacistSelectionReason)[0] : '':'',
+                pharmacistSubstitute: this.data.type === 'pharmacy' ?this.data.item.pharmacistSubstitute:'',
+                reasonPharmacistSubstitute: this.data.type === 'pharmacy' ?this.data.item.reasonPharmacistSubstitute:'',
             });
             if (type.itemType && type.itemType === 'medication-codes') {
                 this.showEBPfeilds = true;
