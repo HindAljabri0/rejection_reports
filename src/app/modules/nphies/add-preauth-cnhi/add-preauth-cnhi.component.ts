@@ -1601,7 +1601,7 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
         }
       }
       if (x.category === 'lab-test') {
-        if (!x.code || !x.value) {
+        if (!x.code || !x.value|| (!x.unit && x.isUnitsRequired)) {
           hasError = true;
         }
       }
@@ -2103,7 +2103,7 @@ if (this.selectedBeneficiary.nationality === null || this.selectedBeneficiary.co
         model.attachment = x.attachment;
         model.attachmentName = x.attachmentName;
         model.attachmentType = x.attachmentType;
-        model.unit = x.unit === 'others' ? x.otherUnit:x.unit;
+        model.unit = x.unit === 'others-specify' ? x.otherUnit:x.unit;
 
         if (x.attachmentDate) {
           x.attachmentDate = this.datePipe.transform(x.attachmentDate, 'yyyy-MM-dd');
