@@ -256,7 +256,24 @@
                                     type="text" class="form-control" placeholder="Enter value"
                                     [(ngModel)]="supportingInfo.value" (keyup)="chiefComplainBlurValidation(i)"
                                     id="enterValue" />
-                                
+
+                                <mat-form-field *ngIf="supportingInfo.category === 'lab-test' && supportingInfo.isUnitsRequired"
+                                    class="form-control custom-select-control">
+                                    <mat-select [(ngModel)]="supportingInfo.unit" id="selectUcumCode">
+                                        <mat-option value="">Select Ucum Code</mat-option>
+                                        <mat-option *ngFor="let code of ucumCodes"
+                                            [value]="code.code">{{code.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <div *ngIf="isSubmitted && supportingInfo.isUnitsRequired && !supportingInfo.unit">
+                                    <span class="error-text">Please select a Code</span>
+                                </div>
+                                <div *ngIf="supportingInfo.unit === 'others-specify'">
+                                    <mat-form-field>
+                                        <input matInput [(ngModel)]="supportingInfo.otherUnit" placeholder="Other ucum Code">
+                                    </mat-form-field>
+                                </div>
                                 <input
                                     *ngIf="supportingInfo.category !== 'info' && supportingInfo.category !== 'chief-complaint' && supportingInfo.category !== 'lab-test'"
                                     type="number" class="form-control" placeholder="Enter value"

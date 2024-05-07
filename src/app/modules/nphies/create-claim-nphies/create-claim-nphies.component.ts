@@ -73,7 +73,7 @@ export class CreateClaimNphiesComponent implements OnInit {
         eligibilityResponseUrl: [''],
         preAuthOfflineDate: [''],
         episodeId: ['', Validators.required],
-        prescription:[''],
+        prescription: [''],
         // preAuthResponseId: [''],
         accidentType: [''],
         streetName: [''],
@@ -1129,7 +1129,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             }
             this.RefershTotal();
         });
-        console.log("Items ",this.Items);
+        console.log("Items ", this.Items);
     }
 
     deleteItem(index: number) {
@@ -1442,7 +1442,7 @@ export class CreateClaimNphiesComponent implements OnInit {
                 }
             }
             if (x.category === 'lab-test') {
-                if (!x.code || !x.value) {
+                if (!x.code || !x.value || (!x.unit && x.isUnitsRequired)) {
                     hasError = true;
                 }
             }
@@ -1806,7 +1806,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             }
             // preAuthorizationModel.preAuthResponseId = this.FormNphiesClaim.controls.preAuthResponseId.value;
             preAuthorizationModel.episodeId = this.FormNphiesClaim.controls.episodeId.value;
-            preAuthorizationModel.prescription =this.FormNphiesClaim.controls.prescription.value;
+            preAuthorizationModel.prescription = this.FormNphiesClaim.controls.prescription.value;
             this.model.preAuthorizationInfo = preAuthorizationModel;
 
             this.model.supportingInfo = this.SupportingInfo.map(x => {
@@ -1827,6 +1827,7 @@ export class CreateClaimNphiesComponent implements OnInit {
                 model.attachment = x.attachment;
                 model.attachmentName = x.attachmentName;
                 model.attachmentType = x.attachmentType;
+                model.unit = x.unit === 'others-specify' ? x.otherUnit : x.unit;
                 if (x.attachmentDate) {
                     x.attachmentDate = this.datePipe.transform(x.attachmentDate, 'yyyy-MM-dd');
                 }
@@ -1869,8 +1870,8 @@ export class CreateClaimNphiesComponent implements OnInit {
             if (this.FormNphiesClaim.controls.type.value && this.FormNphiesClaim.controls.type.value.value === 'vision') {
                 this.model.visionPrescription = {};
                 // tslint:disable-next-line:max-line-length
-                this.model.visionPrescription.dateWritten = this.FormNphiesClaim.controls.dateWritten.value!=null?moment(this.removeSecondsFromDate(this.FormNphiesClaim.controls.dateWritten.value)).utc():null;
-                this.model.visionPrescription.prescriber = this.FormNphiesClaim.controls.prescriber.value!=0? this.FormNphiesClaim.controls.prescriber.value:null;
+                this.model.visionPrescription.dateWritten = this.FormNphiesClaim.controls.dateWritten.value != null ? moment(this.removeSecondsFromDate(this.FormNphiesClaim.controls.dateWritten.value)).utc() : null;
+                this.model.visionPrescription.prescriber = this.FormNphiesClaim.controls.prescriber.value != 0 ? this.FormNphiesClaim.controls.prescriber.value : null;
                 let sequence = 1; let index = 0;
                 let lens_model: any = [];
                 this.VisionSpecifications.forEach(x => {
@@ -2696,7 +2697,7 @@ export class CreateClaimNphiesComponent implements OnInit {
             // tslint:disable-next-line:max-line-length
             this.FormNphiesClaim.controls.episodeId.setValue(response.preAuthorizationInfo.episodeId);
         }
-        if(response.preAuthorizationInfo.prescription){
+        if (response.preAuthorizationInfo.prescription) {
             this.FormNphiesClaim.controls.prescription.setValue(response.preAuthorizationInfo.prescription);
         }
         // if (response.preAuthorizationInfo.preAuthResponseId != null) {
@@ -2844,9 +2845,9 @@ export class CreateClaimNphiesComponent implements OnInit {
             if (x.category === 'chief-complaint' || x.category === 'onset' || x.category === 'lab-test') {
                 model.description = model.code;
             }
-
+            
             const codeList = this.sharedDataService.getCodeName(x.category, x.code);
-
+            
             // tslint:disable-next-line:max-line-length
             if ((x.category === 'missingtooth' || x.category === 'reason-for-visit' || x.category === 'chief-complaint' || x.category === 'onset') && codeList) {
                 if (x.category === 'chief-complaint' || x.category === 'onset') {
@@ -2977,6 +2978,9 @@ export class CreateClaimNphiesComponent implements OnInit {
                     break;
                 case 'oxygen-saturation':
                     model.unit = '%';
+                    break;
+                case 'lab-test':
+                    model.unit = x.unit;
                     break;
             }
             model.byteArray = x.attachment;
