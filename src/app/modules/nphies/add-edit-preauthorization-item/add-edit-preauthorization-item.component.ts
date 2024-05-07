@@ -826,7 +826,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
                         const body = event.body;
                         if (body) {
                             //   this.typeListSearchResult = body['content'];
-                            this.typeListSearchResult = body['content'].sort((a, b) => (a.nonStandardCode.length < b.nonStandardCode.length ? -1 : 1));
+                            this.typeListSearchResult = body['content'].sort((a, b) => (a.nonStandardCode && b.nonStandardCode && a.nonStandardCode.length < b.nonStandardCode.length ? -1 : 1));
                         }
                         this.loadSearchItem = false;
 

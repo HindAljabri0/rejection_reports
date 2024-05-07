@@ -281,6 +281,11 @@ export class SharedDataService {
 
     encounterCnhiClassList = [
         { value: 'ALTC', name: 'ALTC' },
+        { value: 'AMB', name: 'Ambulatory' },
+        { value: 'EMER', name: 'Emergency' },
+        { value: 'HH', name: 'Home Health' },
+        { value: 'IMP', name: 'Inpatient Encounter' },
+        { value: 'SS', name: 'Short Stay' }
     ];
 
     encounterServiceTypeList = [
@@ -503,7 +508,6 @@ export class SharedDataService {
         { value: 'Irreplaceable', name: '	SFDA Irreplaceable drugs' },
         { value: 'Others', name: 'Others : specify' }
     ];
-
     itemAbsenceReasonList = [
         { value: "unresponsive", name: 'Unresponsive' },
         { value: "adverse-effect", name: 'Adverse Effect' },
