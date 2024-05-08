@@ -2462,9 +2462,6 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         /*} else {
             this.callmoveToReadyState();
         }*/
-
-
-
     }
     callInquireCancelMoveAll() {
         if (this.selectedClaims.length == 0) {
