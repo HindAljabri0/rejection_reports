@@ -1238,6 +1238,113 @@ export class ProviderNphiesApprovalService {
     return this.http.request(request);
   }
 
+  InquireCancelMove(
+    providerId: string,
+    claimIds?: string[],
+    uploadId?: string,
+    provderClaimReferenceNumber?: string,
+    toDate?: string,
+    payerIds?: string[],
+    batchId?: string,
+    memberId?: string,
+    invoiceNo?: string,
+    patientFileNo?: string,
+    claimDate?: string,
+    claimTypes?: string,
+    netAmount?: string,
+    documentId?: string,
+    organizationId?: string,
+    statuses?: string[],
+    requestBundleId?: string,
+    bundleIds?:string,
+    isRelatedClaim?:boolean,
+    reissueReason?:boolean,
+    claimSubmissionDate?:string,
+    claimResponseDate?:string,
+  ) {
+    const isHeadOffice = AuthService.isProviderHeadOffice();
+    let requestURL = `/providers/${providerId}/claims/inquiry-cancel-move?`;
+    if (isHeadOffice) {
+      requestURL = `/head-office/${providerId}/claims/inquiry-cancel-move?`;
+    }
+    if (provderClaimReferenceNumber) {
+      requestURL += `&provderClaimReferenceNumber=${provderClaimReferenceNumber}`;
+    }
+
+    if (toDate) {
+      requestURL += `&toDate=${this.formatDate(toDate)}`;
+    }
+
+    if (payerIds && payerIds.length > 0) {
+      requestURL += `&payerIds=${payerIds.join(',')}`;
+    }
+
+    if (batchId) {
+      requestURL += `&batchId=${batchId}`;
+    }
+
+    if (uploadId) {
+      requestURL += `&uploadId=${uploadId}`;
+    }
+
+    if (claimIds && claimIds.length > 0) {
+      requestURL += `&claimIds=${claimIds.join(',')}`;
+    }
+
+    if (memberId) {
+      requestURL += `&memberId=${memberId}`;
+    }
+
+    if (invoiceNo) {
+      requestURL += `&invoiceNo=${invoiceNo}`;
+    }
+
+    if (patientFileNo) {
+      requestURL += `&patientFileNo=${patientFileNo}`;
+    }
+
+    if (claimDate) {
+      requestURL += `&claimDate=${this.formatDate(claimDate)}`;
+    }
+
+    if (organizationId) {
+      requestURL += `&organizationId=${organizationId}`;
+    }
+    if (documentId) {
+      requestURL += `&documentId=${documentId}`;
+    }
+    if (statuses) {
+      requestURL += `&statuses=${statuses}`;
+    }
+    if (requestBundleId) {
+      requestURL += `&requestBundleId=${requestBundleId}`;
+    }
+
+    if (bundleIds && bundleIds != null) {
+      requestURL += `&bundleIds=${bundleIds.split(",")}`;
+    }
+    if (claimTypes) {
+      requestURL += `&claimTypes=${claimTypes}`;
+    }
+    if (netAmount) {
+      requestURL += `&netAmount=${netAmount}`;
+    }
+    if (isRelatedClaim) {
+      requestURL += `&isRelatedClaim=${isRelatedClaim}`;
+    }
+    if (reissueReason) {
+        requestURL += `&reissueReason=${reissueReason}`;
+      }
+      if (claimSubmissionDate) {
+        requestURL += `&claimSubmissionDate=${this.formatDate(claimSubmissionDate)}`;
+      }
+      if (claimResponseDate) {
+        requestURL += `&claimResponseDate=${this.formatDate(claimResponseDate)}`;
+      }
+    const request = new HttpRequest('POST', environment.providerNphiesClaim + requestURL, {});
+    return this.http.request(request);
+  }
+  
   relatedClaim(providerId: string, claimId: string, claimProviderId: string) {
     let requestUrl = `/providers/${providerId}/claims/partial/resubmit?claimId=${claimId}`;
     const isHeadOffice = AuthService.isProviderHeadOffice();
