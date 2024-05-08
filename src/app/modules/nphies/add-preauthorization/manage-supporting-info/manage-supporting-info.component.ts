@@ -6,6 +6,7 @@ import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSear
 import { FieldError } from 'src/app/claim-module-components/store/claim.reducer';
 import { SharedServices } from 'src/app/services/shared.services';
 import { forEach } from 'jszip';
+import { info } from 'console';
 
 @Component({
     selector: 'app-manage-supporting-info',
@@ -38,6 +39,17 @@ export class ManageSupportingInfoComponent implements OnInit {
 
     ngOnInit() {
         this.currentIndex = 0;
+        
+        let i = 0;
+        if (this.supportingInfoList.length > 0) {
+            this.supportingInfoList.forEach(info => {
+                if (info.category === 'lab-test') {
+                    this.searchLOINK(info.code, i, true);
+                    info.isUnitsRequired = info.unit;
+                }
+                i++;
+            });
+        }
     }
 
     searchICDCodes(code, i) {
@@ -63,8 +75,24 @@ export class ManageSupportingInfoComponent implements OnInit {
             this.chiefComplainBlurValidation(i);
         }
     }
-
-    searchLOINK(code, i) {
+    /*getLOINK(code) {
+        this.unitList =[];
+        if (code) {
+            this.providerNphiesSearchService.searchLOINK(this.sharedServices.providerId, code).subscribe(
+                event => {
+                    if (event instanceof HttpResponse) {
+                        if (event.body instanceof Array) {
+                            console.log("->" + JSON.stringify(event.body));
+                            this.unitList.push({ shortName: event.body[0].shortName,unitsRequired : event.body[0].unitsRequired,exampleUcumUnits :  event.body[0].exampleUcumUnits });
+                            //console.log("unit list short name " + JSON.stringify(this.unitList));
+                            return this.unitList;
+                        }
+                    }
+                }
+            );
+        }
+    }*/
+    searchLOINK(code, i, isEdit = false) {
         this.icedOptions = [];
         if (code) {
             this.providerNphiesSearchService.searchLOINK(this.sharedServices.providerId, code).subscribe(
@@ -72,6 +100,11 @@ export class ManageSupportingInfoComponent implements OnInit {
                     if (event instanceof HttpResponse) {
                         if (event.body instanceof Array) {
                             this.loinkList = event.body;
+                            if (isEdit && this.loinkList.length > 0) {
+                                this.ucumCodes = [];
+                                this.fillUcumCodes(i, this.loinkList[0].exampleUcumUnits,isEdit);
+                            }
+
                         }
                     }
                 }
@@ -101,6 +134,27 @@ export class ManageSupportingInfoComponent implements OnInit {
     addLoink(data: any, i: number) {
         this.supportingInfoList[i].code = data.loincNum;
         this.supportingInfoList[i].description = data.loincNum + ' - ' + data.shortName;
+        this.supportingInfoList[i].isUnitsRequired = data.unitsRequired === 'Y';
+        if (this.supportingInfoList[i].isUnitsRequired) {
+            this.ucumCodes = [];
+            this.fillUcumCodes(i, data.exampleUcumUnits);
+        }
+    }
+    fillUcumCodes(i: number, exampleUcumUnits: [], isEditMode = false) {
+        if (exampleUcumUnits) {
+            exampleUcumUnits.forEach(code => {
+                this.ucumCodes.push({ "code": code, "name": code });
+            });
+            if (isEditMode) {
+                let unit = this.ucumCodes.filter(f => f.code === this.supportingInfoList[i].unit)[0];
+                console.log("unit = " + unit);
+                if (!unit) {
+                    this.supportingInfoList[i].otherUnit = this.supportingInfoList[i].unit;
+                    this.supportingInfoList[i].unit = "others-specify";
+                }
+            }
+            //console.log(JSON.stringify(this.ucumCodes));
+        }
     }
     addICDDiagnosis(diag: ICDDiagnosis, i: number) {
         this.supportingInfoList[i].code = diag.diagnosisCode;
@@ -188,6 +242,9 @@ export class ManageSupportingInfoComponent implements OnInit {
         model.attachmentName = '';
         model.attachmentType = '';
         model.attachmentDate = '';
+        model.unit = '';
+        model.otherUnit = '';
+        model.isUnitsRequired = false;
         model.fileError = '';
         model.uploadContainerClass = '';
 

@@ -10,6 +10,8 @@
     "startAr": "ng serve --configuration=dev-ar",
     "startQAAr": "ng serve --configuration=qa-ar",
     "startQAEn": "ng serve --configuration=qa-en",
+    "startPGQAAr": "ng serve --configuration=pgqa-ar",
+    "startPGQAEn": "ng serve --configuration=pgqa-en",
     "int:extractAr": "ng xi18n --i18n-locale ar --out-file src/locale/messages.ar.xlf",
     "buildEn": "ng build --configuration=qa-en && npm run post-build -- en",
     "buildAr": "ng build --configuration=qa-ar && npm run post-build -- ar",
@@ -24,6 +26,8 @@
     "buildDRAr": "ng build --configuration=dr-ar && npm run post-build -- ar",
     "buildOciQAEn": "node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng build --configuration=oci_qa-en --aot && npm run post-build -- en",
     "buildOciQAAr": "node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng build --configuration=oci_qa-ar --aot && npm run post-build -- ar",
+    "buildPGQAEn": "node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng build --configuration=pgqa-en --aot && npm run post-build -- en",
+    "buildPGQAAr": "node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng build --configuration=pgqa-ar --aot && npm run post-build -- ar",
     "buildOciStgEn": "node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng build --configuration=oci_staging-en && npm run post-build -- en",
     "buildOciStgAr": "node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng build --configuration=oci_staging-ar && npm run post-build -- ar",
     "buildOciProdEn": "node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng build --configuration=oci_prod-en && npm run post-build -- en",
@@ -31,7 +35,12 @@
     "buildDR": "npm-run-all --parallel buildDREn buildDRAr",
     "buildOciQA": "npm-run-all --parallel buildOciQAEn",
     "buildOciStg": "npm-run-all buildOciStgEn",
+
     "buildOciProd": "npm-run-all buildOciProdEn",
+
+    "buildPGQA": "npm-run-all buildPGQAEn",
+    "buildOciProd": "npm-run-all buildOciProdEn buildOciProdAr",
+
     "post-build": "node ./build/post-build.js",
     "test": "ng test",
     "lint": "ng lint",

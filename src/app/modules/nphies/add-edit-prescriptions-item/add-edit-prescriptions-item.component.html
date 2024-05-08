@@ -110,6 +110,11 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
+                <div *ngIf="FormItem.get('absenceScientificCode').value && FormItem.get('absenceScientificCode').value.value === 'others'">
+                    <mat-form-field>
+                        <input matInput formControlName="reasonAbsenceScientificCode" placeholder="Other reason">
+                    </mat-form-field>
+                </div>
             </div>
 
 
