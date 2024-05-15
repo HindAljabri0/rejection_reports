@@ -621,7 +621,7 @@
                                                 <span class="d-flex align-items-center">
                                                     <span matTooltip="Number of Communications">{{claim.communicationCount}}</span>
                                                     <mat-icon class="size-21" style="margin-left: 2px;margin-right: 2px;">question_answer</mat-icon>
-                                                    <span matTooltip="Communications Request"> {{claim.communicationsRequestCount}}</span>
+                                                    <span c> {{claim.communicationsRequestCount}}</span>
                                                 </span>
                                             </button>
 
@@ -784,6 +784,9 @@
                 <ng-container *ngIf="showMoveToReadyState === true && selectedCardKey != 0">
                     <button mat-flat-button color="primary" (click)="moveToReadyState()">{{selectedClaims.length==0?"Move All to
                         Ready State":"Move Selected ("+this.selectedClaims.length+") to Ready State"}}</button>
+                </ng-container>
+                <ng-container *ngIf="showInquireCancelMoveAll === true && selectedCardKey != 0">
+                    <button mat-flat-button color="primary" matTooltip="This button will perform inquiry , cancel and move to ready state for claims that submitted in the past 24 hour and still in queued" (click)="InquireCancelMoveAll()">{{selectedClaims.length==0?"Verify All":"Verify Selected ("+this.selectedClaims.length+")"}}</button>
                 </ng-container>
             </div>
         </div>

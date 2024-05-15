@@ -1885,7 +1885,10 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
         return ['cancelled', 'rejected', 'error'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase()) ||
             (['queued', 'error', 'failednphies', 'pended'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase()) && this.userPrivileges.WaseelPrivileges.isNphiesAdmin);
     }
-
+    get showInquireCancelMoveAll() {
+        // tslint:disable-next-line:max-line-length
+        return ['queued'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+    }
     get showRevalidate() {
         return ['notaccepted'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
     }
@@ -2445,6 +2448,28 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
 
 
     }
+    InquireCancelMoveAll() {
+        //if (this.userPrivileges.WaseelPrivileges.isNphiesAdmin) {
+            this.dialogService.openMessageDialog(
+                new MessageDialogData('This Action will perform Inquiry, cancel and move to ready state, do you want to process?',
+                    `Are you sure you want to continue? This cannot be undone`,
+                    false,
+                    true)).subscribe(res => {
+                        if (res === true) {
+                            this.callInquireCancelMoveAll();
+                        }
+                    })
+        /*} else {
+            this.callmoveToReadyState();
+        }*/
+    }
+    callInquireCancelMoveAll() {
+        if (this.selectedClaims.length == 0) {
+            this.InquireCancelMoveAllClaims();
+        } else {
+            this.InquireCancelMoveSelectedClaims();
+        }
+    }
     callmoveToReadyState() {
         if (this.selectedClaims.length == 0) {
             this.moveAllToReadyState();
@@ -2452,8 +2477,113 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
             this.moveSelectedToReadyState();
         }
     }
-
-
+    InquireCancelMoveAllClaims() {
+        if (this.commen.loading) {
+            return;
+        }
+        const payerIds: string[] = [];
+        if (this.params.payerId) {
+            payerIds.push(this.params.payerId);
+        }
+        this.setFilterData();
+        const status = [...this.summaries[this.selectedCardKey].statuses];
+        if (status.includes('RETURNED')) {
+            const index = status.findIndex(x => x === 'RETURNED');
+            status.splice(index, 1);
+        }
+        this.commen.loadingChanged.next(true);
+        this.providerNphiesApprovalService.InquireCancelMove(this.providerId, this.selectedClaims,
+            this.params.uploadId, this.params.claimRefNo, this.params.to,
+            payerIds, this.params.batchId, this.params.memberId, this.params.invoiceNo,
+            this.params.patientFileNo, this.params.from, this.params.claimTypes, this.params.netAmount, this.params.nationalId,
+            this.params.organizationId, status, this.params.requestBundleId, this.params.bundleIds, this.params.isRelatedClaim
+        ).subscribe((event) => {
+            if (event instanceof HttpResponse) {
+                if (event.body['status'] == 'Queued') {
+                    this.dialogService.openMessageDialog(
+                        new MessageDialogData('Success', event.body['message'], false)
+                    ).subscribe(result => {
+                        this.resetURL();
+                        this.fetchData();
+                    });
+                }
+                this.commen.loadingChanged.next(false);
+            }
+        }, errorEvent => {
+            this.commen.loadingChanged.next(false);
+            if (errorEvent instanceof HttpErrorResponse) {
+                if (errorEvent.status >= 500 || errorEvent.status == 0) {
+                    if (errorEvent.status == 501 && errorEvent.error['errors'] != null) {
+                        this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['errors'][0].errorDescription, true));
+                    } else {
+                        this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
+                    }
+                }
+                if (errorEvent.status == 400 || errorEvent.status == 500) {
+                    this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['message'], true));
+                }
+                if (errorEvent.error['errors'] != null) {
+                    for (const error of errorEvent.error['errors']) {
+                        this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
+                    }
+                }
+                this.params.claimRefNo = null;
+                this.params.memberId = null;
+                this.params.patientFileNo = null;
+            }
+        });
+    }
+    InquireCancelMoveSelectedClaims() {
+        if (this.commen.loading) {
+            return;
+        } else if (this.selectedClaims.length == 0) {
+            this.dialogService.openMessageDialog(new MessageDialogData('', 'Please select at least 1 claim first.', true));
+            return;
+        }
+        this.commen.loadingChanged.next(true);
+        this.providerNphiesApprovalService.InquireCancelMove(this.providerId, this.selectedClaims, null).subscribe((event) => {
+            if (event instanceof HttpResponse) {
+                if (event.body['status'] == 'Queued') {
+                    this.dialogService.openMessageDialog(
+                        new MessageDialogData('Success', event.body['message'], false)
+                    ).subscribe(result => {
+                        this.resetURL();
+                        this.fetchData();
+                    });
+                }
+                if (event['error'] != null) {
+                    for (const error of event['error']['errors']) {
+                        this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
+                    }
+                }
+                this.commen.loadingChanged.next(false);
+            }
+            this.deSelectAll();
+        }, errorEvent => {
+            this.commen.loadingChanged.next(false);
+            if (errorEvent instanceof HttpErrorResponse) {
+                if (errorEvent.status >= 500 || errorEvent.status == 0) {
+                    if (errorEvent.status == 501 && errorEvent.error['errors'] != null) {
+                        this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['errors'][0].errorDescription, true));
+                    } else {
+                        this.dialogService.openMessageDialog(new MessageDialogData('', 'Could not reach the server. Please try again later.', true));
+                    }
+                }
+                if (errorEvent.status == 400 || errorEvent.status == 500) {
+                    this.dialogService.openMessageDialog(new MessageDialogData('', errorEvent.error['message'], true));
+                }
+                if (errorEvent.error['errors'] != null) {
+                    for (const error of errorEvent.error['errors']) {
+                        this.submittionErrors.set(error['claimID'], 'Code: ' + error['errorCode'] + ', Description: ' + error['errorDescription']);
+                    }
+                }
+                this.params.claimRefNo = null;
+                this.params.memberId = null;
+                this.params.patientFileNo = null;
+            }
+            this.deSelectAll();
+        });
+    }
     moveAllToReadyState() {
         if (this.commen.loading) {
             return;
