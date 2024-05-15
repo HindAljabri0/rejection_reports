@@ -14,6 +14,7 @@ import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { NphiesConfigurationService } from 'src/app/services/nphiesConfigurationService/nphies-configuration.service';
 import { AuthService } from 'src/app/services/authService/authService.service';
+import { UserPrivileges, getUserPrivileges, initState } from 'src/app/store/mainStore.reducer';
 
 @Component({
   selector: 'app-pricelist-details',
@@ -28,7 +29,7 @@ export class PricelistDetailsComponent implements OnInit {
   manualPage = null;
   page = 0;
   pageSize = 10;
-
+  userPrivileges: UserPrivileges = initState.userPrivileges;
   priceListId: string;
   payerName: string;
   payerNphiesId: string;
@@ -45,6 +46,7 @@ export class PricelistDetailsComponent implements OnInit {
   headOfficeProviderId;
   providerId;
     nphiesId: any;
+    store: any;
   constructor(
     private dialog: MatDialog,
     private activateRoute: ActivatedRoute,
@@ -62,6 +64,7 @@ export class PricelistDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.store.select(getUserPrivileges).subscribe(privileges => this.userPrivileges = privileges);
     this.getPayerList();
     this.searchItems();
     this.isHeadOffice = AuthService.isProviderHeadOffice();

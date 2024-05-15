@@ -230,12 +230,14 @@ export class AddEditItemDetailsModalComponent implements OnInit {
                     .subscribe(() => {
                         this.filterItem();
                     });
+                    
             }
         }, error => {
             if (error instanceof HttpErrorResponse) {
                 console.log(error);
             }
         });
+        this.sharedServices.loadingChanged.next(false);
     }
 
     filterPrescribedMedicationItem() {
