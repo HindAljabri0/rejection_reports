@@ -486,7 +486,7 @@ export class BeneficiaryComponent implements OnInit {
         }
     }
 
-   
+
 
     addInsurancePlan() {
 
@@ -568,7 +568,7 @@ export class BeneficiaryComponent implements OnInit {
                 this.insurancePlans[Number.parseInt(this.setPrimary, 10)].isPrimary = true;
         }
 
-        
+
 
         if (this.checkError()) { return; }
         this.sharedServices.loadingChanged.next(true);
@@ -587,7 +587,9 @@ export class BeneficiaryComponent implements OnInit {
             }
         }, err => {
             if (err instanceof HttpErrorResponse) {
-                if (err.status == 500) {
+                if (err.status === 400) {
+                  this.messageError = err.error.message;
+                } else if (err.status == 500) {
                     this.messageError = 'could not reach server Please try again later ';
                 } else {
                     this.messageError = err.message;
