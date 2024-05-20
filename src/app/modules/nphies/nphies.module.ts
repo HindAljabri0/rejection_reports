@@ -108,6 +108,7 @@ import { UploadBeneficiaryInquireCchiComponent } from './upload-beneficiary-inqu
 import { BeneficiaryUploadsSummaryComponent } from './beneficiary-uploads-summary/beneficiary-uploads-summary.component';
 import { UploadBeneficiaryCchiErrorsDialogComponent } from './upload-beneficiary-cchi-errors-dialog/upload-beneficiary-cchi-errors-dialog.component';
 import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth-cnhi.component';
+import { RejectedClaimReportComponent } from './rejected-claim-report/rejected-claim-report.component';
 
 @NgModule({
     declarations: [
@@ -191,6 +192,7 @@ import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth
         BeneficiaryUploadsSummaryComponent,
         UploadBeneficiaryCchiErrorsDialogComponent,
         MreValidationResponseSummaryDialogComponent,
+        RejectedClaimReportComponent,
 
     ],
     imports: [
