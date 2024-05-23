@@ -535,7 +535,7 @@
                                 <span class="text">Medication Days of Supply</span>
                             </a>
                         </li>
-                        <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim">
+                        <li *ngIf="userPrivileges.ProviderPrivileges.NPHIES.canAccessConfigurations">
                             <a routerLink="/nphies/nphies-payer-mapping" routerLinkActive="is-active" #providerConfiguration="routerLinkActive">
                                 <span class="text">Payer Mapping</span>
                             </a>
