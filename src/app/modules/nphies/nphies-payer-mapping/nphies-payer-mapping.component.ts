@@ -60,7 +60,7 @@ export class NphiesPayerMappingComponent implements OnInit {
                 title: '',
                 message: 'There is no changes to save!',
                 withButtons: false,
-                isError: false
+                isError: true
             });
         }
     }
@@ -106,10 +106,12 @@ export class NphiesPayerMappingComponent implements OnInit {
                     if (body.response) {
                         this.getNphiesPayerMapping();
                         if (body.message.indexOf('Data save successfully') > -1) {
+                            this.dialogService.showMessage('Success:', body.message, 'success', true, 'OK');
                             // this.success.NphiesPayerMappingSuccess = body.message;
-                            this.success.NphiesPayerMappingSuccess = 'Settings were saved successfully.';
+                            //this.success.NphiesPayerMappingSuccess = 'Settings were saved successfully.';
                         } else {
-                            this.errors.NphiesMappingSaveError = body.message;
+                            this.dialogService.showMessage(body.message, '', 'alert', true, 'OK',null);
+                            //this.errors.NphiesMappingSaveError = body.message;
                         }
                     } else {
                         this.errors.NphiesMappingSaveError = 'Could not save nphies payer mapping details !';
@@ -143,9 +145,11 @@ export class NphiesPayerMappingComponent implements OnInit {
                     const data = event.body['response'];
                     if (data) {
                         this.getNphiesPayerMapping();
-                        this.success.NphiesPayerMappingSuccess = 'Settings were saved successfully.';
+                        //this.success.NphiesPayerMappingSuccess = 'Settings were saved successfully.';
+                        this.dialogService.showMessage('Success:', event.body['message'], 'success', true, 'OK');
                     } else {
-                        this.errors.NphiesMappingSaveError = 'Could not save nphies payer mapping details !';
+                        this.dialogService.showMessage(event.body['message'], '', 'alert', true, 'OK',null);
+                        //this.errors.NphiesMappingSaveError = 'Could not save nphies payer mapping details !';
                     }
                     this.componentLoading.NphiesPayerMapping = false;
                 }
