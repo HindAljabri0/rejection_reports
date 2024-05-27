@@ -1,0 +1,43 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+
+    <div class="block-header">
+        Nphies Payer Selection & Mapping for Legacy Midtables
+        <mat-menu #NphiesMappingMenu xPosition="before">
+            <ng-template matMenuContent>
+                <div class="pt-7 pb-7 pr-14 pl-14">
+                    <ng-container
+                        *ngIf="errors.NphiesMappingSaveError != null">{{errors.NphiesMappingSaveError}}</ng-container>
+                    <ng-container
+                        *ngIf="success.NphiesPayerMappingSuccess != null">{{success.NphiesPayerMappingSuccess}}</ng-container>
+                </div>
+            </ng-template>
+        </mat-menu>
+    </div>
+    <div class="block-filter-panel">
+        <ng-container
+            *ngIf="(errors.NphiespayerMappingError == null || errors.NphiespayerMappingError == '') && !componentLoading.NphiesPayerMapping">
+            <div class="row">
+                <div class="col-xxl-4 col-6" *ngFor="let payer of associatedNphiePayers;let i = index">
+                    <p class="pb-2 text-primary medium">{{newNphiesPayerName[payer.combination]}}<span
+                            *ngIf="payer.tpaNphiesId !== '-1'"> - {{payer.tpaName}}</span> </p>
+                    <div class="form-group">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Mapped value</mat-label>
+                            <input matInput placeholder="Mapped value"
+                                [(ngModel)]="newNphiesPayerMappingValue[payer.combination]" type="text">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <p *ngIf="errors.NphiespayerMappingError != null && errors.NphiespayerMappingError != '' && !componentLoading.NphiesPayerMapping"
+            class="error-card mb-0">
+            {{errors.NphiespayerMappingError}}</p>
+        <div class="inline-loader" *ngIf="componentLoading.NphiesPayerMapping">
+            <mat-spinner diameter="48"></mat-spinner>
+        </div>
+    </div>
+    <div class="block-footer sticky text-right" >
+        <button type="submit" class="right-block btn-list" mat-flat-button color="primary" (click)="save()">Save</button>
+    </div>
+</div>
