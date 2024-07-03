@@ -281,6 +281,14 @@ export class HeaderComponent implements OnInit {
             host: 'https://wchat.freshchat.com',
             widgetUuid: "1fec6ce4-c2ca-4bde-8d6b-b6d1c3d90972"
         });
+
+        window['fcWidget'].user.setProperties({
+            providerId: localStorage.getItem('providerId'),                 
+            username: localStorage.getItem('username'),
+            tokenJWT: localStorage.getItem('token')              
+        });
+
+
     }
 
     get hasNewProviderDownload() {
