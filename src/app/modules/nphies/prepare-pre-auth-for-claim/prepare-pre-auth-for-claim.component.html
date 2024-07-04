@@ -186,7 +186,7 @@
                             <span class="pr-1">
                               <input type="text" class="form-control" placeholder="Enter invoice no."
                                 [(ngModel)]="item.invoiceNo"
-                                [disabled]="item.status !== 'approved' && item.status !== 'partial'" />
+                                [disabled]="item.status !== 'approved' && item.status !== 'partial' &&  item.status !=='not-required'" />
                             </span>
                             <mat-icon *ngIf="item.status === 'rejected'" class="material-icons-outlined size-20"
                               matTooltip="Invoice No. is not needed for a Rejected item">info
