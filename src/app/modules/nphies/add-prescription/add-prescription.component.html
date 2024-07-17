@@ -1,7 +1,7 @@
 <div class="animate__animated animate__faster animate__fadeIn block-card">
 
     <ng-container *ngIf="!IsJSONPosted">
-        <form [formGroup]="FormPreAuthorization" (ngSubmit)="onSubmit()">
+        <form [formGroup]="FormPreAuthorization">
             <div class="block-header">
                 <p>Prescription Request</p>
                 <mat-slide-toggle formControlName="transfer" color="primary" id="referral"
@@ -995,8 +995,12 @@
 
                 <hr class="hr spaced" />
 
-                <div class="form-group text-right btn-list">
-                    <button type="submit" mat-flat-button color="primary" id="requestAuthorizationButton">
+                <div class="form-group text-right btn-list">                    
+                    <button *ngIf="IsItTawuniyaPayer" mat-flat-button color="primary"  (click)="onSubmitValidate()">
+                        <span>Validate Prescription</span>
+                    </button>
+                    
+                    <button  mat-flat-button color="primary" id="requestAuthorizationButton" (click)="onSubmit()">
                         <span>Request Prescription</span>
                     </button>
                 </div>

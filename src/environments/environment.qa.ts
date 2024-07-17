@@ -28,7 +28,6 @@ export const environment = {
     providerNphiesSearch: `${host}/provider-nphies-search`,
     providerNphiesApproval: `${host}/approvals`,
     nphiesClaimUploader: `${host}/upload-v2`,
-
     nphiesPollManagement: `${host}/poll-management`,
     contractManagementService: `${host}/contract-billing`,
     mreClaimsSender:`${host}/mre-claims-sender`,
@@ -51,4 +50,5 @@ export const environment = {
     feedbacksurveyUrl: `${hostFeedback}`,
     communicationportalUrl: `${hostjisr}`,
     legacyUrl:`${hostlegacy}`,
+    PbmPrescriptionValidate:`${host}/pbm-prescription-validate`,
 };
