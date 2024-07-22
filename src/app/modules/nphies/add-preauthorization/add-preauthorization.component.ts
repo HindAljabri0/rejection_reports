@@ -482,6 +482,7 @@ export class AddPreauthorizationComponent implements OnInit {
                         insurancePlanExpiryDate: res.beneficiary.insurancePlan.expiryDate,
                         insurancePlanPrimary: res.beneficiary.insurancePlan.primary,
                         // tslint:disable-next-line:max-line-length
+                        
                         insurancePlanPayerName: this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0] ? this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0].payerName : '',
 
                         // tslint:disable-next-line:max-line-length
@@ -490,7 +491,8 @@ export class AddPreauthorizationComponent implements OnInit {
                         insurancePlanMaxLimit: res.beneficiary.insurancePlan.maxLimit,
                         insurancePlanPatientShare: res.beneficiary.insurancePlan.patientShare,
                     });
-
+                    //console.log("select beneficiay {} res.insurance {}",this.selectedBeneficiary,res.beneficiary.insurancePlan.payerId);
+                    //console.log("select plan by id {}",this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === res.beneficiary.insurancePlan.payerId)[0]);
                     if (res.subscriber) {
 
                         this.FormPreAuthorization.patchValue({
@@ -751,7 +753,7 @@ export class AddPreauthorizationComponent implements OnInit {
 
     selectBeneficiary(beneficiary: BeneficiariesSearchResult) {
         this.selectedBeneficiary = beneficiary;
-
+        console.log("selected bene {} ",this.selectedBeneficiary);
 
 
         this.FormPreAuthorization.patchValue({
@@ -789,6 +791,7 @@ export class AddPreauthorizationComponent implements OnInit {
         });
 
         this.primaryPlan = beneficiary.plans.filter(plan => plan.primary == true);
+        console.log(" primary plans {} ",beneficiary.plans.filter(plan => plan.primary == true));
         if (beneficiary.plans.filter(x => x.primary)[0].payerNphiesId === '0000000163') {
 
             this.dialogService.showMessage('Error', 'Selected Payer is not valid for Pre-Auth Request Transaction ', 'alert', true, 'OK');
@@ -796,6 +799,7 @@ export class AddPreauthorizationComponent implements OnInit {
         }
 
         if (beneficiary.plans.length > 0 && beneficiary.plans.filter(x => x.primary)[0]) {
+            console.log('beneficiary.plans {}',beneficiary.plans);
             this.FormPreAuthorization.controls.insurancePlanId.setValue(beneficiary.plans.filter(x => x.primary)[0].payerNphiesId);
             const plan: any = {};
             plan.value = this.selectedBeneficiary.plans.filter(x => x.primary)[0].payerNphiesId;
