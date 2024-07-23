@@ -12,7 +12,11 @@ export class PbmPrescriptionService {
         const requestUrl = `/providers/${providerId}/prescriber/validate`;
         const request = new HttpRequest('POST', environment.PbmPrescriptionValidate + requestUrl, body);
         return this.http.request(request);
-    
-        
+    }
+
+    getDispenseQueryRequest(providerId: string, body: any) {
+        const requestUrl = `/providers/${providerId}/prescriber/inquery`;
+        const request = new HttpRequest('POST', environment.PbmPrescriptionValidate + requestUrl, body);
+        return this.http.request(request);
     }
 }

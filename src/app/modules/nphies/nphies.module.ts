@@ -110,6 +110,7 @@ import { UploadBeneficiaryCchiErrorsDialogComponent } from './upload-beneficiary
 import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth-cnhi.component';
 import { PbmPrescriptionValidationDialogComponent } from 'src/app/components/dialogs/pbm-prescription-validation-dialog/pbm-prescription-validation-dialog.component';
 import { OrderByPipe } from 'src/app/components/dialogs/pbm-prescription-validation-dialog/order-by.pipe'; // Adjust the path as necessary
+import { PrescriptionDispenseDialogComponent } from 'src/app/components/dialogs/prescription-dispense-dialog/prescription-dispense-dialog.component';
 
 @NgModule({
     declarations: [
@@ -175,6 +176,7 @@ import { OrderByPipe } from 'src/app/components/dialogs/pbm-prescription-validat
         AdvancePreauthTransactionsComponent,
         AttachmentsReportComponent,
         PbmValidationResponseSummaryDialogComponent,
+        PrescriptionDispenseDialogComponent,
         AddPrescriptionComponent,
         PrescriptionTransactionsComponent,
         AddEditPrescriptionsItemComponent,
@@ -248,7 +250,8 @@ import { OrderByPipe } from 'src/app/components/dialogs/pbm-prescription-validat
         ViewPrescriptionDetailsDialogComponent,
         PrescriptionCancelReasonModalComponent,
         PrescriptionReuseApprovalModalComponent,
-        UploadBeneficiaryCchiErrorsDialogComponent
+        UploadBeneficiaryCchiErrorsDialogComponent,
+        PrescriptionDispenseDialogComponent
     ],
     exports: [
         ApiErrorsDialogComponent
