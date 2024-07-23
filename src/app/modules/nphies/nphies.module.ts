@@ -111,6 +111,7 @@ import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth
 import { PbmPrescriptionValidationDialogComponent } from 'src/app/components/dialogs/pbm-prescription-validation-dialog/pbm-prescription-validation-dialog.component';
 import { OrderByPipe } from 'src/app/components/dialogs/pbm-prescription-validation-dialog/order-by.pipe'; // Adjust the path as necessary
 import { PrescriptionDispenseDialogComponent } from 'src/app/components/dialogs/prescription-dispense-dialog/prescription-dispense-dialog.component';
+import { NphiesPayerMappingComponent } from './nphies-payer-mapping/nphies-payer-mapping.component';
 
 @NgModule({
     declarations: [
@@ -196,8 +197,8 @@ import { PrescriptionDispenseDialogComponent } from 'src/app/components/dialogs/
         UploadBeneficiaryCchiErrorsDialogComponent,
         MreValidationResponseSummaryDialogComponent,
         PbmPrescriptionValidationDialogComponent,
-        OrderByPipe
-
+        OrderByPipe,
+        NphiesPayerMappingComponent
     ],
     imports: [
         CommonModule,

@@ -23,7 +23,7 @@
           <mat-form-field class="form-control custom-select-control">
             <mat-select panelClass="custom-dropdown" formControlName="item" [disabled]="IsItemLoading" placeholder="Select Code-Description">
               <mat-option>
-                  <ngx-mat-select-search placeholderLabel="Search Item" formControlName="item" noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
+                  <ngx-mat-select-search placeholderLabel="Search Item"  (ngModelChange)="filterItem()" formControlName="itemFilter" noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
               </mat-option>
               <cdk-virtual-scroll-viewport itemSize="100" minBufferPx="{{ itemList.length > 0 ? 100 : 100 }}" maxBufferPx="{{itemList.length * 10}}" class="viewport">  
                 <mat-option *cdkVirtualFor="let item of filteredItem | async" [value]="item" >
@@ -45,7 +45,7 @@
           <mat-form-field class="form-control custom-select-control">
             <mat-select panelClass="custom-dropdown" formControlName="item" [disabled]="IsItemLoading" placeholder="Select Code-Description">
               <mat-option>
-                  <ngx-mat-select-search placeholderLabel="Search Item" formControlName="item" noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
+                  <ngx-mat-select-search placeholderLabel="Search Item" formControlName="prescribedMedicationItemFilter"  (ngModelChange)="filterPrescribedMedicationItem()" noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
               </mat-option>
               <cdk-virtual-scroll-viewport itemSize="100" minBufferPx="{{ itemList.length > 0 ? 100 : 100 }}" maxBufferPx="{{itemList.length * 10}}" class="viewport">  
                 <mat-option *cdkVirtualFor="let type of filteredPescribedMedicationItem | async" [value]="type" >
@@ -84,7 +84,12 @@
             </mat-select>
           </mat-form-field>
         </div>
-      </div>
+        <div *ngIf="FormItem.get('absenceScientificCode').value && FormItem.get('absenceScientificCode').value.value === 'others'">
+            <mat-form-field>
+                <input matInput formControlName="reasonAbsenceScientificCode" placeholder="Other reason">
+            </mat-form-field>
+        </div>
+    </div>
       <div class="col-4 col-lg-3">
         <div class="form-group">
             <label class="control-label">Strength<span class="asterisk">*</span></label>

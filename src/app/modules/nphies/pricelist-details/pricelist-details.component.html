@@ -94,9 +94,10 @@
   </div>
 
   <button mat-fab color="primary" class="page-fab"
-    [disabled]="!isHeadOffice && headOfficeProviderId!='' && headOfficeProviderId != providerId"
+  
+    [disabled]="!isHeadOffice && headOfficeProviderId!='' && headOfficeProviderId != providerId && !(userPrivileges.WaseelPrivileges.RCM.isAdmin || userPrivileges.WaseelPrivileges.isPAM)"
     (click)="openAddPricelistDialog()">
     <mat-icon>add</mat-icon>
   </button>
-
+  <!-- !isHeadOffice && headOfficeProviderId!='' && headOfficeProviderId != providerId -->
 </div>

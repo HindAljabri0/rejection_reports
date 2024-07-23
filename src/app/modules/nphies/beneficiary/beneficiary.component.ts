@@ -294,7 +294,6 @@ export class BeneficiaryComponent implements OnInit {
                 return blodType.Name;
             }
         }
-
     }
 
     getPayerName(PayerId: string) {
@@ -314,6 +313,7 @@ export class BeneficiaryComponent implements OnInit {
         }
 
     }
+
 
     getNationalitiesName(NationalitiesName: string) {
         for (const nationality of this.nationalities) {
@@ -411,7 +411,7 @@ export class BeneficiaryComponent implements OnInit {
 
         for (const insurancePlans of beneficiaryinfo.insurancePlans) {
             if (insurancePlans.payerNphiesId == this.tawuniyaNphiesId) {
-                if (this.systemTypeFormControl.value == '5') {
+                if (this.systemTypeFormControl.value == '5' ||  insurancePlans.tpaNphiesId==this.totalCareNphiesId) {
                     insurancePlans.tpaNphiesId = this.totalCareNphiesId;
                 } else {
                     insurancePlans.tpaNphiesId = '-1';
@@ -482,9 +482,9 @@ export class BeneficiaryComponent implements OnInit {
 
         } else {
             this.fullNameController.enable();
+
         }
     }
-
 
 
 
@@ -560,6 +560,7 @@ export class BeneficiaryComponent implements OnInit {
 
     updateDate() {
         if (this.insurancePlans != null && this.insurancePlans.length != 0) {
+
             for (const plan of this.insurancePlans) {
                 plan.isPrimary = false;
             }
@@ -567,7 +568,7 @@ export class BeneficiaryComponent implements OnInit {
                 this.insurancePlans[Number.parseInt(this.setPrimary, 10)].isPrimary = true;
         }
 
-        
+
 
         if (this.checkError()) { return; }
         this.sharedServices.loadingChanged.next(true);
@@ -586,7 +587,9 @@ export class BeneficiaryComponent implements OnInit {
             }
         }, err => {
             if (err instanceof HttpErrorResponse) {
-                if (err.status == 500) {
+                if (err.status === 400) {
+                  this.messageError = err.error.message;
+                } else if (err.status == 500) {
                     this.messageError = 'could not reach server Please try again later ';
                 } else {
                     this.messageError = err.message;
@@ -748,7 +751,9 @@ export class BeneficiaryComponent implements OnInit {
         this.errors.documentType = '';
         this.errors.documentId = '';
         this.errors.gender = '';
-        if (this.setPrimary == "-1") {
+
+        if (this.insurancePlans != null && this.insurancePlans.length != 0 && this.setPrimary == "-1") {
+
             this.dialogService.showMessage("Should set one insurance plan as a primary", '', 'alert', true, 'OK');
             thereIsError = true;
         }

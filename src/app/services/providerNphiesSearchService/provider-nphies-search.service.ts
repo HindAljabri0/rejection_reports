@@ -19,6 +19,11 @@ export class ProviderNphiesSearchService {
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
     return this.http.request(request);
   }
+  getUnits(providerId: string) {
+    const requestURL = '/providers/' + providerId + '/prescription/ucum';
+    const request = new HttpRequest('POST', environment.providerNphiesSearch + requestURL,{});
+    return this.http.request(request);
+  }
   getSpecialityByCode(providerId: string, code: string) {
     const requestURL = '/providers/' + providerId + '/speciallity/get/specialityname?speciallityCode=' + code;
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestURL);
@@ -254,7 +259,7 @@ getItemList(
 
 
 getPrescriberCommunications(providerId: string, responseId: number) {
-    const requestUrl = `/providers/${providerId}/prescriber?responseId=${responseId}`;
+    const requestUrl = `/providers/${providerId}/communications?responseId=${responseId}`;;
     const request = new HttpRequest('GET', environment.providerNphiesSearch + requestUrl);
     return this.http.request(request);
 }

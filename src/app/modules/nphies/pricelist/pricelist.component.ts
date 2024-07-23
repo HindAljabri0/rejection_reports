@@ -16,6 +16,7 @@ import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { NphiesPayersSelectorComponent } from 'src/app/components/reusables/nphies-payers-selector/nphies-payers-selector.component';
 import { AuthService } from 'src/app/services/authService/authService.service';
 import { UserPrivileges, getUserPrivileges, initState } from 'src/app/store/mainStore.reducer';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-pricelist',
@@ -49,8 +50,9 @@ export class PricelistComponent implements OnInit {
   isHeadOffice = false;
   headOfficeProviderId;
   providerId;
-    store: any;
+  
   constructor(
+    private store: Store,
     private router: Router,
     private dialog: MatDialog,
     private sharedService: SharedServices,

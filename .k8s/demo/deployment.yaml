@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: gui
-  namespace: pgqa
+  namespace: demo-waseel-connect
   labels:
     app: gui
 spec:
@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: gui
-          image: me-jeddah-1.ocir.io/ax7dvcawpc84/qa/gui:latest
+          image: me-jeddah-1.ocir.io/ax7dvcawpc84/demo-waseel-connect/gui:latest
           ports:
           - containerPort: 8080
       imagePullSecrets:

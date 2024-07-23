@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { MatDialog, MatDialogConfig, ErrorStateMatcher } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 import { AddEditPrescriptionsItemComponent } from '../add-edit-prescriptions-item/add-edit-prescriptions-item.component';
 import { DosageDetailsComponent } from '../add-edit-prescription-item/dosage-details/dosage-details.component';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -15,7 +15,6 @@ import { ProviderNphiesSearchService } from 'src/app/services/providerNphiesSear
 import { nationalities } from 'src/app/claim-module-components/store/claim.reducer';
 import { ReplaySubject, Subject } from 'rxjs';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
-import { AddEditItemDetailsModalComponent } from '../add-edit-item-details-modal/add-edit-item-details-modal.component';
 import { DialogService } from 'src/app/services/dialogsService/dialog.service';
 import { ProvidersBeneficiariesService } from 'src/app/services/providersBeneficiariesService/providers.beneficiaries.service.service';
 import { AttachmentViewDialogComponent } from 'src/app/components/dialogs/attachment-view-dialog/attachment-view-dialog.component';
@@ -24,9 +23,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { takeUntil } from 'rxjs/operators';
 import { DbMappingService } from 'src/app/services/administration/dbMappingService/db-mapping.service';
-import { PbmValidationResponseSummaryDialogComponent } from 'src/app/components/dialogs/pbm-validation-response-summary-dialog/pbm-validation-response-summary-dialog.component';
 import { AdminService } from 'src/app/services/adminService/admin.service';
-import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { AddEditVisionLensSpecificationsComponent } from '../add-preauthorization/add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
 import { AddEditCareTeamModalComponent } from '../add-preauthorization/add-edit-care-team-modal/add-edit-care-team-modal.component';
 import { AddEditDiagnosisModalComponent } from '../add-preauthorization/add-edit-diagnosis-modal/add-edit-diagnosis-modal.component';
@@ -202,7 +199,7 @@ export class AddPrescriptionComponent implements OnInit {
     isSubmitted = false;
     IsLensSpecificationRequired = false;
     IsDiagnosisRequired = false;
-    // IsCareTeamRequired = false;
+    //IsCareTeamRequired_ = true;
     IsItemRequired = false;
     IsDateWrittenRequired = false;
     IsPrescriberRequired = false;
@@ -253,6 +250,7 @@ export class AddPrescriptionComponent implements OnInit {
         this.getTPA();
         this.FormPreAuthorization.controls.dateOrdered.setValue(this.removeSecondsFromDate(new Date()));
         this.filteredNations.next(this.nationalities.slice());
+        
         if (this.claimReuseId) {
             this.FormPreAuthorization.controls.transfer.setValue(this.data.transfer)
             this.getRefferalProviders();
@@ -264,8 +262,9 @@ export class AddPrescriptionComponent implements OnInit {
             this.SupportingInfo.push(this.SetDaysOfSupply());
             this.FormPreAuthorization.controls.type.setValue(this.sharedDataService.claimPrescriberType.filter(x => x.value === "professional")[0]);
             this.FormPreAuthorization.controls.subType.setValue(this.sharedDataService.subTypeList.filter(x => x.value === "op")[0]);
+            this.claimType = "professional";
         }
-        console.log("sub types ", this.subTypeList);
+        //console.log("sub types ", this.subTypeList);
         this.getProviderTypeConfiguration();
 
     }
@@ -541,6 +540,9 @@ export class AddPrescriptionComponent implements OnInit {
                         this.FormPreAuthorization.controls.country.disable();
                         this.FormPreAuthorization.controls.countryName.disable();
                         this.FormPreAuthorization.controls.date.disable();
+                        this.FormPreAuthorization.controls.otherReferral.disable();
+                        this.FormPreAuthorization.controls.referral.disable();
+                        this.FormPreAuthorization.controls.eligibilityType.disable();
                     }
                 }
 
@@ -1153,7 +1155,7 @@ export class AddPrescriptionComponent implements OnInit {
                             x.prescribedDrugCode = result.prescribedDrugCode;
                             x.strength = result.strength;
                             x.absenceScientificCode = result.absenceScientificCode;
-
+                            x.reasonAbsenceScientificCode = result.reasonAbsenceScientificCode;
                             if (x.supportingInfoSequence) {
                                 x.supportingInfoNames = '';
                                 x.supportingInfoSequence.forEach(s => {
@@ -1232,16 +1234,17 @@ export class AddPrescriptionComponent implements OnInit {
         this.checkItemValidation();
     }
 
-    openAddEditItemDetailsDialog(itemSequence: number, itemModel: any = null) {
+    openAddEditItemDetailsDialog(itemSequence: number, itemDetailsSeq: number, itemModel: any = null) {
 
         const item = this.Items.filter(x => x.sequence === itemSequence)[0];
-
+        const itemDetail = item.itemDetails.filter(d => d.sequence === itemDetailsSeq)[0];
+        console.log("item details",itemDetail);
         const dialogConfig = new MatDialogConfig();
         dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
         dialogConfig.data = {
             // tslint:disable-next-line:max-line-length
-            Sequence: (itemModel !== null) ? itemModel.sequence : (item.itemDetails.length === 0 ? 1 : (item.itemDetails[item.itemDetails.length - 1].sequence + 1)),
-            item: itemModel,
+            Sequence: (itemDetail !== null && itemDetail !== undefined) ? itemDetail.sequence : (item.itemDetails.length === 0 ? 1 : (item.itemDetails[item.itemDetails.length - 1].sequence + 1)),
+            item: itemDetail,
             type: this.FormPreAuthorization.controls.type.value.value,
             dateOrdered: this.FormPreAuthorization.controls.dateOrdered.value,
             payerNphiesId: this.FormPreAuthorization.controls.insurancePayerNphiesId.value,
@@ -1259,18 +1262,20 @@ export class AddPrescriptionComponent implements OnInit {
                                 x.itemDetails.map(y => {
                                     if (y.sequence === result.sequence) {
                                         y.type = result.type;
-                                        y.typeName = result.typeName,
-                                            y.itemCode = result.itemCode;
-                                        y.itemDescription = result.itemDescription;
+                                        y.typeName = result.typeName;
+                                        y.code = result.code;
+                                        y.description = result.description;
                                         y.nonStandardCode = result.nonStandardCode;
                                         y.strength = result.strength;
                                         y.quantity = result.quantity;
                                         y.quantityCode = result.quantityCode;
+                                        y.absenceScientificCode = result.absenceScientificCode;
+                                        y.reasonAbsenceScientificCode = result.reasonAbsenceScientificCode;
                                         //y.claimItemDosageModel =[];
                                     }
                                 });
                             } else {
-                                result.claimItemDosageModel= [];
+                                result.claimItemDetailsDosage = [];
                                 x.itemDetails.push(result);
                             }
                         }
@@ -1299,7 +1304,7 @@ export class AddPrescriptionComponent implements OnInit {
         dialogConfig.panelClass = ['primary-dialog', 'dialog-xl'];
         dialogConfig.data = {
             // tslint:disable-next-line:max-line-length
-            Sequence: (itemModel !== null) ? itemModel.sequence : (itemDetail.claimItemDosageModel.length === 0 ? 1 : (itemDetail.claimItemDosageModel[itemDetail.claimItemDosageModel.length - 1].sequence + 1)),
+            Sequence: (itemModel !== null) ? itemModel.sequence : (itemDetail.claimItemDetailsDosage.length === 0 ? 1 : (itemDetail.claimItemDetailsDosage[itemDetail.claimItemDetailsDosage.length - 1].sequence + 1)),
             item: itemModel,
             type: this.FormPreAuthorization.controls.type.value.value,
             dateOrdered: this.FormPreAuthorization.controls.dateOrdered.value,
@@ -1315,8 +1320,8 @@ export class AddPrescriptionComponent implements OnInit {
                 if (this.Items.filter(x => x.sequence === itemSequence)[0].itemDetails.find(x => x.sequence === itemDetailsSeq)) {
 
                     this.Items.filter(x => x.sequence === itemSequence)[0].itemDetails.map(x => {
-                        if (x.claimItemDosageModel.find(y => y.sequence === result.sequence)) {
-                            x.claimItemDosageModel.map(val => {
+                        if (x.claimItemDetailsDosage.find(y => y.sequence === result.sequence)) {
+                            x.claimItemDetailsDosage.map(val => {
                                 if (val.sequence === result.sequence) {
                                     val.sequence = result.sequence;
                                     val.note = result.note;
@@ -1328,8 +1333,10 @@ export class AddPrescriptionComponent implements OnInit {
                                     val.doseRangeMax = result.doseRangeMax;
                                     val.doseUnit = result.doseUnit;
                                     val.rateType = result.rateType;
+                                    val.rateQuantity = result.rateQuantity;
                                     val.rateRatioNumeratorMin = result.rateRatioNumeratorMin;
                                     val.rateRatioDenominatorMax = result.rateRatioDenominatorMax;
+                                    val.rateDenominatorUnit = result.rateDenominatorUnit;
                                     val.rateUnit = result.rateUnit;
                                     val.startDate = result.startDate;
                                     val.endDate = result.endDate;
@@ -1344,7 +1351,7 @@ export class AddPrescriptionComponent implements OnInit {
                                 }
                             });
                         } else {
-                            x.claimItemDosageModel.push(result);
+                            x.claimItemDetailsDosage.push(result);
                         }
                     });
                 }
@@ -1355,7 +1362,7 @@ export class AddPrescriptionComponent implements OnInit {
         if (this.Items.filter(x => x.sequence === itemSequence)[0].itemDetails.find(x => x.sequence === itemDetailsSeq)) {
             this.Items.filter(x => x.sequence === itemSequence)[0].itemDetails.map(x => {
                 if (x.sequence === itemDetailsSeq) {
-                    x.claimItemDosageModel.splice(index, 1);
+                    x.claimItemDetailsDosage.splice(index, 1);
                 }
             });
         }
@@ -1397,8 +1404,10 @@ export class AddPrescriptionComponent implements OnInit {
                                     val.doseRangeMax = result.doseRangeMax;
                                     val.doseUnit = result.doseUnit;
                                     val.rateType = result.rateType;
+                                    val.rateQuantity = result.rateQuantity;
                                     val.rateRatioNumeratorMin = result.rateRatioNumeratorMin;
                                     val.rateRatioDenominatorMax = result.rateRatioDenominatorMax;
+                                    val.rateDenominatorUnit = result.rateDenominatorUnit;
                                     val.rateUnit = result.rateUnit;
                                     val.startDate = result.startDate;
                                     val.endDate = result.endDate;
@@ -1624,7 +1633,7 @@ export class AddPrescriptionComponent implements OnInit {
                 }
             }
             if (x.category === 'lab-test') {
-                if (!x.code || !x.value) {
+                if (!x.code || !x.value|| (!x.unit && x.isUnitsRequired)) {
                     hasError = true;
                 }
             }
@@ -1988,6 +1997,7 @@ export class AddPrescriptionComponent implements OnInit {
                 model.attachment = x.attachment;
                 model.attachmentName = x.attachmentName;
                 model.attachmentType = x.attachmentType;
+                model.unit = x.unit === 'others-specify' ? x.otherUnit:x.unit;
                 if (x.attachmentDate) {
                     x.attachmentDate = this.datePipe.transform(x.attachmentDate, 'yyyy-MM-dd');
                 }

@@ -187,6 +187,7 @@ export class AddCommunicationDialogComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log("data ",this.data);
     if (this.payLoads.length === 0) {
       this.emptyPayloadError = 'Please select a file or enter comment';
       return;

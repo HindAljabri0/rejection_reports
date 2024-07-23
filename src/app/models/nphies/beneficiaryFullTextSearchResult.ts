@@ -32,7 +32,7 @@ export class BeneficiariesSearchResult {
   country: string;
   postalCode: string;
   isNewBorn?: boolean;
-
+  isEligibilityDone?:boolean;
 
   plans: {
     planId: string;

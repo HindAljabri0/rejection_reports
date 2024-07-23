@@ -35,7 +35,7 @@
                         <mat-select panelClass="custom-dropdown" formControlName="item" [disabled]="IsItemLoading"
                             placeholder="Select Code-Description">
                             <mat-option>
-                                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="item"
+                                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="itemFilter" (ngModelChange)="filterItem()"
                                     noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
                             </mat-option>
                             <cdk-virtual-scroll-viewport itemSize="100" minBufferPx="{{itemList.length}}"
@@ -62,11 +62,10 @@
                         <mat-select panelClass="custom-dropdown" formControlName="item" [disabled]="IsItemLoading"
                             placeholder="Select Code-Description">
                             <mat-option>
-                                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="item"
+                                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="prescribedMedicationItemFilter" (ngModelChange)="filterPrescribedMedicationItem()"
                                     noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
                             </mat-option>
-                            <cdk-virtual-scroll-viewport itemSize="100"
-                                minBufferPx="{{ itemList.length > 0 ? 100 : 100 }}"
+                            <cdk-virtual-scroll-viewport itemSize="100" minBufferPx="1"
                                 maxBufferPx="{{itemList.length * 10}}" class="viewport">
                                 <mat-option *cdkVirtualFor="let type of filteredPescribedMedicationItem | async"
                                     [value]="type">
@@ -100,7 +99,8 @@
                 </div>
             </div>
             <div class="col-4 col-lg-3" *ngIf="FormItem.get('type').value.value === 'medication-codes'">
-                <div class="form-group">
+                <div class="form-group"
+                    [ngClass]="{'has-error': (isSubmitted || FormItem.get('absenceScientificCode').touched) && FormItem.get('absenceScientificCode').hasError('required')}">
                     <label class="control-label">Absence of Scientific Code<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select formControlName="absenceScientificCode">
@@ -108,6 +108,11 @@
                             <mat-option *ngFor="let medication of absenceReasonList"
                                 [value]="medication">{{medication.name}}</mat-option>
                         </mat-select>
+                    </mat-form-field>
+                </div>
+                <div *ngIf="FormItem.get('absenceScientificCode').value && FormItem.get('absenceScientificCode').value.value === 'others'">
+                    <mat-form-field>
+                        <input matInput formControlName="reasonAbsenceScientificCode" placeholder="Other reason">
                     </mat-form-field>
                 </div>
             </div>
@@ -155,7 +160,7 @@
             <div class="col-4 col-lg-3">
                 <div class="form-group"
                     [ngClass]="{'has-error' :IsSupportingInfoSequenceRequired || ((isSubmitted || FormItem.get('supportingInfoSequence').touched) && FormItem.get('supportingInfoSequence').hasError('required'))}">
-                    <label class="control-label">Supporting Info</label>
+                    <label class="control-label">Supporting Info<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select formControlName="supportingInfoSequence" multiple
                             placeholder="Select Supporting Info">
@@ -181,7 +186,7 @@
             </div>
             <div class="col-4 col-lg-3">
                 <div class="form-group">
-                    <label class="control-label">Diagnosis</label>
+                    <label class="control-label">Diagnosis<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select formControlName="diagnosisSequence" multiple placeholder="Select Care Team">
                             <mat-option>
@@ -203,8 +208,7 @@
             <div class="col-4 col-lg-3">
                 <div class="form-group"
                     [ngClass]="{'has-error' :IscareTeamSequenceRequired && ((isSubmitted || FormItem.get('careTeamSequence').touched) && FormItem.get('careTeamSequence').hasError('required'))}">
-                    <label class="control-label">Care Teams<span *ngIf="IscareTeamSequenceRequired"
-                            class="asterisk">*</span></label>
+                    <label class="control-label">Care Teams<span class="asterisk">*</span></label>
 
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select formControlName="careTeamSequence" multiple placeholder="Select Care Team">
@@ -243,7 +247,8 @@
                     [ngClass]="{'has-error' : ((isSubmitted || FormItem.get('strength').touched) && (FormItem.get('strength').hasError('required')))}">
                     <label class="control-label"><span class="d-flex align-items-center">
                             <span class="pr-1">Strength <span class="asterisk">*</span></span>
-                            <mat-icon class="material-icons-outlined size-20" matTooltip="Strength is the amount of medication in a given dosage form, for example, 500 mg/tablet">info</mat-icon>
+                            <mat-icon class="material-icons-outlined size-20"
+                                matTooltip="Strength is the amount of medication in a given dosage form, for example, 500 mg/tablet">info</mat-icon>
                         </span> </label>
                     <input class="form-control" placeholder="Enter Strength" formControlName="strength">
                 </div>
