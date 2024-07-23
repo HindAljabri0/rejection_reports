@@ -5,12 +5,10 @@
     </div>
 
     <div *ngIf="DispenseQueryResult.items && DispenseQueryResult.items.length > 0">
-        <!-- Track if any item has suggested drugs -->
         <ng-container *ngIf="hasSuggestedDrugs(DispenseQueryResult.items); else noSuggestedDrugs">
             <div class="dispense-response-body pb-0">
                 <table class="dispense-response-table">
                     <ng-container *ngFor="let item of DispenseQueryResult.items; let i = index">
-                        <!-- Check if the item has suggestedDrugs -->
                         <ng-container *ngIf="item.suggestedDrugs && item.suggestedDrugs.length > 0">
                             <thead>
                                 <tr class="dispense-response-item-header">
@@ -81,7 +79,7 @@
 
         <ng-template #noSuggestedDrugs>
             <div class="no-suggested-drugs-message">
-                <h5>No suggested drugs available to dispense.</h5>
+                <h3>No suggested drugs available to dispense.</h3>
             </div>
         </ng-template>
         

@@ -127,8 +127,7 @@ button[mat-button][color="primary"]:hover {
     background-color: #303f9f;
 } */
 .no-suggested-drugs-message {
-    color: red; 
-    padding-top: 20px; 
-    padding-bottom: 20px; 
+    padding-top: 50px; 
+    padding-bottom: 50px; 
     text-align: center;
 }
