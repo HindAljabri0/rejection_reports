@@ -278,8 +278,17 @@ export class HeaderComponent implements OnInit {
     showFreshChatBox() {
         window['fcWidget'].init({
             token: '32afa4a2-e443-4a99-aa8b-67e3a6639fd2',
-            host: 'https://wchat.freshchat.com'
+            host: 'https://wchat.freshchat.com',
+            widgetUuid: "1fec6ce4-c2ca-4bde-8d6b-b6d1c3d90972"
         });
+
+        window['fcWidget'].user.setProperties({
+            providerId: localStorage.getItem('providerId'),                 
+            username: localStorage.getItem('username'),
+            tokenJWT: localStorage.getItem('token')              
+        });
+
+
     }
 
     get hasNewProviderDownload() {
