@@ -14,6 +14,8 @@ import {
     NPHIES_MRE_RESTRICTION_KEY,
     NPHIES_MRE_APPROVAL_KEY,
     RADIOLOGY_REPORT_KEY,
+    PBM_DISPENSE_INQUIRY,
+    PBM_PRESCRIPTION_VALIDATE
     //NPHIES_TRANSACTION_KEY
 } from 'src/app/services/administration/superAdminService/super-admin.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
@@ -55,7 +57,6 @@ export class ProvidersConfigComponent implements OnInit {
         NphiespayerMappingError?: string,
         payerMappingSaveError?: string,
         NphiesMappingSaveError?: string,
-
         NphiesPayerMappingError?: string,
         providerMappingError?: string,
         providerMappingSaveError?: string,
@@ -63,9 +64,6 @@ export class ProvidersConfigComponent implements OnInit {
         pbmConfigurationSaveError?: string,
         radiologyConfigurationSaveError?: string,
         nphiesTransactionConfigurationSaveError?: string,
-
-
-
         nphiesPbmConfigurationError?: string,
         nphiesApprovalPbmConfigurationError?: string,
         nphiesPbmConfigurationSaveError?: string,
@@ -73,17 +71,20 @@ export class ProvidersConfigComponent implements OnInit {
         nphiesTransactionConfigurationError?: string,
         mreConfigurationError?: string,
         mreConfigurationSaveError?: string,
-
         nphiesMreConfigurationError?: string,
         nphiesApprovalMreConfigurationError?: string,
         nphiesMreConfigurationSaveError?: string,
-
         netAmountConfigurationError?: string,
         netAmountConfigurationSaveError?: string,
         pollTypeConfigurationError?: string,
         pollTypeConfigurationSaveError?: string,
         providerTypeConfigurationSaveError?: string
         providerTypeConfigurationError?: string
+        pbmPrescriptionConfigurationSaveError?: string
+        pbmPrescriptionConfigurationError?: string
+        dispenseInqueryConfigurationSaveError?: string
+        dispenseInqueryConfigurationError?: string
+
     } = {};
     success: {
         serviceCodeSaveSuccess?: string,
@@ -102,6 +103,8 @@ export class ProvidersConfigComponent implements OnInit {
         radiologyConfigurationSaveSuccess?: string,
         nphiesMreConfigurationSaveSuccess?: string,
         nphiesApprovalMreConfigurationSaveSuccess?: string,
+        pbmPrescriptionConfigurationSaveSuccess?:string,
+        dispenseInqueryConfigurationSaveSuccess?:string,
         netAmountConfigurationSaveSuccess?: string,
         pollTypeConfigurationSaveSuccess?: string,
         providerTypeConfigurationSaveSuccess?: string,
@@ -126,7 +129,9 @@ export class ProvidersConfigComponent implements OnInit {
         providerMapping: true,
         netAmount: true,
         pollType: true,
-        providerType: true
+        providerType: true,
+        pbmPrescriptionConfiguration: true,
+        dispenseInqueryConfiguration: true
     };
 
     selectedProvider: string;
@@ -146,6 +151,8 @@ export class ProvidersConfigComponent implements OnInit {
     nphiesApprovalMreValidationSettings: any[] = [];
     nphiesMreValidationSettings: any[] = [];
     providerTypeValidationSettings: any[] = [];
+    pbmPrescriptionValidationSettings: any[] = [];
+    dispenseInqueryValidationSettings: any[] = [];
     newServiceValidationSettings: { [key: string]: boolean } = {};
     newPriceUnitSettings: { [key: string]: boolean } = {};
     newICD10ValidationSettings: { [key: string]: boolean } = {};
@@ -158,9 +165,9 @@ export class ProvidersConfigComponent implements OnInit {
     newNphiesTransactionValidationSettings: { [key: string]: boolean } = {};
     newRadiologyValidationSettings: { [key: string]: boolean } = {};
     newNphiesApprovalMREValidationSettings: { [key: string]: boolean } = {};
-
     newProvideTypeValidationSettings: { [key: string]: boolean } = {};
-
+    newPbmPrescriptionValidationSettings: { [key: string]: boolean } = {};
+    newDispenseInqueryValidationSettings: { [key: string]: boolean } = {};
     portalUserSettings: any;
     portalUsernameController: FormControl = new FormControl('');
     portalPasswordController: FormControl = new FormControl('');
@@ -175,7 +182,6 @@ export class ProvidersConfigComponent implements OnInit {
     newNphiesPayerTpaId: { [key: number]: string } = {};
     newNphiesPayerTpaName: { [key: number]: string } = {};
     deleteNphiesPayerMappingList: any[] = [];
-
     addPayerMappingList: any[] = [];
     addNphiesPayerMappingList: any[] = [];
     existingPayers: any[] = [];
@@ -206,10 +212,9 @@ export class ProvidersConfigComponent implements OnInit {
     pollTypePeriod: number;
     pollTypePeriodUnitController: FormControl = new FormControl('');
     pollTypePeriodUnit: string;
-
-
     isBothSame = true;
     dbConfigs = [];
+
 
     organizations: {
         id: string
@@ -327,6 +332,8 @@ export class ProvidersConfigComponent implements OnInit {
                     this.newPBMValidationSettings['101'] = false;
                     this.newNphiesPBMValidationSettings['101'] = false;
                     this.newNphiesApprovalPBMValidationSettings['101'] = false;
+                    this.newPbmPrescriptionValidationSettings['101']=false;
+                    this.newDispenseInqueryValidationSettings['101']=false;
                     this.newMREValidationSettings['101'] = false;
                     this.newNphiesMREValidationSettings['101'] = false;
                     this.newRadiologyValidationSettings['101'] = false;
@@ -472,6 +479,8 @@ export class ProvidersConfigComponent implements OnInit {
         this.getSetting(NPHIES_MRE_APPROVAL_KEY, this.nphiesApprovalMreValidationSettings, this.newNphiesApprovalMREValidationSettings, false);
         //this.getSetting(NPHIES_TRANSACTION_KEY, this.nphiesTransactionValidationSettings, this.newNphiesTransactionValidationSettings, false);
         this.getSetting(PROVIDER_TYPE_CONFIGURATION_KEY, this.providerTypeValidationSettings, this.newProvideTypeValidationSettings, false);
+        this.getSetting(PBM_DISPENSE_INQUIRY, this.pbmPrescriptionValidationSettings, this.newPbmPrescriptionValidationSettings, false);
+        this.getSetting(PBM_PRESCRIPTION_VALIDATE, this.dispenseInqueryValidationSettings, this.newDispenseInqueryValidationSettings, false);
         this.getPortalUserSettings();
         this.getNphiesTransactionsSettings();
         // ####### Chages on 02-01-2021 start
@@ -507,6 +516,8 @@ export class ProvidersConfigComponent implements OnInit {
             this.componentLoading.payerMapping ||
             this.componentLoading.NphiesPayerMapping ||
             this.componentLoading.providerMapping ||
+            this.componentLoading.pbmPrescriptionConfiguration ||
+            this.componentLoading.dispenseInqueryConfiguration ||
             this.componentLoading.pollType || this.componentLoading.providerType) {
             return;
         }
@@ -521,6 +532,8 @@ export class ProvidersConfigComponent implements OnInit {
         const pbmFlag = this.saveSettings(PBM_RESTRICTION_KEY, this.newPBMValidationSettings, this.pbmValidationSettings);
         const nphiesPbmFlag = this.saveSettings(NPHIES_PBM_RESTRICTION_KEY, this.newNphiesPBMValidationSettings, this.nphiesPbmValidationSettings);
         const nphiesApprovalPbmFlag = this.saveSettings(NPHIES_PBM_APPROVAL_KEY, this.newNphiesApprovalPBMValidationSettings, this.nphiesApprovalPbmValidationSettings);
+        const PbmPrescriptionFlag = this.saveSettings(PBM_PRESCRIPTION_VALIDATE, this.newPbmPrescriptionValidationSettings, this.pbmPrescriptionValidationSettings)
+        const DispenseInqueryFlag = this.saveSettings(PBM_DISPENSE_INQUIRY, this.newDispenseInqueryValidationSettings, this.dispenseInqueryValidationSettings)
         const mreFlag = this.saveSettings(MRE_RESTRICTION_KEY, this.newMREValidationSettings, this.mreValidationSettings);
         const radiologyFlag = this.saveSettings(RADIOLOGY_REPORT_KEY, this.newRadiologyValidationSettings, this.radiologyValidationSettings);
         const nphiesTransactionFlag = this.updateNphiesTransactionsFlageSettings();
@@ -542,7 +555,8 @@ export class ProvidersConfigComponent implements OnInit {
         // && priceUnitFlag && serviceCodeFlag
         //check again 
         if (portalUserFlag && icd10Flag && sfdaFlag && dbFlag
-            && payerFlag && nphiesPayerFlag && nphiesTransactionFlag && providerFlag && pbmFlag && nphiesPbmFlag && nphiesApprovalPbmFlag && mreFlag && nphiesMreFlag && nphiesApprovalMreFlag && radiologyFlag && priceListFlag && netAmountFlag && pollConfigFlag && providerTypeFlag) {
+            && payerFlag && nphiesPayerFlag && nphiesTransactionFlag && providerFlag && pbmFlag && nphiesPbmFlag && nphiesApprovalPbmFlag && mreFlag && nphiesMreFlag && nphiesApprovalMreFlag && radiologyFlag && priceListFlag && netAmountFlag && pollConfigFlag && providerTypeFlag
+        && PbmPrescriptionFlag && DispenseInqueryFlag) {
             this.dialogService.openMessageDialog({
                 title: '',
                 message: 'There is no changes to save!',
@@ -723,6 +737,22 @@ export class ProvidersConfigComponent implements OnInit {
                     key: URLKey,
                     value: (newSettingValues[payerId]) ? '1' : '0'
                 });
+                break;
+            case PBM_DISPENSE_INQUIRY:
+                this.dispenseInqueryValidationSettings.push({
+                    providerId: this.selectedProvider,
+                    payerId,
+                    key: URLKey,
+                    value: (newSettingValues[payerId]) ? '1' : '0'
+                    });
+                break;
+            case PBM_PRESCRIPTION_VALIDATE:
+                this.pbmPrescriptionValidationSettings.push({
+                    providerId: this.selectedProvider,
+                    payerId,
+                    key: URLKey,
+                    value: (newSettingValues[payerId]) ? '1' : '0'
+                    });
         }
     }
 
@@ -757,6 +787,12 @@ export class ProvidersConfigComponent implements OnInit {
                 break;
             case PROVIDER_TYPE_CONFIGURATION_KEY:
                 this.providerTypeValidationSettings[index], value = value;
+                break;
+            case PBM_DISPENSE_INQUIRY:
+                this.dispenseInqueryValidationSettings[index].value = value;
+                break;
+            case PBM_PRESCRIPTION_VALIDATE:
+                this.pbmPrescriptionValidationSettings[index], value = value;
                 break;
         }
     }
@@ -829,6 +865,8 @@ export class ProvidersConfigComponent implements OnInit {
         this.resetSection(PBM_RESTRICTION_KEY, this.newPBMValidationSettings);
         this.resetSection(NPHIES_PBM_RESTRICTION_KEY, this.newNphiesPBMValidationSettings);
         this.resetSection(NPHIES_PBM_APPROVAL_KEY, this.newNphiesApprovalPBMValidationSettings);
+        this.resetSection(PBM_PRESCRIPTION_VALIDATE , this.newPbmPrescriptionValidationSettings);
+        this.resetSection(PBM_DISPENSE_INQUIRY , this.newDispenseInqueryValidationSettings);
         this.resetSection(RADIOLOGY_REPORT_KEY, this.newRadiologyValidationSettings);
      //   this.resetSection(NPHIES_TRANSACTION_KEY, this.newNphiesTransactionValidationSettings);
         this.resetSection(MRE_RESTRICTION_KEY, this.newMREValidationSettings);
@@ -887,6 +925,14 @@ export class ProvidersConfigComponent implements OnInit {
                 case NPHIES_MRE_APPROVAL_KEY:
                     setTimeout(() => this.componentLoading.nphiesApprovalMreConfiguration = false, 100);
                     this.newNphiesApprovalMREValidationSettings = {};
+                    break;
+                case PBM_PRESCRIPTION_VALIDATE:
+                    setTimeout(() => this.componentLoading.pbmPrescriptionConfiguration = false, 100);
+                    this.newPbmPrescriptionValidationSettings = {};
+                    break;
+                case PBM_DISPENSE_INQUIRY:
+                    setTimeout(() => this.componentLoading.dispenseInqueryConfiguration = false, 100);
+                    this.newDispenseInqueryValidationSettings = {};
                     break;
             }
         }
@@ -981,6 +1027,13 @@ export class ProvidersConfigComponent implements OnInit {
                 break;
             case PROVIDER_TYPE_CONFIGURATION_KEY:
                 this.errors.providerTypeConfigurationError = message;
+                break;
+            case PBM_DISPENSE_INQUIRY:
+                this.errors.dispenseInqueryConfigurationError = message;
+                break;
+            case PBM_PRESCRIPTION_VALIDATE:
+                this.errors.pbmPrescriptionConfigurationError = message;
+                break;
         }
     }
 
@@ -1010,6 +1063,12 @@ export class ProvidersConfigComponent implements OnInit {
                 break;
             case NPHIES_MRE_RESTRICTION_KEY:
                 this.componentLoading.nphiesMreConfiguration = componentLoading;
+                break;
+            case PBM_DISPENSE_INQUIRY:
+                this.componentLoading.dispenseInqueryConfiguration = componentLoading;
+                break;
+            case PBM_PRESCRIPTION_VALIDATE:
+                this.componentLoading.pbmPrescriptionConfiguration = componentLoading;
                 break;
         }
     }
@@ -1047,6 +1106,12 @@ export class ProvidersConfigComponent implements OnInit {
             case PROVIDER_TYPE_CONFIGURATION_KEY:
                 this.errors.providerTypeConfigurationSaveError = value;
                 break;
+            case PBM_DISPENSE_INQUIRY:
+                this.errors.dispenseInqueryConfigurationSaveError = value;
+                break;
+            case PBM_PRESCRIPTION_VALIDATE:
+                this.errors.pbmPrescriptionConfigurationSaveError = value;
+                break;           
         }
 
     }
@@ -1089,6 +1154,12 @@ export class ProvidersConfigComponent implements OnInit {
                 break;
             case PROVIDER_TYPE_CONFIGURATION_KEY:
                 this.success.providerTypeConfigurationSaveSuccess = value;
+                break;
+            case PBM_DISPENSE_INQUIRY:
+                this.success.dispenseInqueryConfigurationSaveSuccess = value;
+                break;
+            case PBM_PRESCRIPTION_VALIDATE:
+                this.success.pbmPrescriptionConfigurationSaveSuccess = value;
         }
     }
 

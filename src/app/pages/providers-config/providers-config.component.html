@@ -791,6 +791,75 @@
           <mat-spinner diameter="48"></mat-spinner>
         </div>
       </mat-expansion-panel>   
+
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            PBM Prescription Configuration
+            <mat-menu #pbmPrescriptionSuccessConfigurationMenu xPosition="before">
+              <ng-template matMenuContent>
+                <div class="pt-7 pb-7 pr-14 pl-14">                
+                  <ng-container *ngIf="success.pbmPrescriptionConfigurationSaveSuccess != null">{{success.pbmPrescriptionConfigurationSaveSuccess}}</ng-container>                
+                  <br *ngIf="success.pbmPrescriptionConfigurationSaveSuccess != null && success.dispenseInqueryConfigurationSaveSuccess != null"/>
+                  <ng-container *ngIf="success.dispenseInqueryConfigurationSaveSuccess != null">Nphies {{success.dispenseInqueryConfigurationSaveSuccess}}</ng-container>
+                </div>
+              </ng-template>
+            </mat-menu>
+            <mat-menu #pbmPrescriptionErrorConfigurationMenu xPosition="before">
+              <ng-template matMenuContent>
+                <div class="pt-7 pb-7 pr-14 pl-14">
+                  <ng-container *ngIf="errors.pbmPrescriptionConfigurationSaveError != null">{{errors.pbmPrescriptionConfigurationSaveError}}</ng-container>                
+                  <br *ngIf="errors.pbmPrescriptionConfigurationSaveError != null && errors.dispenseInqueryConfigurationSaveError != null"/>
+                  <ng-container *ngIf="errors.dispenseInqueryConfigurationSaveError != null">{{errors.dispenseInqueryConfigurationSaveError}}</ng-container>                
+                </div>
+              </ng-template>
+            </mat-menu>
+            <button type="button" *ngIf="errors.dispenseInqueryConfigurationSaveError != null || errors.pbmPrescriptionConfigurationSaveError != null" class="text-danger" (click)="$event.stopPropagation()" mat-icon-button
+              [matMenuTriggerFor]="pbmPrescriptionErrorConfigurationMenu">
+              <mat-icon>error</mat-icon>
+            </button>
+            <button type="button" *ngIf="success.dispenseInqueryConfigurationSaveSuccess != null || success.pbmPrescriptionConfigurationSaveSuccess != null" class="text-success" (click)="$event.stopPropagation()" mat-icon-button [class.ml-2]="errors.nphiesPbmConfigurationSaveError != null || errors.pbmConfigurationSaveError != null"
+              [matMenuTriggerFor]="pbmPrescriptionSuccessConfigurationMenu">
+              <mat-icon>check_circle</mat-icon>
+            </button>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <ng-container *ngIf="((errors.pbmPrescriptionConfigurationError == null || errors.pbmPrescriptionConfigurationError == '') && !componentLoading.pbmPrescriptionConfiguration) && ((errors.dispenseInqueryConfigurationError == null || errors.dispenseInqueryConfigurationError == '') && !componentLoading.dispenseInqueryConfiguration)">
+          <div class="provider-config-container">
+            <div class="row small-gutter">
+              <div class="col-6">
+                <div class="form-group form-group-static">                
+                  <p class="form-control-static">PBM Prescription</p>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group pt-2">
+                  <mat-slide-toggle color="primary" [(ngModel)]="newPbmPrescriptionValidationSettings['101']">Enable</mat-slide-toggle>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="provider-config-container">
+            <div class="row small-gutter">
+              <div class="col-6">
+                <div class="form-group form-group-static">                
+                  <p class="form-control-static">PBM Dispense Inquery</p>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group pt-2">
+                  <mat-slide-toggle color="primary" [(ngModel)]="newDispenseInqueryValidationSettings['101']">Enable</mat-slide-toggle>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>          
+        <div *ngIf="componentLoading.pbmPrescriptionConfiguration || componentLoading.dispenseInqueryConfiguration" class="inline-loader">
+          <mat-spinner diameter="48"></mat-spinner>
+        </div>
+      </mat-expansion-panel>   
+        
       <mat-expansion-panel>
         <mat-expansion-panel-header>
             <mat-panel-title>

@@ -1,5 +1,9 @@
 <div class="primary-dialog-header has-border">
   <h5 class="primary-dialog-title">Add Communication</h5>
+  <mat-radio-button [checked]="isOptionTrue"
+  (click)="toggleValue()">
+  re-adjudication
+</mat-radio-button>
   <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
 <form [formGroup]="FormCommunication" (ngSubmit)="add()">
