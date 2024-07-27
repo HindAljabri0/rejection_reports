@@ -981,7 +981,7 @@
 
                 <div class="form-group text-right btn-list">
                     <div class="split-button" 
-                    *ngIf="FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value === 'pharmacy'">
+                    *ngIf="FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value === 'pharmacy' && isPBMDispenceValidationVisible">
                         <button type="button" mat-flat-button  color="primary" (click)="sendDispenseQuery()">
                           <span>Request Prescription Dispense</span>
                         </button>
@@ -989,23 +989,23 @@
                           <mat-icon>reply</mat-icon>
                         </button>
                      </div> 
-                     <div class="split-button"> 
-                    <button type="button" mat-flat-button color="primary" *ngIf="isPBMValidationVisible"
+                     <div class="split-button" *ngIf="isPBMValidationVisible"> 
+                    <button type="button" mat-flat-button color="primary" 
                         (click)="onSubmit(true,false)" id="pbmRequestButton">
                         <span>Request PBM</span>
                     </button>
-                    <button type="button" mat-flat-button color="primary" *ngIf="isPBMValidationVisible"
+                    <button type="button" mat-flat-button color="primary" 
                     (click)="openPbmValidationResponseSummaryDialog(Pbm_result)"
                     id="PbmResponse">
                     <mat-icon>reply</mat-icon>
                 </button>
                 </div> 
-                <div class="split-button"> 
-                <button type="button" mat-flat-button color="primary" *ngIf="isMREValidationVisible"
+                <div class="split-button" *ngIf="isMREValidationVisible"> 
+                <button type="button" mat-flat-button color="primary" 
                 (click)="onSubmit(false,true)" id="mreRequestButton">
                 <span>Request MRE</span>
             </button>
-            <button type="button" mat-flat-button color="primary" *ngIf="isMREValidationVisible"
+            <button type="button" mat-flat-button color="primary" 
             (click)="openMreValidationResponseSummaryDialog(Mre_result)"
             id="MreResponse">
             <mat-icon>reply</mat-icon>

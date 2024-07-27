@@ -225,6 +225,7 @@ export class AddPreauthorizationComponent implements OnInit {
     providerType = "";
     isPBMValidationVisible = false;
     isMREValidationVisible = false;
+    isPBMDispenceValidationVisible = false;
     Pbm_result: any;
     Mre_result: any;
     DispenseQueryResult: any;
@@ -259,6 +260,7 @@ export class AddPreauthorizationComponent implements OnInit {
         this.getTPA();
         this.getPBMValidation();
         this.getMREValidation();
+        this.getPBMDispenseValidation();
         this.FormPreAuthorization.controls.dateOrdered.setValue(this.removeSecondsFromDate(new Date()));
         this.filteredNations.next(this.nationalities.slice());
         if (this.claimReuseId) {
@@ -296,6 +298,19 @@ export class AddPreauthorizationComponent implements OnInit {
         });
 
     }
+
+    getPBMDispenseValidation() {
+        this.adminService.checkIfPBMDispenceValidationIsEnabled(this.sharedServices.providerId, '101').subscribe((event: any) => {
+            if (event instanceof HttpResponse) {
+                const body = event['body'];
+                this.isPBMDispenceValidationVisible = body.value === '1' ? true : false;
+            }
+        }, err => {
+            console.log(err);
+        });
+
+    }
+
     selectedDefualtPrescriberChange($event) {
         this.PrescriberDefault = $event;
         console.log("$event = " + $event);

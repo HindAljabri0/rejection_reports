@@ -479,8 +479,8 @@ export class ProvidersConfigComponent implements OnInit {
         this.getSetting(NPHIES_MRE_APPROVAL_KEY, this.nphiesApprovalMreValidationSettings, this.newNphiesApprovalMREValidationSettings, false);
         //this.getSetting(NPHIES_TRANSACTION_KEY, this.nphiesTransactionValidationSettings, this.newNphiesTransactionValidationSettings, false);
         this.getSetting(PROVIDER_TYPE_CONFIGURATION_KEY, this.providerTypeValidationSettings, this.newProvideTypeValidationSettings, false);
-        this.getSetting(PBM_DISPENSE_INQUIRY, this.pbmPrescriptionValidationSettings, this.newPbmPrescriptionValidationSettings, false);
-        this.getSetting(PBM_PRESCRIPTION_VALIDATE, this.dispenseInqueryValidationSettings, this.newDispenseInqueryValidationSettings, false);
+        this.getSetting(PBM_PRESCRIPTION_VALIDATE, this.pbmPrescriptionValidationSettings, this.newPbmPrescriptionValidationSettings, false);
+        this.getSetting(PBM_DISPENSE_INQUIRY, this.dispenseInqueryValidationSettings, this.newDispenseInqueryValidationSettings, false);
         this.getPortalUserSettings();
         this.getNphiesTransactionsSettings();
         // ####### Chages on 02-01-2021 start

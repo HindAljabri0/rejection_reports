@@ -54,7 +54,7 @@ export class AddPrescriptionComponent implements OnInit {
 
     beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
     subscriberSearchResult: BeneficiariesSearchResult[] = [];
-
+    isPrescriptionValidationVisible = false;
     selectedBeneficiary: BeneficiariesSearchResult;
     selectedSubscriber: BeneficiariesSearchResult;
     isMissingClaimItemDosageModel = false;
@@ -248,6 +248,7 @@ export class AddPrescriptionComponent implements OnInit {
         });
         this.getPayees();
         this.getTPA();
+        this.getPrescriptionValidation();
         this.FormPreAuthorization.controls.dateOrdered.setValue(this.removeSecondsFromDate(new Date()));
         this.filteredNations.next(this.nationalities.slice());
         
@@ -268,6 +269,19 @@ export class AddPrescriptionComponent implements OnInit {
         this.getProviderTypeConfiguration();
 
     }
+
+    getPrescriptionValidation() {
+        this.adminService.checkIfPrescriptionValidationIsEnabled(this.sharedServices.providerId, '101').subscribe((event: any) => {
+            if (event instanceof HttpResponse) {
+                const body = event['body'];
+                this.isPrescriptionValidationVisible = body.value === '1' ? true : false;
+            }
+        }, err => {
+            console.log(err);
+        });
+
+    }
+
     SetDaysOfSupply() {
         const model: any = {};
         model.sequence = this.SupportingInfo.length === 0 ? 1 : (this.SupportingInfo[this.SupportingInfo.length - 1].sequence + 1);
@@ -899,6 +913,12 @@ export class AddPrescriptionComponent implements OnInit {
                 this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].maxLimit);
             this.FormPreAuthorization.controls.patientShare.setValue(
                 this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].patientShare);
+        }
+        if(plan.payerNphiesId === '7000911508'){
+
+            this.IsItTawuniyaPayer = true;
+        }else{
+            this.IsItTawuniyaPayer = false;
         }
     }
 

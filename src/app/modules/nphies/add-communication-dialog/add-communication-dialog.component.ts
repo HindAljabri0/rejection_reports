@@ -29,7 +29,7 @@ export class AddCommunicationDialogComponent implements OnInit {
     claimItemId: [''],
     claimItemIdFilter: [''],
   });
-  isOptionTrue: boolean = false;
+  isToggled: boolean = false;
 
   currentFileUpload: any;
   isSubmitted = false;
@@ -277,8 +277,9 @@ export class AddCommunicationDialogComponent implements OnInit {
       return 'image';
     }
   }
-  toggleValue() {
-    this.isOptionTrue = !this.isOptionTrue;
+
+  toggle() {
+    this.isToggled = !this.isToggled;
   }
 
 }

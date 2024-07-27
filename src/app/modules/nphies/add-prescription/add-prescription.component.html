@@ -1063,7 +1063,7 @@
                 <hr class="hr spaced" />
 
                 <div class="form-group text-right btn-list">                    
-                    <button *ngIf="IsItTawuniyaPayer" mat-flat-button color="primary"  (click)="onSubmitValidate()">
+                    <button *ngIf="IsItTawuniyaPayer && isPrescriptionValidationVisible" mat-flat-button color="primary"  (click)="onSubmitValidate()">
                         <span>Validate Prescription</span>
                     </button>
                     
