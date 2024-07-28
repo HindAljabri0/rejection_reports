@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 @Component({
   selector: 'app-pbm-prescription-validation-dialog',
   templateUrl: './pbm-prescription-validation-dialog.component.html',
-  styleUrls: ['../prescription-dispense-dialog/prescription-dispense-dialog.component.css'],
+  styleUrls: ['./pbm-prescription-validation-dialog.component.css'],
   
 })
 export class PbmPrescriptionValidationDialogComponent implements OnInit {

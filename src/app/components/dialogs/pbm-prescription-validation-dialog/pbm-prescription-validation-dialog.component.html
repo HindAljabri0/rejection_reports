@@ -1,8 +1,7 @@
 <div class="primary-dialog-header has-border">
-    <h5 class="primary-dialog-title">Prescription Validation Response Summary</h5>
+    <h5 class="primary-dialog-title">Prescription Validation Response</h5>
     <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
-
 <div *ngIf="PbmPrescriptionResult.errorCode == null">
     <div class="primary-dialog-body pb-0">
         <div class="row small-gutter">
@@ -29,9 +28,9 @@
         </div>
     </div>
     <div class="dispense-response-body pb-0">
-        <div class="box ng-star-inserted" *ngFor="let row of PbmPrescriptionResult.results | orderBy: 'sequence'; let i = index" style="margin-left: 3px; margin-right: 3px; margin-bottom: 6px;">
-            <div class="table-responsive">
-                <table class="primary-grid claim-view-table" style="margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0;">
+        <div *ngFor="let row of PbmPrescriptionResult.results | orderBy: 'sequence'; let i = index" style="margin-left: 3px; margin-right: 3px; margin-bottom: 6px;">
+                <div>
+                    <table class="dispense-response-table"> 
                     <thead>
                         <tr class="dispense-response-item-header">
                             <th width="10"></th>
@@ -40,10 +39,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="dispense-response-item-body" >
-                            <td class="text-primary text-center row-click" width="10" 
-                            (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                               <mat-icon *ngIf="currentOpenItem != i" class="size-21">add_circle_outline</mat-icon>
+                        <div class="box mb-2">
+                        <tr class="dispense-response-item-body">
+                            <td class="text-primary text-center row-click" width="10"
+                                (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
+                                <mat-icon *ngIf="currentOpenItem != i" class="size-21">add_circle_outline</mat-icon>
                                 <mat-icon *ngIf="currentOpenItem == i" class="size-21">remove_circle_outline</mat-icon>
                             </td>
                             <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
@@ -55,11 +55,12 @@
                         </tr>
                         <tr *ngIf="currentOpenItem == i">
                             <td colspan="3">
-                                <div class="table-responsive">
-                                    <table class="primary-grid claim-view-table" style="margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0;">
+                                <h4 class="align-self-center medium pb-2"></h4>
+                                <h4 class="align-self-center medium pb-2">Items</h4>
+                                <div class="table-responsive">                                    <table class="primary-grid claim-view-table" style="margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0;">
                                         <thead>
                                             <tr>
-                                                <th>Item Description</th>
+                                                <th class="col-md-3">Item Description</th>
                                                 <th>Item Name</th>
                                                 <th>Item Code</th>
                                                 <th>Status</th>
@@ -96,11 +97,12 @@
                                             </tr>
                                         </tbody>
                                     </table>
+                                    <div *ngIf="row.errors != null || row.errors.length > 0">
                                     <h4 class="align-self-center medium pb-2"></h4>
                                     <h4 class="align-self-center medium pb-2">Errors</h4>
                                     <div class="table-responsive">
                                         <table class="primary-grid claim-view-table" style="margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0;">
-                                            <thead *ngIf="row.errors.length > 0">
+                                            <thead>
                                                 <tr>
                                                     <th>Denial Code</th>
                                                     <th>Rejection Reason</th>
@@ -115,8 +117,10 @@
                                         </table>
                                     </div>
                                 </div>
+                                </div>
                             </td>
                         </tr>
+                        </div>
                     </tbody>
                 </table>
             </div>
