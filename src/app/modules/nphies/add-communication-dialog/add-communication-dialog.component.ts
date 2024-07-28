@@ -198,6 +198,7 @@ export class AddCommunicationDialogComponent implements OnInit {
     const model: any = {};
     model.claimResponseId = this.data.claimResponseId;
     model.claimProviderId =  this.data.claimProviderId;
+    model.isReAdjudicationEnabled = this.isToggled;
     if (this.data.communicationRequestId) {
       model.communicationRequestId = this.data.communicationRequestId;
     }
