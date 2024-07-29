@@ -1840,7 +1840,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     }
 
     get showGenerateAttachment() {
-        return ['accepted'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+        return ['accepted'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase()) || (['notaccepted'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase()) && this.userPrivileges.WaseelPrivileges.isPAM) ;
     }
     get showIsRelated() {
         this.routeActive.queryParams.subscribe(value => {
