@@ -1,9 +1,10 @@
 <div class="primary-dialog-header has-border">
-    <h5 class="primary-dialog-title">Prescription Validation Response</h5>
+    <h5 class="primary-dialog-title">Prescription Validation Response Summary</h5>
     <button type="button" (click)="closeDialog()" class="dialog-close" matRipple></button>
 </div>
+
 <div *ngIf="PbmPrescriptionResult.errorCode == null">
-    <div class="primary-dialog-body pb-0">
+    <div class="primary-dialog-body pb-0" >
         <div class="row small-gutter">
             <div class="col-md-7">
                 <div class="form-group form-group-static">
@@ -27,100 +28,64 @@
             </div>
         </div>
     </div>
-    <div class="dispense-response-body pb-0">
-        <div *ngFor="let row of PbmPrescriptionResult.results | orderBy: 'sequence'; let i = index" style="margin-left: 3px; margin-right: 3px; margin-bottom: 6px;">
-                <div>
-                    <table class="dispense-response-table"> 
-                    <thead>
-                        <tr class="dispense-response-item-header">
-                            <th width="10"></th>
-                            <th>Item Code</th>
-                            <th>Item Description</th>
+    <div class="box ng-star-inserted" *ngFor="let row of PbmPrescriptionResult.results | orderBy: 'sequence'" style="margin-left: 3px; margin-right: 3px; margin-bottom: 6px;">
+        <h4 class="align-self-center medium pb-2">Sequence: {{ row.sequence }}</h4>
+        <div class="table-responsive">
+            <table class="primary-grid claim-view-table" style="margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0;">
+                <thead>
+                    <tr>
+                        <th>Item Description</th>
+                        <th>Item Name</th>
+                        <th>Item Code</th>
+                        <th>Status</th>
+                        <th>Serviced Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ row.itemDescription  ? row.itemDescription  : '-' }}</td>
+                        <td>{{ row.typeName  ? row.typeName  : '-' }}</td>
+                        <td>{{ row.itemCode ?  row.itemCode  : '-' }}</td>
+                        <td class="semibold text-success" *ngIf="row.status == 'APPROVED'">{{ row.status }}</td>
+                        <td class="semibold text-danger" *ngIf="row.status != 'APPROVED' && row.status != 'PARTIAL_APPROVED'">{{ row.status }}</td>
+                        <td class="semibold text-warning" *ngIf="row.status == 'PARTIAL_APPROVED'">{{ row.status }}</td>
+                        <td>{{ row.servicedDate ? row.servicedDate : '-' }}</td>
+                    </tr>
+                </tbody>
+                <thead>
+                    <tr>
+                        <th>Absence Of Scientific Code Reason</th>
+                        <th>Quantity</th>
+                        <th>Quantity Code</th>
+                        <th>Strength</th>
+                        <th>Display</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ row.absenceOfScientificCodeReason ? row.absenceOfScientificCodeReason : '-' }}</td>
+                        <td>{{ row.quantity ? row.quantity  : '-' }}</td>
+                        <td>{{ row.quantityCode  ? row.quantityCode  : '-'  }}</td>
+                        <td>{{ row.strength  ? row.strength  : '-' }}</td>
+                        <td>{{ row.display  ? row.display  : '-' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h4 class="align-self-center medium pb-2"></h4>
+            <h4 class="align-self-center medium pb-2">Errors</h4>
+            <div class="table-responsive">
+                <table class="primary-grid claim-view-table" style="margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0;">
+                    <thead *ngIf="row.errors.length > 0">
+                        <tr>
+                            <th>Denial Code</th>
+                            <th>Rejection Reason</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <div class="box mb-2">
-                        <tr class="dispense-response-item-body">
-                            <td class="text-primary text-center row-click" width="10"
-                                (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                                <mat-icon *ngIf="currentOpenItem != i" class="size-21">add_circle_outline</mat-icon>
-                                <mat-icon *ngIf="currentOpenItem == i" class="size-21">remove_circle_outline</mat-icon>
-                            </td>
-                            <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                                {{row.itemCode}}
-                            </td>
-                            <td class="row-click" (click)="currentOpenItem = (i == currentOpenItem) ? -1 : i">
-                                {{row.itemDescription}}
-                            </td>
+                        <tr *ngFor="let error of row.errors">
+                            <td>{{ error.denialCode }}</td>
+                            <td>{{ error.rejectionReason }}</td>
                         </tr>
-                        <tr *ngIf="currentOpenItem == i">
-                            <td colspan="3">
-                                <h4 class="align-self-center medium pb-2"></h4>
-                                <h4 class="align-self-center medium pb-2">Items</h4>
-                                <div class="table-responsive">                                    <table class="primary-grid claim-view-table" style="margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0;">
-                                        <thead>
-                                            <tr>
-                                                <th class="col-md-3">Item Description</th>
-                                                <th>Item Name</th>
-                                                <th>Item Code</th>
-                                                <th>Status</th>
-                                                <th>Serviced Date</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>{{ row.itemDescription ? row.itemDescription : '-' }}</td>
-                                                <td>{{ row.typeName ? row.typeName : '-' }}</td>
-                                                <td>{{ row.itemCode ? row.itemCode : '-' }}</td>
-                                                <td class="semibold text-success" *ngIf="row.status == 'APPROVED'">{{ row.status }}</td>
-                                                <td class="semibold text-danger" *ngIf="row.status != 'APPROVED' && row.status != 'PARTIAL_APPROVED'">{{ row.status }}</td>
-                                                <td class="semibold text-warning" *ngIf="row.status == 'PARTIAL_APPROVED'">{{ row.status }}</td>
-                                                <td>{{ row.servicedDate ? row.servicedDate : '-' }}</td>
-                                            </tr>
-                                        </tbody>
-                                        <thead>
-                                            <tr>
-                                                <th>Absence Of Scientific Code Reason</th>
-                                                <th>Quantity</th>
-                                                <th>Quantity Code</th>
-                                                <th>Strength</th>
-                                                <th>Display</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>{{ row.absenceOfScientificCodeReason ? row.absenceOfScientificCodeReason : '-' }}</td>
-                                                <td>{{ row.quantity ? row.quantity : '-' }}</td>
-                                                <td>{{ row.quantityCode ? row.quantityCode : '-' }}</td>
-                                                <td>{{ row.strength ? row.strength : '-' }}</td>
-                                                <td>{{ row.display ? row.display : '-' }}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div *ngIf="row.errors != null || row.errors.length > 0">
-                                    <h4 class="align-self-center medium pb-2"></h4>
-                                    <h4 class="align-self-center medium pb-2">Errors</h4>
-                                    <div class="table-responsive">
-                                        <table class="primary-grid claim-view-table" style="margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0;">
-                                            <thead>
-                                                <tr>
-                                                    <th>Denial Code</th>
-                                                    <th>Rejection Reason</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr *ngFor="let error of row.errors">
-                                                    <td>{{ error.denialCode }}</td>
-                                                    <td>{{ error.rejectionReason }}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                </div>
-                            </td>
-                        </tr>
-                        </div>
                     </tbody>
                 </table>
             </div>

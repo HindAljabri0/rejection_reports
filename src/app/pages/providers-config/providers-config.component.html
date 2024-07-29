@@ -654,6 +654,8 @@
                 <ng-container *ngIf="success.pbmConfigurationSaveSuccess != null">Waseel {{success.pbmConfigurationSaveSuccess}}</ng-container>                
                 <br *ngIf="success.pbmConfigurationSaveSuccess != null && success.nphiesPbmConfigurationSaveSuccess != null"/>
                 <ng-container *ngIf="success.nphiesPbmConfigurationSaveSuccess != null">Nphies {{success.nphiesPbmConfigurationSaveSuccess}}</ng-container>
+                <br *ngIf="success.pbmPrescriptionConfigurationSaveSuccess != null && success.nphiesPbmConfigurationSaveSuccess != null"/>
+                <ng-container *ngIf="success.pbmPrescriptionConfigurationSaveSuccess != null">{{success.pbmPrescriptionConfigurationSaveSuccess}}</ng-container>                
               </div>
             </ng-template>
           </mat-menu>
@@ -662,21 +664,23 @@
               <div class="pt-7 pb-7 pr-14 pl-14">
                 <ng-container *ngIf="errors.pbmConfigurationSaveError != null">Waseel - {{errors.pbmConfigurationSaveError}}</ng-container>                
                 <br *ngIf="errors.pbmConfigurationSaveError != null && errors.nphiesPbmConfigurationSaveError != null"/>
-                <ng-container *ngIf="errors.nphiesPbmConfigurationSaveError != null">Nphies - {{errors.nphiesPbmConfigurationSaveError}}</ng-container>                
+                <ng-container *ngIf="errors.nphiesPbmConfigurationSaveError != null">Nphies - {{errors.nphiesPbmConfigurationSaveError}}</ng-container>      
+                <br *ngIf="errors.pbmPrescriptionConfigurationSaveError != null && errors.nphiesPbmConfigurationSaveError != null"/>   
+                <ng-container *ngIf="errors.pbmPrescriptionConfigurationSaveError != null">{{errors.pbmPrescriptionConfigurationSaveError}}</ng-container>                       
               </div>
             </ng-template>
           </mat-menu>
-          <button type="button" *ngIf="errors.nphiesPbmConfigurationSaveError != null || errors.pbmConfigurationSaveError != null" class="text-danger" (click)="$event.stopPropagation()" mat-icon-button
+          <button type="button" *ngIf="errors.nphiesPbmConfigurationSaveError != null || errors.pbmConfigurationSaveError != null || errors.pbmPrescriptionConfigurationSaveError != null" class="text-danger" (click)="$event.stopPropagation()" mat-icon-button
             [matMenuTriggerFor]="pbmErrorConfigurationMenu">
             <mat-icon>error</mat-icon>
           </button>
-          <button type="button" *ngIf="success.nphiesPbmConfigurationSaveSuccess != null || success.pbmConfigurationSaveSuccess != null" class="text-success" (click)="$event.stopPropagation()" mat-icon-button [class.ml-2]="errors.nphiesPbmConfigurationSaveError != null || errors.pbmConfigurationSaveError != null"
+          <button type="button" *ngIf="success.nphiesPbmConfigurationSaveSuccess != null || success.pbmConfigurationSaveSuccess != null  || success.pbmPrescriptionConfigurationSaveSuccess != null" class="text-success" (click)="$event.stopPropagation()" mat-icon-button [class.ml-2]="errors.nphiesPbmConfigurationSaveError != null || errors.pbmConfigurationSaveError != null || errors.pbmPrescriptionConfigurationSaveError != null"
             [matMenuTriggerFor]="pbmSuccessConfigurationMenu">
             <mat-icon>check_circle</mat-icon>
           </button>
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <ng-container *ngIf="((errors.pbmConfigurationError == null || errors.pbmConfigurationError == '') && !componentLoading.pbmConfiguration) && ((errors.nphiesPbmConfigurationError == null || errors.nphiesPbmConfigurationError == '') && !componentLoading.nphiesPbmConfiguration)">
+      <ng-container *ngIf="((errors.pbmConfigurationError == null || errors.pbmConfigurationError == '') && !componentLoading.pbmConfiguration) && ((errors.nphiesPbmConfigurationError == null || errors.nphiesPbmConfigurationError == '') && !componentLoading.nphiesPbmConfiguration) && ((errors.pbmPrescriptionConfigurationError == null || errors.pbmPrescriptionConfigurationError == '') && !componentLoading.pbmPrescriptionConfiguration)">
         <div class="provider-config-container">
           <div class="row small-gutter">
             <div class="col-6">
@@ -719,8 +723,22 @@
             </div>
           </div>
         </div>
+        <div class="provider-config-container">
+            <div class="row small-gutter">
+              <div class="col-6">
+                <div class="form-group form-group-static">                
+                  <p class="form-control-static">PBM Prescription</p>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group pt-2">
+                  <mat-slide-toggle color="primary" [(ngModel)]="newPbmPrescriptionValidationSettings['101']">Enable</mat-slide-toggle>
+                </div>
+              </div>
+            </div>
+          </div>
       </ng-container>          
-      <div *ngIf="componentLoading.pbmConfiguration || componentLoading.nphiesPbmConfiguration" class="inline-loader">
+      <div *ngIf="componentLoading.pbmPrescriptionConfiguration || componentLoading.pbmConfiguration || componentLoading.nphiesPbmConfiguration" class="inline-loader">
         <mat-spinner diameter="48"></mat-spinner>
       </div>
     </mat-expansion-panel>   
@@ -800,46 +818,28 @@
             <mat-menu #pbmPrescriptionSuccessConfigurationMenu xPosition="before">
               <ng-template matMenuContent>
                 <div class="pt-7 pb-7 pr-14 pl-14">                
-                  <ng-container *ngIf="success.pbmPrescriptionConfigurationSaveSuccess != null">{{success.pbmPrescriptionConfigurationSaveSuccess}}</ng-container>                
-                  <br *ngIf="success.pbmPrescriptionConfigurationSaveSuccess != null && success.dispenseInqueryConfigurationSaveSuccess != null"/>
-                  <ng-container *ngIf="success.dispenseInqueryConfigurationSaveSuccess != null">{{success.dispenseInqueryConfigurationSaveSuccess}}</ng-container>
+                <ng-container *ngIf="success.dispenseInqueryConfigurationSaveSuccess != null">{{success.dispenseInqueryConfigurationSaveSuccess}}</ng-container>
                 </div>
               </ng-template>
             </mat-menu>
             <mat-menu #pbmPrescriptionErrorConfigurationMenu xPosition="before">
               <ng-template matMenuContent>
                 <div class="pt-7 pb-7 pr-14 pl-14">
-                  <ng-container *ngIf="errors.pbmPrescriptionConfigurationSaveError != null">{{errors.pbmPrescriptionConfigurationSaveError}}</ng-container>                
-                  <br *ngIf="errors.pbmPrescriptionConfigurationSaveError != null && errors.dispenseInqueryConfigurationSaveError != null"/>
                   <ng-container *ngIf="errors.dispenseInqueryConfigurationSaveError != null">{{errors.dispenseInqueryConfigurationSaveError}}</ng-container>                
                 </div>
               </ng-template>
             </mat-menu>
-            <button type="button" *ngIf="errors.dispenseInqueryConfigurationSaveError != null || errors.pbmPrescriptionConfigurationSaveError != null" class="text-danger" (click)="$event.stopPropagation()" mat-icon-button
+            <button type="button" *ngIf="errors.dispenseInqueryConfigurationSaveError != null " class="text-danger" (click)="$event.stopPropagation()" mat-icon-button
               [matMenuTriggerFor]="pbmPrescriptionErrorConfigurationMenu">
               <mat-icon>error</mat-icon>
             </button>
-            <button type="button" *ngIf="success.dispenseInqueryConfigurationSaveSuccess != null || success.pbmPrescriptionConfigurationSaveSuccess != null" class="text-success" (click)="$event.stopPropagation()" mat-icon-button [class.ml-2]="errors.nphiesPbmConfigurationSaveError != null || errors.pbmConfigurationSaveError != null"
+            <button type="button" *ngIf="success.dispenseInqueryConfigurationSaveSuccess != null" class="text-success" (click)="$event.stopPropagation()" mat-icon-button [class.ml-2]="errors.dispenseInqueryConfigurationSaveError != null"
               [matMenuTriggerFor]="pbmPrescriptionSuccessConfigurationMenu">
               <mat-icon>check_circle</mat-icon>
             </button>
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <ng-container *ngIf="((errors.pbmPrescriptionConfigurationError == null || errors.pbmPrescriptionConfigurationError == '') && !componentLoading.pbmPrescriptionConfiguration) && ((errors.dispenseInqueryConfigurationError == null || errors.dispenseInqueryConfigurationError == '') && !componentLoading.dispenseInqueryConfiguration)">
-          <div class="provider-config-container">
-            <div class="row small-gutter">
-              <div class="col-6">
-                <div class="form-group form-group-static">                
-                  <p class="form-control-static">PBM Prescription</p>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="form-group pt-2">
-                  <mat-slide-toggle color="primary" [(ngModel)]="newPbmPrescriptionValidationSettings['101']">Enable</mat-slide-toggle>
-                </div>
-              </div>
-            </div>
-          </div>
+        <ng-container *ngIf="((errors.dispenseInqueryConfigurationError == null || errors.dispenseInqueryConfigurationError == '') && !componentLoading.dispenseInqueryConfiguration)">
           <div class="provider-config-container">
             <div class="row small-gutter">
               <div class="col-6">
@@ -855,7 +855,7 @@
             </div>
           </div>
         </ng-container>          
-        <div *ngIf="componentLoading.pbmPrescriptionConfiguration || componentLoading.dispenseInqueryConfiguration" class="inline-loader">
+        <div *ngIf="componentLoading.dispenseInqueryConfiguration" class="inline-loader">
           <mat-spinner diameter="48"></mat-spinner>
         </div>
       </mat-expansion-panel>   

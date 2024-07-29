@@ -73,8 +73,7 @@ export class AddPrescriptionComponent implements OnInit {
     public addDialogRef;
 
     PrescriberDefault = '';
-    PbmPrescriptionResult: any;
-
+    PbmPrescriptionResult: any = null;
     FormPreAuthorization: FormGroup = this.formBuilder.group({
         beneficiaryName: ['', Validators.required],
         beneficiaryId: ['', Validators.required],
@@ -800,7 +799,11 @@ export class AddPrescriptionComponent implements OnInit {
             this.dialogService.showMessage('Error', 'Selected Payer is not valid for Pre-Auth Request Transaction ', 'alert', true, 'OK');
             return;
         }
-
+        if(beneficiary.plans.filter(x => x.primary)[0].payerNphiesId === '7000911508'){
+            this.IsItTawuniyaPayer = true;
+        }else{
+            this.IsItTawuniyaPayer = false;
+        }
         if (beneficiary.plans.length > 0 && beneficiary.plans.filter(x => x.primary)[0]) {
             this.FormPreAuthorization.controls.insurancePlanId.setValue(beneficiary.plans.filter(x => x.primary)[0].payerNphiesId);
             const plan: any = {};
@@ -913,12 +916,6 @@ export class AddPrescriptionComponent implements OnInit {
                 this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].maxLimit);
             this.FormPreAuthorization.controls.patientShare.setValue(
                 this.selectedBeneficiary.plans.filter(x => x.payerNphiesId === plan.value && x.memberCardId === plan.memberCardId)[0].patientShare);
-        }
-        if(plan.payerNphiesId === '7000911508'){
-
-            this.IsItTawuniyaPayer = true;
-        }else{
-            this.IsItTawuniyaPayer = false;
         }
     }
 
@@ -2736,6 +2733,13 @@ export class AddPrescriptionComponent implements OnInit {
             });
         }
     }
+getPbmResultStatuse() {
+    if (this.PbmPrescriptionResult != null) {
+        return false;
+        }else {
+            return true;
+        }
+}
     openPbmPrescriptionValidationResponseSummaryDialog(body) {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.panelClass = ['primary-dialog', 'dialog-lg'];

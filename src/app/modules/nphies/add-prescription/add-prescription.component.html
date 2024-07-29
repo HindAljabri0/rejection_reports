@@ -1062,10 +1062,26 @@
 
                 <hr class="hr spaced" />
 
-                <div class="form-group text-right btn-list">                    
-                    <button *ngIf="IsItTawuniyaPayer && isPrescriptionValidationVisible" mat-flat-button color="primary"  (click)="onSubmitValidate()">
-                        <span>Validate Prescription</span>
-                    </button>
+                <div class="form-group text-right btn-list">                   
+                    <div class="split-button" *ngIf="IsItTawuniyaPayer && isPrescriptionValidationVisible"> 
+                        <button type="button" mat-flat-button color="primary" 
+                        (click)="onSubmitValidate()">
+                            <span>Request PBM</span>
+                        </button>
+
+                    <button type="button" mat-flat-button color="primary"
+        (click)="openPbmPrescriptionValidationResponseSummaryDialog(PbmPrescriptionResult)"
+        id="PbmResponse"
+        [disabled]="getPbmResultStatuse()"
+        [ngStyle]="{'background-color': getPbmResultStatuse() ? '#3060aa' : '#3060aa' ,                 
+        'border-left':'1px solid lightsteelblue' }">
+  <mat-icon class="material-icons-outlined"
+            [ngStyle]="{'color': getPbmResultStatuse() ? '#5E90DE' : ''}">
+    visibility
+  </mat-icon>
+</button>
+
+                    </div> 
                     
                     <button  mat-flat-button color="primary" id="requestAuthorizationButton" (click)="onSubmit()">
                         <span>Request Prescription</span>

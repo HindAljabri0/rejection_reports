@@ -226,9 +226,9 @@ export class AddPreauthorizationComponent implements OnInit {
     isPBMValidationVisible = false;
     isMREValidationVisible = false;
     isPBMDispenceValidationVisible = false;
-    Pbm_result: any;
-    Mre_result: any;
-    DispenseQueryResult: any;
+    Pbm_result: any = null;
+    Mre_result: any = null;
+    DispenseQueryResult: any = null;
 
     constructor(
         private sharedDataService: SharedDataService,
@@ -2799,10 +2799,6 @@ export class AddPreauthorizationComponent implements OnInit {
         }
     }
     
-    getDispenseQuery(){
-        
-    }
-
 
     openDispenseQueryResponseSummaryDialog(body) {
         const dialogConfig = new MatDialogConfig();
@@ -2813,7 +2809,40 @@ export class AddPreauthorizationComponent implements OnInit {
         const dialogRef = this.dialog.open(PrescriptionDispenseDialogComponent, dialogConfig);
     }
 
-    MreResponse(){
+    getMreResponseStatues(){
+        if(this.Mre_result!=null){
+
+            return false;
+
+        }else{
+            return true;
+
+        }
+        
+    }
+
+    getPbmResponseStatues(){
+        if(this.Pbm_result!=null){
+
+            return false;
+
+        }else{
+            return true;
+
+        }
+        
+    }
+
+
+    getDispenseQueryStatues(){
+        if(this.DispenseQueryResult!=null){
+
+            return false;
+
+        }else{
+            return true;
+
+        }
         
     }
 }
