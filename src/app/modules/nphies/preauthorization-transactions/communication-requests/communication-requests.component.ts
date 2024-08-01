@@ -76,7 +76,7 @@ export class CommunicationRequestsComponent implements OnInit {
 
   readAllNotification() {
     this.communicationRequests.forEach(x=>x.notificationStatus = 'read');
-    this.sharedServices.unReadComunicationRequestCount = 0;
+    this.sharedServices.unReadComunicationRequestTotalCount = 0;
     this.sharedServices.markAllAsRead(this.sharedServices.providerId, "approval-communication-request-notification");
   }
 

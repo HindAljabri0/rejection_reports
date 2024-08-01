@@ -37,6 +37,7 @@ export class SharedServices {
 
   announcementsCount = 0;
   announcementsCountChange: Subject<number> = new Subject();
+
   announcementsList: Announcement[];
   announcementsListChange: Subject<Announcement[]> = new Subject();
 
@@ -45,35 +46,72 @@ export class SharedServices {
 
   unReadNotificationsCount = 0;
   unReadNotificationsCountChange: Subject<number> = new Subject();
+
   notificationsList: Notification[];
   notificationsListChange: Subject<Notification[]> = new Subject();
 
-  unReadPrescriberProcessedCount = 0;
-  unReadPrescriberProcessedCountChange: Subject<number> = new Subject();
+  unReadPrescriberProcessedTotalCount =0;
+  unReadPrescriberProcessedTotalCountChange: Subject<number> = new Subject();
+  unReadPrescriberProcessedReAdjudicationCount = 0;
+  unReadPrescriberProcessedReAdjudicationCountChange: Subject<number> = new Subject();
+  unReadPrescriberProcessedNonReAdjudicationCount = 0;
+  unReadPrescriberProcessedNonReAdjudicationCountChange: Subject<number> = new Subject();
 
-  unReadProcessedCount = 0;
-  unReadProcessedCountChange: Subject<number> = new Subject();
+  unReadProcessedTotalCount =0;
+  unReadProcessedTotalCountChange: Subject<number> = new Subject
+  unReadProcessedReAdjudicationCount = 0;
+  unReadProcessedReAdjudicationCountChange: Subject<number> = new Subject();
+  unReadProcessedNonReAdjudicationCount = 0;
+  unReadProcessedNonReAdjudicationCountChange: Subject<number> = new Subject();
 
-  unReadProcessedApaCount = 0;
-  unReadProcessedApaCountChange: Subject<number> = new Subject();
+  unReadProcessedApaTotalCount =0;
+  unReadProcessedApaTotalCountChange: Subject<number> = new Subject();
+  unReadProcessedApaReAdjudicationCount = 0;
+  unReadProcessedApaReAdjudicationCountChange: Subject<number> = new Subject();
+  unReadProcessedApaNonReAdjudicationCount = 0;
+  unReadProcessedApaNonReAdjudicationCountChange: Subject<number> = new Subject();
 
-  unReadPrescriberCommunicationRequestCount = 0;
-  unReadPrescriberCommunicationRequestCountChange: Subject<number> = new Subject();
+  unReadPrescriberCommunicationRequestTotalCount =0;
+  unReadPrescriberCommunicationRequestTotalCountChange: Subject<number> = new Subject();
+  unReadPrescriberCommunicationRequestNonReAdjudicationCount = 0;
+  unReadPrescriberCommunicationRequestNonReAdjudicationCountChange: Subject<number> = new Subject();
+  unReadPrescriberCommunicationRequestReAdjudicationCount = 0;
+  unReadPrescriberCommunicationRequestReAdjudicationCountChange: Subject<number> = new Subject();
   
-  unReadComunicationRequestCount = 0;
-  unReadComunicationRequestCountChange: Subject<number> = new Subject();
+  unReadComunicationRequestTotalCount =0;
+  unReadComunicationRequestTotalCountChange: Subject<number> = new Subject();
+  unReadComunicationRequestNonReAdjudicationCount = 0;
+  unReadComunicationRequestNonReAdjudicationCountChange: Subject<number> = new Subject();
+  unReadComunicationRequestReAdjudicationCount = 0;
+  unReadComunicationRequestReAdjudicationCountChange: Subject<number> = new Subject();
 
-  unReadApaComunicationRequestCount = 0;
-  unReadApaComunicationRequestCountChange: Subject<number> = new Subject();
+  unReadApaComunicationRequestTotalCount =0;
+  unReadApaComunicationRequestTotalCountChange: Subject<number> = new Subject();
+  unReadApaComunicationRequestReAdjudicationCount = 0;
+  unReadApaComunicationRequestReAdjudicationCountChange: Subject<number> = new Subject();
+  unReadApaComunicationRequestNonReAdjudicationCount = 0;
+  unReadApaComunicationRequestNonReAdjudicationCountChange: Subject<number> = new Subject();
 
-  unReadRecentCount = 0;
-  unReadRecentCountChange: Subject<number> = new Subject();
+  unReadRecentTotalCount =0;
+  unReadRecentTotalCountChange: Subject<number> = new Subject
+  unReadRecentReAdjudicationCount = 0;
+  unReadRecentReAdjudicationCountChange: Subject<number> = new Subject();
+  unReadRecentNonReAdjudicationCount = 0;
+  unReadRecentNonReAdjudicationCountChange: Subject<number> = new Subject();
 
-  unReadClaimProcessedCount = 0;
-  unReadClaimProcessedCountChange: Subject<number> = new Subject();
+  unReadClaimProcessedTotalCount =0;  
+  unReadClaimProcessedTotalCountChange: Subject<number> = new Subject();
+  unReadClaimProcessedReAdjudicationCount = 0;
+  unReadClaimProcessedReAdjudicationCountChange: Subject<number> = new Subject();
+  unReadClaimProcessedNonReAdjudicationCount = 0;
+  unReadClaimProcessedNonReAdjudicationCountChange: Subject<number> = new Subject();
 
-  unReadClaimComunicationRequestCount = 0;
-  unReadClaimComunicationRequestCountChange: Subject<number> = new Subject();
+  unReadClaimComunicationRequestTotalCount =0;
+  unReadClaimComunicationRequestTotalCountChange: Subject<number> = new Subject();
+  unReadClaimComunicationRequestReAdjudicationCount = 0;
+  unReadClaimComunicationRequestReAdjudicationCountChange: Subject<number> = new Subject();
+  unReadClaimComunicationRequestNonReAdjudicationCount = 0;
+  unReadClaimComunicationRequestNonReAdjudicationCountChange: Subject<number> = new Subject();
 
   uploadsList: {
     totalClaims: number,
@@ -168,35 +206,88 @@ export class SharedServices {
 
     this.getNotifications();
 
-    this.unReadPrescriberProcessedCountChange.subscribe(value => {
-        this.unReadPrescriberProcessedCount = value;
+    this.unReadPrescriberProcessedReAdjudicationCountChange.subscribe(value => {
+        this.unReadPrescriberProcessedReAdjudicationCount = value;
       });
-    this.unReadProcessedCountChange.subscribe(value => {
-      this.unReadProcessedCount = value;
+    this.unReadProcessedReAdjudicationCountChange.subscribe(value => {
+      this.unReadProcessedReAdjudicationCount = value;
     });
-    this.unReadProcessedApaCountChange.subscribe(value => {
-      this.unReadProcessedApaCount = value;
+    this.unReadProcessedApaReAdjudicationCountChange.subscribe(value => {
+      this.unReadProcessedApaReAdjudicationCount = value;
     });
-    this.unReadPrescriberCommunicationRequestCountChange.subscribe(value => {
-      this.unReadPrescriberCommunicationRequestCount = value;
+    this.unReadPrescriberCommunicationRequestReAdjudicationCountChange.subscribe(value => {
+      this.unReadPrescriberCommunicationRequestReAdjudicationCount = value;
     });
-    this.unReadComunicationRequestCountChange.subscribe(value => {
-        this.unReadComunicationRequestCount = value;
+    this.unReadComunicationRequestReAdjudicationCountChange.subscribe(value => {
+        this.unReadComunicationRequestReAdjudicationCount = value;
       });
-    this.unReadApaComunicationRequestCountChange.subscribe(value => {
-      this.unReadApaComunicationRequestCount = value;
+    this.unReadApaComunicationRequestReAdjudicationCountChange.subscribe(value => {
+      this.unReadApaComunicationRequestReAdjudicationCount = value;
     });
-    this.unReadRecentCountChange.subscribe(value => {
-      this.unReadRecentCount = value;
+    this.unReadRecentReAdjudicationCountChange.subscribe(value => {
+      this.unReadRecentReAdjudicationCount = value;
     });
-    this.unReadClaimProcessedCountChange.subscribe(value => {
-      this.unReadClaimProcessedCount = value;
+    this.unReadClaimProcessedReAdjudicationCountChange.subscribe(value => {
+      this.unReadClaimProcessedReAdjudicationCount = value;
     });
-    this.unReadClaimComunicationRequestCountChange.subscribe(value => {
-      this.unReadClaimComunicationRequestCount = value;
+    this.unReadClaimComunicationRequestReAdjudicationCountChange.subscribe(value => {
+      this.unReadClaimComunicationRequestReAdjudicationCount = value;
     });
+    this.unReadPrescriberProcessedNonReAdjudicationCountChange.subscribe(value => {
+        this.unReadPrescriberProcessedNonReAdjudicationCount = value;
+      });
+    this.unReadProcessedNonReAdjudicationCountChange.subscribe(value => {
+      this.unReadProcessedNonReAdjudicationCount = value;
+    });
+    this.unReadProcessedApaNonReAdjudicationCountChange.subscribe(value => {
+      this.unReadProcessedApaNonReAdjudicationCount = value;
+    });
+    this.unReadPrescriberCommunicationRequestNonReAdjudicationCountChange.subscribe(value => {
+      this.unReadPrescriberCommunicationRequestNonReAdjudicationCount = value;
+    });
+    this.unReadComunicationRequestNonReAdjudicationCountChange.subscribe(value => {
+        this.unReadComunicationRequestNonReAdjudicationCount = value;
+      });
+    this.unReadApaComunicationRequestNonReAdjudicationCountChange.subscribe(value => {
+      this.unReadApaComunicationRequestNonReAdjudicationCount = value;
+    });
+    this.unReadRecentNonReAdjudicationCountChange.subscribe(value => {
+      this.unReadRecentNonReAdjudicationCount = value;
+    });
+    this.unReadClaimProcessedNonReAdjudicationCountChange.subscribe(value => {
+      this.unReadClaimProcessedNonReAdjudicationCount = value;
+    });
+    this.unReadClaimComunicationRequestNonReAdjudicationCountChange.subscribe(value => {
+      this.unReadClaimComunicationRequestNonReAdjudicationCount = value;
+    });
+    this.unReadPrescriberProcessedTotalCountChange.subscribe(value => {
+        this.unReadPrescriberProcessedTotalCount = value;
+      });
+    this.unReadProcessedTotalCountChange.subscribe(value => {
+        this.unReadProcessedTotalCount = value;
+     });
+    this.unReadProcessedApaTotalCountChange.subscribe(value => {
+        this.unReadProcessedApaTotalCount = value;
+      });
+    this.unReadPrescriberCommunicationRequestTotalCountChange.subscribe(value => {
+        this.unReadPrescriberCommunicationRequestTotalCount = value;
+      });
+    this.unReadComunicationRequestTotalCountChange.subscribe(value => {
+        this.unReadComunicationRequestTotalCount = value;
+      });
+    this.unReadApaComunicationRequestTotalCountChange.subscribe(value => {
+        this.unReadApaComunicationRequestTotalCount = value;
+      });
+    this.unReadRecentTotalCountChange.subscribe(value => {
+        this.unReadRecentTotalCount = value;
+      });
+    this.unReadClaimProcessedTotalCountChange.subscribe(value => {
+        this.unReadClaimProcessedTotalCount = value;
+      });
+    this.unReadClaimComunicationRequestTotalCountChange.subscribe(value => {
+        this.unReadClaimComunicationRequestTotalCount = value;
+      });
     this.store.select(getUserPrivileges).subscribe(privileges => this.userPrivileges = privileges);
-
   }
 
   getNotifications() {
@@ -274,114 +365,170 @@ export class SharedServices {
     });
   }
 
-  getPrescriberProcessedCount() {
-    // tslint:disable-next-line:max-line-length
-    this.notifications.getNotificationsCountByWeek(this.providerId, 'prescriber-notifications', 'unread').subscribe((event: any) => {
+  getNotificationByWeekCount() {
+
+    this.notifications.getNotificationsCountByWeek(this.providerId, 'unread').subscribe((event: any) => {
       if (event instanceof HttpResponse) {
-        const count = Number.parseInt(`${event.body}`, 10);
-        if (!Number.isNaN(count)) {
-          this.unReadPrescriberProcessedCountChange.next(count);
+        const unReadPrescriberProcessedCountTotal = Number.parseInt(`${event.body['prescriber-notifications'].totalCount}`, 10);
+        const  unReadPrescriberProcessedReAdjudicationCountTotal = Number.parseInt(`${event.body['prescriber-notifications'].reAdjudicationCount}`, 10);
+        const  unReadPrescriberProcessedNonReAdjudicationCountTotal = Number.parseInt(`${event.body['prescriber-notifications'].nonReAdjudicationCount}`, 10);
+        if (!Number.isNaN(unReadPrescriberProcessedReAdjudicationCountTotal)) {
+          this.unReadPrescriberProcessedReAdjudicationCountChange.next(unReadPrescriberProcessedReAdjudicationCountTotal);
         }
+        if (!Number.isNaN(unReadPrescriberProcessedNonReAdjudicationCountTotal)) {
+            this.unReadPrescriberProcessedNonReAdjudicationCountChange.next(unReadPrescriberProcessedNonReAdjudicationCountTotal);
+        }
+        if (!Number.isNaN(unReadPrescriberProcessedCountTotal)) {
+          this.unReadPrescriberProcessedTotalCountChange.next(unReadPrescriberProcessedCountTotal);
+        }
+
+        const  unReadProcessedCountTotal = Number.parseInt(`${event.body['approval-notifications'].totalCount}`, 10);
+        const  unReadProcessedReAdjudicationCountTotal = Number.parseInt(`${event.body['approval-notifications'].reAdjudicationCount}`, 10);
+        const  unReadProcessedNonReAdjudicationCountTotal = Number.parseInt(`${event.body['approval-notifications'].nonReAdjudicationCount}`, 10);
+        if (!Number.isNaN(unReadProcessedReAdjudicationCountTotal)) {
+          this.unReadProcessedReAdjudicationCountChange.next(unReadProcessedReAdjudicationCountTotal);
+        }
+        if (!Number.isNaN(unReadProcessedNonReAdjudicationCountTotal)) {
+            this.unReadProcessedNonReAdjudicationCountChange.next(unReadProcessedNonReAdjudicationCountTotal);
+        }
+        if (!Number.isNaN(unReadProcessedCountTotal)) {
+          this.unReadProcessedTotalCountChange.next(unReadProcessedCountTotal);
+        }
+
+        const  unReadProcessedApaReAdjudicationCountTotal = Number.parseInt(`${event.body['advanced-approval-notifications'].reAdjudicationCount}`, 10);
+        const  unReadProcessedApaNonReAdjudicationCountTotal = Number.parseInt(`${event.body['advanced-approval-notifications'].nonReAdjudicationCount}`, 10);
+        const  unReadProcessedApaTotalCountTotal = Number.parseInt(`${event.body['advanced-approval-notifications'].totalCount}`, 10);
+        if (!Number.isNaN(unReadProcessedApaReAdjudicationCountTotal)) {
+          this.unReadProcessedApaReAdjudicationCountChange.next(unReadProcessedApaReAdjudicationCountTotal);
+        }
+        if (!Number.isNaN(unReadProcessedApaNonReAdjudicationCountTotal)) {
+            this.unReadProcessedApaNonReAdjudicationCountChange.next(unReadProcessedApaNonReAdjudicationCountTotal);
+        }
+        if (!Number.isNaN(unReadProcessedApaTotalCountTotal)) {
+          this.unReadProcessedApaTotalCountChange.next(unReadProcessedApaTotalCountTotal);
+        }
+
+        const  unReadPrescriberCommunicationRequestReAdjudicationCountTotal = Number.parseInt(`${event.body['prescriber-communication-request-notifications'].reAdjudicationCount}`, 10);
+        const  unReadPrescriberCommunicationRequestNonReAdjudicationCountTotal = Number.parseInt(`${event.body['prescriber-communication-request-notifications'].nonReAdjudicationCount}`, 10);
+        const unReadPrescriberCommunicationRequestTotalCountTotal = Number.parseInt(`${event.body['prescriber-communication-request-notifications'].totalCount}`, 10);
+        if (!Number.isNaN(unReadPrescriberCommunicationRequestReAdjudicationCountTotal)) {
+          this.unReadPrescriberCommunicationRequestReAdjudicationCountChange.next(unReadPrescriberCommunicationRequestReAdjudicationCountTotal);
+        }
+        if (!Number.isNaN(unReadPrescriberCommunicationRequestNonReAdjudicationCountTotal)) {
+            this.unReadPrescriberCommunicationRequestNonReAdjudicationCountChange.next(unReadPrescriberCommunicationRequestNonReAdjudicationCountTotal);
+        }
+        if (!Number.isNaN(unReadPrescriberCommunicationRequestTotalCountTotal)) {
+          this.unReadPrescriberCommunicationRequestTotalCountChange.next(unReadPrescriberCommunicationRequestTotalCountTotal);
+        }
+
+        const  unReadComunicationRequestReAdjudicationCountTotal = Number.parseInt(`${event.body['communication-request-notifications'].reAdjudicationCount}`, 10);
+        const  unReadComunicationRequestNonReAdjudicationCountTotal = Number.parseInt(`${event.body['communication-request-notifications'].nonReAdjudicationCount}`, 10);
+        const unReadComunicationRequestTotalCountTotal = Number.parseInt(`${event.body['communication-request-notifications'].totalCount}`, 10);
+        if (!Number.isNaN(unReadComunicationRequestReAdjudicationCountTotal)) {
+          this.unReadComunicationRequestReAdjudicationCountChange.next(unReadComunicationRequestReAdjudicationCountTotal);
+        }
+        if (!Number.isNaN(unReadComunicationRequestNonReAdjudicationCountTotal)) {
+            this.unReadComunicationRequestNonReAdjudicationCountChange.next(unReadComunicationRequestNonReAdjudicationCountTotal);
+        }
+        if (!Number.isNaN(unReadComunicationRequestTotalCountTotal)) {
+          this.unReadComunicationRequestTotalCountChange.next(unReadComunicationRequestTotalCountTotal);
+        }
+
+        const  unReadApaComunicationRequestReAdjudicationCountTotal = Number.parseInt(`${event.body['advanced-approval-communication-request-notifications'].reAdjudicationCount}`, 10);
+        const  unReadApaComunicationRequestNonReAdjudicationCountTotal = Number.parseInt(`${event.body['advanced-approval-communication-request-notifications'].nonReAdjudicationCount}`, 10);
+        const unReadApaComunicationRequestTotalCountTotal = Number.parseInt(`${event.body['advanced-approval-communication-request-notifications'].totalCount}`, 10);
+        if (!Number.isNaN(unReadApaComunicationRequestReAdjudicationCountTotal)) {
+          this.unReadApaComunicationRequestReAdjudicationCountChange.next(unReadApaComunicationRequestReAdjudicationCountTotal);
+        }
+        if (!Number.isNaN(unReadApaComunicationRequestNonReAdjudicationCountTotal)) {
+            this.unReadApaComunicationRequestNonReAdjudicationCountChange.next(unReadApaComunicationRequestNonReAdjudicationCountTotal);
+        }
+        if (!Number.isNaN(unReadApaComunicationRequestTotalCountTotal)) {
+          this.unReadApaComunicationRequestTotalCountChange.next(unReadApaComunicationRequestTotalCountTotal);
+        }
+
+        const  unReadRecentReAdjudicationCountTotal = Number.parseInt(`${event.body['payment-reconciliation-notification'].reAdjudicationCount}`, 10);
+        const  unReadRecentNonReAdjudicationCountTotal = Number.parseInt(`${event.body['payment-reconciliation-notification'].nonReAdjudicationCount}`, 10);
+        const unReadRecentTotalCountTotal = Number.parseInt(`${event.body['payment-reconciliation-notification'].totalCount}`, 10);
+        if (!Number.isNaN(unReadRecentReAdjudicationCountTotal)) {
+          this.unReadRecentReAdjudicationCountChange.next(unReadRecentReAdjudicationCountTotal);
+        }
+        if (!Number.isNaN(unReadRecentNonReAdjudicationCountTotal)) {
+            this.unReadRecentNonReAdjudicationCountChange.next(unReadRecentNonReAdjudicationCountTotal);
+        }
+        if (!Number.isNaN(unReadRecentTotalCountTotal)) {
+          this.unReadRecentTotalCountChange.next(unReadRecentTotalCountTotal);
+        }
+
+        const  unReadClaimProcessedReAdjudicationCountTotal = Number.parseInt(`${event.body['claim-notifications'].reAdjudicationCount}`, 10);
+        const  unReadClaimProcessedNonReAdjudicationCountTotal = Number.parseInt(`${event.body['claim-notifications'].nonReAdjudicationCount}`, 10);
+        const unReadClaimProcessedTotalCountTotal = Number.parseInt(`${event.body['claim-notifications'].totalCount}`, 10);
+        if (!Number.isNaN(unReadClaimProcessedReAdjudicationCountTotal)) {
+          this.unReadClaimProcessedReAdjudicationCountChange.next(unReadClaimProcessedReAdjudicationCountTotal);
+        }
+        if (!Number.isNaN(unReadClaimProcessedNonReAdjudicationCountTotal)) {
+            this.unReadClaimProcessedNonReAdjudicationCountChange.next(unReadClaimProcessedNonReAdjudicationCountTotal);
+        }
+        if (!Number.isNaN(unReadClaimProcessedTotalCountTotal)) {
+          this.unReadClaimProcessedTotalCountChange.next(unReadClaimProcessedTotalCountTotal);
+        }
+
+        const  unReadClaimComunicationRequestReAdjudicationCountTotal = Number.parseInt(`${event.body['claim-communication-request-notification'].reAdjudicationCount}`, 10);
+        const  unReadClaimComunicationRequestNonReAdjudicationCountTotal = Number.parseInt(`${event.body['claim-communication-request-notification'].nonReAdjudicationCount}`, 10);
+        const unReadClaimComunicationRequestTotalCountTotal = Number.parseInt(`${event.body['claim-communication-request-notification'].totalCount}`, 10);
+        if (!Number.isNaN(unReadClaimComunicationRequestReAdjudicationCountTotal)) {
+          this.unReadClaimComunicationRequestReAdjudicationCountChange.next(unReadClaimComunicationRequestReAdjudicationCountTotal);
+        }
+        if (!Number.isNaN(unReadClaimComunicationRequestNonReAdjudicationCountTotal)) {
+            this.unReadClaimComunicationRequestNonReAdjudicationCountChange.next(unReadClaimComunicationRequestNonReAdjudicationCountTotal);
+        }
+        if (!Number.isNaN(unReadClaimComunicationRequestTotalCountTotal)) {
+          this.unReadClaimComunicationRequestTotalCountChange.next(unReadClaimComunicationRequestTotalCountTotal);
       }
+    }
     }, errorEvent => {
       if (errorEvent instanceof HttpErrorResponse) {
-        this.unReadPrescriberProcessedCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+
+        this.unReadPrescriberProcessedReAdjudicationCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+        this.unReadPrescriberProcessedNonReAdjudicationCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+        this.unReadPrescriberProcessedTotalCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+
+        this.unReadProcessedReAdjudicationCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+        this.unReadProcessedNonReAdjudicationCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+        this.unReadProcessedTotalCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+
+        this.unReadProcessedApaReAdjudicationCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+        this.unReadProcessedApaNonReAdjudicationCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+        this.unReadProcessedApaTotalCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+
+        this.unReadPrescriberCommunicationRequestReAdjudicationCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+        this.unReadPrescriberCommunicationRequestNonReAdjudicationCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+        this.unReadPrescriberCommunicationRequestTotalCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+
+        this.unReadComunicationRequestReAdjudicationCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+        this.unReadComunicationRequestNonReAdjudicationCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+        this.unReadComunicationRequestTotalCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+
+        this.unReadApaComunicationRequestReAdjudicationCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+        this.unReadApaComunicationRequestNonReAdjudicationCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+        this.unReadApaComunicationRequestTotalCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+
+        this.unReadRecentReAdjudicationCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+        this.unReadRecentNonReAdjudicationCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+        this.unReadRecentTotalCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+
+        this.unReadClaimProcessedReAdjudicationCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+        this.unReadClaimProcessedNonReAdjudicationCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+        this.unReadClaimProcessedTotalCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+
+        this.unReadClaimComunicationRequestReAdjudicationCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+        this.unReadClaimComunicationRequestNonReAdjudicationCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+        this.unReadClaimComunicationRequestTotalCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
+
       }
     });
   }
 
-  getProcessedCount() {
-    // tslint:disable-next-line:max-line-length
-    this.notifications.getNotificationsCountByWeek(this.providerId, 'approval-notifications', 'unread').subscribe((event: any) => {
-      if (event instanceof HttpResponse) {
-        const count = Number.parseInt(`${event.body}`, 10);
-        if (!Number.isNaN(count)) {
-          this.unReadProcessedCountChange.next(count);
-        }
-      }
-    }, errorEvent => {
-      if (errorEvent instanceof HttpErrorResponse) {
-        this.unReadProcessedCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
-      }
-    });
-  }
-  getProcessedApaCount() {
-    // tslint:disable-next-line:max-line-length
-    this.notifications.getNotificationsCountByWeek(this.providerId, 'advanced-approval-notifications', 'unread').subscribe((event: any) => {
-      if (event instanceof HttpResponse) {
-        const count = Number.parseInt(`${event.body}`, 10);
-        if (!Number.isNaN(count)) {
-          this.unReadProcessedApaCountChange.next(count);
-        }
-      }
-    }, errorEvent => {
-      if (errorEvent instanceof HttpErrorResponse) {
-        this.unReadProcessedApaCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
-      }
-    });
-  }
-
-  getCommunicationRequestCount() {
-    // tslint:disable-next-line:max-line-length
-    this.notifications.getNotificationsCountByWeek(this.providerId, 'approval-communication-request-notification', 'unread').subscribe((event: any) => {
-      if (event instanceof HttpResponse) {
-        const count = Number.parseInt(`${event.body}`, 10);
-        if (!Number.isNaN(count)) {
-          this.unReadComunicationRequestCountChange.next(count);
-        }
-      }
-    }, errorEvent => {
-      if (errorEvent instanceof HttpErrorResponse) {
-        this.unReadComunicationRequestCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
-      }
-    });
-  }
-  getPrescriberCommunicationRequestCount() {
-    // tslint:disable-next-line:max-line-length
-    this.notifications.getNotificationsCountByWeek(this.providerId, 'prescriber-communication-request-notification', 'unread').subscribe((event: any) => {
-      if (event instanceof HttpResponse) {
-        const count = Number.parseInt(`${event.body}`, 10);
-        if (!Number.isNaN(count)) {
-          this.unReadPrescriberCommunicationRequestCountChange.next(count);
-        }
-      }
-    }, errorEvent => {
-      if (errorEvent instanceof HttpErrorResponse) {
-        this.unReadPrescriberCommunicationRequestCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
-      }
-    });
-  }
-  getApaCommunicationRequestCount() {
-    // tslint:disable-next-line:max-line-length
-    this.notifications.getNotificationsCountByWeek(this.providerId, 'advanced-approval-communication-request-notification', 'unread').subscribe((event: any) => {
-      if (event instanceof HttpResponse) {
-        const count = Number.parseInt(`${event.body}`, 10);
-        if (!Number.isNaN(count)) {
-          this.unReadApaComunicationRequestCountChange.next(count);
-        }
-      }
-    }, errorEvent => {
-      if (errorEvent instanceof HttpErrorResponse) {
-        this.unReadApaComunicationRequestCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
-      }
-    });
-  }
-
-  getRecentReconciliationCount() {
-    // tslint:disable-next-line:max-line-length
-    this.notifications.getNotificationsCountByWeek(this.providerId, 'payment-reconciliation-notification', 'unread').subscribe((event: any) => {
-      if (event instanceof HttpResponse) {
-        const count = Number.parseInt(`${event.body}`, 10);
-        if (!Number.isNaN(count)) {
-          this.unReadRecentCountChange.next(count);
-        }
-      }
-    }, errorEvent => {
-      if (errorEvent instanceof HttpErrorResponse) {
-        this.unReadRecentCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
-      }
-    });
-  }
 
   isOverNphiesdwonTime() {
     console.log(this.router.url)
@@ -397,38 +544,6 @@ export class SharedServices {
   isHasNphiesPrivileges() {
     return this.userPrivileges.ProviderPrivileges.NPHIES.canAccessPreAuthorization || this.userPrivileges.ProviderPrivileges.NPHIES.canAccessClaim ||
       this.userPrivileges.ProviderPrivileges.NPHIES.canAccessEligibility || this.userPrivileges.ProviderPrivileges.NPHIES.canAccessPhysician || this.userPrivileges.ProviderPrivileges.NPHIES.canAccessPriceList || this.userPrivileges.ProviderPrivileges.NPHIES.isAdmin || this.userPrivileges.ProviderPrivileges.NPHIES.canAccessBeneficiary || this.userPrivileges.ProviderPrivileges.NPHIES.canAccessPaymentReconciliation;
-  }
-
-  getClaimProcessedCount() {
-    // tslint:disable-next-line:max-line-length
-    this.notifications.getNotificationsCountByWeek(this.providerId, 'claim-notifications', 'unread').subscribe((event: any) => {
-      if (event instanceof HttpResponse) {
-        const count = Number.parseInt(`${event.body}`, 10);
-        if (!Number.isNaN(count)) {
-          this.unReadClaimProcessedCountChange.next(count);
-        }
-      }
-    }, errorEvent => {
-      if (errorEvent instanceof HttpErrorResponse) {
-        this.unReadClaimProcessedCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
-      }
-    });
-  }
-
-  getClaimCommunicationRequestCount() {
-    // tslint:disable-next-line:max-line-length
-    this.notifications.getNotificationsCountByWeek(this.providerId, 'claim-communication-request-notification', 'unread').subscribe((event: any) => {
-      if (event instanceof HttpResponse) {
-        const count = Number.parseInt(`${event.body}`, 10);
-        if (!Number.isNaN(count)) {
-          this.unReadClaimComunicationRequestCountChange.next(count);
-        }
-      }
-    }, errorEvent => {
-      if (errorEvent instanceof HttpErrorResponse) {
-        this.unReadClaimComunicationRequestCountChange.next(errorEvent.status === 0 ? -1 : (errorEvent.status * -1));
-      }
-    });
   }
 
   markAsRead(notificationId: string, providerId: string) {

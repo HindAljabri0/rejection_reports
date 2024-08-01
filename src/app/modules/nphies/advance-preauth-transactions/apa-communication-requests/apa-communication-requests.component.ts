@@ -77,7 +77,7 @@ export class ApaCommunicationRequestsComponent implements OnInit {
   
     readAllNotification() {
       this.communicationRequests.forEach(x=>x.notificationStatus = 'read');
-      this.sharedServices.unReadApaComunicationRequestCount = 0;
+      this.sharedServices.unReadApaComunicationRequestTotalCount = 0;
       this.sharedServices.markAllAsRead(this.sharedServices.providerId, "advanced-approval-communication-request-notification");
     }
   

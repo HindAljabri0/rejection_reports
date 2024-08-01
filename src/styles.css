@@ -2280,3 +2280,39 @@ color: #264D88;
     margin: 20px 0;
     width: 100%;
 }
+
+  .tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    background-color: #e9f3ff;
+    color: #274f89;
+    text-align: center;
+    border-radius: 15px;
+    padding: 5px 10px;
+    position: absolute;
+    z-index: 1;
+    top: 150%; /* Position the tooltip below the text */
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+    transition: visibility 0.2s ease-in-out;
+  }
+  
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+  
+  .count-badge {
+    background-color: #274f89;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 14px;
+  }
+  
