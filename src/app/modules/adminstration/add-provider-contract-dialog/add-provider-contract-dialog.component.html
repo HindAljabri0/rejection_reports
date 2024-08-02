@@ -48,7 +48,7 @@
             <div class="col-6">
                 <div class="form-group" [ngClass]="{'has-error' : providerContractForm.submitted && effectiveDate.invalid}">
                     <label class="control-label">Effective Date</label>
-                    <div class="date-picker">
+                    <div class="date-picker-mat">
                         <input [matDatepicker]="effectiveDates" class="form-control" [(ngModel)]='paymentProviderContractModel.effectiveDate' #effectiveDate='ngModel'
                             name='effectiveDate' required placeholder="Select effective date" [disabled]="isPayerSelected" />
                         <mat-datepicker-toggle [for]="effectiveDates"></mat-datepicker-toggle>
@@ -62,7 +62,7 @@
             <div class="col-6">
                 <div class="form-group" [ngClass]="{'has-error' : providerContractForm.submitted && expiryDate.invalid}">
                     <label class="control-label">Expiry Date</label>
-                    <div class="date-picker">
+                    <div class="date-picker-mat">
                         <input [matDatepicker]="expiryDates" class="form-control" placeholder="Select expiry date" [(ngModel)]='paymentProviderContractModel.expiryDate'
                             #expiryDate='ngModel' [disabled]="isPayerSelected" name="expiryDate" />
                         <mat-datepicker-toggle [for]="expiryDates"></mat-datepicker-toggle>

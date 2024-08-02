@@ -21,7 +21,7 @@
                 <div class="col">
                     <div class="form-group" [ngClass]="{'has-error' : rejectionComparativeReportForm.submitted && fromDate.invalid}">
                         <label class="control-label">First Year</label>
-                        <div class="date-picker">
+                        <div class="date-picker-mat">
                             <!-- [matDatepicker]="fromDate" -->
                             <input [(ngModel)]='rejectionComparisonReport.fromDate' #fromDate='ngModel' name="fromDate" class="form-control date-picker"
                                 placeholder="Select first year" bsDatepicker (onShown)="onOpenCalendar($event)" [bsConfig]="datePickerConfig" required
@@ -35,7 +35,7 @@
                 <div class="col">
                     <div class="form-group" [ngClass]="{'has-error' : rejectionComparativeReportForm.submitted && toDate.invalid}">
                         <label class="control-label">Second Year</label>
-                        <div class="date-picker">
+                        <div class="date-picker-mat">
                             <input bsDatepicker [minDate]="minDate" [bsConfig]="datePickerConfig" [(ngModel)]='rejectionComparisonReport.toDate' #toDate='ngModel' name="toDate"
                                 class="form-control date-picker" (onShown)="onOpenCalendar($event)" required placeholder="Select second year" autocomplete="off" />
                             <!-- <mat-datepicker-toggle [for]="toDate"></mat-datepicker-toggle>

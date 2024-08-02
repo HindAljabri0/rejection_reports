@@ -101,7 +101,7 @@
               <div class="form-group"
                 [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')}">
                 <label class="control-label">Date Ordered<span class="asterisk">*</span></label>
-                <div class="date-picker">
+                <div class="date-picker-mat">
                   <input [owlDateTime]="dateOrderedCtrl" class="form-control" placeholder="Select date ordered" formControlName="dateOrdered">
                   <mat-datepicker-toggle [owlDateTimeTrigger]="dateOrderedCtrl"></mat-datepicker-toggle>
                   <owl-date-time #dateOrderedCtrl></owl-date-time>
@@ -262,7 +262,7 @@
               <div class="col-4 col-xxl-3" *ngIf="isOffline">
                 <div class="form-group">
                   <label class="control-label">Eligibility Date</label>
-                  <div class="date-picker">
+                  <div class="date-picker-mat">
                     <input [matDatepicker]="eligibilityOfflineDateCtrl" class="form-control" placeholder="Select Eligibility Date" [max]="today"
                       formControlName="eligibilityOfflineDate">
                     <mat-datepicker-toggle [for]="eligibilityOfflineDateCtrl"></mat-datepicker-toggle>
@@ -290,7 +290,7 @@
                 <div class="form-group"
                   [ngClass]="{'has-error' : IsDateWrittenRequired && ((isSubmitted || FormPreAuthorization.get('dateWritten').touched) && FormPreAuthorization.get('dateWritten').hasError('required'))}">
                   <label class="control-label"  id="dateWritten">Date Written <span *ngIf="IsDateWrittenRequired" class="asterisk">*</span></label>
-                  <div class="date-picker">
+                  <div class="date-picker-mat">
                     <input [owlDateTime]="visionWrittenDate" class="form-control" placeholder="Select date written" (ngModelChange)="SetToMax($event)" formControlName="dateWritten"
                       [max]="FormPreAuthorization.controls.dateOrdered.value">
                     <mat-datepicker-toggle [owlDateTimeTrigger]="visionWrittenDate"></mat-datepicker-toggle>
@@ -552,7 +552,7 @@
               <div class="form-group"
                 [ngClass]="{'has-error' : (IsDateRequired && (isSubmitted || FormPreAuthorization.get('date').touched) && FormPreAuthorization.get('date').hasError('required'))}">
                 <label class="control-label">Date<span *ngIf="IsDateRequired" class="asterisk">*</span></label>
-                <div class="date-picker">
+                <div class="date-picker-mat">
                   <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date" formControlName="date">
                   <mat-datepicker-toggle [for]="accidentDate"></mat-datepicker-toggle>
                   <mat-datepicker #accidentDate></mat-datepicker>
@@ -656,7 +656,7 @@
                   <label class="control-label">Period<span class="asterisk">*</span> </label>
                   <div class="row small-gutter">
                     <div class="col-6">
-                        <div class="date-picker" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('startDate').touched) && FormPreAuthorization.get('startDate').hasError('required')}">
+                        <div class="date-picker-mat" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('startDate').touched) && FormPreAuthorization.get('startDate').hasError('required')}">
                             <input [owlDateTime]="startDate" class="form-control" placeholder="Start date" formControlName="startDate">
                                  <mat-datepicker-toggle [owlDateTimeTrigger]="startDate"></mat-datepicker-toggle>
                                  <owl-date-time #startDate></owl-date-time>
@@ -666,7 +666,7 @@
                             <span class="error-text">Please select the start date</span>
                           </div>
                         <div class="col-6">
-                            <div class="date-picker" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('periodEnd').touched) && FormPreAuthorization.get('periodEnd').hasError('required')}">
+                            <div class="date-picker-mat" [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('periodEnd').touched) && FormPreAuthorization.get('periodEnd').hasError('required')}">
                                 <input [owlDateTime]="periodEnd" class="form-control" placeholder="End date" formControlName="periodEnd">
                                      <mat-datepicker-toggle [owlDateTimeTrigger]="periodEnd"></mat-datepicker-toggle>
                                      <owl-date-time #periodEnd></owl-date-time>

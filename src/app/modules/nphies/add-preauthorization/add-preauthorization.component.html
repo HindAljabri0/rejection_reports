@@ -122,7 +122,7 @@
                         <div class="form-group"
                             [ngClass]="{'has-error' : (isSubmitted || FormPreAuthorization.get('dateOrdered').touched) && FormPreAuthorization.get('dateOrdered').hasError('required')}">
                             <label class="control-label">Date Ordered<span class="asterisk">*</span></label>
-                            <div class="date-picker">
+                            <div class="date-picker-mat">
                                 <input [owlDateTime]="dateOrderedCtrl" class="form-control"
                                     placeholder="Select date ordered" formControlName="dateOrdered">
                                 <mat-datepicker-toggle [owlDateTimeTrigger]="dateOrderedCtrl"></mat-datepicker-toggle>
@@ -309,7 +309,7 @@
                     <div class="col-4 col-xxl-3" *ngIf="isOffline">
                         <div class="form-group">
                             <label class="control-label">Eligibility Date</label>
-                            <div class="date-picker">
+                            <div class="date-picker-mat">
                                 <input [matDatepicker]="eligibilityOfflineDateCtrl" class="form-control"
                                     placeholder="Select Eligibility Date" [max]="today"
                                     formControlName="eligibilityOfflineDate">
@@ -342,7 +342,7 @@
                                 [ngClass]="{'has-error' : IsDateWrittenRequired && ((isSubmitted || FormPreAuthorization.get('dateWritten').touched) && FormPreAuthorization.get('dateWritten').hasError('required'))}">
                                 <label class="control-label" id="dateWritten">Date Written <span
                                         *ngIf="IsDateWrittenRequired" class="asterisk">*</span></label>
-                                <div class="date-picker">
+                                <div class="date-picker-mat">
                                     <input [owlDateTime]="visionWrittenDate" class="form-control"
                                         placeholder="Select date written" (ngModelChange)="SetToMax($event)"
                                         formControlName="dateWritten"
@@ -632,7 +632,7 @@
                             [ngClass]="{'has-error' : (IsDateRequired && (isSubmitted || FormPreAuthorization.get('date').touched) && FormPreAuthorization.get('date').hasError('required'))}">
                             <label class="control-label">Date<span *ngIf="IsDateRequired"
                                     class="asterisk">*</span></label>
-                            <div class="date-picker">
+                            <div class="date-picker-mat">
                                 <input [matDatepicker]="accidentDate" class="form-control" placeholder="Select date"
                                     formControlName="date">
                                 <mat-datepicker-toggle [for]="accidentDate"></mat-datepicker-toggle>

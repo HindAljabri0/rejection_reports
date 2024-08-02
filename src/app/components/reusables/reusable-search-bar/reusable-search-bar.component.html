@@ -4,7 +4,7 @@
             <div (keyup.enter)="search()">
                 <div class="form-group" [class.has-error]="fromDateHasError">
                     <label class="control-label">From claim date</label>
-                    <div class="date-picker">
+                    <div class="date-picker-mat">
                         <input class="form-control" [matDatepicker]="fromPicker" placeholder="Select from claim date" [formControl]="fromDateControl" (keyup.enter)="search()"
                             (dateChange)="updateChips(fromDate, $event.value.format('DD-MM-YYYY'))">
                         <mat-datepicker-toggle [for]="fromPicker"></mat-datepicker-toggle>
@@ -13,7 +13,7 @@
                 </div>
                 <div class="form-group" [class.has-error]="toDateHasError">
                     <label class="control-label">To claim date</label>
-                    <div class="date-picker">
+                    <div class="date-picker-mat">
                         <input class="form-control" [matDatepicker]="toPicker" placeholder="Select to claim date" [formControl]="toDateControl" (keyup.enter)="search()"
                             (dateChange)="updateChips(toDate, $event.value.format('DD-MM-YYYY'))">
                         <mat-datepicker-toggle [for]="toPicker"></mat-datepicker-toggle>

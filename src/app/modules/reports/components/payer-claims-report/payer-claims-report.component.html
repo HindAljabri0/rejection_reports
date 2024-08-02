@@ -67,7 +67,7 @@
         <div class="col-md">
           <div class="form-group" [class.has-error]="submitted && PayerClaimsReportForm.get('fromDate').hasError('required')">
             <label class="control-label">From Date</label>
-            <div class="date-picker">
+            <div class="date-picker-mat">
               <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="fromDate" [bsConfig]="datePickerConfig" placeholder="Select From Date"
                 required [maxDate]="PayerClaimsReportForm.controls.toDate.value" (bsValueChange)="dateValidation($event)" />
             </div>
@@ -79,7 +79,7 @@
         <div class="col-md">
           <div class="form-group" [class.has-error]="submitted && PayerClaimsReportForm.get('toDate').hasError('required')">
             <label class="control-label">To Date</label>
-            <div class="date-picker">
+            <div class="date-picker-mat">
               <input autocomplete="off" class="form-control date-picker" bsDatepicker formControlName="toDate" [bsConfig]="datePickerConfig"
                 [minDate]="PayerClaimsReportForm.controls.fromDate.value" placeholder="Select To Date" required />
             </div>

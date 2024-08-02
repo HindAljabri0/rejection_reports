@@ -49,7 +49,7 @@
                     <td width="200">
                         <div class="form-group mt-n1 mb-n1" [matTooltip]="getFieldError('LabTestDate' ,result.results.investigationId  )"
                             [class.has-error]="fieldHasError('LabTestDate' ,result.results.investigationId  )">
-                            <div class="date-picker">
+                            <div class="date-picker-mat">
                                 <input [matDatepicker]="testDatePicker" class="form-control" placeholder="Select test date" [formControl]="result.testDate">
                                 <mat-datepicker-toggle [for]="testDatePicker"></mat-datepicker-toggle>
                                 <mat-datepicker #testDatePicker></mat-datepicker>

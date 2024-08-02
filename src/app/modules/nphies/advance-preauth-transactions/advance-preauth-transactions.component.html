@@ -13,7 +13,7 @@
                         <div class="col-4 col-xxl-3">
                             <div class="form-group">
                                 <label class="control-label">From Date</label>
-                                <div class="date-picker">
+                                <div class="date-picker-mat">
                                     <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date" formControlName="fromDate">
                                     <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
                                     <mat-datepicker #filterFromDate></mat-datepicker>
@@ -23,7 +23,7 @@
                         <div class="col-4 col-xxl-3">
                             <div class="form-group">
                                 <label class="control-label">To Date</label>
-                                <div class="date-picker">
+                                <div class="date-picker-mat">
                                     <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date"
                                         [min]="FormAdvancePreAuthTransaction.controls.fromDate.value" formControlName="toDate">
                                     <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>

@@ -9,7 +9,7 @@
         <div class="form-group"
           [ngClass]="{'has-error' : (isSubmitted || FormAddReconciliation.get('startDate').touched) && FormAddReconciliation.get('startDate').hasError('required')}">
           <label class="control-label">From Month</label>
-          <div class="date-picker">
+          <div class="date-picker-mat">
             <input autocomplete="off" class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)" placeholder="Select from month"
               formControlName="startDate" name="fromDate" [maxDate]="FormAddReconciliation.controls.endDate.value" />
             <!-- <input [matDatepicker]="fromMonth" class="form-control" placeholder="Select from month"
@@ -26,7 +26,7 @@
         <div class="form-group"
           [ngClass]="{'has-error' : (isSubmitted || FormAddReconciliation.get('endDate').touched) && FormAddReconciliation.get('endDate').hasError('required')}">
           <label class="control-label">To Month</label>
-          <div class="date-picker">
+          <div class="date-picker-mat">
             <input autocomplete="off" class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)" placeholder="Select from month"
               formControlName="endDate" name="toDate" [minDate]="FormAddReconciliation.controls.startDate.value" />
             <!-- <input [matDatepicker]="toMonth" class="form-control" placeholder="Select to month"

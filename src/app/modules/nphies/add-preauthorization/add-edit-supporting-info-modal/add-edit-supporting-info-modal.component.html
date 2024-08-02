@@ -123,7 +123,7 @@
             [ngClass]="{'has-error' : (isSubmitted || FormSupportingInfo.get('timingDate').touched) && FormSupportingInfo.get('timingDate').hasError('required')}">
             <label class="control-label">Timing<span class="asterisk"
                 *ngIf="FormSupportingInfo.controls.category.value.value !== 'lab-test' && FormSupportingInfo.controls.category.value.value !== 'vital-sign-weight' && FormSupportingInfo.controls.category.value.value !== 'vital-sign-systolic' && FormSupportingInfo.controls.category.value.value !== 'vital-sign-diastolic' && FormSupportingInfo.controls.category.value.value !== 'icu-hours' && FormSupportingInfo.controls.category.value.value !== 'ventilation-hours' && FormSupportingInfo.controls.category.value.value !== 'vital-sign-height' && FormSupportingInfo.controls.category.value.value !== 'temperature' && FormSupportingInfo.controls.category.value.value !== 'pulse' && FormSupportingInfo.controls.category.value.value !== 'oxygen-saturation' && FormSupportingInfo.controls.category.value.value !== 'respiratory-rate'">*</span></label>
-            <div class="date-picker">
+            <div class="date-picker-mat">
               <input [matDatepicker]="timingDateCtrl" class="form-control" placeholder="Select date ordered" formControlName="timingDate">
               <mat-datepicker-toggle [for]="timingDateCtrl"></mat-datepicker-toggle>
               <mat-datepicker #timingDateCtrl></mat-datepicker>
@@ -140,7 +140,7 @@
           <div class="form-group"
             [ngClass]="{'has-error' : (isSubmitted || FormSupportingInfo.get('timingPeriodFrom').touched) && FormSupportingInfo.get('timingPeriodFrom').hasError('required')}">
             <label class="control-label">Timing Period From<span class="asterisk">*</span></label>
-            <div class="date-picker">
+            <div class="date-picker-mat">
               <input [matDatepicker]="timingPeriodFromCtrl" class="form-control" placeholder="Select date ordered" formControlName="timingPeriodFrom"
                 [max]="FormSupportingInfo.controls.timingPeriodTo.value">
               <mat-datepicker-toggle [for]="timingPeriodFromCtrl"></mat-datepicker-toggle>
@@ -156,7 +156,7 @@
           <div class="form-group"
             [ngClass]="{'has-error' : (isSubmitted || FormSupportingInfo.get('timingPeriodTo').touched) && FormSupportingInfo.get('timingPeriodTo').hasError('required')}">
             <label class="control-label">Timing Period To<span class="asterisk">*</span></label>
-            <div class="date-picker">
+            <div class="date-picker-mat">
               <input [matDatepicker]="timingPeriodToCtrl" class="form-control" placeholder="Select date ordered" formControlName="timingPeriodTo"
                 [min]="FormSupportingInfo.controls.timingPeriodFrom.value">
               <mat-datepicker-toggle [for]="timingPeriodToCtrl"></mat-datepicker-toggle>

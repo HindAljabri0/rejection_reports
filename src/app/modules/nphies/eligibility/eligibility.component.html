@@ -64,7 +64,7 @@
         <div class="col-4">
           <div class="form-group" [class.has-error]="serviceDateError?.trim().length > 0" [matTooltip]="serviceDateError">
             <label class="control-label">Service Date<span class="asterisk">*</span></label>
-            <div class="date-picker">
+            <div class="date-picker-mat">
               <input id="serviceDate" [matDatepicker]="serviceDate" class="form-control" placeholder="Select service date" [formControl]="serviceDateControl">
               <mat-datepicker-toggle [for]="serviceDate"></mat-datepicker-toggle>
               <mat-datepicker #serviceDate></mat-datepicker>
@@ -74,7 +74,7 @@
         <div class="col-4">
           <div class="form-group" [class.has-error]="endDateError?.trim().length > 0" [matTooltip]="endDateError">
             <label class="control-label">To Date</label>
-            <div class="date-picker">
+            <div class="date-picker-mat">
               <input id="toDate" [matDatepicker]="toDate" class="form-control" placeholder="Select to date" [formControl]="endDateControl">
               <mat-datepicker-toggle [for]="toDate"></mat-datepicker-toggle>
               <mat-datepicker #toDate></mat-datepicker>

@@ -4,7 +4,7 @@
 </mat-button-toggle-group>
 <div class="or">Or</div>
 <div class="form-group" [class.has-error]="fromDateInvalid">
-    <div class="date-picker">
+    <div class="date-picker-mat">
         <input [matDatepicker]="dashboardFilterFromDate" class="form-control" placeholder="Select from date" [formControl]="fromDateControl"
             (dateInput)="searchByLastMonth = false">
         <mat-datepicker-toggle [for]="dashboardFilterFromDate"></mat-datepicker-toggle>
@@ -12,7 +12,7 @@
     </div>
 </div>
 <div class="form-group" [class.has-error]="toDateInvalid">
-    <div class="date-picker">
+    <div class="date-picker-mat">
         <input [matDatepicker]="dashboardFilterToDate" class="form-control" placeholder="Select to date" [formControl]="toDateControl" (dateInput)="searchByLastMonth = false">
         <mat-datepicker-toggle [for]="dashboardFilterToDate"></mat-datepicker-toggle>
         <mat-datepicker #dashboardFilterToDate></mat-datepicker>

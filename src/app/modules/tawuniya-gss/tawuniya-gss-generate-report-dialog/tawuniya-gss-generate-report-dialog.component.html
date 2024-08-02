@@ -6,7 +6,7 @@
     <div class="primary-dialog-body pt-0">
         <div class="form-group" [ngClass]="{'has-error' :  tawuniyaGssForm.submitted && lossMonth.invalid}">
             <label class="control-label">Loss Month</label>
-            <div class="date-picker">
+            <div class="date-picker-mat">
                 <!--  -->
                 <input autocomplete="off" class="form-control date-picker" placeholder="Select loss month" bsDatepicker [bsConfig]="datePickerConfig"
                     (onShown)="onOpenCalendar($event)" [formControl]='lossMonth' [maxDate]="maxDate" [minDate]="minDate" />

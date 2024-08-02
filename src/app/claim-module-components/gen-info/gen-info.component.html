@@ -62,7 +62,7 @@
     <div class="col">
         <div class="form-group" [class.has-error]="fieldHasError('VSITDATE')" [matTooltip]="getFieldError('VSITDATE')">
             <label class="control-label">Claim Date<span class="asterisk">*</span></label>
-            <div class="date-picker">
+            <div class="date-picker-mat">
                 <input id="claimDateInput" [matDatepicker]="claimDatePicker" class="form-control"
                     placeholder="Select claim date" [formControl]="claimDateController"
                     (dateChange)="updateClaim('claimDate')">
@@ -118,7 +118,7 @@
         <div class="form-group" [class.has-error]="fieldHasError('DOB_AGE')" [matTooltip]="getFieldError('DOB_AGE')">
             <label class="control-label">Date of Birth<span *ngIf="isControlNull(ageController)"
                     class="asterisk">*</span></label>
-            <div class="date-picker">
+            <div class="date-picker-mat">
                 <input id="memberDobInput" [matDatepicker]="memberDobDatePicker" placeholder="Select date of birth"
                     class="form-control" [formControl]="memberDobController" (dateChange)="updateClaim('memberDob')">
                 <mat-datepicker-toggle [for]="memberDobDatePicker"></mat-datepicker-toggle>

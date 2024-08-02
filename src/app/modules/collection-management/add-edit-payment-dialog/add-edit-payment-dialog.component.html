@@ -13,7 +13,7 @@
         </div>
         <div class="form-group" [ngClass]="{'has-error' : addPaymentForm.submitted && !payerStatmentModel.paymentDate}">
             <label class="control-label">Payment Date</label>
-            <div class="date-picker">
+            <div class="date-picker-mat">
                 <input [matDatepicker]="paymentDates" class="form-control" placeholder="Select payment date" [(ngModel)]='payerStatmentModel.paymentDate' #paymentDate='ngModel'
                     name="paymentDate" />
                 <mat-datepicker-toggle [for]="paymentDates"></mat-datepicker-toggle>

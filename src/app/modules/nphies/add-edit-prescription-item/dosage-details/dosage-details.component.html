@@ -281,7 +281,7 @@
                             <mat-icon class="material-icons-outlined size-20"
                                 matTooltip="Bound Period Date from when patient need to start taking medication">info</mat-icon>
                         </span></label>
-                    <div class="date-picker">
+                    <div class="date-picker-mat">
                         <input [owlDateTime]="dosageTimingStartDate" formControlName="startDate" class="form-control"
                             placeholder="Select date">
                         <mat-datepicker-toggle [owlDateTimeTrigger]="dosageTimingStartDate"></mat-datepicker-toggle>
@@ -298,7 +298,7 @@
                             <mat-icon class="material-icons-outlined size-20"
                                 matTooltip="Bound Period Date till when patient need to take medication">info</mat-icon>
                         </span></label>
-                    <div class="date-picker">
+                    <div class="date-picker-mat">
                         <input [owlDateTime]="dosageTimingEndDate" class="form-control" formControlName="endDate"
                             placeholder="Select date">
                         <mat-datepicker-toggle [owlDateTimeTrigger]="dosageTimingEndDate"></mat-datepicker-toggle>

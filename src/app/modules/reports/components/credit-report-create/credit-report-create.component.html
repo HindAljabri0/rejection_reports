@@ -16,7 +16,7 @@
                 <div class="col-xxl-2 col-lg-3 col-md-4">
                     <div class="form-group" [ngClass]="{'has-error' : bupaReport.submitted && receivedDate.invalid}">
                         <label class="control-label">Received Date</label>
-                        <div class="date-picker">
+                        <div class="date-picker-mat">
                             <input [matDatepicker]="receivedDatePicker" [(ngModel)]='bupaRejectionReportData.receivedDate' tabindex="2" #receivedDate='ngModel' name='receivedDate'
                                 class="form-control" required placeholder="Select received date" />
                             <mat-datepicker-toggle [for]="receivedDatePicker"></mat-datepicker-toggle>

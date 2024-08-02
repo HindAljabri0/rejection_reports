@@ -39,7 +39,7 @@
             <div class="col-md-4">
                 <div class="form-group" [matTooltip]="errors.StartDate" [class.has-error]="errors.StartDate!=null&&errors.StartDate.trim().length>0">
                     <label class="control-label">Start Date <span class="asterisk">*</span></label>
-                    <div class="date-picker">
+                    <div class="date-picker-mat">
                         <input [matDatepicker]="startDate" class="form-control" [formControl]="StartDateController" placeholder="Select start date">
                         <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
                         <mat-datepicker #startDate></mat-datepicker>
@@ -49,7 +49,7 @@
             <div class="col-md-4">
                 <div class="form-group" [matTooltip]="errors.EndDate" [class.has-error]="errors.EndDate!=null&&errors.EndDate.trim().length>0">
                     <label class="control-label">End Date <span class="asterisk">*</span></label>
-                    <div class="date-picker">
+                    <div class="date-picker-mat">
                         <input [matDatepicker]="endDate" class="form-control" [formControl]="EndDateController" placeholder="Select end date">
                         <mat-datepicker-toggle [for]="endDate"></mat-datepicker-toggle>
                         <mat-datepicker #endDate></mat-datepicker>

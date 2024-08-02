@@ -93,7 +93,7 @@
           <div class="form-group" [matTooltip]="errors.dob"
             [class.has-error]="errors.dob!=null&&errors.dob.trim().length>0">
             <label class="control-label">Date of Birth<span class="asterisk">*</span></label>
-            <div class="date-picker">
+            <div class="date-picker-mat">
               <input [matDatepicker]="dateOfBirth" class="form-control" placeholder="Select date of birth"
                 [formControl]="dobFormControl">
               <mat-datepicker-toggle [for]="dateOfBirth"></mat-datepicker-toggle>
@@ -191,7 +191,7 @@
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">VISA Expiry Date</label>
-            <div class="date-picker">
+            <div class="date-picker-mat">
               <input [matDatepicker]="visaExpiryDatePicker" class="form-control" placeholder="Select VISA expiry date"
                 [formControl]="VisaExpiryControl">
               <mat-datepicker-toggle [for]="visaExpiryDatePicker"></mat-datepicker-toggle>
@@ -431,7 +431,7 @@
                   </td>
                   <td>
                     <div class="form-group m-0">
-                      <div class="date-picker">
+                      <div class="date-picker-mat">
                         <input [matDatepicker]="expiryDate" class="form-control" placeholder="Select expiry date"
                           [formControl]="insurancePlan.expiryDateController">
                         <mat-datepicker-toggle [for]="expiryDate"></mat-datepicker-toggle>
@@ -521,7 +521,7 @@
                         <div class="col-6 col-lg-4 col-xl-3">
                           <div class="form-group">
                             <label class="control-label">Issue Date</label>
-                            <div class="date-picker">
+                            <div class="date-picker-mat">
                               <input [matDatepicker]="insuranceIssueDatePicker" class="form-control"
                                 placeholder="Select issue date" [formControl]="insurancePlan.issueDate">
                               <mat-datepicker-toggle [for]="insuranceIssueDatePicker"></mat-datepicker-toggle>
@@ -683,7 +683,7 @@
           <div class="form-group" [matTooltip]="errors.dob"
             [class.has-error]="errors.dob!=null&&errors.dob.trim().length>0">
             <label class="control-label">Date of Birth<span class="asterisk">*</span></label>
-            <div class="date-picker">
+            <div class="date-picker-mat">
               <input [matDatepicker]="dateOfBirth" class="form-control" placeholder="Select date of birth"
                 [formControl]="dobFormControl">
               <mat-datepicker-toggle [for]="dateOfBirth"></mat-datepicker-toggle>
@@ -790,7 +790,7 @@
         <div class="col-6 col-lg-4 col-xl-3">
           <div class="form-group">
             <label class="control-label">VISA Expiry Date</label>
-            <div class="date-picker">
+            <div class="date-picker-mat">
               <input [matDatepicker]="visaExpiryDatePicker" class="form-control" placeholder="Select VISA expiry date"
                 [formControl]="VisaExpiryControl">
               <mat-datepicker-toggle [for]="visaExpiryDatePicker"></mat-datepicker-toggle>
@@ -1022,7 +1022,7 @@
                   </td>
                   <td>
                     <div class="form-group m-0">
-                      <div class="date-picker">
+                      <div class="date-picker-mat">
                         <input [matDatepicker]="expiryDate" class="form-control" placeholder="Select expiry date"
                           [formControl]="insurancePlan.expiryDateController">
                         <mat-datepicker-toggle [for]="expiryDate"></mat-datepicker-toggle>
@@ -1112,7 +1112,7 @@
                         <div class="col-6 col-lg-4 col-xl-3">
                           <div class="form-group">
                             <label class="control-label">Issue Date</label>
-                            <div class="date-picker">
+                            <div class="date-picker-mat">
                               <input [matDatepicker]="insuranceIssueDatePicker" class="form-control"
                                 placeholder="Select issue date" [formControl]="insurancePlan.issueDate">
                               <mat-datepicker-toggle [for]="insuranceIssueDatePicker"></mat-datepicker-toggle>

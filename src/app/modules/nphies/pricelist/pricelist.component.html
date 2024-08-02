@@ -19,7 +19,7 @@
         <div class="col-xl-3 col-md-6">
           <div class="form-group">
             <label class="control-label">Effective Date</label>
-            <div class="date-picker">
+            <div class="date-picker-mat">
               <input [matDatepicker]="effectiveDatePicker" placeholder="Select effective date" class="form-control"
                 formControlName="effectiveDate">
               <mat-datepicker-toggle [for]="effectiveDatePicker"></mat-datepicker-toggle>
@@ -30,7 +30,7 @@
         <div class="col-xl-3 col-md-6">
           <div class="form-group">
             <label class="control-label">From Upload Date</label>
-            <div class="date-picker">
+            <div class="date-picker-mat">
               <input [matDatepicker]="fromUploadDateDatePicker" placeholder="Select From Upload Date"
                 class="form-control" formControlName="uploadFromDate" (dateChange)="updateFromDate()">
               <mat-datepicker-toggle [for]="fromUploadDateDatePicker"></mat-datepicker-toggle>
@@ -42,7 +42,7 @@
         <div class="col-xl-3 col-md-6">
           <div class="form-group">
             <label class="control-label">To Upload Date</label>
-            <div class="date-picker">
+            <div class="date-picker-mat">
               <input [matDatepicker]="toUploadDatePicker" placeholder="Select To Upload Date" class="form-control"
                 [min]="FormPriceList.controls.uploadFromDate.value" formControlName="uploadToDate">
               <mat-datepicker-toggle [for]="toUploadDatePicker"></mat-datepicker-toggle>

@@ -291,7 +291,7 @@
                                                     <div (click)="$event.stopPropagation()">
                                                         <div class="form-group">
                                                             <label class="control-label">Claim Date</label>
-                                                            <div class="date-picker">
+                                                            <div class="date-picker-mat">
                                                                 <input [(ngModel)]="claimList.claimDate" #claimDate="ngModel" name="claimDate" class="form-control"
                                                                     placeholder="Claim Date" [matDatepicker]="claimDatePicker">
                                                                 <mat-datepicker-toggle [for]="claimDatePicker">
@@ -320,7 +320,7 @@
                                                     <div (click)="$event.stopPropagation()">
                                                         <div class="form-group">
                                                             <label class="control-label">Submission Date</label>
-                                                            <div class="date-picker">
+                                                            <div class="date-picker-mat">
                                                                 <input [(ngModel)]="claimList.claimSubmissionDate" #claimSubmissionDate="ngModel" name="claimSubmissionDate"
                                                                     class="form-control" placeholder="Claim Submission Date" [matDatepicker]="claimSubmissionDatePicker">
                                                                 <mat-datepicker-toggle [for]="claimSubmissionDatePicker">
@@ -349,7 +349,7 @@
                                                     <div (click)="$event.stopPropagation()">
                                                         <div class="form-group">
                                                             <label class="control-label">Response Date</label>
-                                                            <div class="date-picker">
+                                                            <div class="date-picker-mat">
                                                                 <input [(ngModel)]="claimList.claimResponseDate" #claimResponseDate="ngModel" name="claimResponseDate"
                                                                     class="form-control" placeholder="Claim Response Date" [matDatepicker]="claimResponseDatePicker">
                                                                 <mat-datepicker-toggle [for]="claimResponseDatePicker">
