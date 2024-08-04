@@ -109,6 +109,7 @@ import { BeneficiaryUploadsSummaryComponent } from './beneficiary-uploads-summar
 import { UploadBeneficiaryCchiErrorsDialogComponent } from './upload-beneficiary-cchi-errors-dialog/upload-beneficiary-cchi-errors-dialog.component';
 import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth-cnhi.component';
 import { NphiesPayerMappingComponent } from './nphies-payer-mapping/nphies-payer-mapping.component';
+import { RejectedClaimReportComponent } from './rejected-claim-report/rejected-claim-report.component';
 
 @NgModule({
     declarations: [
@@ -193,6 +194,8 @@ import { NphiesPayerMappingComponent } from './nphies-payer-mapping/nphies-payer
         UploadBeneficiaryCchiErrorsDialogComponent,
         MreValidationResponseSummaryDialogComponent,
         NphiesPayerMappingComponent,
+        RejectedClaimReportComponent,
+
 
     ],
     imports: [
