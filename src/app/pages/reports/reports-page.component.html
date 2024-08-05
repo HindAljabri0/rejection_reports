@@ -23,7 +23,7 @@
             <div class="col">
                 <div class="form-group" [class.has-error]="fromDateHasError">
                     <label class="control-label">From Date</label>
-                    <div class="date-picker-mat">
+                    <div class="date-picker">
                         <input [matDatepicker]="fromPicker" class="form-control" placeholder="Select From Date" [formControl]="fromDateControl" (keyup.enter)="search()" required>
                         <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
                         <mat-datepicker #fromPicker></mat-datepicker>
@@ -37,7 +37,7 @@
             <div class="col">
                 <div class="form-group" [class.has-error]="toDateHasError">
                     <label class="control-label">To Date</label>
-                    <div class="date-picker-mat">
+                    <div class="date-picker">
                         <input [matDatepicker]="toPicker" class="form-control" placeholder="Select To Date" [formControl]="toDateControl" (keyup.enter)="search()" required>
                         <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
                         <mat-datepicker #toPicker></mat-datepicker>

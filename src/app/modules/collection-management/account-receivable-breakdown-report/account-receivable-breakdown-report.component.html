@@ -27,7 +27,7 @@
                         <div class="col">
                             <div class="form-group" [ngClass]="{'has-error' :isSubmitted && FormBreakDownReport.get('year').hasError('required')}">
                                 <label class="control-label">Year <span class="asterisk">*</span></label>
-                                <div class="date-picker-mat">
+                                <div class="date-picker">
                                     <input autocomplete="off" class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
                                         placeholder="Select year" formControlName="year" />
                                 </div>

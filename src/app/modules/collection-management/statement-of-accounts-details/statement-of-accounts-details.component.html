@@ -23,7 +23,7 @@
                 <div class="col">
                     <div class="form-group" [ngClass]="{'has-error' : statementAccountForm.submitted && !transactionModel.fromDate}">
                         <label class="control-label">Payment Date From</label>
-                        <div class="date-picker-mat" [ngClass]="{'has-error' : statementAccountForm.submitted && !transactionModel.fromDate}">
+                        <div class="date-picker" [ngClass]="{'has-error' : statementAccountForm.submitted && !transactionModel.fromDate}">
                             <!-- <input [matDatepicker]="fromDate" class="form-control" placeholder="Select from date" />
                         <mat-datepicker-toggle [for]="fromDate"></mat-datepicker-toggle>
                         <mat-datepicker #fromDate></mat-datepicker> -->
@@ -38,7 +38,7 @@
                 <div class="col">
                     <div class="form-group" [ngClass]="{'has-error' : statementAccountForm.submitted && !transactionModel.toDate}">
                         <label class="control-label">Payment Date To</label>
-                        <div class="date-picker-mat">
+                        <div class="date-picker">
                             <!-- <input [matDatepicker]="toDate" class="form-control" placeholder="Select to date" />
                         <mat-datepicker-toggle [for]="toDate"></mat-datepicker-toggle>
                         <mat-datepicker #toDate></mat-datepicker> -->

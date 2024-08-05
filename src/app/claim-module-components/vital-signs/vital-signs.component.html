@@ -38,7 +38,7 @@
     <div class="col-md-6 col-lg-4 col-xxl-3">
         <div class="form-group" [class.has-error]="fieldHasError('LMP')" [matTooltip]="getFieldError('LMP')">
             <label class="control-label">Last Menstruation Period</label>
-            <div class="date-picker-mat">
+            <div class="date-picker">
                 <input [matDatepicker]="lastMenstruationPeriodPicker" class="form-control" placeholder="Select last menstruation period"
                     [formControl]="lastMenstruationPeriodController" (dateChange)="updateClaim('lastMenstruationPeriod')">
                 <mat-datepicker-toggle [for]="lastMenstruationPeriodPicker"></mat-datepicker-toggle>

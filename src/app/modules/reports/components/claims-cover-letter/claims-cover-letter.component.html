@@ -26,7 +26,7 @@
                 <div class="col-3">
                     <div class="form-group" [ngClass]="{'has-error' : isSubmitted && FormClaimCover.get('month').hasError('required')}">
                         <label class="control-label">Month</label>
-                        <div class="date-picker-mat">
+                        <div class="date-picker">
                             <input autocomplete="off" class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig" formControlName="month" placeholder="Select month"
                                 (onShown)="onOpenCalendar($event)" />
                         </div>

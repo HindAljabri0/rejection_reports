@@ -14,7 +14,7 @@
         <div class="col-sm-6">
             <div class="form-group" [ngClass]="{'has-error' : (isSubmitted || FormPriceList.get('effectiveDate').touched) && FormPriceList.get('effectiveDate').hasError('required')}">
                 <label class="control-label">Effective Date</label>
-                <div class="date-picker-mat">
+                <div class="date-picker">
                     <input [matDatepicker]="effectiveDatePicker" placeholder="Select effective date" class="form-control" formControlName="effectiveDate">
                     <mat-datepicker-toggle [for]="effectiveDatePicker"></mat-datepicker-toggle>
                     <mat-datepicker #effectiveDatePicker></mat-datepicker>

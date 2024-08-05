@@ -119,7 +119,7 @@
                     <label class="control-label">Date of Birth<span
                             *ngIf="(!IsSubscriber) || (IsSubscriber && !IsNewBorn  && selectedBeneficiary && selectedBeneficiary.name) || (IsSubscriber && IsNewBorn)"
                             class="asterisk">*</span></label>
-                    <div class="date-picker-mat">
+                    <div class="date-picker">
                         <input [matDatepicker]="dateOfBirth" class="form-control" placeholder="Select date of birth"
                             formControlName="dob">
                         <mat-datepicker-toggle [for]="dateOfBirth"></mat-datepicker-toggle>
@@ -396,7 +396,7 @@
                         </td>
                         <td>
                             <div class="form-group m-0">
-                                <div class="date-picker-mat">
+                                <div class="date-picker">
                                     <input [matDatepicker]="expiryDate" class="form-control"
                                         placeholder="Select expiry date" formControlName="insurancePlanExpiryDate">
                                     <mat-datepicker-toggle [for]="expiryDate"></mat-datepicker-toggle>

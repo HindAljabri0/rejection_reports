@@ -29,7 +29,7 @@
                             <div class="form-group"
                                 [ngClass]="{'has-error' : (isSubmitted || FormReconciliationReport.get('startDate').touched) && FormReconciliationReport.get('startDate').hasError('required')}">
                                 <label class="control-label">Select Current Date</label>
-                                <div class="date-picker-mat">
+                                <div class="date-picker">
                                     <input autocomplete="off" class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
                                         placeholder="Select from month" formControlName="startDate" name="fromDate" (bsValueChange)="dateValidation($event)" />
                                     <!-- <input [matDatepicker]="startDate" class="form-control" placeholder="Select year" [formControl]="startDateController" (keyup.enter)="search()" />

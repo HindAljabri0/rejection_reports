@@ -660,12 +660,12 @@ textarea.form-control,textarea.form-control:disabled,textarea.form-control[reado
 
 /* date picker
 --------------------------------------------------------------------------------------------------------*/
-.date-picker-mat{position: relative;}
-.date-picker-mat .mat-datepicker-toggle{display: block;position: absolute;right: 0;bottom: 0;color: #3060AA;}
-.has-error .date-picker-mat .mat-datepicker-toggle{color:#D03131;}
-.date-picker-mat.form-control,.date-picker-mat .form-control{padding-right: 40px;}
-.date-picker-mat.form-control{background-image: url('./assets/ic-datepicker.svg');background-position:calc(100% - 7px) center;background-repeat: no-repeat; background-size: 24px 24px;}
-.has-error .date-picker-mat.form-control{background-image: url('./assets/ic-datepicker-error.svg');}
+.date-picker{position: relative;}
+.date-picker .mat-datepicker-toggle{display: block;position: absolute;right: 0;bottom: 0;color: #3060AA;}
+.has-error .date-picker .mat-datepicker-toggle{color:#D03131;}
+.date-picker.form-control,.date-picker .form-control{padding-right: 40px;}
+.date-picker.form-control{background-image: url('./assets/ic-datepicker.svg');background-position:calc(100% - 7px) center;background-repeat: no-repeat; background-size: 24px 24px;}
+.has-error .date-picker.form-control{background-image: url('./assets/ic-datepicker-error.svg');}
 
 /* block
 --------------------------------------------------------------------------------------------------------*/

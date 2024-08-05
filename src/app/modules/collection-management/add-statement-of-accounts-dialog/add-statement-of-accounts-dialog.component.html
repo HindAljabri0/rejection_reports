@@ -10,7 +10,7 @@
                 <div class="form-group"
                     [ngClass]="{'has-error' : statementAddAccountForm.submitted && !addStatmentAccountModel.uploadDate}">
                     <label class="control-label">Upload Date</label>
-                    <div class="date-picker-mat">
+                    <div class="date-picker">
                         <input bsDatepicker autocomplete="off" [bsConfig]="datePickerConfig"
                             [(ngModel)]='addStatmentAccountModel.uploadDate' class="form-control date-picker"
                             placeholder="Select upload date" (bsValueChange)="dateValidation($event)"
@@ -24,7 +24,7 @@
             <div class="col-6">
                 <div class="form-group" [ngClass]="{'has-error' : statementAddAccountForm.submitted && !addStatmentAccountModel.statementStartDate}">
                     <label class="control-label">Statement Start Date</label>
-                    <div class="date-picker-mat">
+                    <div class="date-picker">
                         <!-- <input [matDatepicker]="startDate" class="form-control" placeholder="Select statement start date" />
                     <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
                     <mat-datepicker #startDate></mat-datepicker> -->
@@ -40,7 +40,7 @@
             <div class="col-6">
                 <div class="form-group" [ngClass]="{'has-error' : statementAddAccountForm.submitted && !addStatmentAccountModel.statementEndDate}">
                     <label class="control-label">Statement End Date</label>
-                    <div class="date-picker-mat">
+                    <div class="date-picker">
                         <!-- <input [matDatepicker]="endDate" class="form-control" placeholder="Select statement end date" />
                     <mat-datepicker-toggle [for]="endDate"></mat-datepicker-toggle>
                     <mat-datepicker #endDate></mat-datepicker> -->

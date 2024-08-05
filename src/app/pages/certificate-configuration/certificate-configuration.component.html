@@ -31,7 +31,7 @@
         <div class="col-6">
           <h5 class="medium pb-2">Step 3: Enter Expiry Date</h5>
           <div class="form-group">
-            <div class="date-picker-mat">
+            <div class="date-picker">
               <input type="datetime-local" class="form-control" placeholder="Select Expiry date" [min]="minDate"
                 [(ngModel)]="certificateConfigurationProvider.expiryDate" [disabled]="(!notEditMode && !isEdit)">
             </div>

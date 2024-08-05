@@ -129,7 +129,7 @@
                             <div class="col-6">
                                 <div class="form-group mb-n1 mt-n1"
                                     [ngClass]="{'has-error' : isSubmitted && supportingInfo.toDate && !supportingInfo.fromDate}">
-                                    <div class="date-picker-mat">
+                                    <div class="date-picker">
                                         <input [matDatepicker]="timingPeriodFromCtrl" class="form-control"
                                             placeholder="Select Start Date" [(ngModel)]="supportingInfo.fromDate"
                                             [max]="supportingInfo.toDate" id="startDate">
@@ -144,7 +144,7 @@
 
                             <div class="col-6">
                                 <div class="form-group mb-n1 mt-n1">
-                                    <div class="date-picker-mat">
+                                    <div class="date-picker">
                                         <input [matDatepicker]="timingPeriodToCtrl" class="form-control"
                                             placeholder="Select End Date" [(ngModel)]="supportingInfo.toDate"
                                             [min]="supportingInfo.fromDate" id="endDate">
@@ -165,7 +165,7 @@
                             [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsFromDateRequired && !supportingInfo.fromDate}">
                             <!-- <label class="control-label">Timing<span class="asterisk"
                   *ngIf="supportingInfo.category !== 'lab-test' && supportingInfo.category !== 'vital-sign-weight' && supportingInfo.category !== 'vital-sign-systolic' && supportingInfo.category !== 'vital-sign-diastolic' && supportingInfo.category !== 'icu-hours' && supportingInfo.category !== 'ventilation-hours' && supportingInfo.category !== 'vital-sign-height' && supportingInfo.category !== 'temperature' && supportingInfo.category !== 'pulse' && supportingInfo.category !== 'oxygen-saturation' && supportingInfo.category !== 'respiratory-rate'">*</span></label> -->
-                            <div class="date-picker-mat">
+                            <div class="date-picker">
                                 <input [matDatepicker]="timingDateCtrl" class="form-control" placeholder="Select Date"
                                     [(ngModel)]="supportingInfo.fromDate" id="selectDate">
                                 <mat-datepicker-toggle [for]="timingDateCtrl"></mat-datepicker-toggle>
@@ -186,7 +186,7 @@
                                 <div class="form-group mb-n1 mt-n1"
                                     [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsFromDateRequired && !supportingInfo.fromDate}">
                                     <!-- <label class="control-label">Timing Period From<span class="asterisk">*</span></label> -->
-                                    <div class="date-picker-mat">
+                                    <div class="date-picker">
                                         <input [matDatepicker]="timingPeriodFromCtrl" class="form-control"
                                             placeholder="Select Start Date" [(ngModel)]="supportingInfo.fromDate"
                                             [max]="supportingInfo.toDate" id="selectStartDate">
@@ -204,7 +204,7 @@
                                 <div class="form-group mb-n1 mt-n1"
                                     [ngClass]="{'has-error' : isSubmitted && supportingInfo.IsToDateRequired && !supportingInfo.toDate}">
                                     <!-- <label class="control-label">Timing Period To<span class="asterisk">*</span></label> -->
-                                    <div class="date-picker-mat">
+                                    <div class="date-picker">
                                         <input [matDatepicker]="timingPeriodToCtrl" class="form-control"
                                             placeholder="Select End Date" [(ngModel)]="supportingInfo.toDate"
                                             [min]="supportingInfo.fromDate" id="selectEndDate">
@@ -220,7 +220,7 @@
                         </div>
                     </ng-container>
                     <!-- <div class="form-group mb-n1 mt-n1">
-            <div class="date-picker-mat">
+            <div class="date-picker">
               <input [matDatepicker]="supportingInfoDatePicker1" class="form-control" placeholder="Select timing">
               <mat-datepicker-toggle [for]="supportingInfoDatePicker1"></mat-datepicker-toggle>
               <mat-datepicker #supportingInfoDatePicker1></mat-datepicker>

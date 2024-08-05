@@ -8,7 +8,7 @@
             <div class="col">
                 <div class="form-group" [class.has-error]="formCn.fromDate.errors">
                     <label class="control-label">Date From</label>
-                    <div class="date-picker-mat">
+                    <div class="date-picker">
                         <input bsDatepicker autocomplete="off" [bsConfig]="{ showWeekNumbers:false, dateInputFormat: 'DD/MM/YYYY' }" formControlName="fromDate"
                             class="form-control date-picker" placeholder="Select start date" (bsValueChange)="dateValidation($event)" />
                         <!-- <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
@@ -23,7 +23,7 @@
             <div class="col">
                 <div class="form-group" [class.has-error]="formCn.toDate.errors">
                     <label class="control-label">Date To</label>
-                    <div class="date-picker-mat">
+                    <div class="date-picker">
                         <!-- <input [matDatepicker]="toPicker" class="form-control" placeholder="Select To Date"
                   formControlName="toDate">
                 <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>

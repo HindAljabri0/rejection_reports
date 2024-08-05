@@ -62,7 +62,7 @@
                     <td width="200">
                         <div class="form-group mt-n1 mb-n1" [class.has-error]="fieldHasError('INVDATE', invoice?.invoice?.invoiceId) "
                             [matTooltip]="getFieldError('INVDATE', invoice?.invoice?.invoiceId)">
-                            <div class="date-picker-mat">
+                            <div class="date-picker">
                                 <input [matDatepicker]="invoiceDatePicker" class="form-control" placeholder="Select invoice date" [formControl]="invoice.invoiceDate">
                                 <mat-datepicker-toggle [for]="invoiceDatePicker"></mat-datepicker-toggle>
                                 <mat-datepicker #invoiceDatePicker></mat-datepicker>
@@ -315,7 +315,7 @@
                                                                 <div class="form-group" [class.has-error]="fieldHasError('SERVICEDATE', service.serviceId+'')"
                                                                     [matTooltip]="getFieldError('SERVICEDATE', service.serviceId+'')">
                                                                     <label class="control-label">Service Date<span class="asterisk">*</span></label>
-                                                                    <div class="date-picker-mat">
+                                                                    <div class="date-picker">
                                                                         <input [matDatepicker]="picker" class="form-control" placeholder="Select service date"
                                                                             [formControl]="service.serviceDate">
                                                                         <mat-datepicker-toggle [for]="picker">

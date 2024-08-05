@@ -20,7 +20,7 @@
                 <div class="col">
                     <div class="form-group" [matTooltip]="fromDateError" [ngClass]="{'has-error' : fromDateError!=null}">
                         <label class="control-label">Date From</label>
-                        <div class="date-picker-mat">
+                        <div class="date-picker">
                             <!-- [matDatepicker]="fromDate"  -->
                             <input class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig" (bsValueChange)="dateValidation($event)" autocomplete="off"
                                 (onShown)="onOpenCalendar($event)" placeholder="Select from month" [(ngModel)]='fromDateControl' #fromDate='ngModel' name="fromDate" required />
@@ -30,7 +30,7 @@
                 <div class="col">
                     <div class="form-group" [matTooltip]="toDateError" [ngClass]="{'has-error' : toDateError!=null}">
                         <label class="control-label">Date To</label>
-                        <div class="date-picker-mat">
+                        <div class="date-picker">
                             <input class="form-control date-picker" placeholder="Select to month" bsDatepicker autocomplete="off" [bsConfig]="datePickerConfig"
                                 (onShown)="onOpenCalendar($event)" [(ngModel)]='toDateControl' #toDate='ngModel' name="toDate" required [minDate]="minDate" />
                         </div>

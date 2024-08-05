@@ -20,7 +20,7 @@
         <div class="col">
           <div class="form-group" [ngClass]="{'has-error' : revenuTrackingReportForm.submitted && fromDate.invalid}">
             <label class="control-label">Date From</label>
-            <div class="date-picker-mat">
+            <div class="date-picker">
               <!-- [matDatepicker]="fromDate"  -->
               <input autocomplete="off" class="form-control date-picker" bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
                 placeholder="Select from month" [(ngModel)]='revenuTrackingReport.fromDate' #fromDate='ngModel' name="fromDate" required (bsValueChange)="dateValidation($event)" />
@@ -30,7 +30,7 @@
         <div class="col">
           <div class="form-group" [ngClass]="{'has-error' : revenuTrackingReportForm.submitted && toDate.invalid}">
             <label class="control-label">Date To</label>
-            <div class="date-picker-mat">
+            <div class="date-picker">
               <!--  -->
               <input autocomplete="off" class="form-control date-picker" placeholder="Select to month" bsDatepicker [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)"
                 [(ngModel)]='revenuTrackingReport.toDate' #toDate='ngModel' name="toDate" required [minDate]="minDate" />
