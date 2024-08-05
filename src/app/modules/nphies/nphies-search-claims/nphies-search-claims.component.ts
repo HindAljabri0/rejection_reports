@@ -1840,7 +1840,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     }
 
     get showGenerateAttachment() {
-        return ['accepted'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+        return ['accepted'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase()) || (['notaccepted'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase()) && this.userPrivileges.WaseelPrivileges.isPAM) ;
     }
     get showIsRelated() {
         this.routeActive.queryParams.subscribe(value => {
@@ -1877,7 +1877,7 @@ export class NphiesSearchClaimsComponent implements OnInit, AfterViewChecked, On
     }
     get showDownloadBtn() {
         // tslint:disable-next-line:max-line-length
-        return ['notaccepted', 'rejected', 'partial', 'invalid', 'error'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
+        return false;//['notaccepted', 'rejected', 'partial', 'invalid', 'error'].includes(this.summaries[this.selectedCardKey].statuses[0].toLowerCase());
     }
 
     get showMoveToReadyState() {
