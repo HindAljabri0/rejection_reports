@@ -11,6 +11,7 @@ import { X } from '@angular/cdk/keycodes';
 import { DatePipe, JsonPipe } from '@angular/common';
 import { SharedDataService } from 'src/app/services/sharedDataService/shared-data.service';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { SuperAdminService } from 'src/app/services/administration/superAdminService/super-admin.service';
 
 @Component({
     selector: 'app-add-edit-preauthorization-item',
@@ -109,9 +110,9 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
     loadSearchItem = false;
     renderer: any;
     cnhiTypeList: { value: string; name: string; }[];
-
+    unitPriceDisabled = false;
     constructor(
-        private sharedDataService: SharedDataService,
+        private sharedDataService: SharedDataService, private superAdmin: SuperAdminService,
         private dialogRef: MatDialogRef<AddEditPreauthorizationItemComponent>, @Inject(MAT_DIALOG_DATA) public data, private datePipe: DatePipe,
         private sharedServices: SharedServices, private formBuilder: FormBuilder,
         private providerNphiesSearchService: ProviderNphiesSearchService) {
@@ -122,6 +123,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
 
     ngOnInit() {
         this.cnhiTypeList = [{ value: 'moh-category', name: 'MOH Billing Codes' }];
+        this.getNphiesUnitPriceSettings();
         if (this.data.providerType === 'vision' && !this.data.item) {
             const principalDiagnosis = this.data.diagnosises.filter(x => x.type === "principal");
             if (principalDiagnosis.length > 0) {
@@ -142,13 +144,13 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             this.FormItem.controls.invoiceNo.updateValueAndValidity();
             this.FormItem.controls.invoiceNo.setValue('');
         }
-       
+
         if (this.data.type) {
             this.setTypes(this.data.type);
             this.bodySiteList = this.sharedDataService.getBodySite(this.data.type);
             this.subSiteList = this.sharedDataService.getSubSite(this.data.type);
         }
-        
+
         if (this.data.type === "pharmacy") {
             this.providerNphiesSearchService.getPrescribedMedicationList(this.sharedServices.providerId).subscribe(event => {
                 if (event instanceof HttpResponse) {
@@ -311,7 +313,27 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
             this.FormItem.controls.factor.disable();
         }
     }
+    getNphiesUnitPriceSettings() {
 
+        this.superAdmin.getNphiesUnitPriceFlageByProviderSettings(this.sharedServices.providerId).subscribe(event => {
+            if (event instanceof HttpResponse) {
+                let response = event.body as boolean;
+                if (response) {
+                    this.FormItem.controls.unitPrice.disable();
+                } else {
+                    this.FormItem.controls.unitPrice.enable();
+                }
+                this.unitPriceDisabled = response;
+                console.log("unitPriceDisabled = " + this.unitPriceDisabled);
+            }
+        }, error => {
+            if (error instanceof HttpErrorResponse) {
+                if (error.status != 404) {
+                    this.FormItem.controls.unitPrice.enable();
+                }
+            }
+        });
+    }
     onReasonSelectionChange(select: MatSelect): void {
         const selectedValue = select.value;
         this.showTextInput = selectedValue === 'other';
@@ -427,7 +449,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
                 display: type.nonStandardDescription,
                 unitPrice: type.unitPrice,
                 factor: type.factor ? type.factor : 1,
-               // tax: 0
+                // tax: 0
             });
             if (this.data.providerType === 'vision' && this.data.source === 'APPROVAL') {
                 this.FormItem.controls.factor.setValue(1);
@@ -856,7 +878,7 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         if (this.data.type === "pharmacy" && this.FormItem.controls.type.value.value === 'medication-codes' && this.FormItem.controls.prescribedDrugCode.value == null) {
             this.FormItem.controls.prescribedDrugCode.setValidators([Validators.required]);
             this.FormItem.controls.prescribedDrugCode.updateValueAndValidity();
-        }else{
+        } else {
             this.FormItem.controls.prescribedDrugCode.clearValidators();
             this.FormItem.controls.prescribedDrugCode.updateValueAndValidity();
         }
