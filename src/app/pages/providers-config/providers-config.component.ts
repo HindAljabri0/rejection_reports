@@ -63,6 +63,7 @@ export class ProvidersConfigComponent implements OnInit {
         pbmConfigurationSaveError?: string,
         radiologyConfigurationSaveError?: string,
         nphiesTransactionConfigurationSaveError?: string,
+        nphiesUnitPriceConfigurationSaveError?: string,
 
 
 
@@ -71,6 +72,7 @@ export class ProvidersConfigComponent implements OnInit {
         nphiesPbmConfigurationSaveError?: string,
         radiologyConfigurationError?: string,
         nphiesTransactionConfigurationError?: string,
+        nphiesUnitPriceConfigurationError?: string,
         mreConfigurationError?: string,
         mreConfigurationSaveError?: string,
 
@@ -99,6 +101,7 @@ export class ProvidersConfigComponent implements OnInit {
         nphiesApprovalPbmConfigurationSaveSuccess?: string,
         mreConfigurationSaveSuccess?: string,
         nphiesTransactionConfigurationSaveSuccess?: string,
+        nphiesUnitPriceConfigurationSaveSuccess?: string,
         radiologyConfigurationSaveSuccess?: string,
         nphiesMreConfigurationSaveSuccess?: string,
         nphiesApprovalMreConfigurationSaveSuccess?: string,
@@ -117,6 +120,7 @@ export class ProvidersConfigComponent implements OnInit {
         nphiesApprovalPbmConfiguration: true,
         mreConfiguration: true,
         nphiesTransactionConfiguration: true,
+        nphiesUnitPriceConfiguration: true,
         radiologyConfiguration: true,
         nphiesMreConfiguration: true,
         nphiesApprovalMreConfiguration: true,
@@ -156,6 +160,7 @@ export class ProvidersConfigComponent implements OnInit {
     newMREValidationSettings: { [key: string]: boolean } = {};
     newNphiesMREValidationSettings: { [key: string]: boolean } = {};
     newNphiesTransactionValidationSettings: { [key: string]: boolean } = {};
+    newNphiesUnitPriceValidationSettings: { [key: string]: boolean } = {};
     newRadiologyValidationSettings: { [key: string]: boolean } = {};
     newNphiesApprovalMREValidationSettings: { [key: string]: boolean } = {};
 
@@ -332,7 +337,7 @@ export class ProvidersConfigComponent implements OnInit {
                     this.newRadiologyValidationSettings['101'] = false;
                     this.newNphiesApprovalMREValidationSettings['101'] = false;
                     this.newNphiesTransactionValidationSettings['101'] = false;
-
+                    this.newNphiesUnitPriceValidationSettings['101'] = false;
 
                     this.associatedPayers = event.body;
                     this.associatedPayers.forEach(payer => {
@@ -474,6 +479,7 @@ export class ProvidersConfigComponent implements OnInit {
         this.getSetting(PROVIDER_TYPE_CONFIGURATION_KEY, this.providerTypeValidationSettings, this.newProvideTypeValidationSettings, false);
         this.getPortalUserSettings();
         this.getNphiesTransactionsSettings();
+        this.getNphiesUnitPriceSettings();
         // ####### Chages on 02-01-2021 start
         this.getDatabaseConfig();
         this.getPayerMapping();
@@ -503,6 +509,7 @@ export class ProvidersConfigComponent implements OnInit {
             this.componentLoading.nphiesMreConfiguration ||
             this.componentLoading.radiologyConfiguration ||
             this.componentLoading.nphiesTransactionConfiguration ||
+            this.componentLoading.nphiesUnitPriceConfiguration ||
             this.componentLoading.midtable ||
             this.componentLoading.payerMapping ||
             this.componentLoading.NphiesPayerMapping ||
@@ -524,6 +531,7 @@ export class ProvidersConfigComponent implements OnInit {
         const mreFlag = this.saveSettings(MRE_RESTRICTION_KEY, this.newMREValidationSettings, this.mreValidationSettings);
         const radiologyFlag = this.saveSettings(RADIOLOGY_REPORT_KEY, this.newRadiologyValidationSettings, this.radiologyValidationSettings);
         const nphiesTransactionFlag = this.updateNphiesTransactionsFlageSettings();
+        const nphiesUnitPriceFlag = this.updateNphiesUnitPriceSettings();
         //this.saveSettings(NPHIES_TRANSACTION_KEY, this.newNphiesTransactionValidationSettings, this.nphiesTransactionValidationSettings);
 
         const nphiesMreFlag = this.saveSettings(NPHIES_MRE_RESTRICTION_KEY, this.newNphiesMREValidationSettings, this.nphiesMreValidationSettings);
@@ -542,7 +550,7 @@ export class ProvidersConfigComponent implements OnInit {
         // && priceUnitFlag && serviceCodeFlag
         //check again 
         if (portalUserFlag && icd10Flag && sfdaFlag && dbFlag
-            && payerFlag && nphiesPayerFlag && nphiesTransactionFlag && providerFlag && pbmFlag && nphiesPbmFlag && nphiesApprovalPbmFlag && mreFlag && nphiesMreFlag && nphiesApprovalMreFlag && radiologyFlag && priceListFlag && netAmountFlag && pollConfigFlag && providerTypeFlag) {
+            && payerFlag && nphiesPayerFlag && nphiesTransactionFlag && providerFlag && pbmFlag && nphiesPbmFlag && nphiesApprovalPbmFlag && mreFlag && nphiesMreFlag && nphiesApprovalMreFlag && radiologyFlag && priceListFlag && netAmountFlag && pollConfigFlag && providerTypeFlag && nphiesUnitPriceFlag) {
             this.dialogService.openMessageDialog({
                 title: '',
                 message: 'There is no changes to save!',
@@ -801,26 +809,44 @@ export class ProvidersConfigComponent implements OnInit {
         return true;
     }
 
-    updateNphiesTransactionsFlageSettings() {
-      
-                this.componentLoading.nphiesTransactionConfiguration = true;
-                this.superAdmin.updateNphiesTransactionsFlageSettings(this.selectedProvider, this.newNphiesTransactionValidationSettings['101']).subscribe(event => {
-                    if (event instanceof HttpResponse) {
+    updateNphiesUnitPriceSettings() {
 
-                        this.success.nphiesTransactionConfigurationSaveSuccess = 'Settings were saved successfully';
-                        this.componentLoading.nphiesTransactionConfiguration = false;
-                    }
-                }, error => {
-                    if (error instanceof HttpErrorResponse) {
-                      
-                            this.errors.nphiesTransactionConfigurationError = 'Could not save settings at the moment, please try again later.';
-                        }
-                    this.componentLoading.nphiesTransactionConfiguration = false;
-                    return false
-                });
+        this.componentLoading.nphiesUnitPriceConfiguration = true;
+        this.superAdmin.updateNphiesUnitPriceConfigFlageSettings(this.selectedProvider, this.newNphiesUnitPriceValidationSettings['101']).subscribe(event => {
+            if (event instanceof HttpResponse) {
+
+                this.success.nphiesUnitPriceConfigurationSaveSuccess = 'Settings were saved successfully';
+                this.componentLoading.nphiesUnitPriceConfiguration = false;
+            }
+        }, error => {
+            if (error instanceof HttpErrorResponse) {
+
+                this.errors.nphiesUnitPriceConfigurationError = 'Could not save settings at the moment, please try again later.';
+            }
+            this.componentLoading.nphiesUnitPriceConfiguration = false;
+            return false
+        });
         return true;
     }
+    updateNphiesTransactionsFlageSettings() {
 
+        this.componentLoading.nphiesTransactionConfiguration = true;
+        this.superAdmin.updateNphiesTransactionsFlageSettings(this.selectedProvider, this.newNphiesTransactionValidationSettings['101']).subscribe(event => {
+            if (event instanceof HttpResponse) {
+
+                this.success.nphiesTransactionConfigurationSaveSuccess = 'Settings were saved successfully';
+                this.componentLoading.nphiesTransactionConfiguration = false;
+            }
+        }, error => {
+            if (error instanceof HttpErrorResponse) {
+
+                this.errors.nphiesTransactionConfigurationError = 'Could not save settings at the moment, please try again later.';
+            }
+            this.componentLoading.nphiesTransactionConfiguration = false;
+            return false
+        });
+        return true;
+    }
     reset() {
         this.resetSection(SERVICE_CODE_RESTRICTION_KEY, this.newServiceValidationSettings);
         this.resetSection(VALIDATE_RESTRICT_PRICE_UNIT, this.newPriceUnitSettings);
@@ -830,7 +856,7 @@ export class ProvidersConfigComponent implements OnInit {
         this.resetSection(NPHIES_PBM_RESTRICTION_KEY, this.newNphiesPBMValidationSettings);
         this.resetSection(NPHIES_PBM_APPROVAL_KEY, this.newNphiesApprovalPBMValidationSettings);
         this.resetSection(RADIOLOGY_REPORT_KEY, this.newRadiologyValidationSettings);
-     //   this.resetSection(NPHIES_TRANSACTION_KEY, this.newNphiesTransactionValidationSettings);
+        //   this.resetSection(NPHIES_TRANSACTION_KEY, this.newNphiesTransactionValidationSettings);
         this.resetSection(MRE_RESTRICTION_KEY, this.newMREValidationSettings);
         this.resetSection(NPHIES_MRE_RESTRICTION_KEY, this.newNphiesMREValidationSettings);
         this.resetSection(NPHIES_MRE_APPROVAL_KEY, this.newNphiesApprovalMREValidationSettings);
@@ -1117,14 +1143,30 @@ export class ProvidersConfigComponent implements OnInit {
     }
 
 
+    getNphiesUnitPriceSettings() {
 
+        this.superAdmin.getNphiesUnitPriceFlageByProviderSettings(this.selectedProvider).subscribe(event => {
+            if (event instanceof HttpResponse) {
+                let respons = event.body as boolean;
+                this.newNphiesUnitPriceValidationSettings['101'] = respons;
+                this.componentLoading.nphiesUnitPriceConfiguration = false;
+            }
+        }, error => {
+            if (error instanceof HttpErrorResponse) {
+                if (error.status != 404) {
+                    this.errors.nphiesUnitPriceConfigurationError = 'Could not load Nphies Transactions settings, please try again later.';
+                }
+            }
+            this.componentLoading.nphiesUnitPriceConfiguration = false;
+        });
+    }
 
     getNphiesTransactionsSettings() {
-        
+
         this.superAdmin.getNphiesTransactionsFlageByProviderSettings(this.selectedProvider).subscribe(event => {
             if (event instanceof HttpResponse) {
                 let respons = event.body as boolean;
-                this.newNphiesTransactionValidationSettings['101']=respons;
+                this.newNphiesTransactionValidationSettings['101'] = respons;
                 this.componentLoading.nphiesTransactionConfiguration = false;
             }
         }, error => {
