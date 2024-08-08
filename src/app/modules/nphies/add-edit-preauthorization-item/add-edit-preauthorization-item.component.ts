@@ -318,13 +318,11 @@ export class AddEditPreauthorizationItemComponent implements OnInit {
         this.superAdmin.getNphiesUnitPriceFlageByProviderSettings(this.sharedServices.providerId).subscribe(event => {
             if (event instanceof HttpResponse) {
                 let response = event.body as boolean;
-                if (response) {
+                if (response && this.data.source === 'APPROVAL') {
                     this.FormItem.controls.unitPrice.disable();
                 } else {
                     this.FormItem.controls.unitPrice.enable();
                 }
-                this.unitPriceDisabled = response;
-                console.log("unitPriceDisabled = " + this.unitPriceDisabled);
             }
         }, error => {
             if (error instanceof HttpErrorResponse) {
