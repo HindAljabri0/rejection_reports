@@ -93,7 +93,17 @@ export class SuperAdminService {
     const request = new HttpRequest('GET', environment.adminServiceHost + requestURL);
     return this.http.request(request);
   }
+  updateNphiesUnitPriceConfigFlageSettings(providerId: string, isEnabled: any  ) {
+    const requestURL = `/providers/${providerId}/unitPriceConfig/save/${isEnabled}`;
+    const request = new HttpRequest('PUT', environment.settingsServiceHost + requestURL, null);
+    return this.http.request(request);
+  }
 
+  getNphiesUnitPriceFlageByProviderSettings(providerId: string  ) {
+    const requestURL = `/providers/${providerId}/unitPriceConfig/get`;
+    const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
+    return this.http.request(request);
+  }
   updatePriceListSettings(providerId: string, settings: { payerId: string, isServiceCodeEnable: string, isPriceListEnable: string }[]) {
     const requestURL = `/price-list/providers/${providerId}/config`;
     const request = new HttpRequest('POST', environment.adminServiceHost + requestURL, settings);

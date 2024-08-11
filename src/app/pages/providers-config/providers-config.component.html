@@ -974,7 +974,61 @@
     </mat-expansion-panel>
 
 
-
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Unit Price Configuration
+                <mat-menu #nphiesUnitPriceConfigurationMenu xPosition="before">
+                    <ng-template matMenuContent>
+                        <div class="pt-7 pb-7 pr-14 pl-14">
+                            <ng-container
+                                *ngIf="success.nphiesUnitPriceConfigurationSaveSuccess != null">{{success.nphiesUnitPriceConfigurationSaveSuccess}}</ng-container>
+                        </div>
+                    </ng-template>
+                </mat-menu>
+                <mat-menu #nphiesUnitPriceConfigurationMenu xPosition="before">
+                    <ng-template matMenuContent>
+                        <div class="pt-7 pb-7 pr-14 pl-14">
+                            <ng-container
+                                *ngIf="errors.nphiesUnitPriceConfigurationSaveError != null">{{errors.nphiesUnitPriceConfigurationSaveError}}</ng-container>
+                        </div>
+                    </ng-template>
+                </mat-menu>
+                <!--button type="button" *ngIf="errors.nphiesUnitPriceConfigurationSaveError != null" class="text-danger"
+                    (click)="$event.stopPropagation()" mat-icon-button
+                    [matMenuTriggerFor]="nphiesTransactionErrorConfigurationMenu">
+                    <mat-icon>error</mat-icon>
+                </button>
+                <button type="button" *ngIf="success.nphiesTransactionConfigurationSaveSuccess != null" class="text-success"
+                    (click)="$event.stopPropagation()" mat-icon-button
+                    [class.ml-2]="errors.nphiesTransactionConfigurationSaveError != null"
+                    [matMenuTriggerFor]="nphiesTransactionSuccessConfigurationMenu">
+                    <mat-icon>check_circle</mat-icon>
+                </button-->
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <ng-container
+            *ngIf="((errors.nphiesUnitPriceConfigurationError == null || errors.nphiesUnitPriceConfigurationError == '') && !componentLoading.nphiesTransactionConfiguration)">
+            <div class="provider-config-container">
+                <div class="row small-gutter">
+                    <div class="col-6">
+                        <div class="form-group form-group-static">
+                            <p class="form-control-static">Disable Unit Price</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group pt-2">
+                            <mat-slide-toggle color="primary"
+                                [(ngModel)]="newNphiesUnitPriceValidationSettings['101']">Enable</mat-slide-toggle>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <div *ngIf="componentLoading.nphiesUnitPriceConfiguration" class="inline-loader">
+            <mat-spinner diameter="48"></mat-spinner>
+        </div>
+    </mat-expansion-panel>
 
     <mat-expansion-panel>
       <mat-expansion-panel-header>

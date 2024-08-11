@@ -98,7 +98,7 @@
                             <mat-form-field class="form-control custom-select-control">
                                 <mat-select formControlName="insurancePlanId">
                                     <mat-option value="">Select Insurance Plan</mat-option>
-                                    <mat-option *ngFor="let plan of primaryPlan" [value]="plan.payerNphiesId"
+                                    <mat-option *ngFor="let plan of selectedBeneficiary.plans" [value]="plan.payerNphiesId"
                                         (click)="selectedPlan(plan)">
                                         <h5 class="menu-opt-group" style="padding: 0px 0px">
                                             {{getTPAName(plan.tpaNphiesId)}}</h5>
