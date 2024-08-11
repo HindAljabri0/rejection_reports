@@ -16,6 +16,7 @@ export class ClaimTransactionsComponent implements OnInit {
   @ViewChild('communicationRequests', { static: false }) communicationRequests: ClaimCommunicationRequestsComponent;
 
   payersList = [];
+  hoverText: string = '';
 
   constructor(
     public sharedServices: SharedServices,
@@ -53,11 +54,17 @@ export class ClaimTransactionsComponent implements OnInit {
   }
 
   get NewClaimTransactionProcessed() {
-    return this.sharedServices.unReadClaimProcessedCount;
+    return this.sharedServices.unReadClaimProcessedTotalCount;
   }
 
   get NewClaimComunicationRequests() {
-    return this.sharedServices.unReadClaimComunicationRequestCount;
+    return this.sharedServices.unReadClaimComunicationRequestTotalCount;
+  }
+  get NewClaimComunicationNonReAdjudicationRequests() {
+    return this.sharedServices.unReadClaimComunicationRequestNonReAdjudicationCount;
+  }
+  get NewClaimComunicationReAdjudicationRequests() {
+    return this.sharedServices.unReadClaimComunicationRequestReAdjudicationCount;
   }
 
 }

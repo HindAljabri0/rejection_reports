@@ -321,6 +321,6 @@ export class PaymentReconciliationComponent implements OnInit {
   }
 
   get NewRecentReconciliation() {
-    return this.sharedServices.unReadRecentCount;
+    return this.sharedServices.unReadRecentTotalCount;
   }
 }

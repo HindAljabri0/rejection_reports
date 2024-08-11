@@ -76,7 +76,7 @@ export class PrescriptionCommunicationRequestsComponent implements OnInit {
 
   readAllNotification() {
     this.communicationRequests.forEach(x=>x.notificationStatus = 'read');
-    this.sharedServices.unReadPrescriberCommunicationRequestCount = 0;
+    this.sharedServices.unReadPrescriberCommunicationRequestTotalCount = 0;
     this.sharedServices.markAllAsRead(this.sharedServices.providerId, "prescriber-communication-request-notification");
   }
 

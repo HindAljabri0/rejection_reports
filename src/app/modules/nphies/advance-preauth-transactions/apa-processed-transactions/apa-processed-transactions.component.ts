@@ -43,7 +43,7 @@ export class ApaProcessedTransactionsComponent implements OnInit {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
-          // this.sharedServices.unReadProcessedApaCount = 0;
+          // this.sharedServices.unReadProcessedApaTotalCount = 0;
           // this.sharedServices.markAsRead();
           this.apaProcessedTransactionModel = new PaginatedResult(body, ApaProcessedTransaction);
           this.apaProcessedTransactions = this.apaProcessedTransactionModel.content;
@@ -77,7 +77,7 @@ export class ApaProcessedTransactionsComponent implements OnInit {
 
   readAllNotification() {
     this.apaProcessedTransactions.forEach(x=>x.notificationStatus = 'read');
-    this.sharedServices.unReadProcessedApaCount = 0;
+    this.sharedServices.unReadProcessedApaTotalCount = 0;
     this.sharedServices.markAllAsRead(this.sharedServices.providerId, "advanced-approval-notifications");
   }
 

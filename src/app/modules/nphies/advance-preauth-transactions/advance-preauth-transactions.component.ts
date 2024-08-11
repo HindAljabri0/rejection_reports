@@ -31,6 +31,7 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
 
     page: number;
     pageSize: number;
+    hoverText: string = '';
 
     @ViewChild('paginator', { static: false }) paginator: MatPaginator;
     @ViewChild('apaProcessedTransactions', { static: false }) apaProcessedTransactions: ApaProcessedTransactionsComponent;
@@ -455,9 +456,9 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
         if (this.data.notificationStatus === 'unread') {
             const notificationId: string = this.data.notificationId;
             if (this.data.communicationId) {
-                this.sharedServices.unReadApaComunicationRequestCount = this.sharedServices.unReadApaComunicationRequestCount - 1;
+                this.sharedServices.unReadApaComunicationRequestTotalCount = this.sharedServices.unReadApaComunicationRequestTotalCount - 1;
             } else {
-                this.sharedServices.unReadProcessedApaCount = this.sharedServices.unReadProcessedApaCount - 1;
+                this.sharedServices.unReadProcessedApaTotalCount = this.sharedServices.unReadProcessedApaTotalCount - 1;
             }
             if (notificationId) {
                 this.sharedServices.markAsRead(notificationId, this.sharedServices.providerId);
@@ -575,10 +576,16 @@ export class AdvancePreauthTransactionsComponent implements OnInit {
         this.pageSize = event.pageSize;
     }
     get NewAPAComunicationRequests() {
-        return this.sharedServices.unReadApaComunicationRequestCount;
+        return this.sharedServices.unReadApaComunicationRequestTotalCount;
+    }
+    get NewAPAComunicationReAdjudicationRequests() {
+        return this.sharedServices.unReadApaComunicationRequestReAdjudicationCount;
+    }
+    get NewAPAComunicationNonReAdjudicationRequests() {
+        return this.sharedServices.unReadApaComunicationRequestNonReAdjudicationCount;
     }
     get NewAPAProcessed() {
-        return this.sharedServices.unReadProcessedApaCount;
+        return this.sharedServices.unReadProcessedApaTotalCount;
     }
     get paginatorLength() {
         if (this.transactionModel != null) {

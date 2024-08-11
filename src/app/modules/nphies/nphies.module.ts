@@ -108,6 +108,9 @@ import { UploadBeneficiaryInquireCchiComponent } from './upload-beneficiary-inqu
 import { BeneficiaryUploadsSummaryComponent } from './beneficiary-uploads-summary/beneficiary-uploads-summary.component';
 import { UploadBeneficiaryCchiErrorsDialogComponent } from './upload-beneficiary-cchi-errors-dialog/upload-beneficiary-cchi-errors-dialog.component';
 import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth-cnhi.component';
+import { PbmPrescriptionValidationDialogComponent } from 'src/app/components/dialogs/pbm-prescription-validation-dialog/pbm-prescription-validation-dialog.component';
+import { OrderByPipe } from 'src/app/components/dialogs/pbm-prescription-validation-dialog/order-by.pipe'; // Adjust the path as necessary
+import { PrescriptionDispenseDialogComponent } from 'src/app/components/dialogs/prescription-dispense-dialog/prescription-dispense-dialog.component';
 import { NphiesPayerMappingComponent } from './nphies-payer-mapping/nphies-payer-mapping.component';
 
 @NgModule({
@@ -174,6 +177,7 @@ import { NphiesPayerMappingComponent } from './nphies-payer-mapping/nphies-payer
         AdvancePreauthTransactionsComponent,
         AttachmentsReportComponent,
         PbmValidationResponseSummaryDialogComponent,
+        PrescriptionDispenseDialogComponent,
         AddPrescriptionComponent,
         PrescriptionTransactionsComponent,
         AddEditPrescriptionsItemComponent,
@@ -192,8 +196,9 @@ import { NphiesPayerMappingComponent } from './nphies-payer-mapping/nphies-payer
         BeneficiaryUploadsSummaryComponent,
         UploadBeneficiaryCchiErrorsDialogComponent,
         MreValidationResponseSummaryDialogComponent,
-        NphiesPayerMappingComponent,
-
+        PbmPrescriptionValidationDialogComponent,
+        OrderByPipe,
+        NphiesPayerMappingComponent
     ],
     imports: [
         CommonModule,
@@ -240,12 +245,14 @@ import { NphiesPayerMappingComponent } from './nphies-payer-mapping/nphies-payer
         ViewPrintPreviewDialogComponent,
         PbmValidationResponseSummaryDialogComponent,
         MreValidationResponseSummaryDialogComponent,
+        PbmPrescriptionValidationDialogComponent,
         AddEditPrescriptionsItemComponent,
         DosageDetailsComponent,
         ViewPrescriptionDetailsDialogComponent,
         PrescriptionCancelReasonModalComponent,
         PrescriptionReuseApprovalModalComponent,
-        UploadBeneficiaryCchiErrorsDialogComponent
+        UploadBeneficiaryCchiErrorsDialogComponent,
+        PrescriptionDispenseDialogComponent
     ],
     exports: [
         ApiErrorsDialogComponent
