@@ -14,9 +14,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet">
+  <link rel='stylesheet' href='https://flitc-public.s3.amazonaws.com/Waseel+CSS.css'></link> 
 
   <!-- <script src="./assets/scripts/freshChat.js"></script> -->
-  <script src="https://wchat.freshchat.com/js/widget.js"></script>
+  <!-- <script src="https://wchat.freshchat.com/js/widget.js"></script> -->
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script>
@@ -28,6 +29,138 @@
 
 <body>
   <app-root></app-root>
+  <script src='https://bots.labeah.ai/api/platform/websdkjs/b855957098be494e9b3cba32611724c58b516006f1fa457290601a2e642d739bstac'></script>
+  <script>
+    window.addEventListener('load', function() {
+      KoreSDK.chatConfig.isSpeechEnabled = false;
+      KoreSDK.chatConfig.isTTSEnabled = false;
+      KoreSDK.chatConfig.showAttachmentIcon = false;
+      KoreSDK.chatConfig.isSendButton = true;
+      KoreSDK.chatConfig.allowLocation = false;
+
+      KoreSDK.show(KoreSDK.chatConfig);
+
+      function updateChatWindowStyle() {
+        var chatWindow = document.querySelector('.kore-chat-window');
+        if (chatWindow) {
+          chatWindow.style.left = '20px'; 
+          chatWindow.style.width = '480px'; 
+        }
+      }
+
+      function applyStyles() {
+        var style = document.createElement('style');
+        style.innerHTML = `
+          .kore-chat-window.minimize {
+              min-height: 48px !important;
+              height: 48px !important;
+              width: auto !important;
+              min-width: auto !important;
+              bottom: 20px !important;
+              top: auto !important;
+              left: 20px !important; 
+              right: auto !important; 
+              border: none !important;
+              background: 0 0;
+              -webkit-border-radius: 50%;
+              -moz-border-radius: 50%;
+              border-radius: 50%;
+              -webkit-box-shadow: none;
+              -moz-box-shadow: none;
+              box-shadow: none;
+          }
+		  
+		  .kore-chat-window {
+              position: fixed;
+              bottom: 10px;
+              left: 20px; 
+              width: 480px;
+              min-width: 480px;
+              max-height: 90%;
+              height: 90%;
+              min-height: 200px;
+              font-family: var(--sdk-chat-window-font-style);
+              border: 1px solid var(--sdk-chat-window-border-color);
+              background: var(--sdk-chat-window-bg-color);
+              box-shadow: var(--sdk-chat-window-box-shadow);
+              -webkit-border-radius: 4px;
+              -moz-border-radius: 4px;
+              border-radius: 4px;
+              z-index: 1030;
+          }
+          
+          .kore-chat-window.minimize .minimized-title {
+              float: left;
+              max-width: 0;
+              width: auto;
+              text-align: right;
+              font-size: 14px;
+              margin-left: 40px;
+              color: var(--sdk-chat-widow-default-white);
+              margin-top: 10px;
+              padding: 8px 20px 8px 10px;
+              background: #5b9bd5;
+              border-radius: 20px;
+              display: block;
+              opacity: 0;
+              cursor: pointer;
+              white-space: nowrap;
+              transition: all .6s ease-in;
+          }
+          
+          .kore-chat-window.minimize .minimized{
+              left: 0; 
+          }
+        `;
+        document.head.appendChild(style);
+      }
+
+      function updateContent() {
+        setTimeout(function() {
+          var headerTitle = document.getElementById('botHeaderTitle');
+          if (headerTitle) {
+            headerTitle.innerHTML = 'وصيل || Waseel';
+            headerTitle.title = 'وصيل || Waseel'; 
+          }
+
+          var elementsToHide = document.querySelectorAll('.sdkAttachment.attachmentBtn, i.paperclip, input.filety');
+          elementsToHide.forEach(function(el) {
+            el.style.display = 'none';
+          });
+
+          var chatFooterContainer = document.querySelector('.kore-chat-window .footerContainer.pos-relative');
+          if (chatFooterContainer) {
+            var attachmentElement = chatFooterContainer.querySelector('.attachment');
+            if (attachmentElement) {
+              attachmentElement.remove();
+            }
+          }
+
+          var minimizedTitle = document.querySelector('.minimized-title');
+          if (minimizedTitle) {
+            minimizedTitle.innerHTML = 'Chat with us || تحدث معي';
+          }
+        }, 2000);
+      }
+
+      updateContent();
+      applyStyles();
+
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+            updateChatWindowStyle();
+          }
+        });
+      });
+
+      var chatWindow = document.querySelector('.kore-chat-window');
+      if (chatWindow) {
+        observer.observe(chatWindow, { attributes: true });
+        updateChatWindowStyle();  
+	   }
+    });
+  </script>
 </body>
 
 </html>
