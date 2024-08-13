@@ -17,7 +17,8 @@
         </div>
 
         <div class="block-body pb-0 relative">
-            <owl-carousel-o  *ngIf="downwardFlag === true" [options]="owlCarouselOptions" class="abstract-card-carousel dynamic-width" [class.fixed-card]="statusesSummaries.length<4">
+            <owl-carousel-o *ngIf="downwardFlag === true" [options]="owlCarouselOptions" class="abstract-card-carousel dynamic-width"
+                [class.fixed-card]="statusesSummaries.length<4">
                 <ng-container *ngFor="let summary of statusesSummaries | keyvalue; let i = index">
                     <ng-template carouselSlide [width]="summary.value.statuses[0] == 'partially_paid'?320:0">
                         <app-abstractcard [clickable]="cardsClickAble" [title]="commen.statusToName(i == 0?'all':summary.value.statuses[0])" [totalCount]="''" [inactiveCount]="''"
@@ -25,7 +26,9 @@
                             class="primary-card abstract-card summary-card">
                             <div class="summary">
                                 <div>
-                                    <span class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">{{summary.value.inActiveClaimCount?summary.value.totalClaims - summary.value.inActiveClaimCount:summary.value.totalClaims }}</span>
+                                    <span
+                                        class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">{{summary.value.inActiveClaimCount?summary.value.totalClaims
+                                        - summary.value.inActiveClaimCount:summary.value.totalClaims }}</span>
                                     <p>Active</p>
                                 </div>
                                 <span *ngIf="summary.value.inActiveClaimCount" class="separator"></span>
@@ -39,13 +42,14 @@
                 </ng-container>
             </owl-carousel-o>
 
-            <owl-carousel-o *ngIf="downwardFlag === false"  [options]="owlCarouselOptions" class="abstract-card-carousel dynamic-width" [class.fixed-card]="statusesSummaries.length<4"  >
-                <ng-container *ngFor="let summary of statusesSummaries | keyvalue; let i = index"  (click)="$event.stopPropagation()">
+            <owl-carousel-o *ngIf="downwardFlag === false" [options]="owlCarouselOptions" class="abstract-card-carousel dynamic-width"
+                [class.fixed-card]="statusesSummaries.length<4">
+                <ng-container *ngFor="let summary of statusesSummaries | keyvalue; let i = index" (click)="$event.stopPropagation()">
                     <ng-template carouselSlide [width]="summary.value.statuses[0] == 'partially_paid'?320:0">
                         <app-abstractcard [clickable]="cardsClickAble" [title]="commen.statusToName(i == 0?'all':summary.value.statuses[0])"
-                            [totalCount]="summary.value.inActiveClaimCount?summary.value.totalClaims - summary.value.inActiveClaimCount:summary.value.totalClaims" [inactiveCount]="summary.value.inActiveClaimCount"
-                            [accentColor]="commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])" (action)="getResultsOfStatus(summary.key)"
-                            class="primary-card abstract-card">
+                            [totalCount]="summary.value.inActiveClaimCount?summary.value.totalClaims - summary.value.inActiveClaimCount:summary.value.totalClaims"
+                            [inactiveCount]="summary.value.inActiveClaimCount" [accentColor]="commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])"
+                            (action)="getResultsOfStatus(summary.key)" class="primary-card abstract-card">
                             <span class="label total">Totals</span>
                             <table>
                                 <tr>
@@ -76,8 +80,8 @@
                                 </tr>
                                 <tr>
                                     <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
-                                        <span class="dashboard-numbers">{{summary.value.totalTax!=null?getformatCurrency(summary.value.totalTax):'-'}}</span><span *ngIf="summary.value.totalTax!=null"
-                                            class="currency">
+                                        <span class="dashboard-numbers">{{summary.value.totalTax!=null?getformatCurrency(summary.value.totalTax):'-'}}</span><span
+                                            *ngIf="summary.value.totalTax!=null" class="currency">
                                             SR</span>
                                     </td>
                                     <td class="text-{{commen.getCardAccentColor(i == 0?'all':summary.value.statuses[0])}}">
@@ -95,10 +99,10 @@
                 </ng-container>
             </owl-carousel-o>
 
-            <button class="abstract-card-toggle" >
-                <mat-icon class="text-primary" (click)="getSummaryOfStatusesClaim()" *ngIf="downwardFlag" >expand_more</mat-icon>
-                
-                <mat-icon class="text-primary"  (click)="downwardFlag=!this.downwardFlag"  *ngIf="!downwardFlag">expand_less</mat-icon>
+            <button class="abstract-card-toggle">
+                <mat-icon class="text-primary" (click)="getSummaryOfStatusesClaim()" *ngIf="downwardFlag">expand_more</mat-icon>
+
+                <mat-icon class="text-primary" (click)="downwardFlag=!this.downwardFlag" *ngIf="!downwardFlag">expand_less</mat-icon>
             </button>
         </div>
     </div>
@@ -110,7 +114,8 @@
                 {{commen.statusToName(selectedCardKey == 0?'all':summaries[selectedCardKey].statuses[0])}}
             </button>
 
-            <div class="right-block" *ngIf="selectedCardKey != 0 && (getPrivileges().ProviderPrivileges.NPHIES.isAdmin || getPrivileges().ProviderPrivileges.NPHIES.canAccessClaim)">
+            <div class="right-block"
+                *ngIf="selectedCardKey != 0 && (getPrivileges().ProviderPrivileges.NPHIES.isAdmin || getPrivileges().ProviderPrivileges.NPHIES.canAccessClaim)">
                 <div class="actions">
                     <button matRipple type="button" class="action-btn" (click)="downloadSheetFormat()"
                         *ngIf="showDownloadBtn && searchResult != null && searchResult.totalPages > 0 && summaries[selectedCardKey] != null">
@@ -553,7 +558,8 @@
                                             </div>
                                         </td>
 
-                                        <td *ngIf="showColumns(selectedCardKey,claim.status) && (getPrivileges().ProviderPrivileges.NPHIES.isAdmin || getPrivileges().ProviderPrivileges.NPHIES.canAccessClaim)" class="actions text-left text-wrap">
+                                        <td *ngIf="showColumns(selectedCardKey,claim.status) && (getPrivileges().ProviderPrivileges.NPHIES.isAdmin || getPrivileges().ProviderPrivileges.NPHIES.canAccessClaim)"
+                                            class="actions text-left text-wrap">
                                             <div class="d-flex align-items-center" *ngIf="claim.claimResponseId">
                                                 <button mat-icon-button matTooltip="Get current status of claim" class="text-primary ml-n2"
                                                     (click)="checkStatus(claim.claimResponseId,claim.providerId)">
@@ -588,17 +594,19 @@
 
 
                                         <td (click)="showClaim(claim.status, claim.claimId,claim.claimResponseId,false,false,claim.providerId)" class="text-center row-click"
-                                        *ngIf="isMREValidationVisible && selectedCardKey != 0">
-                                        <mat-icon *ngIf="(claim.body.mreClaimStatus | lowercase)==='approved'" class="material-icons-outlined size-21 text-success"
-                                          matTooltip="Approved">check_circle</mat-icon>
-                                        <mat-icon *ngIf="(claim.body.mreClaimStatus | lowercase)==='partially_approved'" class="material-icons-outlined size-21 text-warning"
-                                          matTooltip="Partially Approved">report
-                                        </mat-icon>
-                                        <mat-icon *ngIf="(claim.body.mreClaimStatus | lowercase)==='invalid'" class="size-21 text-danger" matTooltip="Invalid">error_outline</mat-icon>
-                                        <mat-icon *ngIf="(claim.body.mreClaimStatus | lowercase)==='unknown'" class="material-icons-outlined size-21 text-danger"
-                                        matTooltip="Unknown">dangerous</mat-icon>
-                                        <mat-icon *ngIf="(claim.body.mreClaimStatus | lowercase)==='rejected'" class="material-icons-outlined size-21 text-danger"
-                                          matTooltip="Rejected">dangerous</mat-icon></td>
+                                            *ngIf="isMREValidationVisible && selectedCardKey != 0">
+                                            <mat-icon *ngIf="(claim.body.mreClaimStatus | lowercase)==='approved'" class="material-icons-outlined size-21 text-success"
+                                                matTooltip="Approved">check_circle</mat-icon>
+                                            <mat-icon *ngIf="(claim.body.mreClaimStatus | lowercase)==='partially_approved'" class="material-icons-outlined size-21 text-warning"
+                                                matTooltip="Partially Approved">report
+                                            </mat-icon>
+                                            <mat-icon *ngIf="(claim.body.mreClaimStatus | lowercase)==='invalid'" class="size-21 text-danger"
+                                                matTooltip="Invalid">error_outline</mat-icon>
+                                            <mat-icon *ngIf="(claim.body.mreClaimStatus | lowercase)==='unknown'" class="material-icons-outlined size-21 text-danger"
+                                                matTooltip="Unknown">dangerous</mat-icon>
+                                            <mat-icon *ngIf="(claim.body.mreClaimStatus | lowercase)==='rejected'" class="material-icons-outlined size-21 text-danger"
+                                                matTooltip="Rejected">dangerous</mat-icon>
+                                        </td>
 
 
 
@@ -621,7 +629,7 @@
                                                 <span class="d-flex align-items-center">
                                                     <span matTooltip="Number of Communications">{{claim.communicationCount}}</span>
                                                     <mat-icon class="size-21" style="margin-left: 2px;margin-right: 2px;">question_answer</mat-icon>
-                                                    <span c> {{claim.communicationsRequestCount}}</span>
+                                                    <span> {{claim.communicationsRequestCount}}</span>
                                                 </span>
                                             </button>
 
@@ -774,19 +782,21 @@
                 </ng-container>
 
                 <ng-container
-                *ngIf="(summaries[this.selectedCardKey].statuses[0].toLowerCase() === statusSelected.Accepted.toLowerCase()
+                    *ngIf="(summaries[this.selectedCardKey].statuses[0].toLowerCase() === statusSelected.Accepted.toLowerCase()
                           || summaries[this.selectedCardKey].statuses[0].toLowerCase() === statusSelected.Downloadable.toLowerCase()) && (selectedCardKey != 0)  && (isMREValidationVisible)">
-                <button (click)="applyMREValidation()" mat-flat-button color="primary">MRE Validate
-                  {{selectedClaims.length==0?"
-                  All":"Selection ("+this.selectedClaims.length+")"}}</button>         
-              </ng-container>
-              
+                    <button (click)="applyMREValidation()" mat-flat-button color="primary">MRE Validate
+                        {{selectedClaims.length==0?"
+                        All":"Selection ("+this.selectedClaims.length+")"}}</button>
+                </ng-container>
+
                 <ng-container *ngIf="showMoveToReadyState === true && selectedCardKey != 0">
                     <button mat-flat-button color="primary" (click)="moveToReadyState()">{{selectedClaims.length==0?"Move All to
                         Ready State":"Move Selected ("+this.selectedClaims.length+") to Ready State"}}</button>
                 </ng-container>
                 <ng-container *ngIf="showInquireCancelMoveAll === true && selectedCardKey != 0">
-                    <button mat-flat-button color="primary" matTooltip="This button will perform inquiry , cancel and move to ready state for claims that submitted in the past 24 hour and still in queued" (click)="InquireCancelMoveAll()">{{selectedClaims.length==0?"Verify All":"Verify Selected ("+this.selectedClaims.length+")"}}</button>
+                    <button mat-flat-button color="primary"
+                        matTooltip="This button will perform inquiry , cancel and move to ready state for claims that submitted in the past 24 hour and still in queued"
+                        (click)="InquireCancelMoveAll()">{{selectedClaims.length==0?"Verify All":"Verify Selected ("+this.selectedClaims.length+")"}}</button>
                 </ng-container>
             </div>
         </div>

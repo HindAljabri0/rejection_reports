@@ -22,7 +22,7 @@ import { MainClaimPageComponent } from '../claim-module-components/main-claim-pa
                 path: '',
                 component: MainLayoutComponent,
                 children: [
-                 //   { path: '', component: DashboardComponent, canActivate: [RouteCanActiveService] },
+                    { path: '', component: DashboardComponent, canActivate: [RouteCanActiveService] },
                     { path: ':providerId/claims', component: SearchClaimsComponent, canActivate: [RouteCanActiveService] },
                     { path: 'claims/:id', component: MainClaimPageComponent, canActivate: [RouteCanActiveService] },
                     { path: ':providerId/notifications', component: NotificationsPageComponent, canActivate: [RouteCanActiveService] },

@@ -1,0 +1,466 @@
+<div class="animate__animated animate__faster animate__fadeIn">
+    <div class="block-header">
+        <p>Rejected Claim Report</p>
+    </div>
+    <div class="block-filter-panel">
+        <form>
+            <div class="row small-gutter">
+                <div class="col-4 col-xxl-3">
+                    <div class="form-group">
+                        <label class="control-label">From Date</label>
+                        <div class="date-picker">
+                            <input [matDatepicker]="filterFromDate" class="form-control" placeholder="Select from date">
+                            <mat-datepicker-toggle [for]="filterFromDate"></mat-datepicker-toggle>
+                            <mat-datepicker #filterFromDate></mat-datepicker>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4 col-xxl-3">
+                    <div class="form-group">
+                        <label class="control-label">To Date</label>
+                        <div class="date-picker">
+                            <input [matDatepicker]="filterToDate" class="form-control" placeholder="Select to date">
+                            <mat-datepicker-toggle [for]="filterToDate"></mat-datepicker-toggle>
+                            <mat-datepicker #filterToDate></mat-datepicker>
+                        </div>
+                    </div>
+                </div>
+                <ng-container *ngIf="advanceSearchEnable">
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label">Payer</label>
+                            <mat-form-field class="form-control custom-select-control">
+                                <mat-select value="-1">
+                                    <mat-option value="-1">Select</mat-option>
+                                    <mat-option value="Payer 1">Payer 1</mat-option>
+                                    <mat-option value="Payer 2">Payer 2</mat-option>
+                                    <mat-option value="Payer 3">Payer 3</mat-option>
+                                    <mat-option value="Payer 4">Payer 4</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label">Type</label>
+                            <mat-form-field class="form-control custom-select-control">
+                                <mat-select value="-1">
+                                    <mat-option value="-1">Select</mat-option>
+                                    <mat-option value="Type 1">Type 1</mat-option>
+                                    <mat-option value="Type 2">Type 2</mat-option>
+                                    <mat-option value="Type 3">Type 3</mat-option>
+                                    <mat-option value="Type 4">Type 4</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label" matTooltip="Minimum 3 Character(s)/Number(s)">Select a Beneficiary</label>
+                            <input type="text" class="form-control search-box" placeholder="Search for beneficiary by name or document ID...">
+                        </div>
+                    </div>
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label">Claim Reference No.</label>
+                            <input placeholder="Enter claim ref. no." class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-4 col-xxl-3">
+                        <div class="form-group">
+                            <label class="control-label">Request Bundle ID</label>
+                            <input placeholder="Enter request bundle ID" class="form-control">
+                        </div>
+                    </div>
+                </ng-container>
+                <div class="col-4 col-xxl-3" *ngIf="!advanceSearchEnable">
+                    <div class="form-group">
+                        <label class="control-label">&nbsp;</label>
+                        <div class="btn-list">
+                            <button type="submit" mat-flat-button color="primary">Search</button>
+                            <button type="button" class="text-primary" (click)="toggleAdvanceSearch()" mat-button>Advance
+                                Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="advanceSearchEnable" class="form-group">
+                <div class="btn-list">
+                    <button type="submit" mat-flat-button color="primary">Search</button>
+                    <button type="button" class="text-primary" mat-button (click)="toggleAdvanceSearch()">Basic Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="block-body p-0">
+        <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding">
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <span>Partially Approved</span>
+                </ng-template>
+
+                <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+                    <div class="fixed-height">
+                        <table class="primary-grid claim-view-table" cellpadding="0" cellspacing="0" border="0">
+                            <thead>
+                                <tr>
+                                    <th width="10"></th>
+                                    <th>Claim Ref. No.</th>
+                                    <th>Beneficiary</th>
+                                    <th>Member ID</th>
+                                    <th>Dr. Name</th>
+                                    <th>Claim Date</th>
+                                    <th>Submission Date</th>
+                                    <th>Response Date</th>
+                                    <th>Net Amount</th>
+                                    <th>Reissued?</th>
+                                    <th class="text-center"></th>
+                                    <th class="text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="row-click text-primary">
+                                        <!-- <mat-icon class="size-21">add_circle_outline</mat-icon> -->
+                                        <mat-icon class="size-21">
+                                            remove_circle_outline</mat-icon>
+                                    </td>
+                                    <td class="row-click">70624461931348</td>
+                                    <td class="row-click">Rashika Gupta</td>
+                                    <td class="row-click">123</td>
+                                    <td class="row-click">AWAD MERIE AL SERHANI</td>
+                                    <td class="row-click">06-05-2024</td>
+                                    <td class="row-click">06-05-2024</td>
+                                    <td class="row-click">06-05-2024</td>
+                                    <td class="row-click">500 <span class="currency">SR</span></td>
+                                    <td class="text-center row-click">
+                                        <div class="d-flex align-items-center">
+                                            <img src="./assets/check-circle-success.svg" class="d-block mr-6" alt="Check" />
+                                            <span>Yes</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button mat-icon-button class="my-n1">
+                                            <span class="d-flex align-items-center">
+                                                <span matTooltip="Number of Communications">2</span>
+                                                <mat-icon class="size-21" style="margin-left: 2px;margin-right: 2px;">question_answer</mat-icon>
+                                                <span>0</span>
+                                            </span>
+                                        </button>
+                                    </td>
+                                    <td class="actions">
+                                        <button mat-icon-button class="text-primary my-n2">
+                                            <mat-icon class="material-icons-outlined size-21">forum</mat-icon>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="12">
+                                        <div class="box mb-2">
+                                            <h5 class="align-self-center medium pb-2">Items</h5>
+                                            <table class="primary-grid claim-view-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Sequence No.</th>
+                                                        <th>Invoice No.</th>
+                                                        <th>Type</th>
+                                                        <th>Code - Description</th>
+                                                        <th>
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="pr-1">Net</span>
+                                                                <mat-icon class="material-icons-outlined size-20" matTooltip="Unit Price * Quantity * Factor + TAX">
+                                                                    info</mat-icon>
+                                                                <span class="pr-1">/ Tax</span>
+                                                                <mat-icon class="material-icons-outlined size-20" matTooltip="Payer share Tax only">
+                                                                    info</mat-icon>
+                                                            </div>
+                                                        </th>
+                                                        <th>Benefit / Tax</th>
+                                                        <th>Status</th>
+                                                        <th>Adjudication Reason Code</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>1234</td>
+                                                        <td>Services</td>
+                                                        <td>83600-00-70 - Repeat consult Specialist -1</td>
+                                                        <td>100 <span class="currency">SR</span> / 0 <span class="currency">SR</span></td>
+                                                        <td>5 <span class="currency">SR</span> / 5 <span class="currency">SR</span></td>
+                                                        <td class="text-danger">Rejected</td>
+                                                        <td>AD-1-3 : Diagnosis is inconsistent with encounter type</td>
+                                                        <td class="actions">
+                                                            <button mat-icon-button class="text-primary my-n2">
+                                                                <mat-icon class="material-icons-outlined size-21">forum</mat-icon>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="row-click text-primary">
+                                        <mat-icon class="size-21">add_circle_outline</mat-icon>
+                                        <!-- <mat-icon class="size-21">
+                                                remove_circle_outline</mat-icon> -->
+                                    </td>
+                                    <td class="row-click">254566239251653</td>
+                                    <td class="row-click">Parvez Khan</td>
+                                    <td class="row-click">123</td>
+                                    <td class="row-click">Dr. Margie</td>
+                                    <td class="row-click">25-10-2023</td>
+                                    <td class="row-click">25-10-2023</td>
+                                    <td class="row-click">25-10-2023</td>
+                                    <td class="row-click">112 <span class="currency">SR</span></td>
+                                    <td class="text-center row-click">
+                                        <div class="d-flex align-items-center">
+                                            <img src="./assets/check-circle-success.svg" class="d-block mr-6" alt="Check" />
+                                            <span>Yes</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button mat-icon-button class="my-n1">
+                                            <span class="d-flex align-items-center">
+                                                <span matTooltip="Number of Communications">2</span>
+                                                <mat-icon class="size-21" style="margin-left: 2px;margin-right: 2px;">question_answer</mat-icon>
+                                                <span>0</span>
+                                            </span>
+                                        </button>
+                                    </td>
+                                    <td class="actions">
+                                        <button mat-icon-button class="text-primary my-n2">
+                                            <mat-icon class="material-icons-outlined size-21">forum</mat-icon>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="row-click text-primary">
+                                        <mat-icon class="size-21">add_circle_outline</mat-icon>
+                                        <!-- <mat-icon class="size-21">
+                                                remove_circle_outline</mat-icon> -->
+                                    </td>
+                                    <td class="row-click">2356239251653</td>
+                                    <td class="row-click">Hashim Ebrahim</td>
+                                    <td class="row-click">123</td>
+                                    <td class="row-click">Dr. Margie</td>
+                                    <td class="row-click">25-10-2023</td>
+                                    <td class="row-click">25-10-2023</td>
+                                    <td class="row-click">25-10-2023</td>
+                                    <td class="row-click">30.1 <span class="currency">SR</span></td>
+                                    <td class="text-center row-click">
+                                        <div class="d-flex align-items-center">
+                                            <img src="./assets/check-circle-success.svg" class="d-block mr-6" alt="Check" />
+                                            <span>Yes</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button mat-icon-button class="my-n1">
+                                            <span class="d-flex align-items-center">
+                                                <span matTooltip="Number of Communications">2</span>
+                                                <mat-icon class="size-21" style="margin-left: 2px;margin-right: 2px;">question_answer</mat-icon>
+                                                <span>0</span>
+                                            </span>
+                                        </button>
+                                    </td>
+                                    <td class="actions">
+                                        <button mat-icon-button class="text-primary my-n2">
+                                            <mat-icon class="material-icons-outlined size-21">forum</mat-icon>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </ng-scrollbar>
+            </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <span>Rejected</span>
+                </ng-template>
+
+                <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+                    <div class="fixed-height">
+                        <table class="primary-grid claim-view-table" cellpadding="0" cellspacing="0" border="0">
+                            <thead>
+                                <tr>
+                                    <th width="10"></th>
+                                    <th>Claim Ref. No.</th>
+                                    <th>Beneficiary</th>
+                                    <th>Member ID</th>
+                                    <th>Dr. Name</th>
+                                    <th>Claim Date</th>
+                                    <th>Submission Date</th>
+                                    <th>Response Date</th>
+                                    <th>Net Amount</th>
+                                    <th>Reissued?</th>
+                                    <th class="text-center"></th>
+                                    <th class="text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="row-click text-primary">
+                                        <!-- <mat-icon class="size-21">add_circle_outline</mat-icon> -->
+                                        <mat-icon class="size-21">
+                                            remove_circle_outline</mat-icon>
+                                    </td>
+                                    <td class="row-click">70624461931348</td>
+                                    <td class="row-click">Rashika Gupta</td>
+                                    <td class="row-click">123</td>
+                                    <td class="row-click">AWAD MERIE AL SERHANI</td>
+                                    <td class="row-click">06-05-2024</td>
+                                    <td class="row-click">06-05-2024</td>
+                                    <td class="row-click">06-05-2024</td>
+                                    <td class="row-click">500 <span class="currency">SR</span></td>
+                                    <td class="text-center row-click">
+                                        <div class="d-flex align-items-center">
+                                            <img src="./assets/check-circle-success.svg" class="d-block mr-6" alt="Check" />
+                                            <span>Yes</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button mat-icon-button class="my-n1">
+                                            <span class="d-flex align-items-center">
+                                                <span matTooltip="Number of Communications">2</span>
+                                                <mat-icon class="size-21" style="margin-left: 2px;margin-right: 2px;">question_answer</mat-icon>
+                                                <span>0</span>
+                                            </span>
+                                        </button>
+                                    </td>
+                                    <td class="actions">
+                                        <button mat-icon-button class="text-primary my-n2">
+                                            <mat-icon class="material-icons-outlined size-21">forum</mat-icon>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="12">
+                                        <div class="box mb-2">
+                                            <h5 class="align-self-center medium pb-2">Items</h5>
+                                            <table class="primary-grid claim-view-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Sequence No.</th>
+                                                        <th>Invoice No.</th>
+                                                        <th>Type</th>
+                                                        <th>Code - Description</th>
+                                                        <th>
+                                                            <div class="d-flex align-items-center">
+                                                                <span class="pr-1">Net</span>
+                                                                <mat-icon class="material-icons-outlined size-20" matTooltip="Unit Price * Quantity * Factor + TAX">
+                                                                    info</mat-icon>
+                                                                <span class="pr-1">/ Tax</span>
+                                                                <mat-icon class="material-icons-outlined size-20" matTooltip="Payer share Tax only">
+                                                                    info</mat-icon>
+                                                            </div>
+                                                        </th>
+                                                        <th>Benefit / Tax</th>
+                                                        <th>Status</th>
+                                                        <th>Adjudication Reason Code</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>1234</td>
+                                                        <td>Services</td>
+                                                        <td>83600-00-70 - Repeat consult Specialist -1</td>
+                                                        <td>100 <span class="currency">SR</span> / 0 <span class="currency">SR</span></td>
+                                                        <td>5 <span class="currency">SR</span> / 5 <span class="currency">SR</span></td>
+                                                        <td class="text-danger">Rejected</td>
+                                                        <td>AD-1-3 : Diagnosis is inconsistent with encounter type</td>
+                                                        <td class="actions">
+                                                            <button mat-icon-button class="text-primary my-n2">
+                                                                <mat-icon class="material-icons-outlined size-21">forum</mat-icon>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="row-click text-primary">
+                                        <mat-icon class="size-21">add_circle_outline</mat-icon>
+                                        <!-- <mat-icon class="size-21">
+                                                remove_circle_outline</mat-icon> -->
+                                    </td>
+                                    <td class="row-click">254566239251653</td>
+                                    <td class="row-click">Parvez Khan</td>
+                                    <td class="row-click">123</td>
+                                    <td class="row-click">Dr. Margie</td>
+                                    <td class="row-click">25-10-2023</td>
+                                    <td class="row-click">25-10-2023</td>
+                                    <td class="row-click">25-10-2023</td>
+                                    <td class="row-click">112 <span class="currency">SR</span></td>
+                                    <td class="text-center row-click">
+                                        <div class="d-flex align-items-center">
+                                            <img src="./assets/check-circle-success.svg" class="d-block mr-6" alt="Check" />
+                                            <span>Yes</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button mat-icon-button class="my-n1">
+                                            <span class="d-flex align-items-center">
+                                                <span matTooltip="Number of Communications">2</span>
+                                                <mat-icon class="size-21" style="margin-left: 2px;margin-right: 2px;">question_answer</mat-icon>
+                                                <span>0</span>
+                                            </span>
+                                        </button>
+                                    </td>
+                                    <td class="actions">
+                                        <button mat-icon-button class="text-primary my-n2">
+                                            <mat-icon class="material-icons-outlined size-21">forum</mat-icon>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="row-click text-primary">
+                                        <mat-icon class="size-21">add_circle_outline</mat-icon>
+                                        <!-- <mat-icon class="size-21">
+                                                remove_circle_outline</mat-icon> -->
+                                    </td>
+                                    <td class="row-click">2356239251653</td>
+                                    <td class="row-click">Hashim Ebrahim</td>
+                                    <td class="row-click">123</td>
+                                    <td class="row-click">Dr. Margie</td>
+                                    <td class="row-click">25-10-2023</td>
+                                    <td class="row-click">25-10-2023</td>
+                                    <td class="row-click">25-10-2023</td>
+                                    <td class="row-click">30.1 <span class="currency">SR</span></td>
+                                    <td class="text-center row-click">
+                                        <div class="d-flex align-items-center">
+                                            <img src="./assets/check-circle-success.svg" class="d-block mr-6" alt="Check" />
+                                            <span>Yes</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button mat-icon-button class="my-n1">
+                                            <span class="d-flex align-items-center">
+                                                <span matTooltip="Number of Communications">2</span>
+                                                <mat-icon class="size-21" style="margin-left: 2px;margin-right: 2px;">question_answer</mat-icon>
+                                                <span>0</span>
+                                            </span>
+                                        </button>
+                                    </td>
+                                    <td class="actions">
+                                        <button mat-icon-button class="text-primary my-n2">
+                                            <mat-icon class="material-icons-outlined size-21">forum</mat-icon>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </ng-scrollbar>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

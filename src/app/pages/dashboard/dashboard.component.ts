@@ -172,7 +172,7 @@ export class DashboardComponent implements OnInit {
     ];
 
     async ngOnInit() {
-        const order = localStorage.getItem('defaultDashboardSectionsOrder');
+        const order =null; //localStorage.getItem('defaultDashboardSectionsOrder');
         const newOrderedDashboard = [];
         if (order != null) {
             const splitedValues = order.split(',');

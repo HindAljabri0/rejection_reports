@@ -181,7 +181,7 @@
                           </span>
 
                           <div
-                            *ngIf="transaction.submitted && (item.status === 'approved' || item.status === 'partial') && !item.patientInvoiceNo">
+                            *ngIf="transaction.submitted && (item.status === 'approved' || item.status === 'partial' || item.status === 'not-required') && !item.patientInvoiceNo">
                             <span class="error-text">InvoiceNo required</span>
                           </div>
                         </div>
