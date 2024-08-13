@@ -32,6 +32,8 @@ import { BeneficiaryUploadsSummaryComponent } from './beneficiary-uploads-summar
 import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth-cnhi.component';
 import { CancelPreviousClaimComponent } from '../adminstration/cancel-previous-claim/cancel-previous-claim.component';
 import { NphiesPayerMappingComponent } from './nphies-payer-mapping/nphies-payer-mapping.component';
+import { RejectedClaimReportComponent } from './rejected-claim-report/rejected-claim-report.component';
+
 
 const routes: Routes = [
     { path: 'eligibility', component: EligibilityComponent },
@@ -68,7 +70,9 @@ const routes: Routes = [
     { path: 'attachments-report', component: AttachmentsReportComponent },
     { path: 'extract-claims', component: ExtractClaimsComponent },
     { path: 'cancelPreviousClaim', component: CancelPreviousClaimComponent },
-    { path: 'nphies-payer-mapping', component: NphiesPayerMappingComponent }
+    { path: 'nphies-payer-mapping', component: NphiesPayerMappingComponent },
+    { path: 'rejected-claim-report', component: RejectedClaimReportComponent }
+
 ];
 
 @NgModule({
