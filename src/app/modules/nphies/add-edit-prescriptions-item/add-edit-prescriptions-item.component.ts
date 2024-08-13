@@ -21,6 +21,7 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
 
     @ViewChild('itemSelect', { static: true }) itemSelect: MatSelect;
     itemList: any = [];
+    itemListFiltered: any = [];
     // tslint:disable-next-line:max-line-length
     filteredItem: ReplaySubject<any> = new ReplaySubject<any[]>(1);
     filteredPescribedMedicationItem: ReplaySubject<any> = new ReplaySubject<any[]>(1);
@@ -278,7 +279,9 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
                         item: this.itemList.filter(x => x.code === type.code)[0]
                     });
                 }
-                this.filteredItem.next(this.itemList.slice());
+                //this.filteredItem.next(this.itemList.slice());
+                this.itemListFilteredFun(type.code);
+                this.filteredItem.next(this.itemListFiltered.slice());
                 this.FormItem.controls.itemFilter.valueChanges
                     .pipe(takeUntil(this.onDestroy))
                     .subscribe(() => {
@@ -301,18 +304,24 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
             this.providerNphiesSearchService.getCodeDescriptionList(this.sharedServices.providerId, this.FormItem.controls.type.value.value).subscribe(event => {
                 if (event instanceof HttpResponse) {
                     this.itemList = event.body;
+                    this.itemListFiltered = this.itemList;
                     if (this.data.item && this.data.item.itemCode) {
                         this.FormItem.patchValue({
                             item: this.itemList.filter(x => x.code === this.data.item.itemCode)[0]
                         });
+
+                        this.itemListFilteredFun(this.data.item.itemCode);
                     } else {
                         if (type) {
                             this.FormItem.patchValue({
                                 item: this.itemList.filter(x => x.code === type.code)[0]
                             });
+
+                            this.itemListFilteredFun(type.code);
                         }
                     }
-                    this.filteredItem.next(this.itemList.slice());
+                  //  this.filteredItem.next(this.itemList.slice());
+                    this.filteredItem.next(this.itemListFiltered.slice());
                     this.IsItemLoading = false;
                     this.FormItem.controls.item.enable();
                     this.FormItem.controls.itemFilter.valueChanges
@@ -330,23 +339,69 @@ export class AddEditPrescriptionsItemComponent implements OnInit {
         }
     }
 
+    itemListFilteredFun(StanderCode) {
+        this.itemListFiltered = [];
+        this.itemList.forEach(x => {
+            if (x.code === StanderCode) {
+
+                this.itemListFiltered.unshift(x);
+            } else {
+                this.itemListFiltered.push(x);
+            }
+        });
+    }
+
+
+    search = '';
+    filterMyOptions(val) {
+        this.search = val;
+        this.filterItem();
+        console.log(val);
+    }
+
+    selectionChangeCode(gtinNumber: any) {
+
+        console.log(gtinNumber + "test")
+        const filteredData = this.itemList.filter((item) => item.code === gtinNumber);
+        this.itemListFilteredFun(gtinNumber);
+        this.FormItem.patchValue({
+            item: this.itemList.filter(x => x.code === gtinNumber)[0]
+        });}
     filterItem() {
-        if (!this.itemList) {
+        if (!this.itemListFiltered) {
             return;
         }
         // get the search keyword
-        let search = this.FormItem.controls.itemFilter.value;
-        if (!search) {
-            this.filteredItem.next(this.itemList.slice());
+        //let search = this.FormItem.controls.itemFilter.value;
+        if (this.search === null || this.search === '' || this.search.length === 0 || !this.search) {
+            this.filteredItem.next(this.itemListFiltered.slice());
             return;
         } else {
-            search = search.toLowerCase();
+            this.search = this.search.toLowerCase();
         }
         // filter the nations
         this.filteredItem.next(
-            this.itemList.filter(item => item.description.toLowerCase().indexOf(search) > -1 || item.code.toString().toLowerCase().indexOf(search) > -1)
+            this.itemListFiltered.filter(item => item.description.toLowerCase().indexOf(this.search) > -1 || item.code.toString().toLowerCase().indexOf(this.search) > -1)
         );
     }
+    // filterItem() {
+    //     if (!this.itemList) {
+    //         return;
+    //     }
+    //     // get the search keyword
+    //     let search = this.FormItem.controls.itemFilter.value;
+    //     if (!search) {
+    //         //this.filteredItem.next(this.itemList.slice());
+    //         this.filteredItem.next(this.itemListFiltered.slice());
+    //         return;
+    //     } else {
+    //         search = search.toLowerCase();
+    //     }
+    //     // filter the nations
+    //     this.filteredItem.next(
+    //         this.itemList.filter(item => item.description.toLowerCase().indexOf(search) > -1 || item.code.toString().toLowerCase().indexOf(search) > -1)
+    //     );
+    // }
 
     filterPrescribedMedicationItem() {
         if (!this.prescribedMedicationList) {

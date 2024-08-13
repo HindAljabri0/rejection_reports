@@ -33,9 +33,9 @@
                     <label class="control-label">GTIN Code - Description<span class="asterisk">*</span></label>
                     <mat-form-field class="form-control custom-select-control">
                         <mat-select panelClass="custom-dropdown" formControlName="item" [disabled]="IsItemLoading"
-                            placeholder="Select Code-Description">
+                            placeholder="Select Code-Description" (selectionChange)="selectionChangeCode($event.value.code)">
                             <mat-option>
-                                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="itemFilter" (ngModelChange)="filterItem()"
+                                <ngx-mat-select-search placeholderLabel="Search Item" formControlName="itemFilter" (ngModelChange)="filterMyOptions($event)"
                                     noEntriesFoundLabel="No items found" name='searchedItem'></ngx-mat-select-search>
                             </mat-option>
                             <cdk-virtual-scroll-viewport itemSize="100" minBufferPx="{{itemList.length}}"
