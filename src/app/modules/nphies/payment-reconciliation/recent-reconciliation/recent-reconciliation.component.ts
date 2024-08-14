@@ -171,7 +171,7 @@ export class RecentReconciliationComponent implements OnInit {
 
   readNotification(notificationStatus: string, notificationId: string) {
     if (notificationStatus === 'unread') {
-      this.sharedServices.unReadRecentTotalCount = this.sharedServices.unReadRecentTotalCount - 1;
+      this.sharedServices.unReadRecentCount = this.sharedServices.unReadRecentCount - 1;
       if (notificationId) {
         this.sharedServices.markAsRead(notificationId, this.sharedServices.providerId);
       }
@@ -180,7 +180,7 @@ export class RecentReconciliationComponent implements OnInit {
 
   readAllNotification() {
     this.paymentReconciliations.forEach(x=>x.notificationStatus = 'read');
-    this.sharedServices.unReadRecentTotalCount = 0;
+    this.sharedServices.unReadRecentCount = 0;
     this.sharedServices.markAllAsRead(this.sharedServices.providerId, "payment-reconciliation-notification");
   }
 

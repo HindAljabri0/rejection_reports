@@ -57,11 +57,6 @@
                                 </span>
                               </div>
                             </td>
-                            <td>
-                                <div *ngIf="communication.isReAdjudicationEnabled" style="margin-left: 30%; margin-top:3px;">
-                                    <span class="alert-marker ml-2 alert-count ng-star-inserted" style="height: auto; width: 120px ">re-adjudication</span>
-                                </div>
-                            </td>
                           </tr>
                           <tr
                             *ngIf="payload.payloadAttachment && payload.attachmentType && getFilename(payload.attachmentType) === 'image'">
@@ -118,7 +113,7 @@
                   <span>Communication Request ID: {{communication.requestIdentifierId}} &nbsp;&nbsp;&nbsp;&nbsp;
                     Date: {{communication.communicationDate | date : 'dd/MM/yyyy hh:mm aa'}}</span>
                 </div>
-                <div class="ml-auto action-btns" >
+                <div class="ml-auto action-btns">
                   <button *ngIf="communication.error" type="button" class="action-btn mr-1"
                     matTooltip="{{communication.communicationErrors}}">
                     <mat-icon class="text-danger">error_outline</mat-icon>
@@ -256,11 +251,6 @@
                                     ({{payload.payloadItemModel.nonStandardCodeDesc}})</ng-container>
                                 </span>
                               </div>
-                            </td>
-                            <td>
-                                <div *ngIf="communication.isReAdjudicationEnabled" style="margin-left: 62%; margin-top:3px;">
-                                    <span class="alert-marker ml-2 alert-count ng-star-inserted" style="height: auto; width: 120px ">re-adjudication</span>
-                                </div>
                             </td>
                           </tr>
                           <tr

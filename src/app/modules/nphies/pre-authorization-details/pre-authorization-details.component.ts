@@ -69,9 +69,9 @@ export class PreAuthorizationDetailsComponent implements OnInit {
     if (this.data.notificationStatus === 'unread') {
       const notificationId: string = this.data.notificationId;
       if (this.data.communicationId) {
-        this.sharedServices.unReadComunicationRequestTotalCount = this.sharedServices.unReadComunicationRequestTotalCount - 1;
+        this.sharedServices.unReadComunicationRequestCount = this.sharedServices.unReadComunicationRequestCount - 1;
       } else {
-        this.sharedServices.unReadProcessedTotalCount = this.sharedServices.unReadProcessedTotalCount - 1;
+        this.sharedServices.unReadProcessedCount = this.sharedServices.unReadProcessedCount - 1;
       }
       if (notificationId) {
         this.sharedServices.markAsRead(notificationId, this.sharedServices.providerId);

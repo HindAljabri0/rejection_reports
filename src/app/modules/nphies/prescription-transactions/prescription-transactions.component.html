@@ -2,7 +2,7 @@
     <div class="block-header">
         <p>Prescription Transactions</p>
     </div>
-    <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding" (selectedTabChange)="tabChange($event)" style="z-index: 1;">
+    <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding" (selectedTabChange)="tabChange($event)">
         <mat-tab>
             <ng-template mat-tab-label>
                 <span>Requests</span>
@@ -298,27 +298,11 @@
 
         </mat-tab>
         <mat-tab>
-            <ng-template mat-tab-label style="width: 240px !important;">
+            <ng-template mat-tab-label>
                 <div class="d-flex align-items-center">
                     <span>Communication Request</span>
-                    <span *ngIf="NewPrescriberCommunicationNonReAdjudicationRequests > 0 && NewPrescriberCommunicationReAdjudicationRequests > 0" class="alert-marker ml-2 alert-count">
-                        <span (mouseover)="hoverText = 'missing info'" (mouseleave)="hoverText = ''">{{NewPrescriberCommunicationNonReAdjudicationRequests}}</span> | 
-                        <span (mouseover)="hoverText = 're-adjudication'" (mouseleave)="hoverText = ''">{{NewPrescriberCommunicationReAdjudicationRequests}}</span>
-                    </span>
-                    <span *ngIf="NewPrescriberCommunicationNonReAdjudicationRequests == 0 && NewPrescriberCommunicationReAdjudicationRequests > 0" class="alert-marker ml-2 alert-count">
-                        <span (mouseover)="hoverText = 're-adjudication'" (mouseleave)="hoverText = ''">{{NewPrescriberCommunicationReAdjudicationRequests}}</span>
-                    </span>
-                    <span *ngIf="NewPrescriberCommunicationNonReAdjudicationRequests > 0 && NewPrescriberCommunicationReAdjudicationRequests == 0" class="alert-marker ml-2 alert-count">
-                        {{NewPrescriberCommunicationNonReAdjudicationRequests}}
-                        <span (mouseover)="hoverText = 'missing info'" (mouseleave)="hoverText = ''">{{NewPrescriberCommunicationNonReAdjudicationRequests}}</span>
-                    </span>
-                    <div style="margin-right: 15px; margin-bottom: 18px;">
-                        <span 
-                          class="alert-marker ml-2 alert-count" 
-                          style=" position: fixed; background-color: #EBF2FE; color: #264D88; margin-bottom: 18px; padding-left: 20px; padding-right: 20px;">
-                        {{ hoverText }}
-                        </span>
-                    </div>
+                    <span *ngIf="NewPrescriberCommunicationRequests > 0"
+                        class="alert-marker ml-2 alert-count">{{NewPrescriberCommunicationRequests}}</span>
                 </div>
             </ng-template>
             <app-prescription-communication-requests #communicationRequests *ngIf="payersList" [payersList]="payersList"

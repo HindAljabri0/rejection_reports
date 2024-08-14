@@ -43,7 +43,7 @@ export class PrescriptionProcessedTransactionsComponent implements OnInit {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
-          // this.sharedServices.unReadProcessedTotalCount = 0;
+          // this.sharedServices.unReadProcessedCount = 0;
           // this.sharedServices.markAsRead();
           this.processedTransactionModel = new PaginatedResult(body, ProcessedTransaction);
           this.processedTransactions = this.processedTransactionModel.content;
@@ -77,7 +77,7 @@ export class PrescriptionProcessedTransactionsComponent implements OnInit {
 
   readAllNotification() {
     this.processedTransactions.forEach(x=>x.notificationStatus = 'read');
-    this.sharedServices.unReadPrescriberProcessedTotalCount = 0;
+    this.sharedServices.unReadPrescriberProcessedCount = 0;
     this.sharedServices.markAllAsRead(this.sharedServices.providerId, "prescriberprocessed-notifications");
   }
 

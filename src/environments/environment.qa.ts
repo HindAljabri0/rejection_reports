@@ -6,7 +6,7 @@ export const environment = {
     name: 'qa',
     production: true,
     GA_TRACKING_ID: '',
-    showFreshChat: true,
+    showFreshChat: false,
     versionCheckURL: `http://okd.waseel.com`,
     uploaderHost: `${host}/claim-uploader`,
     claimSearchHost: `${host}/claim-search`,
@@ -28,6 +28,7 @@ export const environment = {
     providerNphiesSearch: `${host}/provider-nphies-search`,
     providerNphiesApproval: `${host}/approvals`,
     nphiesClaimUploader: `${host}/upload-v2`,
+
     nphiesPollManagement: `${host}/poll-management`,
     contractManagementService: `${host}/contract-billing`,
     mreClaimsSender:`${host}/mre-claims-sender`,
@@ -50,5 +51,4 @@ export const environment = {
     feedbacksurveyUrl: `${hostFeedback}`,
     communicationportalUrl: `${hostjisr}`,
     legacyUrl:`${hostlegacy}`,
-    PbmPrescriptionValidate:`${host}/pbm-prescription-validate`,
 };

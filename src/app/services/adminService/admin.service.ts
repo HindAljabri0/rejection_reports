@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
-import { SERVICE_CODE_RESTRICTION_KEY, PBM_RESTRICTION_KEY, NPHIES_PBM_RESTRICTION_KEY, NPHIES_PBM_APPROVAL_KEY , NPHIES_MRE_APPROVAL_KEY , NPHIES_MRE_RESTRICTION_KEY, PBM_PRESCRIPTION_VALIDATE , PBM_DISPENSE_INQUIRY,RADIOLOGY_REPORT_KEY } from '../administration/superAdminService/super-admin.service';
+import { SERVICE_CODE_RESTRICTION_KEY, PBM_RESTRICTION_KEY, NPHIES_PBM_RESTRICTION_KEY, NPHIES_PBM_APPROVAL_KEY , NPHIES_MRE_APPROVAL_KEY , NPHIES_MRE_RESTRICTION_KEY, RADIOLOGY_REPORT_KEY } from '../administration/superAdminService/super-admin.service';
 import { DatePipe } from '@angular/common';
 
 @Injectable({
@@ -60,18 +60,6 @@ export class AdminService {
 
   checkIfNphiesApprovalMREValidationIsEnabled(providerId: string, payerId: string) {
     const requestURL = `/providers/${providerId}/config/${NPHIES_MRE_APPROVAL_KEY}/payers/${payerId}`;
-    const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
-    return this.http.request(request);
-  }
-
-  checkIfPBMDispenceValidationIsEnabled(providerId: string, payerId: string) {
-    const requestURL = `/providers/${providerId}/config/${PBM_DISPENSE_INQUIRY}/payers/${payerId}`;
-    const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
-    return this.http.request(request);
-  }
-
-  checkIfPrescriptionValidationIsEnabled(providerId: string, payerId: string) {
-    const requestURL = `/providers/${providerId}/config/${PBM_PRESCRIPTION_VALIDATE}/payers/${payerId}`;
     const request = new HttpRequest('GET', environment.settingsServiceHost + requestURL);
     return this.http.request(request);
   }

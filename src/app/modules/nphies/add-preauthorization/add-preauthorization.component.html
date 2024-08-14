@@ -221,18 +221,15 @@
               </div> -->
                         </div>
                     </div>
-<div class="col-4 col-xxl-3"
-     *ngIf="FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value === 'pharmacy'">
-    <div class="form-group"
-         [ngClass]="{'has-error' : (isDispenseInquiry && FormPreAuthorization.get('prescription').touched) && FormPreAuthorization.get('prescription').hasError('required')}">
-        <label class="control-label">Prescription Reference No(s).</label>
-        <input class="form-control" placeholder="Enter Prescription Ref. No."
-               formControlName="prescription">
-        <div *ngIf="isDispenseInquiry && FormPreAuthorization.controls.prescription.touched && FormPreAuthorization.controls.prescription.invalid" class="text-danger">
-            <div *ngIf="FormPreAuthorization.controls.prescription.errors?.required">Prescription Reference No. is required for Dispense Request</div>
-        </div>
-    </div>
-</div>
+                    <div class="col-4 col-xxl-3"
+                        *ngIf="FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value === 'pharmacy'">
+                        <div class="form-group">
+                            <label class="control-label">Prescription Reference No(s).</label>
+                            <input class="form-control" placeholder="Enter Prescription Ref. No."
+                                formControlName="prescription">
+                        </div>
+                    </div>
+
                     <div class="col-4 col-xxl-3">
                         <div class="form-group">
                             <label class="control-label">Referring Provider</label>
@@ -980,70 +977,19 @@
                 <hr class="hr spaced" />
 
                 <div class="form-group text-right btn-list">
-                                         
-        <div class="split-button"
-        *ngIf="FormPreAuthorization.controls.type.value && FormPreAuthorization.controls.type.value.value === 'pharmacy' && isPBMDispenceValidationVisible">
-        <button type="button" mat-flat-button color="primary" 
-        (click)="sendDispenseQuery()">
-        <span>Request Prescription Dispense</span>
-        </button>
-
-        <button type="button" mat-flat-button color="primary"
-        (click)="openDispenseQueryResponseSummaryDialog(DispenseQueryResult)"
-        [disabled]="getDispenseQueryStatues()"
-[ngStyle]="{'background-color': getDispenseQueryStatues() ? '#3060aa' : '#3060aa' ,                 
-'border-left':'1px solid lightsteelblue' }">
-<mat-icon class="material-icons-outlined"
-[ngStyle]="{'color': getDispenseQueryStatues() ? '#5E90DE' : ''}">
-visibility
-</mat-icon>
-</button>
-
-        </div> 
-
-                <div class="split-button" *ngIf="isPBMValidationVisible"> 
-                    <button type="button" mat-flat-button color="primary" 
-                    (click)="onSubmit(true,false)" id="pbmRequestButton">
-                    <span>Request PBM</span>
+                    <button type="button" mat-button color="primary" *ngIf="isPBMValidationVisible"
+                        [disabled]="!Pbm_result" (click)="openPbmValidationResponseSummaryDialog(Pbm_result)"
+                        id="PbmResponse">
+                        <span>PBM Response</span>
                     </button>
-
-                <button type="button" mat-flat-button color="primary"
-                (click)="openPbmValidationResponseSummaryDialog(Pbm_result)"
-                id="PbmResponse"
-    [disabled]="getPbmResponseStatues()"
-    [ngStyle]="{'background-color': getPbmResponseStatues() ? '#3060aa' : '#3060aa' ,                 
-    'border-left':'1px solid lightsteelblue' }">
-<mat-icon class="material-icons-outlined"
-        [ngStyle]="{'color': getPbmResponseStatues() ? '#5E90DE' : ''}">
-visibility
-</mat-icon>
-</button>
-
-                </div> 
-              
-                    
-        <div class="split-button" *ngIf="isMREValidationVisible"> 
-            <button type="button" mat-flat-button color="primary" 
-            (click)="onSubmit(false,true)" id="mreRequestButton">
-            <span>Request MRE</span>
-        </button>
-
-        <button type="button" mat-flat-button color="primary"
-        (click)="openMreValidationResponseSummaryDialog(Mre_result)"
-        id="MreResponse"
-        [disabled]="getMreResponseStatues()"
-[ngStyle]="{'background-color': getMreResponseStatues() ? '#3060aa' : '#3060aa' ,                 
-'border-left':'1px solid lightsteelblue' }">
-<mat-icon class="material-icons-outlined"
-[ngStyle]="{'color': getMreResponseStatues() ? '#5E90DE' : ''}">
-visibility
-</mat-icon>
-</button>
-
-        </div> 
-      
-
-        
+                    <button type="button" mat-flat-button color="primary" *ngIf="isMREValidationVisible"
+                        (click)="onSubmit(false,true)" id="mreRequestButton">
+                        <span>Request MRE</span>
+                    </button>
+                    <button type="button" mat-flat-button color="primary" *ngIf="isPBMValidationVisible"
+                        (click)="onSubmit(true,false)" id="pbmRequestButton">
+                        <span>Request PBM</span>
+                    </button>
                     <button type="submit" mat-flat-button color="primary" id="requestAuthorizationButton">
                         <span>Request Authorization</span>
                     </button>

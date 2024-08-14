@@ -52,8 +52,7 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
     selectedBeneficiary: BeneficiariesSearchResult;
     advanceSearchEnable = false;
-    hoverText: string = '';
-    
+
     typeList = this.sharedDataService.claimTypeList;
 
     FormPreAuthTransaction: FormGroup = this.formBuilder.group({
@@ -767,17 +766,11 @@ export class PreauthorizationTransactionsComponent implements OnInit {
     }
 
     get NewTransactionProcessed() {
-        return this.sharedServices.unReadProcessedTotalCount;
+        return this.sharedServices.unReadProcessedCount;
     }
 
     get NewComunicationRequests() {
-        return this.sharedServices.unReadComunicationRequestTotalCount;
-    }
-    get NewComunicationReAdjudicationRequests() {
-        return this.sharedServices.unReadComunicationRequestReAdjudicationCount;
-    }
-    get NewComunicationNonReAdjudicationRequests() {
-        return this.sharedServices.unReadComunicationRequestNonReAdjudicationCount;
+        return this.sharedServices.unReadComunicationRequestCount;
     }
 
     toggleAdvanceSearch() {

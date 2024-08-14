@@ -52,6 +52,4 @@ export const environment = {
     feedbacksurveyUrl: `${hostFeedback}`,
     communicationportalUrl: `${hostjisr}`,
     legacyUrl:`${hostlegacy}`,
-    PbmPrescriptionValidate:`${host}/pbm-prescription-validate`,
-
 };

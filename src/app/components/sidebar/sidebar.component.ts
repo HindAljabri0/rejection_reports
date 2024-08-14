@@ -76,24 +76,24 @@ export class SidebarComponent implements OnInit {
         document.getElementsByTagName('html')[0].classList.remove('nav-open');
     }
     get NewAuthTransactions() {
-        const transCount = this.sharedServices.unReadProcessedTotalCount + this.sharedServices.unReadComunicationRequestTotalCount;
+        const transCount = this.sharedServices.unReadProcessedCount + this.sharedServices.unReadComunicationRequestCount;
         return transCount;
     }
     get NewAPAProcessed() {
-        return this.sharedServices.unReadProcessedApaTotalCount;
+        return this.sharedServices.unReadProcessedApaCount;
       }
       get PrescriberProcessed() {
-        return this.sharedServices.unReadPrescriberProcessedTotalCount;
+        return this.sharedServices.unReadPrescriberProcessedCount;
       }
       get PrescriberComunicationRequests() {
-        return this.sharedServices.unReadPrescriberCommunicationRequestTotalCount;
+        return this.sharedServices.unReadPrescriberCommunicationRequestCount;
       } 
       get NewPrescriberTransactions() {
         const transCount = this.PrescriberProcessed + this.PrescriberComunicationRequests;
         return transCount;
     }
     get NewAPAComunicationRequests() {
-        return this.sharedServices.unReadApaComunicationRequestTotalCount;
+        return this.sharedServices.unReadApaComunicationRequestCount;
       }
       get TotalAPATransactions(){
         const transCount = this.NewAPAProcessed + this.NewAPAComunicationRequests;
@@ -104,11 +104,11 @@ export class SidebarComponent implements OnInit {
         return transCount;
      }
     get RecentReconciliations() {
-        return this.sharedServices.unReadRecentTotalCount;
+        return this.sharedServices.unReadRecentCount;
     }
 
     get NewClaimTransactions() {
-        const transCount = this.sharedServices.unReadClaimProcessedTotalCount + this.sharedServices.unReadClaimComunicationRequestTotalCount;
+        const transCount = this.sharedServices.unReadClaimProcessedCount + this.sharedServices.unReadClaimComunicationRequestCount;
         return transCount;
     }
 }

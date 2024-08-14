@@ -10,7 +10,6 @@ import { DatePipe } from '@angular/common';
 import { AddEditDiagnosisModalComponent } from './add-edit-diagnosis-modal/add-edit-diagnosis-modal.component';
 import { AddEditSupportingInfoModalComponent } from './add-edit-supporting-info-modal/add-edit-supporting-info-modal.component';
 import { ProviderNphiesApprovalService } from 'src/app/services/providerNphiesApprovalService/provider-nphies-approval.service';
-import { PbmPrescriptionService } from 'src/app/services/pbm-prescription-service/PbmPrescriptionService.service';
 import { ConfirmationAlertDialogComponent } from 'src/app/components/confirmation-alert-dialog/confirmation-alert-dialog.component';
 // tslint:disable-next-line:max-line-length
 import { AddEditVisionLensSpecificationsComponent } from './add-edit-vision-lens-specifications/add-edit-vision-lens-specifications.component';
@@ -32,7 +31,6 @@ import { PbmValidationResponseSummaryDialogComponent } from 'src/app/components/
 import { AdminService } from 'src/app/services/adminService/admin.service';
 import { MessageDialogData } from 'src/app/models/dialogData/messageDialogData';
 import { MreValidationResponseSummaryDialogComponent } from 'src/app/components/dialogs/mre-validation-response-summary-dialog/mre-validation-response-summary-dialog.component';
-import { PrescriptionDispenseDialogComponent } from 'src/app/components/dialogs/prescription-dispense-dialog/prescription-dispense-dialog.component';
 
 
 @Component({
@@ -65,7 +63,6 @@ export class AddPreauthorizationComponent implements OnInit {
     selectedPlanIdError: string;
     IsSubscriberRequired = false;
     IsAccident = false;
-    isDispenseInquiry = false;
     isOnline: boolean = false;
     isOffline: boolean = false;
     AllTPA: any[] = [];
@@ -87,7 +84,7 @@ export class AddPreauthorizationComponent implements OnInit {
         type: ['', Validators.required],
         subType: [''],
         preAuthRefNo: [''],
-        prescription: ['', Validators.required],
+        prescription: [''],
         accidentType: [''],
         streetName: [''],
         city: [''],
@@ -199,9 +196,6 @@ export class AddPreauthorizationComponent implements OnInit {
     model: any = {};
     detailsModel: any = {};
 
-    DispinseInqueryModel: any = {};
-
-
     isSubmitted = false;
     IsLensSpecificationRequired = false;
     IsDiagnosisRequired = false;
@@ -209,7 +203,6 @@ export class AddPreauthorizationComponent implements OnInit {
     IsItemRequired = false;
     IsDateWrittenRequired = false;
     IsPrescriberRequired = false;
-    IsDispenceInqury = false;
 
     IsDateRequired = false;
     IsAccidentTypeRequired = false;
@@ -225,10 +218,8 @@ export class AddPreauthorizationComponent implements OnInit {
     providerType = "";
     isPBMValidationVisible = false;
     isMREValidationVisible = false;
-    isPBMDispenceValidationVisible = false;
-    Pbm_result: any = null;
-    Mre_result: any = null;
-    DispenseQueryResult: any = null;
+    Pbm_result: any;
+    Mre_result: any;
 
     constructor(
         private sharedDataService: SharedDataService,
@@ -243,8 +234,7 @@ export class AddPreauthorizationComponent implements OnInit {
         private adminService: AdminService,
         private providersBeneficiariesService: ProvidersBeneficiariesService,
         private providerNphiesApprovalService: ProviderNphiesApprovalService,
-        private dbMapping: DbMappingService,
-        private pbmPrescriptionService : PbmPrescriptionService
+        private dbMapping: DbMappingService
     ) {
 
         this.today = new Date();
@@ -260,7 +250,6 @@ export class AddPreauthorizationComponent implements OnInit {
         this.getTPA();
         this.getPBMValidation();
         this.getMREValidation();
-        this.getPBMDispenseValidation();
         this.FormPreAuthorization.controls.dateOrdered.setValue(this.removeSecondsFromDate(new Date()));
         this.filteredNations.next(this.nationalities.slice());
         if (this.claimReuseId) {
@@ -298,19 +287,6 @@ export class AddPreauthorizationComponent implements OnInit {
         });
 
     }
-
-    getPBMDispenseValidation() {
-        this.adminService.checkIfPBMDispenceValidationIsEnabled(this.sharedServices.providerId, '101').subscribe((event: any) => {
-            if (event instanceof HttpResponse) {
-                const body = event['body'];
-                this.isPBMDispenceValidationVisible = body.value === '1' ? true : false;
-            }
-        }, err => {
-            console.log(err);
-        });
-
-    }
-
     selectedDefualtPrescriberChange($event) {
         this.PrescriberDefault = $event;
         console.log("$event = " + $event);
@@ -1776,9 +1752,6 @@ export class AddPreauthorizationComponent implements OnInit {
             this.dialogService.showMessage('Error', 'Claim type ' + claimTypeName + ' is not supported for Provider type ' + providerTypeName, 'alert', true, 'OK');
             return;
         }
-        const prescriptionControl = this.FormPreAuthorization.get('prescription');
-        prescriptionControl.clearValidators();
-        prescriptionControl.updateValueAndValidity();
         this.isSubmitted = true;
 
         let hasError = false;
@@ -2667,186 +2640,4 @@ export class AddPreauthorizationComponent implements OnInit {
         const dialogRef = this.dialog.open(MreValidationResponseSummaryDialogComponent, dialogConfig);
     }
 
-    sendDispenseQuery() {
-        this.isDispenseInquiry = true;
-        this.DispinseInqueryModel = {
-            ePrescriptionReferenceNumber: this.FormPreAuthorization.controls.prescription.value,
-            payerId: "7000911508"
-            //this.FormPreAuthorization.controls.insurancePayerNphiesId.value
-        };
-        this.IsDispenceInqury = true;
-    
-        const prescriptionControl = this.FormPreAuthorization.get('prescription');
-        prescriptionControl.setValidators([Validators.required]);
-        prescriptionControl.updateValueAndValidity();
-    
-        if (prescriptionControl.invalid) {
-            prescriptionControl.markAsTouched();
-            return;
-        }
-    
-        this.sharedServices.loadingChanged.next(true);
-            this.pbmPrescriptionService.getDispenseQueryRequest(this.sharedServices.providerId, this.DispinseInqueryModel).subscribe(
-            (event: any) => {
-                if (event instanceof HttpResponse) {
-                    this.sharedServices.loadingChanged.next(false);
-    
-                    if (event.status === 200) {
-                        const body: any = event.body;
-                        this.DispenseQueryResult = body;
-    
-                        // Handle different HTTP status responses
-                        if (body.httpStatus === 'OK') {
-                            this.openDispenseQueryResponseSummaryDialog(this.DispenseQueryResult);
-                        } else {
-                            this.handleErrorResponse(body);
-                        }
-                    }
-                }
-            },
-            (error: HttpErrorResponse) => {
-                this.sharedServices.loadingChanged.next(false);
-                console.error(error);
-    
-                // Handle HTTP errors
-                if (error instanceof HttpErrorResponse) {
-                    this.handleHttpErrorResponse(error);
-                }
-            }
-        );
-    }
-    
-    private handleErrorResponse(body: any) {
-        const errors: any[] = body.errorDescriptions ? [...body.errorDescriptions] : [];
-        this.dialogService.showMessage(
-            body.errorCode || 'Error',
-            '',
-            'alert',
-            true,
-            'OK',
-            errors
-        );
-    }
-    
-    private handleHttpErrorResponse(error: HttpErrorResponse) {
-        let errorTitle = 'An error occurred';
-        let errorDetails: any[] = [];
-        let errorMessage = 'Please try again later.';
-    
-        if (error.error) {
-            errorTitle = error.error.errorCode || errorTitle;
-            errorDetails = error.error.errorDescriptions || [];
-            errorMessage = error.error.errorDescriptions ? error.error.errorDescriptions.join(', ') : errorMessage;
-        }
-    
-        switch (error.status) {
-            case 400:
-                this.dialogService.showMessageObservable(
-                    errorTitle,
-                    null,
-                    'alert',
-                    true,
-                    'OK',
-                    errorDetails,
-                    true
-                ).subscribe(res => {
-                    if (this.claimReuseId) {
-                        this.reset();
-                    }
-                    this.getProviderTypeConfiguration();
-                });
-                break;
-    
-            case 404:
-                this.dialogService.showMessage(
-                    errorTitle,
-                    null,
-                    'alert',
-                    true,
-                    'OK',
-                    errorDetails
-                );
-                break;
-    
-            case 500:
-                this.dialogService.showMessage(
-                    errorTitle,
-                    null,
-                    'alert',
-                    true,
-                    'OK',
-                    [error.error.httpStatus]
-                );
-                break;
-    
-            case 503:
-                this.dialogService.showMessage(
-                    errorTitle,
-                    null,
-                    'alert',
-                    true,
-                    'OK',
-                    [error.error.httpStatus]
-                );
-                break;
-    
-            default:
-                this.dialogService.showMessage(
-                    `Error ${error.status}: ${error.message}`,
-                    null,
-                    'alert',
-                    true,
-                    'OK',
-                    [error.error.httpStatus]
-                );
-                break;
-        }
-    }
-    
-
-    openDispenseQueryResponseSummaryDialog(body) {
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.panelClass = ['primary-dialog', 'dialog-lg'];
-        dialogConfig.data = {
-            DispenseQueryResult: body
-        };
-        const dialogRef = this.dialog.open(PrescriptionDispenseDialogComponent, dialogConfig);
-    }
-
-    getMreResponseStatues(){
-        if(this.Mre_result!=null){
-
-            return false;
-
-        }else{
-            return true;
-
-        }
-        
-    }
-
-    getPbmResponseStatues(){
-        if(this.Pbm_result!=null){
-
-            return false;
-
-        }else{
-            return true;
-
-        }
-        
-    }
-
-
-    getDispenseQueryStatues(){
-        if(this.DispenseQueryResult!=null){
-
-            return false;
-
-        }else{
-            return true;
-
-        }
-        
-    }
 }

@@ -1,7 +1,7 @@
 <div class="animate__animated animate__faster animate__fadeIn block-card">
 
     <ng-container *ngIf="!IsJSONPosted">
-        <form [formGroup]="FormPreAuthorization">
+        <form [formGroup]="FormPreAuthorization" (ngSubmit)="onSubmit()">
             <div class="block-header">
                 <p>Prescription Request</p>
                 <mat-slide-toggle formControlName="transfer" color="primary" id="referral"
@@ -1062,28 +1062,8 @@
 
                 <hr class="hr spaced" />
 
-                <div class="form-group text-right btn-list">                   
-                    <div class="split-button" *ngIf="IsItTawuniyaPayer && isPrescriptionValidationVisible"> 
-                        <button type="button" mat-flat-button color="primary" 
-                        (click)="onSubmitValidate()">
-                            <span>Request PBM</span>
-                        </button>
-
-                    <button type="button" mat-flat-button color="primary"
-        (click)="openPbmPrescriptionValidationResponseSummaryDialog(PbmPrescriptionResult)"
-        id="PbmResponse"
-        [disabled]="getPbmResultStatuse()"
-        [ngStyle]="{'background-color': getPbmResultStatuse() ? '#3060aa' : '#3060aa' ,                 
-        'border-left':'1px solid lightsteelblue' }">
-  <mat-icon class="material-icons-outlined"
-            [ngStyle]="{'color': getPbmResultStatuse() ? '#5E90DE' : ''}">
-    visibility
-  </mat-icon>
-</button>
-
-                    </div> 
-                    
-                    <button  mat-flat-button color="primary" id="requestAuthorizationButton" (click)="onSubmit()">
+                <div class="form-group text-right btn-list">
+                    <button type="submit" mat-flat-button color="primary" id="requestAuthorizationButton">
                         <span>Request Prescription</span>
                     </button>
                 </div>

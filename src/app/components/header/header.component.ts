@@ -135,7 +135,15 @@ export class HeaderComponent implements OnInit {
             this.sharedServices.getClaimProcessedCount();
             this.sharedServices.getClaimCommunicationRequestCount();
         }*/
-        this.sharedServices.getNotificationByWeekCount();
+        this.sharedServices.getPrescriberProcessedCount();
+        this.sharedServices.getProcessedCount();
+        this.sharedServices.getProcessedApaCount();
+        this.sharedServices.getPrescriberCommunicationRequestCount();
+        this.sharedServices.getCommunicationRequestCount();
+        this.sharedServices.getApaCommunicationRequestCount();
+        this.sharedServices.getRecentReconciliationCount();
+        this.sharedServices.getClaimProcessedCount();
+        this.sharedServices.getClaimCommunicationRequestCount();
         //}
 
         // this.watchPreAuthorizationChanges();
@@ -229,8 +237,39 @@ export class HeaderComponent implements OnInit {
         this.notificationService._messageWatchSources['nphies'].subscribe(value => {
 
             value = value.replace(`"`, '').replace(`"`, '');
+            const splitedValue: string[] = value.split(':');
 
-            this.sharedServices.getNotificationByWeekCount();
+            if (splitedValue[0] === 'prescriberprocessed-notifications') {
+                this.sharedServices.getPrescriberProcessedCount();
+            }
+            if (splitedValue[0] === 'approval-notifications') {
+                this.sharedServices.getProcessedCount();
+            }
+            if (splitedValue[0] === 'advanced-approval-notifications') {
+                this.sharedServices.getProcessedApaCount();
+            }
+            if (splitedValue[0] === 'prescriber-communication-request-notification') {
+                this.sharedServices.getPrescriberCommunicationRequestCount();
+            }
+            if (splitedValue[0] === 'approval-communication-request-notification') {
+                this.sharedServices.getCommunicationRequestCount();
+            }
+            if (splitedValue[0] === 'advanced-approval-communication-request-notification') {
+                this.sharedServices.getApaCommunicationRequestCount();
+            }
+
+            if (splitedValue[0] === 'payment-reconciliation-notification') {
+                this.sharedServices.getRecentReconciliationCount();
+            }
+
+            if (splitedValue[0] === 'claim-notifications') {
+                this.sharedServices.getClaimProcessedCount();
+            }
+
+            if (splitedValue[0] === 'claim-communication-request-notification') {
+                this.sharedServices.getClaimCommunicationRequestCount();
+            }
+
 
         });
     }
@@ -242,7 +281,6 @@ export class HeaderComponent implements OnInit {
     //         host: 'https://wchat.freshchat.com'
     //     });
     // }
-
 
     get hasNewProviderDownload() {
         return this.providerDownloads.some(download => download.downloadAttempts == '0' && download.progress == 100);

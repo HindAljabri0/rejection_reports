@@ -54,7 +54,7 @@ export class ClaimProcessedTransactionsComponent implements OnInit {
       if (event instanceof HttpResponse) {
         if (event.status === 200) {
           const body: any = event.body;
-          // this.sharedServices.unReadProcessedTotalCount = 0;
+          // this.sharedServices.unReadProcessedCount = 0;
           // this.sharedServices.markAsRead();
           this.processedTransactionModel = new PaginatedResult(body, ProcessedTransaction);
           this.processedTransactions = this.processedTransactionModel.content;
@@ -137,7 +137,7 @@ export class ClaimProcessedTransactionsComponent implements OnInit {
 
   readNotification(notificationStatus: string, notificationId: string) {
     if (notificationStatus === 'unread') {
-      this.sharedServices.unReadClaimProcessedTotalCount = this.sharedServices.unReadClaimProcessedTotalCount - 1;
+      this.sharedServices.unReadClaimProcessedCount = this.sharedServices.unReadClaimProcessedCount - 1;
       if (notificationId) {
         this.sharedServices.markAsRead(notificationId, this.sharedServices.providerId);
       }
@@ -146,7 +146,7 @@ export class ClaimProcessedTransactionsComponent implements OnInit {
 
   readAllNotification() {
     this.processedTransactions.forEach(x => x.notificationStatus = 'read');
-    this.sharedServices.unReadClaimProcessedTotalCount = 0;
+    this.sharedServices.unReadClaimProcessedCount = 0;
     this.sharedServices.markAllAsRead(this.sharedServices.providerId, "claim-notifications");
   }
 
