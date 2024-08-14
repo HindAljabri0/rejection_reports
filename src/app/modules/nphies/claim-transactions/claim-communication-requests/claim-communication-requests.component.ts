@@ -134,7 +134,7 @@ export class ClaimCommunicationRequestsComponent implements OnInit {
 
   readNotification(notificationStatus: string, notificationId: string) {
     if (notificationStatus === 'unread') {
-      this.sharedServices.unReadClaimComunicationRequestCount = this.sharedServices.unReadClaimComunicationRequestCount - 1;
+      this.sharedServices.unReadClaimComunicationRequestTotalCount = this.sharedServices.unReadClaimComunicationRequestTotalCount - 1;
       if (notificationId) {
         this.sharedServices.markAsRead(notificationId, this.sharedServices.providerId);
       }
@@ -143,7 +143,7 @@ export class ClaimCommunicationRequestsComponent implements OnInit {
 
   readAllNotification() {
     this.communicationRequests.forEach(x => x.notificationStatus = 'read');
-    this.sharedServices.unReadClaimComunicationRequestCount = 0;
+    this.sharedServices.unReadClaimComunicationRequestTotalCount = 0;
     this.sharedServices.markAllAsRead(this.sharedServices.providerId, "claim-communication-request-notification");
   }
 

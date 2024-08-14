@@ -70,7 +70,7 @@ export class ViewPreauthorizationDetailsComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     this.providerNphiesSearchService.getCommunications(this.sharedServices.providerId, this.data.detailsModel.approvalResponseId).subscribe((event: any) => {
       if (event instanceof HttpResponse) {
-        this.communications = event.body.communicationList;            
+        this.communications = event.body.communicationList;   
         this.sharedServices.loadingChanged.next(false);
       }
     }, err => {

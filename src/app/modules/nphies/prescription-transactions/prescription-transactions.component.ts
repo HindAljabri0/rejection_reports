@@ -48,6 +48,7 @@ export class PrescriptionTransactionsComponent implements OnInit {
     detailTopActionIcon = 'ic-download.svg';
     beneficiariesSearchResult: BeneficiariesSearchResult[] = [];
     selectedBeneficiary: BeneficiariesSearchResult;
+    hoverText: string = '';
 
     typeList = this.sharedDataService.claimTypeList;
     advanceSearchEnable = false;
@@ -753,14 +754,20 @@ export class PrescriptionTransactionsComponent implements OnInit {
         });
     }
     get NewTransactionPrescriberProcessed() {
-        return this.sharedServices.unReadPrescriberProcessedCount;
+        return this.sharedServices.unReadPrescriberProcessedTotalCount;
     }
 
     get NewPrescriberCommunicationRequests() {
-        return this.sharedServices.unReadPrescriberCommunicationRequestCount;
+        return this.sharedServices.unReadPrescriberCommunicationRequestTotalCount;
+    }
+    get NewPrescriberCommunicationReAdjudicationRequests() {
+        return this.sharedServices.unReadPrescriberCommunicationRequestReAdjudicationCount;
+    }
+    get NewPrescriberCommunicationNonReAdjudicationRequests() {
+        return this.sharedServices.unReadPrescriberCommunicationRequestNonReAdjudicationCount;
     }
 
     toggleAdvanceSearch() {
         this.advanceSearchEnable = !this.advanceSearchEnable;
-    }
+    }    
 }

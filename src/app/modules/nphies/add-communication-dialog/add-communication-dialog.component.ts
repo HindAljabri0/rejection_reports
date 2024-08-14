@@ -29,6 +29,7 @@ export class AddCommunicationDialogComponent implements OnInit {
     claimItemId: [''],
     claimItemIdFilter: [''],
   });
+  isToggled: boolean = false;
 
   currentFileUpload: any;
   isSubmitted = false;
@@ -197,6 +198,7 @@ export class AddCommunicationDialogComponent implements OnInit {
     const model: any = {};
     model.claimResponseId = this.data.claimResponseId;
     model.claimProviderId =  this.data.claimProviderId;
+    model.isReAdjudicationEnabled = this.isToggled;
     if (this.data.communicationRequestId) {
       model.communicationRequestId = this.data.communicationRequestId;
     }
@@ -275,6 +277,10 @@ export class AddCommunicationDialogComponent implements OnInit {
     } else {
       return 'image';
     }
+  }
+
+  toggle() {
+    this.isToggled = !this.isToggled;
   }
 
 }
