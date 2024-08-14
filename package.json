@@ -35,12 +35,8 @@
     "buildDR": "npm-run-all --parallel buildDREn buildDRAr",
     "buildOciQA": "npm-run-all --parallel buildOciQAEn",
     "buildOciStg": "npm-run-all buildOciStgEn",
-
-    "buildOciProd": "npm-run-all buildOciProdEn",
-
-    "buildPGQA": "npm-run-all buildPGQAEn",
     "buildOciProd": "npm-run-all buildOciProdEn buildOciProdAr",
-
+    "buildPGQA": "npm-run-all buildPGQAEn",
     "post-build": "node ./build/post-build.js",
     "test": "ng test",
     "lint": "ng lint",
