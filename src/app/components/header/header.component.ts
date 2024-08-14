@@ -110,10 +110,10 @@ export class HeaderComponent implements OnInit {
 
         }
         this.getAlertMessage();
-        if (environment.showFreshChat) {
-            this.showWhatsAppSupport = true;
-            this.showFreshChatBox();
-        }
+        // if (environment.showFreshChat) {
+        //     this.showWhatsAppSupport = true;
+        //     this.showFreshChatBox();
+        // }
 
         this.getUserData();
 
@@ -275,12 +275,12 @@ export class HeaderComponent implements OnInit {
     }
 
 
-    showFreshChatBox() {
-        window['fcWidget'].init({
-            token: '32afa4a2-e443-4a99-aa8b-67e3a6639fd2',
-            host: 'https://wchat.freshchat.com'
-        });
-    }
+    // showFreshChatBox() {
+    //     window['fcWidget'].init({
+    //         token: '32afa4a2-e443-4a99-aa8b-67e3a6639fd2',
+    //         host: 'https://wchat.freshchat.com'
+    //     });
+    // }
 
     get hasNewProviderDownload() {
         return this.providerDownloads.some(download => download.downloadAttempts == '0' && download.progress == 100);
