@@ -33,6 +33,7 @@ import { AddCNHIPreauthorizationComponent } from './add-preauth-cnhi/add-preauth
 import { CancelPreviousClaimComponent } from '../adminstration/cancel-previous-claim/cancel-previous-claim.component';
 import { NphiesPayerMappingComponent } from './nphies-payer-mapping/nphies-payer-mapping.component';
 import { RejectedClaimReportComponent } from './rejected-claim-report/rejected-claim-report.component';
+import { RejectionReportsComponent } from './rejection-reports/rejection-reports.component';
 
 
 const routes: Routes = [
@@ -71,8 +72,8 @@ const routes: Routes = [
     { path: 'extract-claims', component: ExtractClaimsComponent },
     { path: 'cancelPreviousClaim', component: CancelPreviousClaimComponent },
     { path: 'nphies-payer-mapping', component: NphiesPayerMappingComponent },
-    { path: 'rejected-claim-report', component: RejectedClaimReportComponent }
-
+    { path: 'rejected-claim-report', component: RejectedClaimReportComponent },
+    { path: 'rejection-reports', component: RejectionReportsComponent }  
 ];
 
 @NgModule({

@@ -1,0 +1,201 @@
+<div class="animate__animated animate__faster animate__fadeIn block-card">
+    <div class="block-body p-0">
+        <mat-tab-group [dynamicHeight]="true" class="primary-tab no-body-padding">
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <span>Rejected Claim Report</span>
+                </ng-template>
+
+                <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+                    <div class="block-filter-panel">
+                      <form>
+                        <div class="row small-gutter">
+                          <div class="col-3 col-xxl-3">
+                            <div class="form-group">
+                              <label class="control-label">From Date</label>
+                              <div class="date-picker">
+                                <input [matDatepicker]="claimsFilterFromDate" class="form-control" placeholder="Select from date">
+                                <mat-datepicker-toggle [for]="claimsFilterFromDate"></mat-datepicker-toggle>
+                                <mat-datepicker #claimsFilterFromDate></mat-datepicker>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-3 col-xxl-3">
+                            <div class="form-group">
+                              <label class="control-label">To Date</label>
+                              <div class="date-picker">
+                                <input [matDatepicker]="claimsFilterToDate" class="form-control" placeholder="Select to date">
+                                <mat-datepicker-toggle [for]="claimsFilterToDate"></mat-datepicker-toggle>
+                                <mat-datepicker #claimsFilterToDate></mat-datepicker>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-3 col-xxl-3">
+                            <div class="form-group">
+                              <label class="control-label">Payer</label>
+                              <mat-form-field class="form-control custom-select-control">
+                                <mat-select value="-1">
+                                  <mat-option value="-1">Select</mat-option>
+                                  <mat-option value="Payer 1">Payer 1</mat-option>
+                                  <mat-option value="Payer 2">Payer 2</mat-option>
+                                  <mat-option value="Payer 3">Payer 3</mat-option>
+                                  <mat-option value="Payer 4">Payer 4</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <ng-container *ngIf="claimsAdvanceSearchEnable">
+                            <div class="col-3 col-xxl-3">
+                              <div class="form-group">
+                                <label class="control-label">Claim Type</label>
+                                <mat-form-field class="form-control custom-select-control">
+                                  <mat-select value="-1">
+                                    <mat-option value="-1">Select</mat-option>
+                                    <mat-option value="Type 1">Type 1</mat-option>
+                                    <mat-option value="Type 2">Type 2</mat-option>
+                                    <mat-option value="Type 3">Type 3</mat-option>
+                                    <mat-option value="Type 4">Type 4</mat-option>
+                                  </mat-select>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col-3 col-xxl-3">
+                              <div class="form-group">
+                                <label class="control-label">Claim Reference No.</label>
+                                <input placeholder="Enter claim ref. no." class="form-control">
+                              </div>
+                            </div>
+                            <div class="col-3 col-xxl-3">
+                              <div class="form-group">
+                                <label class="control-label">Request Bundle ID</label>
+                                <input placeholder="Enter request bundle ID" class="form-control">
+                              </div>
+                            </div>
+                            <div class="col-3 col-xxl-3">
+                              <div class="form-group">
+                                <label class="control-label">Claim Status</label>
+                                <mat-form-field class="form-control custom-select-control">
+                                  <mat-select value="-1">
+                                    <mat-option value="-1">Select</mat-option>
+                                    <mat-option value="1">All</mat-option>
+                                    <mat-option value="2">Partially Approved</mat-option>
+                                    <mat-option value="3">Rejected</mat-option>
+                                  </mat-select>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </ng-container>
+                          <div class="col-3 col-xxl-3" *ngIf="!claimsAdvanceSearchEnable">
+                            <div class="form-group">
+                              <label class="control-label">&nbsp;</label>
+                              <div class="btn-list">
+                                <button type="submit" mat-flat-button color="primary">Search</button>
+                                <button type="button" class="text-primary" (click)="claimsToggleAdvanceSearch()" mat-button>Advance Search</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div *ngIf="claimsAdvanceSearchEnable" class="form-group">
+                          <div class="btn-list">
+                            <button type="submit" mat-flat-button color="primary">Search</button>
+                            <button type="button" class="text-primary" (click)="claimsToggleAdvanceSearch()" mat-button>Basic Search</button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </ng-scrollbar>
+            </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <span>Rejected Item Report</span>
+                </ng-template>
+
+                <ng-scrollbar smoothScroll [shown]="'hover'" [compact]="true" [trackX]="true">
+                    <div class="block-filter-panel">
+                      <form>
+                        <div class="row small-gutter">
+                          <div class="col-3 col-xxl-3">
+                            <div class="form-group">
+                              <label class="control-label">From Date</label>
+                              <div class="date-picker">
+                                <input [matDatepicker]="itemsFilterFromDate" class="form-control" placeholder="Select from date">
+                                <mat-datepicker-toggle [for]="itemsFilterFromDate"></mat-datepicker-toggle>
+                                <mat-datepicker #itemsFilterFromDate></mat-datepicker>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-3 col-xxl-3">
+                            <div class="form-group">
+                              <label class="control-label">To Date</label>
+                              <div class="date-picker">
+                                <input [matDatepicker]="itemsFilterToDate" class="form-control" placeholder="Select to date">
+                                <mat-datepicker-toggle [for]="itemsFilterToDate"></mat-datepicker-toggle>
+                                <mat-datepicker #itemsFilterToDate></mat-datepicker>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-3 col-xxl-3">
+                            <div class="form-group">
+                              <label class="control-label">Payer</label>
+                              <mat-form-field class="form-control custom-select-control">
+                                <mat-select value="-1">
+                                  <mat-option value="-1">Select</mat-option>
+                                  <mat-option value="Payer 1">Payer 1</mat-option>
+                                  <mat-option value="Payer 2">Payer 2</mat-option>
+                                  <mat-option value="Payer 3">Payer 3</mat-option>
+                                  <mat-option value="Payer 4">Payer 4</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <ng-container *ngIf="itlemsAdvanceSearchEnable">
+                            <div class="col-3 col-xxl-3">
+                              <div class="form-group">
+                                <label class="control-label">Serive Type</label>
+                                <mat-form-field class="form-control custom-select-control">
+                                  <mat-select value="-1">
+                                    <mat-option value="-1">Select</mat-option>
+                                    <mat-option value="Type 1">Medical Devices</mat-option>
+                                    <mat-option value="Type 2">Medication Codes</mat-option>
+                                    <mat-option value="Type 3">Transportation SRCA</mat-option>
+                                    <mat-option value="Type 4">Imaging</mat-option>
+                                    <mat-option value="Type 5">Services</mat-option>
+                                    <mat-option value="Type 6">Laboratory</mat-option>
+                                    <mat-option value="Type 7">Oral Health OP</mat-option>
+                                    <mat-option value="Type 8">Oral Health IP</mat-option>
+                                  </mat-select>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                            <div class="col-3 col-xxl-3">
+                                <div class="form-group">
+                                    <label class="control-label">Adjudication Reason Code</label>
+                                    <input type="text" class="form-control search-box" placeholder="Select">
+                                </div>
+                            </div>
+                           
+                          </ng-container>
+                          <div class="col-3 col-xxl-3" *ngIf="!itlemsAdvanceSearchEnable">
+                            <div class="form-group">
+                              <label class="control-label">&nbsp;</label>
+                              <div class="btn-list">
+                                <button type="submit" mat-flat-button color="primary">Search</button>
+                                <button type="button" class="text-primary" (click)="itemsToggleAdvanceSearch()" mat-button>Advance Search</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div *ngIf="itlemsAdvanceSearchEnable" class="form-group">
+                          <div class="btn-list">
+                            <button type="submit" mat-flat-button color="primary">Search</button>
+                            <button type="button" class="text-primary" (click)="itemsToggleAdvanceSearch()" mat-button>Basic Search</button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </ng-scrollbar>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+  </div>
+  
